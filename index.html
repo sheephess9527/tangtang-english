@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>糖糖提分通</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        html, body, #root {
+            min-height: 100%;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 45%, #eef4ff 100%);
+            touch-action: manipulation;
+            color: #0f172a;
+        }
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        select { -webkit-appearance: none; -moz-appearance: none; appearance: none; }
+        .ios-shadow { box-shadow: 0 8px 30px rgba(0,0,0,0.04); }
+        .ios-blur { background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); }
+        * { -webkit-tap-highlight-color: transparent; }
+        button, select, input { outline: none; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.35); border-radius: 9999px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useMemo, useEffect, useCallback, useRef } = React;
+
+        // ==========================================
+        // 1. 原生 SVG 图标库
+        // ==========================================
+        const SvgIcon = ({ children, className, onClick }) => (
+          <svg onClick={onClick} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+            {children}
+          </svg>
+        );
+        const GraduationCap = (p) => <SvgIcon {...p}><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></SvgIcon>;
+        const CheckCircle2 = (p) => <SvgIcon {...p}><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></SvgIcon>;
+        const XCircle = (p) => <SvgIcon {...p}><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></SvgIcon>;
+        const ChevronDown = (p) => <SvgIcon {...p}><path d="m6 9 6 6 6-6"/></SvgIcon>;
+        const Volume2 = (p) => <SvgIcon {...p}><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></SvgIcon>;
+        const BookOpen = (p) => <SvgIcon {...p}><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></SvgIcon>;
+        const Target = (p) => <SvgIcon {...p}><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></SvgIcon>;
+        const AlertCircle = (p) => <SvgIcon {...p}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></SvgIcon>;
+        const BarChart3 = (p) => <SvgIcon {...p}><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></SvgIcon>;
+        const Layers = (p) => <SvgIcon {...p}><path d="m12 2 10 5-10 5L2 7l10-5z"/><path d="m2 12 10 5 10-5"/><path d="m2 17 10 5 10-5"/></SvgIcon>;
+        const Zap = (p) => <SvgIcon {...p}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></SvgIcon>;
+        const Award = (p) => <SvgIcon {...p}><circle cx="12" cy="8" r="7"/><path d="M8.21 13.89 7 23l5-3 5 3-1.21-9.11"/></SvgIcon>;
+        const RotateCcw = (p) => <SvgIcon {...p}><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></SvgIcon>;
+        const Lightbulb = (p) => <SvgIcon {...p}><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.9 1.2 1.5 1.5 2.5"/><path d="M9 18h6M10 22h4"/></SvgIcon>;
+        const X = (p) => <SvgIcon {...p}><path d="M18 6 6 18M6 6l12 12"/></SvgIcon>;
+        const Book = (p) => <SvgIcon {...p}><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></SvgIcon>;
+        const Menu = (p) => <SvgIcon {...p}><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></SvgIcon>;
+        const ChevronRight = (p) => <SvgIcon {...p}><path d="m9 18 6-6-6-6"/></SvgIcon>;
+
+        // ==========================================
+        // 2. 本地持久化 Hook (安全降级)
+        // ==========================================
+        const useLocalStorage = (key, initialValue) => {
+            const [storedValue, setStoredValue] = useState(() => {
+                try {
+                    const item = window.localStorage.getItem(key);
+                    return item ? JSON.parse(item) : initialValue;
+                } catch (error) { 
+                    console.warn(`Local storage access disabled. Falling back to memory state for ${key}.`);
+                    return initialValue; 
+                }
+            });
+            const setValue = (value) => {
+                try {
+                    const valueToStore = value instanceof Function ? value(storedValue) : value;
+                    setStoredValue(valueToStore);
+                    window.localStorage.setItem(key, JSON.stringify(valueToStore));
+                } catch (error) {}
+            };
+            return [storedValue, setValue];
+        };
+
+        // ==========================================
+        // 3. 100% 真实教材三件套底层数据库 (全面扩容深度语法版)
+        // ==========================================
+        const SYLLABUS = [
+          { id: 'B1', name: '必修第一册' }, { id: 'B2', name: '必修第二册' },
+          { id: 'B3', name: '必修第三册' }, { id: 'S1', name: '选择性必修一' },
+          { id: 'S2', name: '选择性必修二' }, { id: 'S3', name: '选择性必修三' },
+          { id: 'S4', name: '选择性必修四' }
+        ];
+
+        const UNIT_DB = {
+          'B1-1':{title:'Teenage Life (青少年生活)', msg:'糖糖，欢迎来到高中英语的第一站！这一关我们要攻克的是“-ed”和“-ing”形容词的混淆点，这可是必考的送分题哦，加油！',words:[{w:'challenge',m:'n./v.挑战',d:'face a challenge'},{w:'confused',m:'adj.感到困惑的',d:'confusing 令人困惑的'},{w:'solution',m:'n.解决办法',d:'solution to (to是介词)'},{w:'schedule',m:'n.时间表',d:'on schedule'},{w:'responsible',m:'adj.负责任的',d:'be responsible for'},{w:'extra-curricular',m:'adj.课外的',d:'activities'},{w:'improve',m:'v.提高',d:'improvement n.'},{w:'survival',m:'n.生存',d:'survive v.'},{w:'graduate',m:'v.毕业',d:'graduate from'},{w:'volunteer',m:'n./v.自愿',d:'volunteer to do'}],l2:[{w:'course', m:'熟义:课程；生义:过程/进程'},{w:'suit', m:'熟义:西装；生义:适合'},{w:'content', m:'熟义:内容；生义:满足的(adj.)'},{w:'sign', m:'派生: signal(信号) / signature(签名)'},{w:'attract', m:'派生: attraction(吸引力/景点)'}],grammar:[{t:'形容词与副词各司其职',r:'大白话公式：名词前填形容词（形容什么样），动词后/句尾填副词（形容怎么做）。',p:'She is a talented girl and plays the piano beautifully.'},{t:'-ed vs -ing 情感分词生死线',r:'-ed修饰人（感到...），-ing修饰事/物（令人...）。浙江卷最爱考！',p:'The confusing problem made me confused.'},{t:'介词的隐形地雷',r:'look forward to 或 a solution to 中的 to 是介词，后面必须接 doing 或名词，严禁接原形！',p:'I am looking forward to hearing from you.'}],sentences:[{e:'I suggest that you should take part in some extra-curricular activities.',z:'我建议你应该参加一些课外活动。'},{e:'She was so focused on her book that she forgot the time.',z:'她太专注于书本以至于忘了时间。'}]},
+          'B1-2':{title:'Travelling Around (环球旅行)', msg:'糖糖，这一单元咱们去“环球旅行”。重点掌握“进行时表将来”，学会用英语规划你的完美旅程，高分就在前方！',words:[{w:'destination',m:'n.目的地',d:'destine v.'},{w:'accommodation',m:'n.住宿',d:'双c双m拼写'},{w:'transport',m:'n.交通',d:'public transport'},{w:'sightseeing',m:'n.观光',d:'go sightseeing'},{w:'ancient',m:'adj.古老的',d:'ancient temples'},{w:'apply',m:'v.申请',d:'apply for(某物)/to(机构)'},{w:'breathtaking',m:'adj.令人窒息的',d:'breathtaking view'},{w:'gaze',m:'v.凝视',d:'gaze at'},{w:'pack',m:'v.打包',d:'pack light'},{w:'explore',m:'v.探索',d:'exploration n.'}],l2:[{w:'view', m:'熟义:风景；生义:观点/看法'},{w:'check', m:'搭配: check in(登记入住) / check out(退房)'},{w:'apply', m:'派生: application(申请/应用)'},{w:'pack', m:'熟义:包裹；生义:打包行李(v.)'}],grammar:[{t:'进行时表将来',r:'当表示已经计划好、马上要去做的事情（特别是 go, come, leave, start 等位移动词）时，用 am/is/are + doing。',p:'Don’t worry. My father is coming to pick us up in ten minutes.'},{t:'apply 的搭配陷阱',r:'apply for 申请某物（如护照、奖学金）；apply to 向某机构申请。',p:'I want to apply for a scholarship to study abroad.'},{t:'check 的场景词辨析',r:'check in 登记入住/办登机；check out 退房/看个究竟。',p:'We need to check in for our flight.'}],sentences:[{e:'I am writing to recommend some must-visit tourist attractions.',z:'我写信推荐必去的旅游胜地。'},{e:'The view from the top of the mountain is breathtaking.',z:'山顶的景色令人窒息。'}]},
+          'B1-3':{title:'Sports and Fitness (体育与健康)', msg:'糖糖，运动不仅强身健体，还能提分！记住情态动词的“大哥原则”，像郎平一样，用决心和汗水拿下这一局！',words:[{w:'fitness',m:'n.健康',d:'physical fitness'},{w:'determination',m:'n.决心',d:'determine v.'},{w:'failure',m:'n.失败',d:'fail v.'},{w:'positive',m:'adj.积极的',d:'negative 反义'},{w:'diet',m:'n.饮食',d:'balanced diet'},{w:'strength',m:'n.力量',d:'strengthen v.'},{w:'sweat',m:'n.汗水',d:'sweat rolling down'},{w:'cheer',m:'v.欢呼',d:'cheer up'},{w:'track',m:'n.跑道',d:'track and field'},{w:'legend',m:'n.传奇',d:'legendary adj.'}],l2:[{w:'fit', m:'熟义:合适的；生义:健壮的'},{w:'match', m:'熟义:火柴；生义:比赛/匹配'},{w:'determination', m:'派生: determine(决定)'},{w:'compete', m:'派生: competition(比赛) / competitor(竞争者)'}],grammar:[{t:'情态动词的大哥原则',r:'情态动词 (can, could, should, must, may) 后面必须接“动词原形”。',p:'You should balance your diet to stay healthy.'},{t:'情态动词的被动语态',r:'如果要表达“应该被做”，结构为：情态动词 + be + 过去分词 (done)。',p:'Your homework must be finished on time.'},{t:'What 引导主语从句',r:'What 在从句作主语或宾语，意为“...的事情”。',p:'What matters is how you play the game.'}],sentences:[{e:'Success requires strong determination and hard work.',z:'成功需要坚定的决心和艰苦的努力。'},{e:'He pushed through the pain to finish the race.',z:'他强忍疼痛完成了比赛。'}]},
+          'B1-4':{title:'Natural Disasters (自然灾害)', msg:'糖糖，灾难无情，但定语从句有规律可循。分清修饰人还是物，咱们就能在地震废墟中精准“营救”出正确答案！',words:[{w:'rescue',m:'n./v.营救',d:'come to rescue'},{w:'survive',m:'v.幸存',d:'survival n.'},{w:'damage',m:'n./v.损害',d:'do damage to (to是介词)'},{w:'shelter',m:'n.避难所',d:'take shelter'},{w:'ruin',m:'n.废墟',d:'in ruins'},{w:'shock',m:'n./v.震惊',d:'shocked adj.'},{w:'trap',m:'v.困住',d:'be trapped in'},{w:'breathe',m:'v.呼吸',d:'breath n.'},{w:'effort',m:'n.努力',d:'make an effort'},{w:'calm',m:'adj.冷静的',d:'keep calm'}],l2:[{w:'affect', m:'派生: effect(影响/效果)'},{w:'strike', m:'熟义:罢工；生义:(灾难)袭击'},{w:'erupt', m:'派生: eruption(爆发)'},{w:'bury', m:'变形: buried(被埋葬的)'}],grammar:[{t:'定语从句 (who/which/that) 二分法',r:'看空格前的名词（先行词）。如果是人 -> 填 who/that；如果是物 -> 填 which/that。',p:'The girl who saved the little boy was very brave.'},{t:'关系代词作主语的单复数',r:'关系代词作主语时，谓语动词的单复数同先行词一致。',p:'The buildings that were destroyed will be rebuilt.'},{t:'rescue vs save 的细微差别',r:'两者都有“救”的意思，但 rescue 更强调从危险中（如地震、火灾）营救出来。',p:'The rescue team worked hard to save the victims.'}],sentences:[{e:'I express my heartfelt thanks to you for your timely help.',z:'我对你的及时帮助表示衷心感谢。'},{e:'He stood there, staring at the ruins in shock.',z:'他震惊地盯着废墟。'}]},
+          'B1-5':{title:'Languages (语言与文化)', msg:'糖糖，语言是桥梁。这一关要注意“介词+关系代词”这个隐形地雷，搞定它，你的英语表达会变得超级地道！',words:[{w:'native',m:'adj.母语的',d:'native speaker'},{w:'attitude',m:'n.态度',d:'attitude towards'},{w:'vocabulary',m:'n.词汇',d:'build vocabulary'},{w:'expression',m:'n.表达',d:'express v.'},{w:'system',m:'n.系统',d:'systematic adj.'},{w:'global',m:'adj.全球的',d:'globalization n.'},{w:'appreciate',m:'v.感激',d:'appreciation n.'},{w:'struggle',m:'v.挣扎',d:'struggle to do'},{w:'fluent',m:'adj.流利的',d:'fluency n.'},{w:'symbol',m:'n.象征',d:'symbolize v.'}],l2:[{w:'character', m:'熟义:性格；生义:汉字/角色'},{w:'major', m:'熟义:主要的；生义:主修专业(v.)'},{w:'refer', m:'搭配: refer to(指的是/查阅)'},{w:'connect', m:'派生: connection(连接/关系)'}],grammar:[{t:'定语从句进阶 (介词+which/whom)',r:'看到 空格+which/whom，前面如果有个空，要填介词。绝不能用 that！看从句动词习惯跟哪个介词。',p:'This is the house in which I lived. (因为 live in)'},{t:'形式宾语 it 的固定结构',r:'I would appreciate it if... 这里的 it 是形式宾语，千万不能漏掉。',p:'I would appreciate it if you could give me a hand.'},{t:'refer to 无被动',r:'表示“指的是/查阅”。无被动语态。',p:'The book refers to the history of Chinese.'}],sentences:[{e:'Language is a bridge connecting different cultures.',z:'语言是连接不同文化的桥梁。'},{e:'She answered the question with a confident smile.',z:'她带着自信的微笑回答了问题。'}]},
+          
+          'B2-1':{title:'Cultural Heritage (文化遗产)', msg:'糖糖，必修二难度升级啦！这一单元的“be worth doing”是死规定，永远不加被动。带着保护文化遗产的使命感，冲！',words:[{w:'heritage',m:'n.遗产',d:'cultural heritage'},{w:'preserve',m:'v.保护',d:'preservation n.'},{w:'promote',m:'v.推广',d:'promotion n.'},{w:'balance',m:'n.平衡',d:'keep a balance'},{w:'proposal',m:'n.提议',d:'propose v.'},{w:'digital',m:'adj.数字的',d:'digit n.'},{w:'creative',m:'adj.有创造力的',d:'create v.'},{w:'worth',m:'adj.值得',d:'be worth doing'},{w:'document',m:'v.记录',d:'documentary n.'},{w:'limit',m:'v./n.限制',d:'limited adj.'}],l2:[{w:'issue', m:'熟义:问题；生义:发行/刊号'},{w:'state', m:'熟义:国家/州；生义:状态/陈述'},{w:'protect', m:'派生: protection(保护)'},{w:'identify', m:'派生: identification(鉴定/身份证明)'}],grammar:[{t:'worth 的死规定',r:'be worth doing（只有这一种形式，没有 worth to do，也没有 worth being done）。主动表被动。',p:'The old building is worth protecting.'},{t:'prevent/keep/stop...from',r:'阻止某人做某事。在被动语态中，from 绝对不能省略！',p:'The building was prevented from being destroyed.'},{t:'定语从句的万金油 that',r:'that 人和物都能用，但如果前面有逗号（非限制性）或介词，就绝对不能用 that。',p:'There is no doubt that these traditions are well worth keeping alive. (注意这是同位语从句)'}],sentences:[{e:'I suggest we take immediate action to preserve our cultural heritage.',z:'我建议我们立即采取行动保护文化遗产。'},{e:'He looked at the Great Wall with amazement.',z:'他惊叹地看着长城。'}]},
+          'B2-2':{title:'Wildlife Protection (野生动物保护)', msg:'糖糖，野生动物需要保护，我们的语法也需要升级！掌握“现在进行时的被动”，你的作文会更具画面感！',words:[{w:'wildlife',m:'n.野生动植物',d:'wild adj.'},{w:'habitat',m:'n.栖息地',d:'natural habitat'},{w:'threaten',m:'v.威胁',d:'threat n.'},{w:'reserve',m:'n.保护区',d:'nature reserve'},{w:'illegal',m:'adj.非法的',d:'legal 反义(il-)'},{w:'extinct',m:'adj.灭绝的',d:'extinction n.'},{w:'alarm',m:'n.警报',d:'alarming adj.'},{w:'measure',m:'n.措施',d:'take measures'},{w:'reduce',m:'v.减少',d:'reduction n.'},{w:'effective',m:'adj.有效的',d:'effect n.'}],l2:[{w:'nature', m:'熟义:大自然；生义:天性/性质'},{w:'observe', m:'熟义:观察；生义:遵守/庆祝'},{w:'dangerous', m:'派生: endanger(使遭危险)'},{w:'hunt', m:'派生: hunter(猎人)'}],grammar:[{t:'现在进行时的被动语态',r:'表示“此时此刻正在被做”。结构：am/is/are + being + done。',p:'Look! The panda is being fed by the keeper.'},{t:'It is high time that...',r:'是时候该做某事了。从句的谓语动词必须用过去式 (did) 或 should do。',p:'It is high time that we took action.'},{t:'反义词前缀规律',r:'很多以 l 开头的词，反义词都是加 il-。如：legal -> illegal, logical -> illogical。',p:'Hunting elephants for ivory is strictly illegal.'}],sentences:[{e:'It is high time that we lived in harmony with wildlife.',z:'是我们与野生动物和谐相处的时候了。'},{e:'Effective measures are being taken to protect animals.',z:'人们正采取有效措施保护动物。'}]},
+          'B2-3':{title:'The Internet (互联网)', msg:'糖糖，互联网时代，不仅要冲浪，更要拿高分！抓住“现在完成时被动”的时间线，网络词汇将成为你的提分利器。',words:[{w:'access',m:'n.使用权',d:'have access to (to是介词)'},{w:'privacy',m:'n.隐私',d:'private adj.'},{w:'monitor',m:'v.监控',d:'monitor system'},{w:'convenient',m:'adj.方便的',d:'convenience n.'},{w:'benefit',m:'n.利益',d:'beneficial adj.'},{w:'fake',m:'adj.假的',d:'fake news'},{w:'account',m:'n.账户',d:'create an account'},{w:'update',m:'v.更新',d:'latest update'},{w:'inspire',m:'v.启发',d:'inspiration n.'},{w:'various',m:'adj.各种各样的',d:'variety n.'}],l2:[{w:'address', m:'熟义:地址；生义:解决(问题)/演说(v.)'},{w:'stream', m:'熟义:小溪；生义:流媒体/直播'},{w:'convenient', m:'派生: convenience(方便)'},{w:'apply', m:'派生: application(应用程序/App)'}],grammar:[{t:'现在完成时的被动语态',r:'表示“某事已经被做了”。结构：have/has + been + done。标志词：since, for, so far。',p:'Many new apps have been developed since last year.'},{t:'access to 的隐形坑',r:'have access to... 中的 to 是介词，后面必须接名词或 doing。',p:'We have free access to using the library.'},{t:'It is convenient 的中式英语陷阱',r:'英语里不能说 "I am convenient" ❌，只能说 "It is convenient for me" ✅。',p:'It is convenient for me to shop online.'}],sentences:[{e:'The Internet provides us with easy access to information.',z:'互联网为我们提供了便捷的信息获取途径。'},{e:'Every coin has two sides, and the Internet is no exception.',z:'凡事皆有两面性，互联网也不例外。'}]},
+          'B2-4':{title:'History and Traditions (历史与传统)', msg:'糖糖，探索历史的奥秘！一定要牢记“belong to”永远没有被动语态，这可是高考的终极陷阱，跨过去就是胜利！',words:[{w:'kingdom',m:'n.王国',d:'king n.'},{w:'tradition',m:'n.传统',d:'traditional adj.'},{w:'puzzle',m:'n./v.谜/困惑',d:'puzzled adj.'},{w:'belong',m:'v.属于',d:'belong to (无被动)'},{w:'curious',m:'adj.好奇的',d:'curiosity n.'},{w:'defense',m:'n.防御',d:'defend v.'},{w:'architecture',m:'n.建筑',d:'architect n.'},{w:'generous',m:'adj.慷慨的',d:'generosity n.'},{w:'collection',m:'n.收藏',d:'collect v.'},{w:'unusual',m:'adj.不寻常的',d:'usual 反义'}],l2:[{w:'puzzle', m:'熟义:拼图；生义:使困惑(v.)'},{w:'approach', m:'熟义:靠近；生义:方法/途径(n.)'},{w:'describe', m:'派生: description(描述)'},{w:'historical', m:'派生: historic(具有历史意义的)'}],grammar:[{t:'belong to 的绝对禁忌',r:'这个词永远没有被动语态！永远没有 -ing 形式（进行时）！',p:'The map belongs to my grandfather. (不用 is belonged)'},{t:'过去分词 (-ed) 作定语/表语',r:'用来形容“已经完成”或“被动”的状态。',p:'The bridge built in 1900 is still in use.'},{t:'what 引导的表语从句',r:'what 在从句中必须充当主语或宾语，意为“……的事物”。',p:'That is what I want to tell you.'}],sentences:[{e:'I am writing to introduce the long history of China.',z:'我写信介绍中国悠久的历史。'},{e:'It is fascinating to explore the ancient architecture.',z:'探索古代建筑令人着迷。'}]},
+          'B2-5':{title:'Music (音乐)', msg:'糖糖，跟着音乐的节奏放松一下！但别忘了“-ed作状语”的逻辑主语一致性原则，这是长难句切分的关键！',words:[{w:'performance',m:'n.表演',d:'perform v.'},{w:'energy',m:'n.能量',d:'energetic adj.'},{w:'stage',m:'n.舞台',d:'on stage'},{w:'ordinary',m:'adj.普通的',d:'extraordinary'},{w:'talent',m:'n.天赋',d:'talented adj.'},{w:'relief',m:'n.宽慰',d:'to one’s relief'},{w:'previous',m:'adj.先前的',d:'previously adv.'},{w:'original',m:'adj.原创的',d:'origin n.'},{w:'equipment',m:'n.设备(不可数)',d:'equip v.'},{w:'react',m:'v.反应',d:'reaction n.'}],l2:[{w:'stage', m:'熟义:舞台；生义:策划/组织(v.)'},{w:'relief', m:'熟义:减轻；生义:救济(物资)'},{w:'confident', m:'派生: confidence(信心)'},{w:'various', m:'派生: variety(多样化)'}],grammar:[{t:'-ed 放在句首作状语',r:'看到空格在句首，后面有逗号。看主句的主语。如果主语是“被...”或“感到...”，就用 -ed。',p:'Moved by the music, the audience started to cry.'},{t:'to one\'s + 情感名词',r:'固定结构，表示“令某人...的是”。如 to one\'s relief, to one\'s surprise。',p:'To our relief, the missing boy was found.'},{t:'It occurs to sb that...',r:'某人突然想到...，It是形式主语，that引导真正的主语从句。',p:'It suddenly occurred to me that I had left my keys.'}],sentences:[{e:'Music has the power to cross cultural boundaries.',z:'音乐具有跨越文化边界的力量。'},{e:'He lost himself in the beautiful melody.',z:'他陶醉在优美的旋律中。'}]},
+
+          'B3-1':{title:'Festivals (节日与庆典)', msg:'糖糖，必修三是思维升级的开始！名词性从句的“That和What”大对决来了，分清它们，你就能在长句中游刃有余！',words:[{w:'origin',m:'n.起源',d:'original adj.'},{w:'celebration',m:'n.庆祝',d:'celebrate v.'},{w:'belief',m:'n.信仰',d:'believe v.'},{w:'gather',m:'v.聚集',d:'gathering n.'},{w:'custom',m:'n.习俗',d:'customary adj.'},{w:'feature',m:'n.特色',d:'feature v.'},{w:'decorate',m:'v.装饰',d:'decoration n.'},{w:'range',m:'n.范围',d:'range from'},{w:'typical',m:'adj.典型的',d:'typically adv.'},{w:'atmosphere',m:'n.气氛',d:'festive atmosphere'}],l2:[{w:'figure', m:'熟义:身材/数字；生义:人物/伟人'},{w:'dress', m:'搭配: dress up(乔装打扮)'},{w:'agriculture', m:'派生: agricultural(农业的)'},{w:'religion', m:'派生: religious(宗教的)'}],grammar:[{t:'名词性从句 (That vs What) 大对决',r:'第一步看从句缺不缺成分。如果什么都不缺填 That（搬运工）；如果缺主语或宾语填 What（兼职当差）。',p:'I believe what he said is true. (what充当said的宾语)'},{t:'同位语从句的 that 禁忌',r:'that 在同位语从句中绝对不能省，也绝对不能换成 which！',p:'He expressed the hope that he would come back.'},{t:'介词 + which',r:'根据定语从句中动词的习惯搭配选择介词。',p:'This is the book from which I learned a lot. (learn from)'}],sentences:[{e:'Through celebrations, people understand different traditions.',z:'通过庆典，人们了解不同传统。'},{e:'The festival offers a great opportunity for families to gather.',z:'节日为家庭团聚提供绝佳机会。'}]},
+          'B3-2':{title:'Making a Difference (创造不同)', msg:'糖糖，伟人创造不同，你也可以！搞懂“It作形式宾语”，你的句子结构会变得像伟人一样沉稳有力！',words:[{w:'moral',m:'adj.道德的',d:'morality n.'},{w:'virtue',m:'n.美德',d:'a man of virtue'},{w:'scholarship',m:'n.奖学金',d:'scholar n.'},{w:'contribution',m:'n.贡献',d:'contribute v.'},{w:'charity',m:'n.慈善',d:'charitable adj.'},{w:'principle',m:'n.原则',d:'in principle'},{w:'tough',m:'adj.艰苦的',d:'tough task'},{w:'overcome',m:'v.克服',d:'overcome difficulty'},{w:'willing',m:'adj.乐意的',d:'be willing to'},{w:'retire',m:'v.退休',d:'retirement n.'}],l2:[{w:'case', m:'熟义:箱子；生义:案例/情况'},{w:'describe', m:'派生: description(描写)'},{w:'generous', m:'派生: generosity(慷慨)'},{w:'kind', m:'派生: kindness(仁慈)'}],grammar:[{t:'主语从句',r:'句首引导词作主语或宾语，填 What。',p:'What we need is more time.'},{t:'It 作形式宾语',r:'find/make/think it adj to do sth。真正的宾语是后面的 to do，it 不能省。',p:'I find it difficult to learn English well.'},{t:'devote...to doing',r:'to是介词，必须接doing！同理的还有contribute to。',p:'He devoted all his life to helping the poor.'}],sentences:[{e:'He is not only a successful scholar but also a man of great virtue.',z:'他不仅是成功学者，还是高德之人。'},{e:'He faced the challenge with determination.',z:'他坚定地面对挑战。'}]},
+          'B3-3':{title:'Diverse Cultures (多元文化)', msg:'糖糖，文化是多元的，语法也可以“偷懒”。掌握状语从句的“省略”技巧，让你的英语表达更简洁高级！',words:[{w:'diverse',m:'adj.多样的',d:'diversity n.'},{w:'fortune',m:'n.财富/运气',d:'fortunate adj.'},{w:'admission',m:'n.准入',d:'admit v.'},{w:'claim',m:'v.宣称',d:'claim to do'},{w:'series',m:'n.系列',d:'a series of'},{w:'escape',m:'v.逃脱',d:'escape doing'},{w:'minority',m:'n.少数',d:'majority 反义'},{w:'seek',m:'v.寻找',d:'seek for'},{w:'historical',m:'adj.历史的',d:'historic adj.'},{w:'earn',m:'v.赚得',d:'earn money'}],l2:[{w:'fold', m:'熟义:折叠；生义:(数量)倍(如twofold)'},{w:'point', m:'搭配: point out(指出)'},{w:'immigrate', m:'派生: immigrant(移民)'},{w:'culture', m:'派生: multicultural(多元文化的)'}],grammar:[{t:'状语从句的省略（懒人智慧）',r:'当 if, when, though 引导的小句子，主语和主句一致且含 be 动词时，主语和 be 可以一起省略。',p:'When (he was) asked, he said nothing -> Asked, he said nothing.'},{t:'admit doing',r:'承认做过某事，只能接 doing。',p:'He admitted stealing the money.'},{t:'where 引导的定语从句',r:'先行词是地点，且关系词在从句中作状语。',p:'This is the city where I was born.'}],sentences:[{e:'Living in a multicultural society, we should appreciate diversity.',z:'生活在多元文化社会，应欣赏多样性。'},{e:'It is the diverse cultures that make the world colorful.',z:'是多元文化让世界多姿多彩。'}]},
+          'B3-4':{title:'Space Exploration (太空探索)', msg:'糖糖，向太空进发！记住情态动词表推测的用法，用“must have done”大胆推断出正确的答案吧！',words:[{w:'universe',m:'n.宇宙',d:'universal adj.'},{w:'satellite',m:'n.卫星',d:'artificial satellite'},{w:'launch',m:'v.发射',d:'launch a rocket'},{w:'orbit',m:'n.轨道',d:'in orbit'},{w:'mystery',m:'n.神秘',d:'mysterious adj.'},{w:'gravity',m:'n.重力',d:'zero gravity'},{w:'oxygen',m:'n.氧气',d:'lack of oxygen'},{w:'resource',m:'n.资源',d:'natural resources'},{w:'attach',m:'v.附上',d:'attach to'},{w:'signal',m:'n.信号',d:'send a signal'}],l2:[{w:'board', m:'熟义:木板；生义:上(船/机/车)(v.)'},{w:'last', m:'熟义:最后的；生义:持续(v.)'},{w:'explore', m:'派生: exploration(探索)'},{w:'astronomy', m:'派生: astronomer(天文学家)'}],grammar:[{t:'情态动词表推测 (对过去的推测)',r:'must have done (一定做了); can\'t have done (不可能做); should have done (本该做却没做)。',p:'The ground is wet. It must have rained last night.'},{t:'attach importance to',r:'to 是介词，后面接名词或 doing。',p:'We should attach great importance to environmental protection.'},{t:'be to do',r:'表示按计划或安排将要发生的事。',p:'The new rocket is to be launched next week.'}],sentences:[{e:'With the development of space technology, more mysteries will be uncovered.',z:'随着太空技术发展，更多谜团将被揭开。'},{e:'Space exploration requires a great deal of courage and wisdom.',z:'太空探索需要极大的勇气和智慧。'}]},
+          'B3-5':{title:'The Value of Money (金钱的价值)', msg:'糖糖，金钱有价值，知识更无价！这一单元的“含蓄虚拟语气”有点绕，但只要盯住without，就能轻松化解！',words:[{w:'amount',m:'n.数量',d:'a large amount of'},{w:'bet',m:'v.打赌',d:'make a bet'},{w:'scene',m:'n.场景',d:'on the scene'},{w:'account',m:'n.账户',d:'on account of'},{w:'patience',m:'n.耐心',d:'patient adj.'},{w:'manners',m:'n.礼貌',d:'table manners'},{w:'fault',m:'n.过失',d:'find fault with'},{w:'judge',m:'v.判断',d:'judgement n.'},{w:'apology',m:'n.道歉',d:'apologize v.'},{w:'genuine',m:'adj.真诚的',d:'genuinely adv.'}],l2:[{w:'note', m:'熟义:笔记；生义:钞票'},{w:'change', m:'熟义:改变；生义:零钱'},{w:'admit', m:'派生: admission(准许进入)'},{w:'patience', m:'派生: impatient(不耐心的)'}],grammar:[{t:'含蓄虚拟语气',r:'without/but for引导，相当于 If it had not been for...，主句用 would have done。',p:'Without your help, I would have failed.'},{t:'apologize 的完整搭配',r:'apologize to sb for sth. (因某事向某人道歉)。',p:'I apologize to you for my being late.'},{t:'judge by/from',r:'从...来判断，通常用 judging from 作独立状语。',p:'Judging from his accent, he is from London.'}],sentences:[{e:'We should judge a person by their character rather than wealth.',z:'应根据人品而非财富评价人。'},{e:'Honesty is more valuable than any amount of money.',z:'诚实比任何数量的金钱都有价值。'}]},
+          
+          'S1-1':{title:'People of Achievement (杰出人物)', msg:'糖糖，这一单元我们学习的是“杰出人物”。这些伟人的品质词（如：坚持、奉献）更是读后续写中评价人物的“高级词”。',words:[{w:'crucial',m:'adj.至关重要的',d:'be crucial to'},{w:'commitment',m:'n.奉献/承诺',d:'commit v.'},{w:'objective',m:'n.目标',d:'achieve objective'},{w:'evaluate',m:'v.评估',d:'evaluation n.'},{w:'acknowledge',m:'v.承认',d:'acknowledgement'},{w:'profound',m:'adj.深远的',d:'profound impact'},{w:'circumstance',m:'n.环境',d:'under no circumstances'},{w:'academic',m:'adj.学术的',d:'academy n.'},{w:'obtain',m:'v.获得',d:'obtain a degree'},{w:'remarkable',m:'adj.非凡的',d:'remark v.'}],l2:[{w:'property', m:'熟义:财产；生义:特性/属性'},{w:'extract', m:'熟义:拔出；生义:提取物/提取'},{w:'conclusion', m:'派生: conclude(得出结论)'},{w:'distinct', m:'派生: distinction(区别)'}],grammar:[{t:'非限制性定语从句 (带逗号)',r:'有逗号隔开，绝对不能用 that 引导！修饰物只能用 which，修饰人用 who/whom。',p:'Tu Youyou, who won the Nobel Prize, is a scientist.'},{t:'under no circumstances 倒装',r:'放句首时，主句必须部分倒装（助动词提前）。',p:'Under no circumstances should we give up.'},{t:'be committed to doing',r:'致力于做某事，to 是介词，必接 doing！',p:'She is committed to improving public health.'}],sentences:[{e:'He is an extraordinary man who has made a huge contribution to society.',z:'他是一位对社会做出巨大贡献的非凡人物。'},{e:'She insisted on testing the medicine on herself.',z:'她坚持在自己身上试药。'}]},
+          'S1-2':{title:'Looking into Future (展望未来)', msg:'糖糖，科技改变未来！掌握“将来进行时”，把未来的画面生动地描绘出来，你的作文会充满科技感！',words:[{w:'efficient',m:'adj.高效的',d:'efficiency n.'},{w:'monitor',m:'v.监控',d:'monitor health'},{w:'available',m:'adj.可获得的',d:'availability n.'},{w:'relevant',m:'adj.相关的',d:'be relevant to'},{w:'security',m:'n.安全',d:'secure adj.'},{w:'automatic',m:'adj.自动的',d:'automatically adv.'},{w:'detect',m:'v.查明',d:'detection n.'},{w:'warning',m:'n.警告',d:'warn v.'},{w:'predict',m:'v.预测',d:'prediction n.'},{w:'innovative',m:'adj.创新的',d:'innovation n.'}],l2:[{w:'mode', m:'生义:模式/方式(如sleep mode)'},{w:'remote', m:'熟义:遥远的；生义:(控制)远程的'},{w:'integrated', m:'生义:综合的/集成的'},{w:'abnormal', m:'派生: 反常的(normal反义词)'}],grammar:[{t:'将来进行时 (will be doing)',r:'表示在将来某一具体时刻或某段时间正在进行的动作。比 will do 更有画面感。',p:'At this time tomorrow, I will be flying to Beijing.'},{t:'be likely to do',r:'极有可能做某事，主语可以是人也可以是物。',p:'AI is likely to change our lives completely.'},{t:'with 复合结构',r:'with + 宾语 + 宾补(doing/done/adj)，常作伴随状语。',p:'With technology developing rapidly, life becomes easier.'}],sentences:[{e:'I am writing to share my views on how AI will be changing our lives.',z:'我写信分享我对AI将如何改变我们生活的看法。'},{e:'The door opened the instant I arrived.',z:'我一到门就开了。'}]},
+          'S1-3':{title:'Fascinating Parks (迷人的公园)', msg:'糖糖，去国家公园漫步吧！注意“-ing形式作主语”的用法，用它开头的句子会让阅卷老师眼前一亮哦！',words:[{w:'fascinating',m:'adj.迷人的',d:'fascinate v.'},{w:'preserve',m:'v.保护',d:'preservation n.'},{w:'observe',m:'v.观察/遵守',d:'observation n.'},{w:'visible',m:'adj.可见的',d:'invisible 反义'},{w:'appeal',m:'v.吸引',d:'appeal to sb'},{w:'prohibit',m:'v.禁止',d:'prohibit from'},{w:'broad',m:'adj.宽阔的',d:'broaden v.'},{w:'accompany',m:'v.陪伴',d:'company n.'},{w:'wander',m:'v.漫步',d:'wander around'},{w:'theme',m:'n.主题',d:'theme park'}],l2:[{w:'cycle', m:'熟义:循环；生义:骑自行车'},{w:'remote', m:'熟义:遥远的；生义:偏僻的'},{w:'sharp', m:'熟义:锋利的；生义:急剧的/严厉的'},{w:'bless', m:'搭配: be blessed with(有幸拥有)'}],grammar:[{t:'-ing 形式作主语的高级变身',r:'动词不能直接当主语，必须加 -ing。谓语动词用单数。如果太长可以用 It is... doing 转换。',p:'Protecting the environment is our duty.'},{t:'preserve / protect / conserve 辨析',r:'preserve 强调保持原样(古迹/公园)，protect 防御危险，conserve 节约(水/能源)。',p:'preserve the national park.'},{t:'prohibit sb from doing',r:'禁止某人做某事，from 有时可省。',p:'Visitors are prohibited from feeding the animals.'}],sentences:[{e:'Walking in the park, we were struck by its breathtaking beauty.',z:'走在公园里，我们被它的美景迷住了。'},{e:'Protecting the environment is our common responsibility.',z:'保护环境是我们的共同责任。'}]},
+          'S1-4':{title:'Body Language (肢体语言)', msg:'糖糖，无声的语言同样有力量。避开那些“只爱-ing”的顽固动词陷阱，你的语法填空就能拿满分！',words:[{w:'appropriate',m:'adj.恰当的',d:'inappropriate adj.'},{w:'interact',m:'v.互动',d:'interaction n.'},{w:'interpret',m:'v.诠释',d:'interpretation n.'},{w:'favour',m:'n.偏袒',d:'in favour of'},{w:'witness',m:'v.目击',d:'bear witness to'},{w:'reliable',m:'adj.可靠的',d:'rely v.'},{w:'barrier',m:'n.障碍',d:'language barrier'},{w:'demonstrate',m:'v.展示',d:'demonstration n.'},{w:'identical',m:'adj.一模一样的',d:'identify v.'},{w:'merely',m:'adv.仅仅',d:'mere adj.'}],l2:[{w:'gesture', m:'熟义:手势；生义:姿态/表示'},{w:'employ', m:'熟义:雇用；生义:运用/使用'},{w:'component', m:'生义:组成部分/成分'},{w:'internal', m:'生义:内部的(反义external)'}],grammar:[{t:'那些只能接 -ing 作宾语的顽固动词',r:'口诀：避免(avoid)错过(miss)建议(suggest)，期待(look forward to)完成(finish)练习(practise)，考虑(consider)享受(enjoy)风险(risk)，不介意(mind)保持(keep)停止(stop)。',p:'You should avoid making direct eye contact in some cultures.'},{t:'-ing 作表语 vs 现在进行时',r:'作表语：主语 = -ing 动作的内容 (My job is teaching)。进行时：主语正在发出动作 (He is teaching)。',p:'My hobby is collecting stamps.'},{t:'do/does/did 强调谓语动词',r:'放在动词原形前表示强调“确实”。',p:'He did tell me the truth yesterday.'}],sentences:[{e:'Using appropriate body language helps break down communication barriers.',z:'恰当的肢体语言有助于打破沟通障碍。'},{e:'Actions speak louder than words.',z:'事实胜于雄辩。'}]},
+          'S1-5':{title:'Working the Land (耕种土地)', msg:'糖糖，像袁隆平爷爷一样脚踏实地！攻克主语从句中“That和What”的世纪大战，把汗水洒在提分的田野上！',words:[{w:'pioneer',m:'n.先驱',d:'pioneering adj.'},{w:'innovation',m:'n.创新',d:'innovate v.'},{w:'attain',m:'v.达到',d:'attainment n.'},{w:'shortage',m:'n.短缺',d:'food shortage'},{w:'overcome',m:'v.克服',d:'overcame 过去式'},{w:'conventional',m:'adj.传统的',d:'convention n.'},{w:'reality',m:'n.现实',d:'realize v.'},{w:'expansion',m:'n.扩展',d:'expand v.'},{w:'yield',m:'n.产量',d:'high-yield adj.'},{w:'tackle',m:'v.解决',d:'tackle a problem'}],l2:[{w:'output', m:'生义:产量/输出'},{w:'consumption', m:'派生: consume(消耗) / consumer(消费者)'},{w:'essential', m:'生义:极其重要的/必不可少的'},{w:'alternative', m:'生义:可供选择的事物/替代品'}],grammar:[{t:'It is essential that... (should) do',r:'主语从句中如果有 essential/important/necessary，从句动词必须用原形 (should 可省)。',p:'It is essential that everyone (should) be careful.'},{t:'attain vs obtain vs achieve',r:'attain (达到高度/目标)，obtain (获得物)，achieve (实现梦想)。',p:'attain high yield (达到高产)。'},{t:'强调句强调状语',r:'It was in 1973 that he succeeded. 强调时间状语，后面连接词只能用 that。',p:'It was in 1973 that...'}],sentences:[{e:'It is his hard work and innovation that turned his dream into reality.',z:'正是他的辛勤和创新把梦想变成了现实。'},{e:'Deep down, he is still a simple farmer.',z:'在内心深处，他依然是个质朴的农民。'}]},
+
+          'S2-1':{title:'Science and Scientists (科学与科学家)', msg:'糖糖，带着科学家的探究精神来学习！记住“be to blame”主动表被动的特殊用法，这是避开命题人陷阱的关键！',words:[{w:'characteristic',m:'n.特征',d:'character n.'},{w:'conclude',m:'v.推断出',d:'conclusion n.'},{w:'defeat',m:'v./n.击败',d:'suffer a defeat'},{w:'expose',m:'v.暴露',d:'exposure n.'},{w:'cure',m:'v./n.治愈',d:'cure sb of sth'},{w:'victim',m:'n.受害者',d:'fall victim to'},{w:'severe',m:'adj.严重的',d:'severely adv.'},{w:'investigate',m:'v.调查',d:'investigation n.'},{w:'blame',m:'v.责备',d:'be to blame'},{w:'suspect',m:'v.怀疑',d:'suspicion n.'}],l2:[{w:'handle', m:'熟义:把手；生义:处理/操纵(v.)'},{w:'suspect', m:'生义:怀疑/嫌疑犯'},{w:'blame', m:'生义:责备/责任 (be to blame)'},{w:'absorb', m:'搭配: be absorbed in(全神贯注于)'}],grammar:[{t:'be to blame 的主动表被动陷阱',r:'意为“应受责备”。绝对没有被动语态！严禁写成 is to be blamed。',p:'Who is to blame for the fire?'},{t:'suspect sb of doing',r:'怀疑某人做了某事。注意介词用 of。',p:'The police suspected him of stealing.'},{t:'expose to (被动考法)',r:'be exposed to... 暴露于。常考过去分词作状语。',p:'Exposed to the sun, his skin got burned. (Exposed表被动)'}],sentences:[{e:'It is his great passion and persistence that lead to the scientific breakthrough.',z:'正是他的极大热情和坚持导致了科学的突破。'},{e:'Science requires us to observe carefully and draw conclusions based on facts.',z:'科学要求我们仔细观察并根据事实得出结论。'}]},
+          'S2-2':{title:'Bridging Cultures (跨越文化)', msg:'糖糖，跨越文化的桥梁！这一关我们要攻克的是“-ed作状语”的真假辨析，找对逻辑主语，一切迎刃而解！',words:[{w:'complex',m:'adj.复杂的',d:'complexity n.'},{w:'recall',m:'v.回忆起',d:'recall doing'},{w:'qualify',m:'v.使具备资格',d:'qualification n.'},{w:'ambitious',m:'adj.有雄心的',d:'ambition n.'},{w:'adapt',m:'v.适应',d:'adapt to'},{w:'comfort',m:'n.舒适',d:'comfortable adj.'},{w:'participate',m:'v.参加',d:'participation n.'},{w:'enthusiastic',m:'adj.热情的',d:'enthusiasm n.'},{w:'motivate',m:'v.激发',d:'motivation n.'},{w:'engage',m:'v.参与',d:'engage in'}],l2:[{w:'settle', m:'熟义:定居；生义:解决/安静下来(settle in)'},{w:'overwhelming', m:'生义:巨大的/压倒性的'},{w:'homesick', m:'生义:想家的'},{w:'academic', m:'生义:学术的/学业的'}],grammar:[{t:'过去分词(-ed)作状语的傻瓜判断法',r:'找出主句主语，判断主语和动作的关系。主动用-ing，被动/完成用-ed。',p:'Faced with difficulties, she never gave up. (她被困境包围)'},{t:'adapt vs adopt (形近词大敌)',r:'adapt to (适应环境/改编)；adopt (采纳/收养)。',p:'He quickly adapted to the new environment.'},{t:'participate in',r:'参加，相当于 take part in。',p:'Students are encouraged to participate in club activities.'}],sentences:[{e:'By participating in the exchange program, I have gained a better understanding of foreign cultures.',z:'通过参加交流项目，我更好地了解了外国文化。'},{e:'Although faced with many challenges, she quickly adapted to the new environment.',z:'尽管面临许多挑战，她还是很快适应了新环境。'}]},
+          'S2-3':{title:'Food and Culture (食物与文化)', msg:'糖糖，美食不仅能解馋，还能涨知识！牢记“consist of”绝对无被动的霸道属性，别在这个坑里跌倒哦！',words:[{w:'cuisine',m:'n.烹饪/菜肴',d:'French cuisine'},{w:'consist',m:'v.由...组成',d:'consistent adj.'},{w:'elegant',m:'adj.高雅的',d:'elegance n.'},{w:'stuff',m:'v.塞满',d:'stuffed toy'},{w:'exceptional',m:'adj.卓越的',d:'exception n.'},{w:'priority',m:'n.优先',d:'prior adj.'},{w:'minimum',m:'n.最小量',d:'maximum 反义'},{w:'modest',m:'adj.谦虚的',d:'modesty n.'},{w:'trick',m:'n.诀窍',d:'play a trick on'},{w:'consume',m:'v.消耗/吃喝',d:'consumer n.'}],l2:[{w:'slice', m:'熟义:薄片；生义:切成片(v.)'},{w:'stable', m:'熟义:马厩；生义:稳定的(adj.)'},{w:'association', m:'派生: associate (be associated with)'},{w:'consume', m:'生义:消耗/吃/喝'}],grammar:[{t:'consist of 的霸道属性',r:'意为“由...组成”。绝对没有被动语态！没有进行时！不能用 is consisted of。',p:'The team consists of ten members.'},{t:'be associated with',r:'与……有关联；想到……。比 have a connection with 更地道。',p:'Fast food is often associated with obesity.'},{t:'a minimum of',r:'至少。反义词 a maximum of。',p:'You need a minimum of 8 hours of sleep.'}],sentences:[{e:'Traditional Chinese food is well-known for its exceptional taste and healthy ingredients.',z:'中国传统食物以卓越的口味和健康的食材闻名。'},{e:'Dumplings, which consist of meat and vegetables, are highly popular.',z:'由肉和蔬菜组成的饺子非常受欢迎。'}]},
+          'S2-4':{title:'Across a Vast Land (横跨广阔土地)', msg:'糖糖，横跨加拿大！过去分词作状语是难点，记住Located和Compared，直接背下来就能在高考中秒杀同龄人！',words:[{w:'mixture',m:'n.混合物',d:'mix v.'},{w:'border',m:'n.国界',d:'on the border'},{w:'slight',m:'adj.轻微的',d:'slightly adv.'},{w:'urban',m:'adj.城市的',d:'suburban adj.'},{w:'distance',m:'n.距离',d:'distant adj.'},{w:'spectacular',m:'adj.壮观的',d:'spectacle n.'},{w:'peak',m:'n.山峰',d:'at its peak'},{w:'measure',m:'v.测量/措施',d:'take measures'},{w:'settle',m:'v.定居',d:'settlement n.'},{w:'scenic',m:'adj.风景优美的',d:'scene n.'}],l2:[{w:'within', m:'生义:在……之内'},{w:'passage', m:'熟义:通道/段落；生义:(时间的)流逝'},{w:'massive', m:'生义:巨大的/厚重的'},{w:'approximate', m:'生义:大约的/近似 (approximately)'}],grammar:[{t:'Located in / Compared with 作状语',r:'表示位置或对比，作状语时永远用过去分词！',p:'Located in the center of the city... / Compared with China...'},{t:'measure 的被动陷阱',r:'表示尺寸为...时(如长宽)，不用被动。The bridge measures 100m. 表示措施时：take measures to do。',p:'The wall measures 2 meters long.'},{t:'mixture 词性变形',r:'动词 + -ure 变名词。如 mix -> mixture, fail -> failure。',p:'a mixture of A and B'}],sentences:[{e:'Canada is a beautiful country blessed with spectacular natural scenery.',z:'加拿大是一个美丽的国家，拥有壮观的自然风光。'},{e:'As the train passed through the mountains, I caught a glimpse of a wild bear.',z:'当火车穿过群山时，我瞥见了一只野熊。'}]},
+          'S2-5':{title:'First Aid (急救常识)', msg:'糖糖，急救知识既能救命也能提分！掌握状语从句的“省略”还原法，你就能在长难句的抢救中游刃有余！',words:[{w:'aid',m:'n.急救',d:'first aid'},{w:'temporary',m:'adj.暂时的',d:'temporarily adv.'},{w:'injury',m:'n.损伤',d:'injure v.'},{w:'bleeding',m:'n.流血',d:'bleed v.'},{w:'bandage',m:'n.绷带',d:'wrap a bandage'},{w:'infection',m:'n.感染',d:'infect v.'},{w:'vital',m:'adj.至关重要的',d:'vitally adv.'},{w:'symptom',m:'n.症状',d:'flu symptom'},{w:'technique',m:'n.技巧',d:'technical adj.'},{w:'apply',m:'v.涂抹/施加',d:'application n.'}],l2:[{w:'squeeze', m:'生义:挤/压 (squeeze out)'},{w:'apply', m:'熟义:申请；生义:涂/抹/施加(压力)'},{w:'slippery', m:'派生: slip(滑倒)'},{w:'organ', m:'生义:器官/机构'}],grammar:[{t:'状语从句省略的还原法',r:'If necessary = if it is necessary. 主语一致且有be动词可省。',p:'You should apply pressure to the wound if necessary.'},{t:'vital / important that...',r:'从句必须使用虚拟语气 (should) + 动词原形。',p:'It is vital that he (should) be sent to hospital.'},{t:'apply 的多重含义',r:'急救语境下意为“涂抹(药膏)”或“施加(压力)”。',p:'apply pressure to the wound'}],sentences:[{e:'First aid is a vital skill that can save lives in an emergency.',z:'急救是一项至关重要的技能，能在紧急情况下拯救生命。'},{e:'It is necessary to keep calm and apply pressure to the wound.',z:'保持冷静并按压伤口是很有必要的。'}]},
+
+          'S3-1':{title:'Art (艺术)', msg:'糖糖，艺术需要想象力，虚拟语气更需要！记住“对现在虚拟退一步”，用你的智慧去鉴赏这些美丽的画作吧！',words:[{w:'realistic',m:'adj.逼真的',d:'real adj.'},{w:'sculpture',m:'n.雕塑',d:'sculptor n.'},{w:'perspective',m:'n.透视法',d:'from my perspective'},{w:'reputation',m:'n.名誉',d:'earn a reputation'},{w:'civilisation',m:'n.文明',d:'civilize v.'},{w:'visual',m:'adj.视觉的',d:'visual arts'},{w:'technique',m:'n.技法',d:'technical adj.'},{w:'influential',m:'adj.有影响力的',d:'influence n.'},{w:'coincidence',m:'n.巧合',d:'by coincidence'},{w:'rank',m:'v.排名',d:'rank first'}],l2:[{w:'convention', m:'熟义:会议；生义:习俗/惯例/传统做法'},{w:'adopt', m:'熟义:收养；生义:采用/采纳'},{w:'possess', m:'生义:拥有/具有 (possession)'},{w:'permanent', m:'生义:永久的 (反义temporary)'}],grammar:[{t:'虚拟语气的“时间退步法”',r:'与事实相反，时态降级。对现在虚拟(did/were)，对过去虚拟(had done)。',p:'If I were you, I would study hard.'},{t:'wish 从句的心愿',r:'wish + 过去式 (对现在的愿望)；wish + had done (对过去的遗憾)。',p:'I wish I had studied harder.'},{t:'be worthy of',r:'值得...的。注意接 doing 时的被动。',p:'The painting is worthy of being preserved.'}],sentences:[{e:'Art plays a crucial role, helping us see the world from different perspectives.',z:'艺术起着至关重要的作用，帮助我们从不同的角度看待世界。'},{e:'If it had not been for his help, I couldn’t have finished the masterpiece.',z:'如果不是他的帮助，我不可能完成这幅杰作。'}]},
+          'S3-2':{title:'Healthy Lifestyle (健康生活)', msg:'糖糖，健康最重要！虚拟语气有时会“隐身”，盯紧“It is high time”和“suggest”，把隐藏的should给揪出来！',words:[{w:'abuse',m:'n./v.滥用',d:'drug abuse'},{w:'tobacco',m:'n.烟草',d:'smoke tobacco'},{w:'alcohol',m:'n.酒精',d:'alcoholic adj.'},{w:'dynamic',m:'adj.动态的',d:'dynamics n.'},{w:'discipline',m:'n.纪律/自律',d:'self-discipline'},{w:'surgery',m:'n.手术',d:'surgeon n.'},{w:'reward',m:'n.回报',d:'rewarding adj.'},{w:'negative',m:'adj.消极的',d:'positive 反义'},{w:'mental',m:'adj.心理的',d:'physical 反义'},{w:'repeat',m:'v.重复',d:'repetition n.'}],l2:[{w:'consult', m:'生义:咨询/查阅'},{w:'skip', m:'熟义:跳绳；生义:跳过/略过'},{w:'examine', m:'生义:检查/测试'},{w:'specialist', m:'生义:专家/专科医生'}],grammar:[{t:'It is high time that 的时间差',r:'是时候该做某事了。虽然是 is，但从句谓语必须用过去式(did)或 should do。',p:'It is high time that you made up your mind to quit smoking.'},{t:'make up one\'s mind',r:'下定决心做某事，后接 to do。',p:'She made up her mind to form a healthy habit.'},{t:'reward vs award',r:'reward (酬报/回馈，通常指对辛劳的报答)；award (正式的奖品/奖金)。',p:'give him a reward for his help'}],sentences:[{e:'It is high time that you made up your mind to quit smoking.',z:'是你下定决心戒烟的时候了。'},{e:'Forming a healthy lifestyle requires strong self-discipline and persistence.',z:'养成健康的生活方式需要很强的自律和毅力。'}]},
+          'S3-3':{title:'Environmental Protection (环境保护)', msg:'糖糖，保护环境从你我做起！学会一眼识别“It的强调句”，去掉皮囊看骨架，长难句再也难不倒你！',words:[{w:'comprehensive',m:'adj.全面的',d:'comprehend v.'},{w:'sustain',m:'v.维持',d:'sustainable adj.'},{w:'emission',m:'n.排放',d:'emit v.'},{w:'greenhouse',m:'n.温室',d:'greenhouse effect'},{w:'fossil',m:'n.化石',d:'fossil fuels'},{w:'trap',m:'v.吸收/困住',d:'be trapped in'},{w:'decade',m:'n.十年',d:'decades'},{w:'catastrophe',m:'n.灾难',d:'catastrophic adj.'},{w:'policy',m:'n.政策',d:'make policies'},{w:'ecology',m:'n.生态',d:'ecological adj.'}],l2:[{w:'survey', m:'生义:调查/测绘'},{w:'average', m:'熟义:平均；生义:普通的/平庸的'},{w:'critical', m:'生义:极其重要的/关键的/批评的'},{w:'magnitude', m:'生义:巨大/重大/震级'}],grammar:[{t:'一眼识别 It is...that... 强调句',r:'去皮法：把 It is 和 that 拿掉。如果剩下的部分依然能凑成一个完整的句子，那就是强调句。否则是定从。',p:'It was the emission of CO2 that caused the warming.'},{t:'find it adj to do',r:'it 作形式宾语。真正的宾语是 to do。',p:'We find it necessary to protect the environment.'},{t:'result in vs result from',r:'result in 导致（接结果）；result from 起因于（接原因）。',p:'Global warming results in extreme weather.'}],sentences:[{e:'It is widely acknowledged that global warming has a catastrophic impact.',z:'人们普遍认为全球变暖具有灾难性的影响。'},{e:'Only by taking comprehensive measures can we achieve sustainable development.',z:'只有采取全面措施，我们才能实现可持续发展。'}]},
+          'S3-4':{title:'Adversity and Courage (逆境与勇气)', msg:'糖糖，面对逆境绝不放弃！这一关我们要攻克不定式省略to的陷阱，像探险家一样勇敢地闯过去！',words:[{w:'endure',m:'v.忍受',d:'endurance n.'},{w:'persevere',m:'v.坚持不懈',d:'perseverance n.'},{w:'resolution',m:'n.决心',d:'resolve v.'},{w:'expedition',m:'n.探险',d:'explorer n.'},{w:'qualification',m:'n.资格',d:'qualify v.'},{w:'assign',m:'v.分配',d:'assignment n.'},{w:'abandon',m:'v.放弃',d:'abandoned adj.'},{w:'crush',m:'v.压碎',d:'crushing adj.'},{w:'survival',m:'n.生存',d:'survive v.'},{w:'candidate',m:'n.候选人',d:'apply for candidate'}],l2:[{w:'board', m:'生义:上(船/飞机/车)'},{w:'manage', m:'熟义:管理；生义:设法做到'},{w:'hardship', m:'生义:艰难/困苦'},{w:'miserable', m:'生义:痛苦的/惨淡的'}],grammar:[{t:'不定式的权力边界（省略 to）',r:'一感(feel)二听(hear,listen)三让(make,let,have)四看(see,watch,notice,observe)半帮(help)。主动省to，被动还原to！',p:'He was seen to go out. (被动必须带to)'},{t:'manage to do vs try to do',r:'manage to do (设法做成了，结果成功)；try to do (努力去做，不一定成功)。',p:'They managed to survive against all odds.'},{t:'turn out',r:'结果是，证明是。注意：这个短语 没有被动语态 ！',p:'It turned out that he was right.'}],sentences:[{e:'Success requires us to have a strong resolution and face adversity bravely.',z:'成功需要我们有坚定的决心，勇敢地面对逆境。'},{e:'Never give up, because perseverance leads to ultimate survival.',z:'永远不要放弃，因为坚持不懈能带来最终的生存。'}]},
+          'S3-5':{title:'Poems (诗歌)', msg:'糖糖，诗歌是语言的精华。这一单元我们要彻底搞定同位语从句和定语从句的区别，别让that的身份把你搞晕啦！',words:[{w:'convey',m:'v.传达',d:'convey emotions'},{w:'emotion',m:'n.情感',d:'emotional adj.'},{w:'rhyme',m:'v./n.押韵',d:'rhyme with'},{w:'flexible',m:'adj.灵活的',d:'flexibility n.'},{w:'concrete',m:'adj.具体的',d:'abstract 反义'},{w:'repetition',m:'n.重复',d:'repeat v.'},{w:'format',m:'n.格式',d:'form n.'},{w:'rhythmic',m:'adj.有节奏的',d:'rhythm n.'},{w:'minimum',m:'n.最小量',d:'maximum 反义'},{w:'translate',m:'v.翻译',d:'translation n.'}],l2:[{w:'pattern', m:'熟义:图案；生义:模式/格律'},{w:'verse', m:'生义:诗节/韵文'},{w:'transform', m:'生义:彻底改变/使改观'},{w:'reproduce', m:'生义:复制/再现'}],grammar:[{t:'同位语从句 vs 定语从句终极辨析',r:'同位语从句解释名词内容，that 不干活；定语从句修饰名词，that 要在从句中充当主语或宾语。',p:'The idea that we should read more poems is wonderful. (同位)'},{t:'convey vs express',r:'convey 侧重于将抽象的信息、感情“传达”给受众；express 侧重于表达出来。',p:'The poem conveys deep emotions.'},{t:'by no means 倒装',r:'决不。放在句首时，主句要部分倒装。',p:'By no means is writing a poem easy.'}],sentences:[{e:'I am writing to share a beautiful poem, which conveys deep emotions.',z:'我写信是为了分享一首美丽的诗，它传达了深深的情感。'},{e:'Poetry is a unique format of literature that touches our hearts.',z:'诗歌是一种触动我们心灵的独特的文学形式。'}]},
+
+          'S4-1':{title:'Looking Back (回顾往事)', msg:'糖糖，选修四是词汇之巅！时态大杂烩中，找准“过去的过去”，用好过去完成时，你的逻辑轴就能无懈可击！',words:[{w:'explicit',m:'adj.明确的',d:'explicitly adv.'},{w:'subjective',m:'adj.主观的',d:'objective 反义'},{w:'precise',m:'adj.精确的',d:'precisely adv.'},{w:'outcome',m:'n.结果',d:'result n.'},{w:'vivid',m:'adj.生动的',d:'vividly adv.'},{w:'specific',m:'adj.具体的',d:'specifically'},{w:'incident',m:'n.事件',d:'accidental adj.'},{w:'reflect',m:'v.反思/反映',d:'reflect on'},{w:'theme',m:'n.主题',d:'main theme'},{w:'contrast',m:'n./v.对比',d:'in contrast'}],l2:[{w:'plain', m:'熟义:平原；生义:清楚的/朴素的'},{w:'outline', m:'生义:轮廓/梗概/概述'},{w:'curiosity', m:'派生: curious(好奇的)'},{w:'ambiguous', m:'生义:模棱两可的/含糊不清的'}],grammar:[{t:'过去完成时 (Had done) 的必杀技',r:'“过去的过去”。句中必须先有一个过去的时间点或动作，在这个动作之前发生的，才用 had done。',p:'By the time I arrived (过去), the train had left (过去的过去).'},{t:'It is the first time that...',r:'从句必须使用现在完成时 (have done)。',p:'It is the first time that I have been to Beijing.'},{t:'reflect on / upon sth',r:'反思/回顾。读后续写中表示主人公思考人生的高级表达。',p:'Reflecting on my high school life...'}],sentences:[{e:'Reflecting on my high school life, I realize friendship is central to growth.',z:'回首我的高中生活，我意识到友谊是成长的核心。'},{e:'These vivid memories will forever remain in my heart.',z:'这些生动的记忆将永远留在我的心中。'}]},
+          'S4-2':{title:'Iconic Persons (标志性人物)', msg:'糖糖，向偶像致敬！这单元要注意被动语态的“免死金牌”（如happen, take place永远无被动），避开这些隐形雷区！',words:[{w:'iconic',m:'adj.标志性的',d:'icon n.'},{w:'extraordinary',m:'adj.非凡的',d:'ordinary 反义'},{w:'commitment',m:'n.奉献',d:'commit v.'},{w:'profound',m:'adj.深刻的',d:'profoundly adv.'},{w:'breakthrough',m:'n.突破',d:'make a breakthrough'},{w:'persistent',m:'adj.坚持不懈的',d:'persistence n.'},{w:'genius',m:'n.天才',d:'gifted adj.'},{w:'influential',m:'adj.有影响力的',d:'influence n.'},{w:'acknowledge',m:'v.承认',d:'be acknowledged as'},{w:'patent',m:'n.专利',d:'apply for a patent'}],l2:[{w:'modest', m:'熟义:谦虚的；生义:不大的/适中的'},{w:'theory', m:'派生: theoretical(理论的)'},{w:'conduct', m:'生义:实施/执行 (conduct an experiment)'},{w:'fame', m:'生义:名声/名望 (win fame)'}],grammar:[{t:'commit vs devote 的陷阱',r:'be committed to doing / be devoted to doing。这里的 to 是介词，后面必须加 doing！',p:'He was committed to saving lives.'},{t:'被动语态的免死金牌',r:'发生类(happen, take place)、状态类(belong to)永远无被动！',p:'The accident happened. (绝不能用 was happened)'},{t:'It is widely acknowledged that...',r:'众所周知/大家公认……。写作满分句式，代替 As we all know。',p:'It is widely acknowledged that he is a genius.'}],sentences:[{e:'What makes him stand out is his extraordinary perseverance.',z:'使他脱颖而出的是他非凡的毅力。'},{e:'We should acknowledge their remarkable contributions to human progress.',z:'我们应该承认他们对人类进步的卓越贡献。'}]},
+          'S4-3':{title:'War and Peace (战争与和平)', msg:'糖糖，历史不能忘记。非谓语动词作状语时，永远记得找它的“主人”，理清主被动关系，一切就真相大白了！',words:[{w:'conflict',m:'n.冲突',d:'in conflict with'},{w:'battle',m:'n.战役',d:'battlefield n.'},{w:'honor',m:'n.荣誉',d:'honorable adj.'},{w:'sacrifice',m:'n./v.牺牲',d:'make sacrifices'},{w:'memorial',m:'n.纪念碑',d:'memory n.'},{w:'justice',m:'n.正义',d:'injustice 反义'},{w:'moral',m:'adj.道德的',d:'morality n.'},{w:'declare',m:'v.宣战/宣布',d:'declare war on'},{w:'violence',m:'n.暴力',d:'violent adj.'},{w:'surrender',m:'v.投降',d:'surrender to'}],l2:[{w:'civilian', m:'生义:平民(的)/文职人员'},{w:'march', m:'熟义:三月；生义:行军/示威游行'},{w:'wounded', m:'派生: wound(创伤)'},{w:'liberation', m:'派生: liberate(解放)'}],grammar:[{t:'非谓语动词作状语的“主仆关系”',r:'找逻辑主语！看主句的主语是谁。主语主动做用 doing，主语被做用 done。',p:'Wounded in the battle, the soldier was sent to hospital. (士兵被伤)'},{t:'declare vs announce',r:'declare 正式宣布(战争、独立)；announce 通告(消息、航班)。',p:'declare war on... (向...宣战)'},{t:'at the cost / expense of',r:'以……为代价。',p:'Peace was won at the cost of many lives.'}],sentences:[{e:'It is our shared responsibility to cherish peace and avoid violence.',z:'珍爱和平、避免暴力是我们共同的责任。'},{e:'Countless heroes made the ultimate sacrifice for justice and honor.',z:'无数英雄为了正义和荣誉做出了最终的牺牲。'}]},
+          'S4-4':{title:'Sharing the World (共享世界)', msg:'糖糖，站在全球的视角看问题！倒装句是高中最显逻辑的高级句型，弄清“为什么倒”，你就能在作文里大放异彩！',words:[{w:'harmony',m:'n.和谐',d:'in harmony with'},{w:'stability',m:'n.稳定',d:'stable adj.'},{w:'initiative',m:'n.倡议',d:'initial adj.'},{w:'sustainable',m:'adj.可持续的',d:'sustain v.'},{w:'equality',m:'n.平等',d:'equal adj.'},{w:'diversity',m:'n.多样性',d:'diverse adj.'},{w:'cooperation',m:'n.合作',d:'cooperate v.'},{w:'reform',m:'v./n.改革',d:'make a reform'},{w:'consultation',m:'n.磋商',d:'consult v.'},{w:'jointly',m:'adv.共同地',d:'joint adj.'}],l2:[{w:'inclusive', m:'生义:包容的/包括的'},{w:'prosperity', m:'派生: prosperous(繁荣的)'},{w:'mutual', m:'生义:相互的/彼此的'},{w:'infrastructure', m:'生义:基础设施'}],grammar:[{t:'Only 倒装的霸道条件',r:'Only 必须修饰状语（时间、地点、方式等）且放在句首，主句才部分倒装（助动词前移）。',p:'Only by working hard can we build a shared future.'},{t:'Not until 倒装的隐形陷阱',r:'Not until 放句首，从句不倒装，主句才倒装！',p:'Not until he finished his work did he leave.'},{t:'where 引导的抽象地点',r:'当先行词为 situation, point, case 等抽象环境时，用 where 引导定语从句。',p:'We reached a point where a change is needed.'}],sentences:[{e:'Only by working hand in hand can we build a community with a shared future.',z:'只有携手合作，我们才能构建人类命运共同体。'},{e:'Mutual understanding and cooperation are essential for global stability.',z:'相互理解和合作对全球稳定至关重要。'}]},
+          'S4-5':{title:'The Virtual World (虚拟世界)', msg:'糖糖，这是高中英语的最后一关！搞定间接引语的“时空大挪移”，保持陈述语序，你就完成了高中英语的完美通关！',words:[{w:'artificial',m:'adj.人造的',d:'artificial intelligence'},{w:'virtual',m:'adj.虚拟的',d:'virtual reality'},{w:'interact',m:'v.互动',d:'interaction n.'},{w:'simulation',m:'n.模拟',d:'simulate v.'},{w:'ethics',m:'n.伦理',d:'ethical adj.'},{w:'breakthrough',m:'n.突破',d:'make a breakthrough'},{w:'application',m:'n.应用',d:'apply v.'},{w:'vision',m:'n.远见',d:'visionary adj.'},{w:'initial',m:'adj.最初的',d:'initiative n.'},{w:'enable',m:'v.使能够',d:'enable sb to do'}],l2:[{w:'boundary', m:'生义:边界/界限'},{w:'enhance', m:'生义:增强/提高 (enhancement)'},{w:'reality', m:'派生: realistic(现实的)'},{w:'automatic', m:'派生: automatically(自动地)'}],grammar:[{t:'间接引语的时空大挪移',r:'转述别人的话，时态降级 (will->would, is->was)。',p:'He said he would come.'},{t:'间接引语的语序陷阱',r:'疑问句必须变回陈述语序（主语在前，谓语在后）。绝不能倒装！',p:'He asked where the hotel was. (不能写 where was the hotel)'},{t:'enable sb to do sth',r:'使某人能够做某事。高考语法填空常客。',p:'Virtual reality enables us to explore the world.'}],sentences:[{e:'Virtual reality enables us to explore the world without leaving our homes.',z:'虚拟现实使我们足不出户就能探索世界。'},{e:'While AI brings great convenience, we must consider ethical issues.',z:'虽然人工智能带来了极大便利，我们也必须考虑伦理问题。'}]}
+        };
+
+        const getUnitData = (key) => UNIT_DB[key] || UNIT_DB['B2-1']; 
+
+        // ==========================================
+        // 4. 扩充版识字卡生成器
+        // ==========================================
+        const generateCards = (dbData) => {
+            const cards = [];
+            dbData.words.forEach(w => {
+                cards.push({ id: `w-${w.w}`, f: w.w, b: `${w.m}\n\n[拓展/搭配]: ${w.d}`, type: 'word' });
+            });
+            if (dbData.l2 && Array.isArray(dbData.l2)) {
+                dbData.l2.forEach(w => {
+                    cards.push({ id: `l2-${w.w}`, f: `[熟词生义/派生]\n${w.w}`, b: w.m, type: 'l2' });
+                });
+            }
+            dbData.grammar.forEach(g => {
+                cards.push({ id: `g-${g.t}`, f: `[核心语法]\n${g.t}`, b: `${g.r}\n\n[例句/避坑]: ${g.p}`, type: 'grammar' });
+            });
+            dbData.sentences.forEach((s, idx) => {
+                cards.push({ id: `s-${idx}`, f: `[李华金句] 翻译：\n${s.z}`, b: s.e, type: 'sentence' });
+            });
+            return cards.sort(() => Math.random() - 0.5); 
+        };
+
+        const gaokaoTags = [
+            '2026年浙江首考卷', '2025年1月浙江卷', '2025年全国新高考I卷', 
+            '2024年6月浙江卷', '2024年1月浙江卷', '2023年全国新高考II卷',
+            '2022年1月浙江卷', '2022年全国卷阅读C篇改编', '历年浙江高考高频易错题'
+        ];
+        const getRandomTag = () => gaokaoTags[Math.floor(Math.random() * gaokaoTags.length)];
+
+        // ==========================================
+        // 5. 重点练习 20题生成引擎 & 错题强化引擎
+        // ==========================================
+        
+        const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
+        const unique = (arr) => [...new Set((arr || []).filter(Boolean))];
+        const pickN = (arr, n) => shuffle(unique(arr)).slice(0, n);
+        const cleanWord = (w) => (w || '').replace(/\(.*?\)/g, '').trim();
+
+        const getWordPool = (unitData) => {
+            const words = (unitData?.words || []).map(w => ({
+                ...w,
+                w: cleanWord(w.w),
+                m: (w.m || '').trim(),
+                d: (w.d || '').trim()
+            })).filter(w => w.w);
+            const l2 = (unitData?.l2 || []).map(w => ({
+                ...w,
+                w: cleanWord(w.w),
+                m: (w.m || '').trim(),
+                d: (w.d || '').trim()
+            })).filter(w => w.w);
+            return { words, l2, all: [...words, ...l2] };
+        };
+
+        const getGrammarPool = (unitData) => {
+            return (unitData?.grammar || []).map(g => ({
+                ...g,
+                t: (g.t || '').trim(),
+                r: (g.r || '').trim(),
+                p: (g.p || '').trim()
+            })).filter(g => g.t || g.r || g.p);
+        };
+
+        const getSentencePool = (unitData) => {
+            return (unitData?.sentences || []).map((s, idx) => ({
+                ...s,
+                id: idx,
+                z: (s.z || '').trim(),
+                e: (s.e || '').trim()
+            })).filter(s => s.z || s.e);
+        };
+
+        const makeOptions = (correct, pool, count = 4) => {
+            const distractors = pickN((pool || []).filter(x => x && x !== correct), count - 1);
+            const opts = shuffle([correct, ...distractors]);
+            return { opts, ans: opts.indexOf(correct) };
+        };
+
+        const makeMeaningDistractors = (pool, correctMean) => {
+            const candidates = (pool || []).map(x => x.m).filter(Boolean).filter(x => x !== correctMean);
+            return makeOptions(correctMean, candidates, 4);
+        };
+
+        const makeWordDistractors = (pool, correctWord) => {
+            const candidates = (pool || []).map(x => x.w).filter(Boolean).filter(x => x !== correctWord);
+            return makeOptions(correctWord, candidates, 4);
+        };
+
+        const makeDerivativeDistractors = (pool, correctText) => {
+            const candidates = unique([
+                ...(pool || []).map(x => x.d).filter(Boolean),
+                ...(pool || []).map(x => x.m).filter(Boolean),
+                ...(pool || []).map(x => x.w).filter(Boolean)
+            ]).filter(x => x !== correctText);
+            return makeOptions(correctText, candidates, 4);
+        };
+
+        const makeGrammarDistractors = (pool, correctText) => {
+            const candidates = unique([
+                ...(pool || []).map(x => x.r).filter(Boolean),
+                ...(pool || []).map(x => x.p).filter(Boolean),
+                ...(pool || []).map(x => x.t).filter(Boolean),
+                'Translate word by word directly.',
+                'Use the -ing form in every sentence.',
+                'Choose the longest option without analysis.',
+                'Ignore tense, subject and context.'
+            ]).filter(x => x !== correctText);
+            return makeOptions(correctText, candidates, 4);
+        };
+
+        const THEME_SCENARIOS = {
+            Teenage: [
+                'When students enter senior high school, they often need to adjust to new schedules and challenges.',
+                'A good beginning in senior high school requires confidence, responsibility and active participation.'
+            ],
+            Travel: [
+                'During a school trip, students are expected to plan ahead and travel in an organized way.',
+                'A meaningful journey often depends on preparation, safety and appreciation of culture.'
+            ],
+            Sports: [
+                'Sports teach young people not only physical skills but also determination and teamwork.',
+                'A healthy lifestyle calls for regular exercise, self-discipline and a balanced diet.'
+            ],
+            Disaster: [
+                'After a natural disaster, quick response and calm thinking are of great importance.',
+                'When danger strikes, people need courage, practical skills and timely help.'
+            ],
+            Language: [
+                'Learning a language involves not only vocabulary building but also cultural understanding.',
+                'A positive attitude and enough practice are essential to language learning.'
+            ],
+            Heritage: [
+                'Protecting cultural heritage helps future generations understand history and identity.',
+                'Digital tools can support preservation, but respect for tradition remains fundamental.'
+            ],
+            Wildlife: [
+                'Wildlife protection requires joint efforts from governments, scientists and ordinary people.',
+                'Only by taking effective measures can humans live in harmony with nature.'
+            ],
+            Internet: [
+                'The Internet gives people easier access to information, but it also raises new concerns.',
+                'Technology brings convenience to daily life while requiring responsible use.'
+            ],
+            History: [
+                'Historic sites help people understand the connection between the present and the past.',
+                'Traditions survive because people continue to value and pass them on.'
+            ],
+            Music: [
+                'Music can connect people across cultures and bring comfort in difficult times.',
+                'A powerful performance often leaves the audience deeply moved.'
+            ],
+            Festival: [
+                'Festivals are an important way for people to celebrate tradition and strengthen social ties.',
+                'Behind every festival lies history, belief and shared emotion.'
+            ],
+            Difference: [
+                'People who make a difference often combine knowledge with kindness and action.',
+                'Real contribution comes from devotion, courage and a sense of responsibility.'
+            ],
+            Culture: [
+                'Living in a diverse world means learning to respect differences and seek common ground.',
+                'Cross-cultural understanding grows when people are willing to communicate openly.'
+            ],
+            Space: [
+                'Space exploration reflects human curiosity about the unknown and the future.',
+                'Scientific progress often begins with bold questions and careful observation.'
+            ],
+            Money: [
+                'Money matters in daily life, but character matters more in the long run.',
+                'Good judgment is often shown in the way people treat others rather than in what they own.'
+            ],
+            Achievement: [
+                'Great achievements usually come from long-term commitment and careful research.',
+                'Remarkable people often remain modest despite their influence.'
+            ],
+            Future: [
+                'Future technology may change the way we live, learn and communicate.',
+                'New inventions should improve life while remaining relevant to real human needs.'
+            ],
+            Parks: [
+                'National parks protect natural beauty and help people reconnect with the environment.',
+                'Visitors should enjoy nature responsibly and follow park rules.'
+            ],
+            Body: [
+                'Body language plays an important role in communication across cultures.',
+                'Appropriate nonverbal behavior can reduce misunderstanding and build trust.'
+            ],
+            Land: [
+                'Agricultural innovation helps address food shortages and improve people’s lives.',
+                'Scientific farming depends on both practical wisdom and long-term dedication.'
+            ],
+            Science: [
+                'Scientific discovery depends on evidence, logic and persistence.',
+                'Researchers are expected to investigate problems carefully before drawing conclusions.'
+            ],
+            Bridging: [
+                'Studying abroad can broaden one’s horizons while bringing real challenges.',
+                'Cross-cultural experience often begins with discomfort but leads to growth.'
+            ],
+            Food: [
+                'Food reflects culture, history and the values of a community.',
+                'A good meal is remembered not only for taste but also for meaning.'
+            ],
+            Vast: [
+                'A journey across a vast land often reveals striking contrasts in scenery and lifestyle.',
+                'Travel writing becomes more vivid when detail and observation work together.'
+            ],
+            FirstAid: [
+                'First aid can make a crucial difference before professional help arrives.',
+                'In an emergency, calm thinking and correct action are both vital.'
+            ],
+            Art: [
+                'Art helps people understand beauty, history and different perspectives on life.',
+                'Artistic change often begins when creators break away from convention.'
+            ],
+            Healthy: [
+                'A healthy lifestyle depends on habits formed through discipline and choice.',
+                'The decision to change often starts when people recognize the cost of unhealthy behavior.'
+            ],
+            Environment: [
+                'Environmental protection requires both public awareness and practical action.',
+                'Climate issues are complex, but delaying action brings greater risk.'
+            ],
+            Adversity: [
+                'Courage is often tested in moments of hardship and uncertainty.',
+                'People grow stronger when they persevere through adversity.'
+            ],
+            Poems: [
+                'Poetry uses limited words to convey rich feelings and ideas.',
+                'A good poem often leaves room for imagination as well as understanding.'
+            ],
+            LookingBack: [
+                'Looking back on past experiences often helps people understand who they have become.',
+                'Memory is shaped not only by facts but also by reflection and emotion.'
+            ],
+            Iconic: [
+                'Iconic persons influence the world through vision, commitment and action.',
+                'People are remembered not only for success but also for the values they represent.'
+            ],
+            WarPeace: [
+                'Remembering war is essential if people hope to value peace more deeply.',
+                'Peace is rarely free; it is often won through sacrifice and moral choice.'
+            ],
+            Sharing: [
+                'Global cooperation depends on equality, trust and sustainable development.',
+                'A shared future can only be built through mutual respect and action.'
+            ],
+            Virtual: [
+                'The virtual world is changing how people learn, interact and imagine reality.',
+                'Technology creates opportunities, but ethical questions must also be considered.'
+            ]
+        };
+
+        const getThemeText = (unitTitle = '') => {
+            const title = (unitTitle || '').toLowerCase();
+            if (title.includes('teenage')) return THEME_SCENARIOS.Teenage;
+            if (title.includes('travel')) return THEME_SCENARIOS.Travel;
+            if (title.includes('sport') || title.includes('fitness')) return THEME_SCENARIOS.Sports;
+            if (title.includes('disaster')) return THEME_SCENARIOS.Disaster;
+            if (title.includes('language')) return THEME_SCENARIOS.Language;
+            if (title.includes('heritage')) return THEME_SCENARIOS.Heritage;
+            if (title.includes('wildlife')) return THEME_SCENARIOS.Wildlife;
+            if (title.includes('internet')) return THEME_SCENARIOS.Internet;
+            if (title.includes('history') || title.includes('tradition')) return THEME_SCENARIOS.History;
+            if (title.includes('music')) return THEME_SCENARIOS.Music;
+            if (title.includes('festival')) return THEME_SCENARIOS.Festival;
+            if (title.includes('difference')) return THEME_SCENARIOS.Difference;
+            if (title.includes('culture')) return THEME_SCENARIOS.Culture;
+            if (title.includes('space')) return THEME_SCENARIOS.Space;
+            if (title.includes('money')) return THEME_SCENARIOS.Money;
+            if (title.includes('achievement')) return THEME_SCENARIOS.Achievement;
+            if (title.includes('future')) return THEME_SCENARIOS.Future;
+            if (title.includes('park')) return THEME_SCENARIOS.Parks;
+            if (title.includes('body')) return THEME_SCENARIOS.Body;
+            if (title.includes('land')) return THEME_SCENARIOS.Land;
+            if (title.includes('science')) return THEME_SCENARIOS.Science;
+            if (title.includes('bridging')) return THEME_SCENARIOS.Bridging;
+            if (title.includes('food')) return THEME_SCENARIOS.Food;
+            if (title.includes('vast')) return THEME_SCENARIOS.Vast;
+            if (title.includes('first aid')) return THEME_SCENARIOS.FirstAid;
+            if (title.includes('art')) return THEME_SCENARIOS.Art;
+            if (title.includes('healthy')) return THEME_SCENARIOS.Healthy;
+            if (title.includes('environment')) return THEME_SCENARIOS.Environment;
+            if (title.includes('adversity')) return THEME_SCENARIOS.Adversity;
+            if (title.includes('poem')) return THEME_SCENARIOS.Poems;
+            if (title.includes('looking back')) return THEME_SCENARIOS.LookingBack;
+            if (title.includes('iconic')) return THEME_SCENARIOS.Iconic;
+            if (title.includes('war')) return THEME_SCENARIOS.WarPeace;
+            if (title.includes('sharing')) return THEME_SCENARIOS.Sharing;
+            if (title.includes('virtual')) return THEME_SCENARIOS.Virtual;
+            return [
+                'This unit focuses on language use in meaningful contexts.',
+                'Students are expected to understand vocabulary, grammar and ideas together.'
+            ];
+        };
+
+        const makeContextParagraph = (unitData, word = null) => {
+            const themes = getThemeText(unitData?.title || '');
+            const base = themes[Math.floor(Math.random() * themes.length)];
+            if (!word) return base;
+            return `${base} In this context, the idea related to "${word.w}" becomes especially important.`;
+        };
+
+        const buildThemeMeaningQ = (unitData, word, pool) => {
+            const themeText = makeContextParagraph(unitData, word);
+            const correct = word.m || '正确释义';
+            const { opts, ans } = makeMeaningDistractors(pool, correct);
+            return {
+                type: '重点练习 - 词义辨析',
+                q: `[${getRandomTag()}] ${themeText}
+
+In the unit context, what does "${word.w}" most probably mean?`,
+                opts,
+                ans,
+                rat: `[解析] "${word.w}" 在本单元中的正确释义是：${word.m || '请结合主题语境理解'}。${word.d ? `
+[搭配] ${word.d}` : ''}`,
+                meta: { type: 'word', data: word }
+            };
+        };
+
+        const buildContextWordQ = (unitData, word, pool) => {
+            const context = makeContextParagraph(unitData, word);
+            const correct = word.w;
+            const { opts, ans } = makeWordDistractors(pool, correct);
+            return {
+                type: '重点练习 - 语境选词',
+                q: `[${getRandomTag()}] ${context}
+
+Which word best completes the sentence according to the unit topic?`,
+                opts,
+                ans,
+                rat: `[解析] 应选 ${correct}。题干语境与单元主题“${unitData?.title || ''}”一致，所需词义对应“${word.m || '本单元核心含义'}”。${word.d ? `
+[搭配] ${word.d}` : ''}`,
+                meta: { type: 'word', data: word }
+            };
+        };
+
+        const buildCollocationQ = (unitData, word, pool) => {
+            const correct = word.d || word.w;
+            const { opts, ans } = makeDerivativeDistractors(pool, correct);
+            return {
+                type: '重点练习 - 搭配运用',
+                q: `[${getRandomTag()}] In a passage about "${unitData?.title || 'this unit'}", which expression best matches the target word "${word.w}"?`,
+                opts,
+                ans,
+                rat: `[解析] 正确答案是 ${correct}。这类题重点考查固定搭配、词形变化或单元高频表达。`,
+                meta: { type: 'word', data: word }
+            };
+        };
+
+        const buildGrammarInContextQ = (unitData, g, pool) => {
+            const themes = getThemeText(unitData?.title || '');
+            const themeLine = themes[Math.floor(Math.random() * themes.length)];
+            const correct = g.r || g.p || g.t;
+            const { opts, ans } = makeGrammarDistractors(pool, correct);
+            return {
+                type: '重点练习 - 语法语境',
+                q: `[${getRandomTag()}] ${themeLine}
+
+When dealing with the grammar point "${g.t}", which option gives the best rule?`,
+                opts,
+                ans,
+                rat: `[解析] ${g.t} 的核心规则是：${g.r || g.p || g.t}。${g.p ? `
+[避坑] ${g.p}` : ''}`,
+                meta: { type: 'grammar', data: g }
+            };
+        };
+
+        const buildGrammarErrorQ = (unitData, g, pool) => {
+            const themes = getThemeText(unitData?.title || '');
+            const themeLine = themes[Math.floor(Math.random() * themes.length)];
+            const correct = g.p || g.r || g.t;
+            const { opts, ans } = makeGrammarDistractors(pool, correct);
+            return {
+                type: '重点练习 - 语法避坑',
+                q: `[${getRandomTag()}] ${themeLine}
+
+A student is likely to lose points on "${g.t}". What is the key pitfall?`,
+                opts,
+                ans,
+                rat: `[解析] 易错点是：${g.p || g.r || g.t}。做题时先判断结构、语义和时间关系。`,
+                meta: { type: 'grammar', data: g }
+            };
+        };
+
+        const buildSentenceInferenceQ = (unitData, s) => {
+            const others = (unitData?.sentences || []).map(x => x.e).filter(Boolean).filter(x => x !== s.e);
+            const fallback = [
+                'It only explains a grammar form without meaning.',
+                'It focuses on an unrelated social issue.',
+                'It conveys the opposite of the original sentence.',
+                'It is too general to match the sentence exactly.'
+            ];
+            const { opts, ans } = makeOptions(s.e, [...others, ...fallback], 4);
+            return {
+                type: '重点练习 - 句意推断',
+                q: `[${getRandomTag()}] Read the sentence in the unit context:
+"${s.z}"
+
+Which option best expresses its meaning?`,
+                opts,
+                ans,
+                rat: `[解析] 正确理解是：${s.e}。这类题考查句意提炼、情感色彩和主题对应。`,
+                meta: { type: 'sentence', data: s }
+            };
+        };
+
+        const buildWritingStrategyQ = (unitData, word, grammar) => {
+            const correct = `Keep the unit theme "${unitData?.title || ''}" in mind, use "${word.w}" accurately, and match it with the grammar point "${grammar?.t || 'of this unit'}".`;
+            const opts = shuffle([
+                correct,
+                'Translate the Chinese meaning directly and ignore collocation.',
+                'Use the target word in any tense because meaning matters more than grammar.',
+                'Memorize the word alone without connecting it to sentence context.'
+            ]);
+            return {
+                type: '重点练习 - 写作表达',
+                q: `[${getRandomTag()}] To write a Zhejiang-style sentence for the topic "${unitData?.title || 'this unit'}", which strategy is the best?`,
+                opts,
+                ans: opts.indexOf(correct),
+                rat: `[解析] 写作题最看重“主题贴合 + 词汇准确 + 语法匹配”。单词、搭配和结构必须同时对。`,
+                meta: { type: 'writing', data: { word, grammar } }
+            };
+        };
+
+        const generateZhejiangQuiz = (unitData, isGaokaoMode = false) => {
+            const { words, l2, all } = getWordPool(unitData);
+            const grammar = getGrammarPool(unitData);
+            const sentences = getSentencePool(unitData);
+            const quiz = [];
+            const minCount = isGaokaoMode ? 20 : 10;
+
+            pickN(words, isGaokaoMode ? 5 : 3).forEach(w => {
+                quiz.push(buildThemeMeaningQ(unitData, w, all));
+                quiz.push(buildContextWordQ(unitData, w, all));
+            });
+
+            pickN(all, isGaokaoMode ? 4 : 2).forEach(w => {
+                quiz.push(buildCollocationQ(unitData, w, all));
+            });
+
+            pickN(grammar, isGaokaoMode ? 4 : 2).forEach(g => {
+                quiz.push(buildGrammarInContextQ(unitData, g, grammar));
+                quiz.push(buildGrammarErrorQ(unitData, g, grammar));
+            });
+
+            pickN(sentences, isGaokaoMode ? 4 : 2).forEach(s => {
+                quiz.push(buildSentenceInferenceQ(unitData, s));
+            });
+
+            if (isGaokaoMode && words.length) {
+                pickN(words, 2).forEach((w, i) => {
+                    quiz.push(buildWritingStrategyQ(unitData, w, grammar[i % Math.max(grammar.length, 1)] || null));
+                });
+            }
+
+            let guard = 0;
+            while (quiz.length < minCount && guard < 100) {
+                guard++;
+                if (words.length) {
+                    const w = words[guard % words.length];
+                    quiz.push(buildThemeMeaningQ(unitData, w, all));
+                }
+                if (quiz.length >= minCount) break;
+                if (grammar.length) {
+                    const g = grammar[guard % grammar.length];
+                    quiz.push(buildGrammarInContextQ(unitData, g, grammar));
+                }
+                if (quiz.length >= minCount) break;
+                if (sentences.length) {
+                    const s = sentences[guard % sentences.length];
+                    quiz.push(buildSentenceInferenceQ(unitData, s));
+                }
+            }
+
+            return shuffle(quiz).slice(0, minCount);
+        };
+
+        const buildReinforcementQs = (mistakeMeta) => {
+            const qs = [];
+            if (!mistakeMeta) return qs;
+
+            if (mistakeMeta.type === 'word') {
+                const w = mistakeMeta.data;
+                const correct1 = w.m || 'Correct meaning';
+                const opts1 = shuffle([
+                    correct1,
+                    `The opposite meaning of ${w.w}`,
+                    'A random grammar term',
+                    'An unrelated topic'
+                ]);
+                qs.push({
+                    type: '错题巩固 - 词义回练',
+                    q: `In the same unit context, what is the most suitable meaning of "${w.w}"?`,
+                    opts: opts1,
+                    ans: opts1.indexOf(correct1),
+                    rat: `[解析] ${w.w} 的核心释义是：${w.m || '请回到单元词义理解'}。`,
+                    meta: { type: 'word', data: w }
+                });
+
+                const correct2 = w.d || w.w;
+                const opts2 = shuffle([
+                    correct2,
+                    `${w.w} to do blindly`,
+                    `be ${w.w} with random`,
+                    `an incorrect form of ${w.w}`
+                ]);
+                qs.push({
+                    type: '错题巩固 - 搭配回练',
+                    q: `Which form or collocation is correctly related to "${w.w}"?`,
+                    opts: opts2,
+                    ans: opts2.indexOf(correct2),
+                    rat: `[解析] 正确搭配/派生形式是：${correct2}。`,
+                    meta: { type: 'word', data: w }
+                });
+            } else if (mistakeMeta.type === 'grammar') {
+                const g = mistakeMeta.data;
+                const correct1 = g.r || g.p || g.t;
+                const opts1 = shuffle([
+                    correct1,
+                    'Ignore the sentence structure and just choose the longest form.',
+                    'Use the same pattern in every sentence.',
+                    'Translate Chinese directly without checking grammar.'
+                ]);
+                qs.push({
+                    type: '错题巩固 - 规则回练',
+                    q: `What is the key rule behind "${g.t}"?`,
+                    opts: opts1,
+                    ans: opts1.indexOf(correct1),
+                    rat: `[解析] 核心规则是：${g.r || g.p || g.t}。`,
+                    meta: { type: 'grammar', data: g }
+                });
+
+                const correct2 = g.p || g.r || 'Check structure, meaning and signal words.';
+                const opts2 = shuffle([
+                    correct2,
+                    'Guess according to feeling.',
+                    'Prefer the -ing form whenever uncertain.',
+                    'Ignore subject, tense and logical relation.'
+                ]);
+                qs.push({
+                    type: '错题巩固 - 避坑回练',
+                    q: `How should you avoid mistakes on "${g.t}" next time?`,
+                    opts: opts2,
+                    ans: opts2.indexOf(correct2),
+                    rat: `[解析] 避免失分要点：${g.p || g.r || '先看句子结构，再看语义和语法标志'}。`,
+                    meta: { type: 'grammar', data: g }
+                });
+            } else if (mistakeMeta.type === 'sentence') {
+                const s = mistakeMeta.data;
+                const correct = s.e;
+                const opts = shuffle([
+                    correct,
+                    'It means something completely opposite.',
+                    'It only explains a grammar point.',
+                    'It has no connection with the unit.'
+                ]);
+                qs.push({
+                    type: '错题巩固 - 句意回练',
+                    q: `Choose the best understanding of the sentence:
+"${s.z}"`,
+                    opts,
+                    ans: opts.indexOf(correct),
+                    rat: `[解析] 正确理解是：${s.e}。`,
+                    meta: { type: 'sentence', data: s }
+                });
+            } else if (mistakeMeta.type === 'writing') {
+                const w = mistakeMeta.data?.word;
+                const g = mistakeMeta.data?.grammar;
+                const correct = `Use the word accurately, keep the topic clear, and match the grammar point "${g?.t || 'of the unit'}".`;
+                const opts = shuffle([
+                    correct,
+                    'Use a memorized sentence without checking whether it fits the topic.',
+                    'Choose vocabulary only by difficulty level.',
+                    'Ignore grammar and focus only on Chinese meaning.'
+                ]);
+                qs.push({
+                    type: '错题巩固 - 写作回练',
+                    q: `When writing with "${w?.w || 'the target word'}", what should you do first?`,
+                    opts,
+                    ans: opts.indexOf(correct),
+                    rat: `[解析] 写作时要同时保证主题、词义、搭配和语法都正确。`,
+                    meta: { type: 'writing', data: { word: w, grammar: g } }
+                });
+            }
+
+            return qs;
+        };
+
+
+        // ==========================================
+        // 6. 纯净登录组件
+        // ==========================================
+        const LoginScreen = ({ onLogin }) => {
+            const [pwd, setPwd] = useState('');
+            const [err, setErr] = useState('');
+
+            const handleLogin = (e) => {
+                e?.preventDefault();
+                if (pwd === '0315' || pwd === '0825') {
+                    onLogin();
+                } else {
+                    setErr('密码不正确，请重新输入');
+                }
+            };
+
+            return (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/45 backdrop-blur-xl px-4">
+                    <div className="w-full max-w-md rounded-[32px] bg-white/90 border border-white/70 shadow-[0_20px_60px_rgba(15,23,42,0.18)] p-6 md:p-8">
+                        <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-[22px] flex items-center justify-center mx-auto mb-5 shadow-lg shadow-blue-500/30">
+                            <GraduationCap className="w-8 h-8 md:w-10 md:h-10 text-white" />
+                        </div>
+                        <h2 className="text-2xl md:text-3xl font-bold text-center text-slate-900 tracking-tight">欢迎登录</h2>
+                        <p className="text-sm text-slate-500 text-center mt-2 mb-6 leading-relaxed">糖糖提分通 · 更高效的英语提分学习</p>
+
+                        <form onSubmit={handleLogin} className="space-y-4">
+                            <input
+                                type="password"
+                                value={pwd}
+                                onChange={(e) => {
+                                    setPwd(e.target.value);
+                                    setErr('');
+                                }}
+                                placeholder="请输入密码"
+                                autoFocus
+                                className="w-full rounded-2xl bg-slate-50 border border-slate-200 px-4 py-4 text-center text-lg font-semibold tracking-widest text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+                            />
+                            {err && <p className="text-rose-500 text-sm text-center font-semibold">{err}</p>}
+                            <button type="submit" className="w-full rounded-2xl bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-4 text-base font-bold shadow-lg shadow-blue-500/25 active:scale-[0.98] transition">
+                                进入学习
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            );
+        };
+
+        // 闪卡组件
+        const FlashcardCarousel = ({ cards, playingWord, handlePlayAudio, onUpdateCardStatus }) => {
+            const [flipped, setFlipped] = useState(false);
+
+            if (!cards || cards.length === 0) {
+                return (
+                    <div className="text-center p-12 bg-white rounded-3xl ios-shadow animate-in zoom-in-95">
+                        <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <CheckCircle2 className="w-10 h-10 text-emerald-500" />
+                        </div>
+                        <h2 className="text-2xl font-bold text-slate-800 mb-2">太棒了！</h2>
+                        <p className="text-slate-500 font-medium">所有的知识卡片都已经掌握啦！</p>
+                    </div>
+                );
+            }
+
+            const card = cards[0];
+
+            const handleNext = (status) => {
+                setFlipped(false);
+                setTimeout(() => {
+                    onUpdateCardStatus(card, status);
+                }, 250);
+            };
+
+            return (
+                <div className="w-full max-w-sm mx-auto flex flex-col items-center animate-in fade-in duration-500">
+                    <div className="w-full flex justify-between items-center mb-6 px-2">
+                        <span className="text-xs font-bold text-slate-400 tracking-wider">Remaining Cards: {cards.length}</span>
+                        <div className="flex-1 mx-4 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                            <div className="h-full bg-blue-500 transition-all duration-300 ease-out" style={{ width: `${(1 / cards.length) * 100}%` }} />
+                        </div>
+                    </div>
+
+                    <div className="w-full aspect-[3/4] perspective-1000 cursor-pointer mb-8" onClick={() => setFlipped(!flipped)}>
+                        <div className={`relative w-full h-full transition-transform duration-700 transform-style-3d shadow-[0_20px_40px_rgba(0,0,0,0.08)] rounded-[2rem] ${flipped ? 'rotate-y-180' : 'active:scale-[0.98]'}`}>
+                            <div className="absolute inset-0 bg-white border border-slate-100 rounded-[2rem] flex flex-col items-center justify-center p-8 text-center backface-hidden">
+                                <span className="text-2xl font-bold text-slate-800 tracking-tight mb-8 whitespace-pre-wrap leading-relaxed">{card.f}</span>
+                                {card.type !== 'grammar' && (
+                                    <button onClick={(e) => handlePlayAudio(card.f, e)} className="p-4 bg-blue-50 active:bg-blue-100 rounded-full transition-all text-blue-500 shadow-inner">
+                                        <Volume2 className={`w-8 h-8 ${playingWord === card.f ? 'animate-pulse text-blue-400' : ''}`} />
+                                    </button>
+                                )}
+                                <div className="absolute bottom-6 text-slate-300 text-xs font-medium flex items-center gap-1">
+                                    <RotateCcw className="w-3 h-3" /> 点击翻转
+                                </div>
+                            </div>
+                            <div className="absolute inset-0 bg-blue-500 rounded-[2rem] flex flex-col items-center justify-center p-8 text-center text-white rotate-y-180 backface-hidden shadow-inner overflow-y-auto">
+                                <span className="text-[17px] font-semibold leading-relaxed whitespace-pre-wrap">{card.b}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {flipped ? (
+                        <div className="flex gap-4 w-full animate-in fade-in slide-in-from-bottom-2">
+                            <button onClick={() => handleNext('unknown')} className="flex-1 py-4 rounded-2xl font-bold bg-rose-50 text-rose-500 active:bg-rose-100 transition-all flex justify-center items-center gap-1 shadow-sm border border-rose-100">
+                                <XCircle className="w-5 h-5" /> 还不知道
+                            </button>
+                            <button onClick={() => handleNext('known')} className="flex-1 py-4 rounded-2xl font-bold bg-emerald-500 text-white active:bg-emerald-600 transition-all flex justify-center items-center gap-1 shadow-md shadow-emerald-500/20">
+                                <CheckCircle2 className="w-5 h-5" /> 记住了
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="h-[58px] w-full flex items-center justify-center text-slate-400 text-sm font-medium">请点击卡片查看答案</div>
+                    )}
+                </div>
+            );
+        };
+
+        // ==========================================
+        // 7. 主应用程序
+        // ==========================================
+        const App = () => {
+            const [isLoggedIn, setIsLoggedIn] = useState(false);
+            const [activeBookId, setActiveBookId] = useState('B1');
+            const [activeUnit, setActiveUnit] = useState(1);
+            const [tab, setTab] = useState('notes');
+            const [playingWord, setPlayingWord] = useState(null);
+            const [sidebarOpen, setSidebarOpen] = useState(false);
+            const [masteryData, setMasteryData] = useLocalStorage('tt_misty_ultimate_v9', {});
+            const [progressData, setProgressData] = useLocalStorage('tt_progress_ultimate_v10', {});
+            const [mistakeBank, setMistakeBank] = useLocalStorage('tt_mistakes_ultimate_v9', []);
+
+            const normalizeProgressRecord = (record) => {
+                const base = {
+                    attempts: 0,
+                    completed: false,
+                    totalQuestions: 0,
+                    totalCorrect: 0,
+                    bestScore: 0,
+                    lastScore: 0,
+                    fullAttempts: 0,
+                    focusAttempts: 0,
+                    lastMode: '',
+                    lastPracticedAt: ''
+                };
+                if (typeof record === 'number') {
+                    return { ...base, attempts: 1, completed: true, bestScore: record, lastScore: record, lastMode: '旧版记录' };
+                }
+                return { ...base, ...(record || {}) };
+            };
+
+            const getUnitProgress = (key) => normalizeProgressRecord(progressData[key] ?? masteryData[key]);
+
+            const unitKey = `${activeBookId}-${activeUnit}`;
+            const dbData = useMemo(() => getUnitData(unitKey), [unitKey]);
+            const [quizArr, setQuizArr] = useState([]);
+            const [qIdx, setQIdx] = useState(0);
+            const [ansIdx, setAnsIdx] = useState(null);
+            const [score, setScore] = useState(0);
+            const [isFinished, setIsFinished] = useState(false);
+            const [isReinforcement, setIsReinforcement] = useState(false);
+            const [activeCards, setActiveCards] = useState([]);
+
+            useEffect(() => {
+                if (tab === 'cards') {
+                    const baseCards = generateCards(dbData);
+                    const errorCards = mistakeBank
+                        .filter(m => m.unitKey === unitKey)
+                        .map(m => ({
+                            id: `err-${m.id}`,
+                            f: m.q,
+                            b: `${m.wrongOpt}
+
+✅ 正确答案：${m.correctOpt}
+
+解析：${m.rat}`,
+                            type: 'error'
+                        }));
+                    setActiveCards([...errorCards, ...baseCards]);
+                }
+            }, [tab, unitKey, dbData, mistakeBank]);
+
+            const handleUpdateCardStatus = (card, status) => {
+                if (status === 'known') setActiveCards(prev => prev.slice(1));
+                else setActiveCards(prev => [...prev.slice(1), prev[0]]);
+            };
+
+            const playAudio = useCallback((text, e) => {
+                if (e) e.stopPropagation();
+                if (!text || !window.speechSynthesis) return;
+                window.speechSynthesis.cancel();
+                setPlayingWord(text);
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85;
+                utterance.onend = () => setPlayingWord(null);
+                utterance.onerror = () => setPlayingWord(null);
+                window.speechSynthesis.speak(utterance);
+            }, []);
+
+            const startQuiz = (mode = 'full') => {
+                const isGaokao = mode === 'gaokao';
+                const qs = generateZhejiangQuiz(dbData, isGaokao);
+                setQuizArr(qs);
+                setQIdx(0);
+                setScore(0);
+                setAnsIdx(null);
+                setIsFinished(false);
+                setIsReinforcement(false);
+                setTab(isGaokao ? 'gaokaoquiz' : 'quiz');
+            };
+
+            const startReinforcement = (mistakeMeta) => {
+                const qs = buildReinforcementQs(mistakeMeta);
+                if (qs.length === 0) return alert('当前题目暂无可强化练习内容');
+                setQuizArr(qs);
+                setQIdx(0);
+                setScore(0);
+                setAnsIdx(null);
+                setIsFinished(false);
+                setIsReinforcement(true);
+                setTab('quiz');
+            };
+
+            const handleAnswer = (idx) => {
+                if (ansIdx !== null) return;
+                setAnsIdx(idx);
+                const currentQ = quizArr[qIdx];
+                if (idx === currentQ.ans) {
+                    setScore(s => s + 1);
+                } else if (!isReinforcement && tab !== 'cards') {
+                    const mistakeCard = {
+                        id: Date.now() + Math.random(),
+                        unitKey,
+                        q: currentQ.q,
+                        wrongOpt: currentQ.opts[idx],
+                        correctOpt: currentQ.opts[currentQ.ans],
+                        rat: currentQ.rat,
+                        meta: currentQ.meta,
+                    };
+                    setMistakeBank(prev => [mistakeCard, ...prev]);
+                }
+            };
+
+            const nextQuestion = () => {
+                if (qIdx < quizArr.length - 1) {
+                    setQIdx(i => i + 1);
+                    setAnsIdx(null);
+                } else {
+                    setIsFinished(true);
+                    if (!isReinforcement && (tab === 'quiz' || tab === 'gaokaoquiz')) {
+                        const finalScore = Math.round((score / quizArr.length) * 100);
+                        setMasteryData(prev => {
+                            const existing = typeof prev[unitKey] === 'number' ? prev[unitKey] : (prev[unitKey]?.bestScore || 0);
+                            return { ...prev, [unitKey]: Math.max(existing, finalScore) };
+                        });
+                        setProgressData(prev => {
+                            const existing = normalizeProgressRecord(prev[unitKey] ?? masteryData[unitKey]);
+                            const isFocusMode = tab === 'gaokaoquiz';
+                            return {
+                                ...prev,
+                                [unitKey]: {
+                                    ...existing,
+                                    attempts: existing.attempts + 1,
+                                    completed: true,
+                                    totalQuestions: existing.totalQuestions + quizArr.length,
+                                    totalCorrect: existing.totalCorrect + score,
+                                    bestScore: Math.max(existing.bestScore, finalScore),
+                                    lastScore: finalScore,
+                                    fullAttempts: existing.fullAttempts + (isFocusMode ? 0 : 1),
+                                    focusAttempts: existing.focusAttempts + (isFocusMode ? 1 : 0),
+                                    lastMode: isFocusMode ? '重点练习' : '单元练习',
+                                    lastPracticedAt: new Date().toLocaleString('zh-CN', { hour12: false })
+                                }
+                            };
+                        });
+                    }
+                }
+            };
+
+            const navItems = [
+                { id: 'notes', label: '核心笔记', icon: <BookOpen className="w-4 h-4" /> },
+                { id: 'gaokao', label: '重点练习', icon: <Award className="w-4 h-4" /> },
+                { id: 'cards', label: '互动卡片', icon: <Layers className="w-4 h-4" /> },
+                { id: 'mistakes', label: '错题库', icon: <AlertCircle className="w-4 h-4" /> },
+                { id: 'mastery', label: '进度', icon: <BarChart3 className="w-4 h-4" /> },
+            ];
+
+            const currentBookName = SYLLABUS.find((b) => b.id === activeBookId)?.name || '教材';
+            const currentTabLabel = navItems.find((item) => item.id === (tab === 'gaokaoquiz' ? 'gaokao' : tab))?.label || '学习中心';
+
+            if (!isLoggedIn) return <LoginScreen onLogin={() => setIsLoggedIn(true)} />;
+
+            const renderMainContent = () => {
+                if (tab === 'notes') {
+                    return (
+                        <div className="space-y-6">
+                            <div className="bg-white rounded-[32px] p-6 md:p-8 xl:p-10 border border-white/70 shadow-[0_10px_40px_rgba(15,23,42,0.06)]">
+                                {dbData.msg && (
+                                    <div className="mb-10 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-2xl p-5 shadow-sm flex items-start gap-4">
+                                        <div className="bg-blue-500 p-2.5 rounded-xl shrink-0">
+                                            <Lightbulb className="w-6 h-6 text-white" />
+                                        </div>
+                                        <div>
+                                            <h3 className="font-bold text-blue-900 mb-1 text-base">老师寄语</h3>
+                                            <p className="text-blue-800 text-sm md:text-base leading-relaxed">{dbData.msg}</p>
+                                        </div>
+                                    </div>
+                                )}
+
+                                <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">Level 1</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-10">
+                                    {dbData.words.map((w, i) => (
+                                        <div key={i} className="bg-slate-50 p-4 rounded-2xl flex items-start justify-between group active:bg-slate-100 cursor-pointer hover:bg-white hover:shadow-md border border-transparent hover:border-blue-100 transition-all" onClick={(e) => playAudio(w.w, e)}>
+                                            <div className="flex-1 pr-3">
+                                                <div className={`font-black text-xl mb-1 ${playingWord === w.w ? 'text-blue-500' : 'text-slate-800'} group-hover:text-blue-600 transition-colors`}>{w.w}</div>
+                                                <div className="text-sm font-medium text-slate-500 mb-3">{w.m}</div>
+                                                <div className="flex flex-col items-start gap-1.5">
+                                                    <span className="text-[9px] font-bold text-slate-400 bg-slate-200/50 px-2 py-0.5 rounded-full uppercase tracking-wider">Usage</span>
+                                                    <div className="text-xs font-bold text-blue-700 bg-blue-50 px-2.5 py-1.5 rounded-lg inline-block border border-blue-100/50">{w.d}</div>
+                                                </div>
+                                            </div>
+                                            <Volume2 className={`w-5 h-5 flex-shrink-0 mt-1 ${playingWord === w.w ? 'text-blue-500' : 'text-slate-300'} group-hover:text-blue-400 transition-colors`} />
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {dbData.l2 && dbData.l2.length > 0 && (
+                                    <>
+                                        <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">Level 2</h3>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-10">
+                                            {dbData.l2.map((w, i) => (
+                                                <div key={i} className="bg-indigo-50/60 p-4 rounded-2xl flex items-start justify-between group active:bg-indigo-100 cursor-pointer hover:bg-white hover:shadow-md border border-indigo-100/50 hover:border-indigo-200 transition-all" onClick={(e) => playAudio(w.w, e)}>
+                                                    <div className="flex-1 pr-3">
+                                                        <div className={`font-black text-xl mb-1 ${playingWord === w.w ? 'text-indigo-600' : 'text-indigo-900'} group-hover:text-indigo-600 transition-colors`}>{w.w}</div>
+                                                        <div className="text-sm font-medium text-indigo-700">{w.m}</div>
+                                                    </div>
+                                                    <Volume2 className={`w-5 h-5 flex-shrink-0 mt-1 ${playingWord === w.w ? 'text-indigo-600' : 'text-indigo-300'} group-hover:text-indigo-500 transition-colors`} />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </>
+                                )}
+
+                                <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">Grammar</h3>
+                                <div className="space-y-4 mb-10">
+                                    {dbData.grammar.map((g, i) => (
+                                        <div key={i} className="bg-slate-900 text-white p-6 rounded-[24px] shadow-md">
+                                            <h4 className="font-bold mb-3 flex items-center gap-2 text-amber-400"><Target className="w-5 h-5" />{g.t}</h4>
+                                            <p className="text-[15px] font-medium leading-relaxed opacity-90 mb-4 whitespace-pre-wrap">{g.r}</p>
+                                            <div className="bg-white/10 p-4 rounded-xl text-sm font-medium leading-relaxed border border-white/5"><span className="text-amber-300 mr-2">例句：</span>{g.p}</div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">Sentences</h3>
+                                <div className="space-y-3">
+                                    {dbData.sentences.map((s, i) => (
+                                        <div key={i} className="p-5 bg-emerald-50 rounded-2xl active:bg-emerald-100 cursor-pointer" onClick={(e) => playAudio(s.e, e)}>
+                                            <p className={`font-bold italic text-lg mb-2 leading-relaxed ${playingWord === s.e ? 'text-emerald-600' : 'text-emerald-900'}`}>{s.e}</p>
+                                            <p className="text-sm font-medium text-emerald-700">{s.z}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    );
+                }
+
+                if (tab === 'cards') {
+                    return <FlashcardCarousel cards={activeCards} playingWord={playingWord} handlePlayAudio={playAudio} onUpdateCardStatus={handleUpdateCardStatus} />;
+                }
+
+                if (tab === 'quiz' || tab === 'gaokaoquiz') {
+                    return (
+                        <div className="max-w-xl mx-auto">
+                            {!isFinished ? (
+                                <div className="bg-white rounded-[32px] p-6 md:p-8 shadow-[0_10px_40px_rgba(15,23,42,0.06)] border border-white/70">
+                                    <div className="flex justify-between items-center mb-6">
+                                        <span className={`px-3 py-1 rounded-lg text-[11px] font-bold tracking-wide ${isReinforcement ? 'bg-amber-100 text-amber-700' : tab === 'gaokaoquiz' ? 'bg-indigo-100 text-indigo-700' : 'bg-slate-100 text-slate-600'}`}>{isReinforcement ? '强化练习' : tab === 'gaokaoquiz' ? '重点练习' : '单元测验'}</span>
+                                        <span className="text-xs font-bold text-slate-400">{qIdx + 1} / {quizArr.length}</span>
+                                    </div>
+
+                                    <p className="text-[17px] font-semibold leading-relaxed mb-6 whitespace-pre-wrap">{quizArr[qIdx]?.q}</p>
+
+                                    <div className="space-y-3">
+                                        {quizArr[qIdx]?.opts.map((opt, i) => (
+                                            <button key={i} onClick={() => handleAnswer(i)} className={`w-full p-4 rounded-2xl border-2 text-left transition-all flex items-center justify-between text-[15px] font-bold ${ansIdx === null ? 'border-slate-100 bg-white active:bg-slate-50 hover:border-blue-200' : i === quizArr[qIdx].ans ? 'border-emerald-500 bg-emerald-50 text-emerald-800' : ansIdx === i ? 'border-rose-500 bg-rose-50 text-rose-800' : 'border-slate-50 opacity-40'}`}>
+                                                <span>{opt}</span>
+                                                {ansIdx !== null && i === quizArr[qIdx].ans && <CheckCircle2 className="w-5 h-5 text-emerald-500" />}
+                                                {ansIdx !== null && ansIdx === i && i !== quizArr[qIdx].ans && <XCircle className="w-5 h-5 text-rose-500" />}
+                                            </button>
+                                        ))}
+                                    </div>
+
+                                    {ansIdx !== null && (
+                                        <div className="mt-8">
+                                            <div className="p-5 bg-slate-50 rounded-2xl mb-6">
+                                                <div className="text-blue-500 font-bold text-[11px] mb-2 uppercase tracking-widest">Explanation</div>
+                                                <p className="text-slate-700 text-sm font-medium leading-relaxed whitespace-pre-wrap">{quizArr[qIdx]?.rat}</p>
+                                            </div>
+                                            <button onClick={nextQuestion} className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-4 rounded-2xl font-bold text-[17px] active:scale-95 transition-transform shadow-lg shadow-blue-500/20">{qIdx === quizArr.length - 1 ? '查看成绩' : '下一题'}</button>
+                                        </div>
+                                    )}
+                                </div>
+                            ) : (
+                                <div className="text-center bg-white rounded-[32px] p-10 shadow-[0_10px_40px_rgba(15,23,42,0.06)] border border-white/70">
+                                    <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-500/30">
+                                        <CheckCircle2 className="w-10 h-10 text-white" />
+                                    </div>
+                                    <h2 className="text-2xl font-bold mb-2 tracking-tight">{isReinforcement ? '强化练习完成' : tab === 'gaokaoquiz' ? '真题完成' : '测验完成'}</h2>
+                                    <div className="text-6xl font-bold text-blue-500 mb-8 tracking-tighter">{Math.round((score / quizArr.length) * 100)}<span className="text-xl text-slate-300 ml-1 font-medium">%</span></div>
+                                    {(tab === 'quiz' || tab === 'gaokaoquiz') && !isReinforcement && <button onClick={() => setTab('mistakes')} className="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold mb-3 active:scale-95 transition-transform">查看错题</button>}
+                                    <button onClick={() => startQuiz(tab === 'gaokaoquiz' ? 'gaokao' : 'full')} className="w-full bg-slate-100 text-slate-700 py-4 rounded-2xl font-bold active:bg-slate-200">重新开始</button>
+                                </div>
+                            )}
+                        </div>
+                    );
+                }
+
+                if (tab === 'mistakes') {
+                    return (
+                        <div>
+                            <h2 className="text-2xl font-bold tracking-tight mb-6">错题库</h2>
+                            {mistakeBank.length === 0 ? (
+                                <div className="text-center p-10 bg-white rounded-[32px] shadow-[0_10px_40px_rgba(15,23,42,0.06)] text-slate-400 font-medium">还没有错题，继续保持。</div>
+                            ) : (
+                                <div className="space-y-6">
+                                    {mistakeBank.map((m) => (
+                                        <div key={m.id} className="bg-white p-6 rounded-[32px] shadow-[0_10px_40px_rgba(15,23,42,0.06)] border-l-4 border-rose-500 relative">
+                                            <button onClick={() => setMistakeBank((prev) => prev.filter((x) => x.id !== m.id))} className="absolute top-4 right-4 p-2 text-slate-300 active:text-rose-500"><XCircle className="w-5 h-5" /></button>
+                                            <div className="text-[10px] font-bold text-slate-400 mb-3 uppercase tracking-wider">{m.unitKey}</div>
+                                            <p className="font-semibold text-[15px] mb-4 leading-relaxed whitespace-pre-wrap">{m.q}</p>
+                                            <div className="flex flex-col gap-2 mb-4">
+                                                <div className="bg-rose-50 text-rose-700 px-3 py-2.5 rounded-xl text-sm font-medium flex items-center gap-2"><XCircle className="w-4 h-4" />{m.wrongOpt}</div>
+                                                <div className="bg-emerald-50 text-emerald-700 px-3 py-2.5 rounded-xl text-sm font-medium flex items-center gap-2"><CheckCircle2 className="w-4 h-4" />{m.correctOpt}</div>
+                                            </div>
+                                            <p className="text-xs font-medium text-slate-500 bg-slate-50 p-4 rounded-xl mb-4 leading-relaxed whitespace-pre-wrap">{m.rat}</p>
+                                            {m.meta && <button onClick={() => startReinforcement(m.meta)} className="w-full py-3.5 bg-amber-50 text-amber-700 font-bold rounded-xl active:bg-amber-100 transition-colors flex items-center justify-center gap-2"><Zap className="w-4 h-4" />强化练习</button>}
+                                        </div>
+                                    ))}
+                                    <button onClick={() => setMistakeBank([])} className="w-full mt-6 py-4 text-rose-500 font-bold bg-white rounded-2xl active:bg-rose-50 transition-colors">清空错题库</button>
+                                </div>
+                            )}
+                        </div>
+                    );
+                }
+
+                if (tab === 'mastery') {
+                    const bookUnits = [1, 2, 3, 4, 5].map((u) => ({
+                        unit: u,
+                        key: `${activeBookId}-${u}`,
+                        progress: getUnitProgress(`${activeBookId}-${u}`)
+                    }));
+                    const completedCount = bookUnits.filter(item => item.progress.attempts > 0).length;
+                    const totalAttempts = bookUnits.reduce((sum, item) => sum + item.progress.attempts, 0);
+                    const avgBest = completedCount ? Math.round(bookUnits.reduce((sum, item) => sum + item.progress.bestScore, 0) / completedCount) : 0;
+
+                    return (
+                        <div className="space-y-6">
+                            <div>
+                                <h2 className="text-2xl font-bold tracking-tight mb-6">学习进度</h2>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                                    <div className="bg-white rounded-[28px] p-5 shadow-[0_10px_40px_rgba(15,23,42,0.06)]">
+                                        <div className="text-xs text-slate-400 font-semibold mb-2">已练单元</div>
+                                        <div className="text-3xl font-bold text-slate-900">{completedCount}<span className="text-base text-slate-400 font-semibold"> / 5</span></div>
+                                        <div className="text-sm text-slate-500 mt-2">进入过练习并完成提交的单元数量</div>
+                                    </div>
+                                    <div className="bg-white rounded-[28px] p-5 shadow-[0_10px_40px_rgba(15,23,42,0.06)]">
+                                        <div className="text-xs text-slate-400 font-semibold mb-2">累计练习次数</div>
+                                        <div className="text-3xl font-bold text-slate-900">{totalAttempts}</div>
+                                        <div className="text-sm text-slate-500 mt-2">每完成一次单元练习或重点练习都会累计</div>
+                                    </div>
+                                    <div className="bg-white rounded-[28px] p-5 shadow-[0_10px_40px_rgba(15,23,42,0.06)]">
+                                        <div className="text-xs text-slate-400 font-semibold mb-2">平均最佳分</div>
+                                        <div className="text-3xl font-bold text-slate-900">{avgBest}%</div>
+                                        <div className="text-sm text-slate-500 mt-2">基于当前册已练单元的最高成绩</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="bg-white rounded-[32px] p-6 shadow-[0_10px_40px_rgba(15,23,42,0.06)]">
+                                <h3 className="font-bold text-[15px] mb-5 border-b border-slate-100 pb-3">{SYLLABUS.find((b) => b.id === activeBookId)?.name}</h3>
+                                <div className="space-y-5">
+                                    {bookUnits.map(({ unit, key, progress }) => {
+                                        const accuracy = progress.totalQuestions ? Math.round(progress.totalCorrect / progress.totalQuestions * 100) : 0;
+                                        const barValue = progress.attempts > 0 ? Math.max(progress.bestScore, 8) : 0;
+                                        return (
+                                            <div key={key} className="border border-slate-100 rounded-2xl p-4">
+                                                <div className="flex items-start justify-between gap-4 mb-3">
+                                                    <div>
+                                                        <div className="font-bold text-slate-800">Unit {unit}</div>
+                                                        <div className="text-xs text-slate-400 mt-1">{progress.attempts > 0 ? `最近练习：${progress.lastPracticedAt || '已记录'}` : '尚未开始练习'}</div>
+                                                    </div>
+                                                    <div className="text-right">
+                                                        <div className="text-sm font-bold text-blue-600">最佳 {progress.bestScore}%</div>
+                                                        <div className="text-xs text-slate-400 mt-1">最近 {progress.lastScore}%</div>
+                                                    </div>
+                                                </div>
+
+                                                <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden mb-4">
+                                                    <div className={`h-full transition-all duration-1000 ${progress.bestScore >= 90 ? 'bg-emerald-500' : progress.bestScore >= 60 ? 'bg-blue-500' : progress.attempts > 0 ? 'bg-amber-500' : 'bg-slate-200'}`} style={{ width: `${barValue}%` }} />
+                                                </div>
+
+                                                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                                                    <div className="bg-slate-50 rounded-xl px-3 py-2">
+                                                        <div className="text-slate-400 text-xs">练习次数</div>
+                                                        <div className="font-bold text-slate-700 mt-1">{progress.attempts}</div>
+                                                    </div>
+                                                    <div className="bg-slate-50 rounded-xl px-3 py-2">
+                                                        <div className="text-slate-400 text-xs">累计正确率</div>
+                                                        <div className="font-bold text-slate-700 mt-1">{accuracy}%</div>
+                                                    </div>
+                                                    <div className="bg-slate-50 rounded-xl px-3 py-2">
+                                                        <div className="text-slate-400 text-xs">单元练习</div>
+                                                        <div className="font-bold text-slate-700 mt-1">{progress.fullAttempts}</div>
+                                                    </div>
+                                                    <div className="bg-slate-50 rounded-xl px-3 py-2">
+                                                        <div className="text-slate-400 text-xs">重点练习</div>
+                                                        <div className="font-bold text-slate-700 mt-1">{progress.focusAttempts}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+                    );
+                }
+
+                if (tab === 'gaokao') {
+                    startQuiz('gaokao');
+                    return null;
+                }
+
+                return null;
+            };
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 text-slate-800">
+                    <div className="max-w-[1480px] mx-auto p-3 md:p-5">
+                        <div className="flex gap-4 md:gap-6">
+                            <aside className="hidden lg:flex w-[292px] shrink-0 flex-col rounded-[30px] bg-white/85 backdrop-blur-xl border border-white/70 shadow-[0_12px_40px_rgba(15,23,42,0.08)] p-4 sticky top-5 h-[calc(100vh-40px)]">
+                                <div className="flex items-center gap-3 mb-5">
+                                    <div className="bg-gradient-to-br from-blue-500 to-indigo-500 p-2.5 rounded-2xl shadow-lg shadow-blue-500/20">
+                                        <GraduationCap className="w-5 h-5 text-white" />
+                                    </div>
+                                    <div>
+                                        <h1 className="font-bold tracking-tight text-lg text-slate-900">糖糖提分通</h1>
+                                        <p className="text-xs text-slate-500">英语提分学习平台</p>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-3 mb-5">
+                                    <div className="relative">
+                                        <select value={activeBookId} onChange={(e) => { setActiveBookId(e.target.value); setActiveUnit(1); setTab('notes'); }} className="w-full bg-slate-100/80 font-semibold rounded-2xl pl-4 pr-10 py-3 outline-none">
+                                            {SYLLABUS.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
+                                        </select>
+                                        <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                                    </div>
+                                    <div className="relative">
+                                        <select value={activeUnit} onChange={(e) => { setActiveUnit(Number(e.target.value)); setTab('notes'); }} className="w-full bg-slate-100/80 font-semibold rounded-2xl pl-4 pr-10 py-3 outline-none">
+                                            {[1,2,3,4,5].map((u) => <option key={u} value={u}>Unit {u}</option>)}
+                                        </select>
+                                        <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    {navItems.map((item) => (
+                                        <button
+                                            key={item.id}
+                                            onClick={() => { if (item.id === 'gaokao') startQuiz('gaokao'); else setTab(item.id); }}
+                                            className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all font-semibold ${((tab === item.id) || (tab === 'gaokaoquiz' && item.id === 'gaokao')) ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/20' : 'text-slate-600 hover:bg-slate-100'}`}
+                                        >
+                                            {item.icon}
+                                            <span>{item.label}</span>
+                                        </button>
+                                    ))}
+                                </div>
+
+                                <div className="mt-auto">
+                                    <div className="rounded-[24px] bg-slate-50 border border-slate-100 p-4">
+                                        <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">当前学习</div>
+                                        <div className="text-base font-bold text-slate-900 mb-1">{currentBookName}</div>
+                                        <div className="text-sm text-slate-500 mb-3">Unit {activeUnit}</div>
+                                        <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                                            <div className="h-full bg-gradient-to-r from-blue-500 to-indigo-500" style={{ width: `${masteryData[unitKey] || 0}%` }} />
+                                        </div>
+                                        <div className="text-xs text-slate-500 mt-2">掌握度：{masteryData[unitKey] || 0}%</div>
+                                    </div>
+                                </div>
+                            </aside>
+
+                            <section className="flex-1 min-w-0">
+                                <div className="lg:hidden sticky top-3 z-40 mb-4">
+                                    <div className="rounded-[24px] bg-white/85 backdrop-blur-xl border border-white/70 shadow-[0_8px_30px_rgba(15,23,42,0.06)] px-4 py-3 flex items-center justify-between">
+                                        <div className="flex items-center gap-3 min-w-0">
+                                            <div className="bg-gradient-to-br from-blue-500 to-indigo-500 p-2 rounded-xl shadow-md shadow-blue-500/20">
+                                                <GraduationCap className="w-5 h-5 text-white" />
+                                            </div>
+                                            <div className="min-w-0">
+                                                <div className="font-bold text-slate-900 truncate">糖糖提分通</div>
+                                                <div className="text-xs text-slate-500 truncate">{currentBookName} · Unit {activeUnit}</div>
+                                            </div>
+                                        </div>
+                                        <button onClick={() => setSidebarOpen(true)} className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center">
+                                            <Menu className="w-5 h-5 text-slate-700" />
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {sidebarOpen && (
+                                    <div className="lg:hidden fixed inset-0 z-50">
+                                        <div className="absolute inset-0 bg-slate-900/35 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
+                                        <div className="absolute left-0 top-0 h-full w-[84%] max-w-[320px] bg-white rounded-r-[28px] shadow-2xl p-4 overflow-y-auto">
+                                            <div className="flex items-center justify-between mb-5">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="bg-gradient-to-br from-blue-500 to-indigo-500 p-2.5 rounded-2xl"><GraduationCap className="w-5 h-5 text-white" /></div>
+                                                    <div>
+                                                        <h2 className="font-bold text-slate-900">糖糖提分通</h2>
+                                                        <p className="text-xs text-slate-500">学习导航</p>
+                                                    </div>
+                                                </div>
+                                                <button onClick={() => setSidebarOpen(false)} className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center"><X className="w-5 h-5 text-slate-700" /></button>
+                                            </div>
+
+                                            <div className="space-y-3 mb-5">
+                                                <div className="relative">
+                                                    <select value={activeBookId} onChange={(e) => { setActiveBookId(e.target.value); setActiveUnit(1); setTab('notes'); setSidebarOpen(false); }} className="w-full bg-slate-100/80 font-semibold rounded-2xl pl-4 pr-10 py-3 outline-none">
+                                                        {SYLLABUS.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
+                                                    </select>
+                                                    <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                                                </div>
+                                                <div className="relative">
+                                                    <select value={activeUnit} onChange={(e) => { setActiveUnit(Number(e.target.value)); setTab('notes'); setSidebarOpen(false); }} className="w-full bg-slate-100/80 font-semibold rounded-2xl pl-4 pr-10 py-3 outline-none">
+                                                        {[1,2,3,4,5].map((u) => <option key={u} value={u}>Unit {u}</option>)}
+                                                    </select>
+                                                    <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                                                </div>
+                                            </div>
+
+                                            <div className="space-y-2">
+                                                {navItems.map((item) => (
+                                                    <button
+                                                        key={item.id}
+                                                        onClick={() => { if (item.id === 'gaokao') startQuiz('gaokao'); else setTab(item.id); setSidebarOpen(false); }}
+                                                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all font-semibold ${((tab === item.id) || (tab === 'gaokaoquiz' && item.id === 'gaokao')) ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/20' : 'text-slate-600 hover:bg-slate-100'}`}
+                                                    >
+                                                        {item.icon}
+                                                        <span>{item.label}</span>
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div className="rounded-[30px] bg-white/70 backdrop-blur-xl border border-white/70 shadow-[0_8px_30px_rgba(15,23,42,0.05)] px-3 py-3 mb-5">
+                                    <div className="flex items-center justify-between gap-3 flex-wrap">
+                                        <div>
+                                            <div className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400 mb-1">Learning Center</div>
+                                            <h2 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900">{currentTabLabel}</h2>
+                                        </div>
+                                        <div className="hidden md:flex p-1 bg-slate-100/80 rounded-[18px] overflow-x-auto no-scrollbar shadow-inner">
+                                            {navItems.map((t) => (
+                                                <button
+                                                    key={t.id}
+                                                    onClick={() => { if (t.id === 'gaokao') startQuiz('gaokao'); else setTab(t.id); }}
+                                                    className={`flex-none flex items-center justify-center gap-1.5 min-w-[92px] px-4 py-2.5 rounded-[14px] transition-all ${((tab === t.id) || (tab === 'gaokaoquiz' && t.id === 'gaokao')) ? 'bg-white text-blue-500 shadow-sm font-bold' : 'text-slate-500 font-semibold active:bg-slate-300/50'}`}
+                                                >
+                                                    {t.icon}
+                                                    <span className="text-sm tracking-wide">{t.label}</span>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <main className="pb-10">{renderMainContent()}</main>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

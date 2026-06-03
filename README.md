@@ -1,33 +1,24 @@
-🎓 糖糖提分通 TT1.0 (High School English Master)
+# 🎓 High School English Master (TT1.0)
 
-📖 项目简介
+## 📖 Project Overview
+Originally developed as a personalized learning tool for my daughter (Tangtang) and high school students in mainland China, this project has evolved into a comprehensive, open-source English learning framework (TT1.0). It is not merely a review utility; it is a full-featured educational engine encompassing core testing points across 7 textbooks and 35 syllabus units.
 
-这是为女儿糖糖以及跟她一样在中国大陆学习高中英语的学生量身定制的全高中英语提分大系统 (TT1.0 正式版)。本项目不仅是一个复习工具，更是一个包含了从《必修一》到《选择性必修四》整整 7 册书、35 个单元核心考点的全能学习引擎。
+The system is engineered on a zero-dependency, single-file HTML architecture. By elegantly integrating React and Tailwind CSS within this lightweight structure, it delivers a remarkably smooth, native-app-like user experience without any backend overhead.
 
-系统完全采用零依赖的单文件 HTML 架构编写，结合 React 和 Tailwind CSS，实现了如原生应用般的丝滑体验。
+## ✨ Core Features
+*   📚 **100% Curriculum-Aligned Content:** Comprehensive coverage of high-frequency vocabulary, multiple-meaning words, essential essay templates, and in-depth grammar analysis (e.g., subjunctive mood, inverted sentences, non-finite verbs) perfectly aligned with the official syllabus.
+*   🎧 **Zero-Latency Native TTS:** Leverages the Web Speech API to provide instant, authentic pronunciation for any core word or example sentence. The playback speed is intentionally optimized to 0.9x to perfectly suit shadowing and imitation exercises for ESL students.
+*   🧠 **Dynamic Quiz Generation Engine:** Features a built-in repository of real-world exam questions. The engine dynamically extracts exclusive core vocabulary and grammatical traps from the current unit to automatically generate targeted reading comprehension, cloze tests, and grammar-fill exercises.
+*   📝 **AI-Powered Writing Tutor:** An integrated writing module that utilizes AI models to grade English essays on a standard 15-point scale. It provides automated syntax correction, generates model essays, and offers personalized, encouraging feedback.
+*   📊 **Immersive 3D Flashcards & Mastery Radar:** UI/UX designed to modern industry standards, featuring interactive 3D flipping flashcards. It globally tracks test scores across all 35 units, visualizing the learning curve and score improvement through intuitive progress bars and radar charts.
 
-✨ 核心功能
+## 🚀 Deployment & Usage
+This project features a purely static, single-file architecture, requiring absolutely no Node.js environment, package managers, or complex build tools.
 
-📚 100% 真实考点对齐：涵盖了所有 35 个单元的高频词汇、熟词生义、李华应用文万能句及深度语法解析（如：虚拟语气、倒装句、非谓语动词等）。
+1.  **Local Use:** Simply download the `index.html` file from this repository and double-click to run it directly in any modern web browser.
+2.  **Cloud Access:** The project is fully optimized for edge deployment (e.g., Cloudflare Pages / GitHub Pages). It is fully responsive and can be accessed seamlessly anytime, anywhere on smartphones or tablets.
 
-🎧 零延迟原生发音：引入 Web Speech API，点击任何核心单词或例句即可实现零延迟、纯正发音，并专门将语速调至 0.9 倍，完美适配高中生跟读模仿。
+## 👨‍🏫 Developer's Vision
+"Mastering a language exam is essentially a game of recognizing patterns. Once students memorize and correctly piece together these core fragments, their scores will naturally improve. Tangtang, this framework is the starting point for your leap in English—keep going! 
 
-🧠 智能动态组卷引擎：内置精编的高考实战题库。系统会强制提取当前单元的专属核心词和语法陷阱，自动生成阅读、完形和语法填空题。
-
-📝 AI 写作私教：内置写作模块，结合 AI 模型对英语作文进行 15 分制打分、语法纠错，并提供满分范文和鼓励指导。
-
-📊 沉浸式 3D 识字卡与掌握度雷达：对标国际大厂的 UI/UX 设计，卡片支持 3D 翻转。全局记录 35 个单元的测试分数，以进度条和雷达图直观展现提分进度。
-
-🚀 部署与使用
-
-本项目为纯静态单文件架构，无需任何 Node.js 或构建工具环境。
-
-下载本项目中的 index.html 文件。
-
-双击直接在浏览器中打开即可运行。
-
-在线访问：已通过 Cloudflare Pages / GitHub Pages 完成云端部署，可直接通过专属域名随时随地在手机或平板上访问。
-
-👨‍🏫 老师寄语
-
-“英语考试其实是一场‘找规律’的游戏。只要把核心碎片记住、拼对，分数自然就上来了。糖糖，这本合订本是你英语腾飞的开始，加油！”
+To the open-source developer community: I hope this template lowers the barrier for educational tool development and empowers more families to build highly accessible, tailored learning experiences for their children."

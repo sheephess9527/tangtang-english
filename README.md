@@ -1,4 +1,4 @@
-# 🎓 High School English Master (TT1.0)
+# 🎓 High School English Master (TT1.5)
 
 ## 📖 Project Overview
 Originally developed as a personalized learning tool for my daughter (Tangtang) and high school students in mainland China, this project has evolved into a comprehensive, open-source English learning framework (TT1.0). It is not merely a review utility; it is a full-featured educational engine encompassing core testing points across 7 textbooks and 35 syllabus units.

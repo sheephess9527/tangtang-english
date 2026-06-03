@@ -1,7 +1,7 @@
 # 🎓 High School English Master (TT1.5)
 
 ## 📖 Project Overview
-Originally developed as a personalized learning tool for my daughter (Tangtang) and high school students in mainland China, this project has evolved into a comprehensive, open-source English learning framework (TT1.0). It is not merely a review utility; it is a full-featured educational engine encompassing core testing points across 7 textbooks and 35 syllabus units.
+Originally developed as a personalized learning tool for my daughter (Tangtang) and high school students in mainland China, this project has evolved into a comprehensive, open-source English learning framework (TT1.5). It is not merely a review utility; it is a full-featured educational engine encompassing core testing points across 7 textbooks and 35 syllabus units.
 
 The system is engineered on a zero-dependency, single-file HTML architecture. By elegantly integrating React and Tailwind CSS within this lightweight structure, it delivers a remarkably smooth, native-app-like user experience without any backend overhead.
 

@@ -2,13 +2,14 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>糖糖提分通</title>
     
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Tailwind Play CDN 未发布到 npm，无法校验 SRI 哈希，仅锁定版本号 -->
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" integrity="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.29.7/babel.min.js" integrity="sha384-ezQ6HS3FLspd9te19o2McUV6FAK091+GG7KO54f/R8DKgCDi7fULhapNrd5LY+vG" crossorigin="anonymous"></script>
 
     <style>
         /* ── Design tokens ── */
@@ -329,13 +330,12 @@
             dbData.sentences.forEach((s, idx) => {
                 cards.push({ id: `s-${idx}`, f: `[李华金句] 翻译：\n${s.z}`, b: s.e, type: 'sentence' });
             });
-            return cards.sort(() => Math.random() - 0.5); 
+            return shuffle(cards);
         };
 
         const gaokaoTags = [
-            '2026年浙江首考卷', '2025年1月浙江卷', '2025年全国新高考I卷', 
-            '2024年6月浙江卷', '2024年1月浙江卷', '2023年全国新高考II卷',
-            '2022年1月浙江卷', '2022年全国卷阅读C篇改编', '历年浙江高考高频易错题'
+            '浙江卷风格模拟题', '高频考点模拟', '单元核心检测',
+            '易错点强化模拟', '仿高考语境演练'
         ];
         const getRandomTag = () => gaokaoTags[Math.floor(Math.random() * gaokaoTags.length)];
 
@@ -343,7 +343,15 @@
         // 5. 重点练习 20题生成引擎 & 错题强化引擎
         // ==========================================
         
-        const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
+        // Fisher-Yates 均匀洗牌
+        const shuffle = (arr) => {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        };
         const unique = (arr) => [...new Set((arr || []).filter(Boolean))];
         const pickN = (arr, n) => shuffle(unique(arr)).slice(0, n);
         const cleanWord = (w) => (w || '').replace(/\(.*?\)/g, '').trim();
@@ -742,27 +750,37 @@ Which option best expresses its meaning?`,
             const quiz = [];
             const minCount = isGaokaoMode ? 20 : 10;
 
+            // 按“题型 + 考点”去重，避免同一套题里出现重复题目
+            const seen = new Set();
+            const pushQ = (q) => {
+                const d = q.meta?.data || {};
+                const key = `${q.type}|${d.w ?? d.t ?? d.id ?? d.word?.w ?? q.q}`;
+                if (seen.has(key)) return;
+                seen.add(key);
+                quiz.push(q);
+            };
+
             pickN(words, isGaokaoMode ? 5 : 3).forEach(w => {
-                quiz.push(buildThemeMeaningQ(unitData, w, all));
-                quiz.push(buildContextWordQ(unitData, w, all));
+                pushQ(buildThemeMeaningQ(unitData, w, all));
+                pushQ(buildContextWordQ(unitData, w, all));
             });
 
             pickN(all, isGaokaoMode ? 4 : 2).forEach(w => {
-                quiz.push(buildCollocationQ(unitData, w, all));
+                pushQ(buildCollocationQ(unitData, w, all));
             });
 
             pickN(grammar, isGaokaoMode ? 4 : 2).forEach(g => {
-                quiz.push(buildGrammarInContextQ(unitData, g, grammar));
-                quiz.push(buildGrammarErrorQ(unitData, g, grammar));
+                pushQ(buildGrammarInContextQ(unitData, g, grammar));
+                pushQ(buildGrammarErrorQ(unitData, g, grammar));
             });
 
             pickN(sentences, isGaokaoMode ? 4 : 2).forEach(s => {
-                quiz.push(buildSentenceInferenceQ(unitData, s));
+                pushQ(buildSentenceInferenceQ(unitData, s));
             });
 
             if (isGaokaoMode && words.length) {
                 pickN(words, 2).forEach((w, i) => {
-                    quiz.push(buildWritingStrategyQ(unitData, w, grammar[i % Math.max(grammar.length, 1)] || null));
+                    pushQ(buildWritingStrategyQ(unitData, w, grammar[i % Math.max(grammar.length, 1)] || null));
                 });
             }
 
@@ -771,17 +789,17 @@ Which option best expresses its meaning?`,
                 guard++;
                 if (words.length) {
                     const w = words[guard % words.length];
-                    quiz.push(buildThemeMeaningQ(unitData, w, all));
+                    pushQ(buildThemeMeaningQ(unitData, w, all));
                 }
                 if (quiz.length >= minCount) break;
                 if (grammar.length) {
                     const g = grammar[guard % grammar.length];
-                    quiz.push(buildGrammarInContextQ(unitData, g, grammar));
+                    pushQ(buildGrammarInContextQ(unitData, g, grammar));
                 }
                 if (quiz.length >= minCount) break;
                 if (sentences.length) {
                     const s = sentences[guard % sentences.length];
-                    quiz.push(buildSentenceInferenceQ(unitData, s));
+                    pushQ(buildSentenceInferenceQ(unitData, s));
                 }
             }
 
@@ -1133,20 +1151,24 @@ Which option best expresses its meaning?`,
 
             const startCardLoop = (keepWrongOnly = false) => {
                 const existing = normalizeCardLoopRecord(cardLoopData[unitKey]);
+                const fullDeck = buildInitialCardQueue(dbData, unitKey, mistakeBank);
                 let queue = [];
                 let rounds = existing.rounds || 0;
-                let masteredIds = keepWrongOnly ? [] : [];
+                let masteredIds = [];
 
                 if (keepWrongOnly) {
-                    const currentQueue = (existing.queue || []).filter(card => (existing.wrongIds || []).includes(card.id));
-                    if (currentQueue.length === 0) {
+                    // 一轮结束后 queue 已被清空，打叉卡片要按 wrongIds 从完整卡池里重建
+                    const wrongIds = existing.wrongIds || [];
+                    const wrongCards = fullDeck.filter(card => wrongIds.includes(card.id));
+                    if (wrongCards.length === 0) {
                         alert('当前没有需要重新循环的打叉卡片。');
                         return;
                     }
-                    queue = shuffle(currentQueue).map((card, index) => ({ ...card, _seed: `${card.id}-retry-${rounds + 1}-${index}` }));
+                    queue = shuffle(wrongCards).map((card, index) => ({ ...card, _seed: `${card.id}-retry-${rounds + 1}-${index}` }));
                     rounds = rounds + 1;
+                    masteredIds = existing.masteredIds || [];
                 } else {
-                    queue = shuffle(buildInitialCardQueue(dbData, unitKey, mistakeBank)).map((card, index) => ({ ...card, _seed: `${card.id}-round1-${index}` }));
+                    queue = shuffle(fullDeck).map((card, index) => ({ ...card, _seed: `${card.id}-round1-${index}` }));
                     rounds = 1;
                 }
 
@@ -1159,7 +1181,7 @@ Which option best expresses its meaning?`,
                         rounds,
                         reviewed: 0,
                         completed: false,
-                        totalBaseCards: buildInitialCardQueue(dbData, unitKey, mistakeBank).length,
+                        totalBaseCards: fullDeck.length,
                         lastStudiedAt: new Date().toLocaleString('zh-CN', { hour12: false })
                     }
                 }));
@@ -1182,65 +1204,64 @@ Which option best expresses its meaning?`,
             const [activeCards, setActiveCards] = useState([]);
 
             useEffect(() => {
-                if (tab === 'cards') {
-                    const existing = normalizeCardLoopRecord(cardLoopData[unitKey]);
-                    if (existing.queue && existing.queue.length > 0) {
-                        setActiveCards(existing.queue);
-                    } else {
-                        const initialQueue = shuffle(buildInitialCardQueue(dbData, unitKey, mistakeBank)).map((card, index) => ({ ...card, _seed: `${card.id}-auto-${index}` }));
-                        setActiveCards(initialQueue);
-                        setCardLoopData(prev => ({
-                            ...prev,
-                            [unitKey]: {
-                                ...normalizeCardLoopRecord(prev[unitKey]),
-                                queue: initialQueue,
-                                wrongIds: [],
-                                masteredIds: [],
-                                rounds: 1,
-                                reviewed: 0,
-                                completed: false,
-                                totalBaseCards: buildInitialCardQueue(dbData, unitKey, mistakeBank).length,
-                                lastStudiedAt: new Date().toLocaleString('zh-CN', { hour12: false })
-                            }
-                        }));
-                    }
+                if (tab !== 'cards') return;
+                const existing = normalizeCardLoopRecord(cardLoopData[unitKey]);
+                if (existing.queue && existing.queue.length > 0) {
+                    setActiveCards(existing.queue);
+                } else if ((existing.rounds || 0) > 0) {
+                    // 本轮已刷完：保持空队列以显示结算页，不要自动重置整副卡片
+                    setActiveCards([]);
+                } else {
+                    // 从未开始过：自动生成第一轮
+                    const initialQueue = shuffle(buildInitialCardQueue(dbData, unitKey, mistakeBank)).map((card, index) => ({ ...card, _seed: `${card.id}-auto-${index}` }));
+                    setActiveCards(initialQueue);
+                    setCardLoopData(prev => ({
+                        ...prev,
+                        [unitKey]: {
+                            ...normalizeCardLoopRecord(prev[unitKey]),
+                            queue: initialQueue,
+                            wrongIds: [],
+                            masteredIds: [],
+                            rounds: 1,
+                            reviewed: 0,
+                            completed: false,
+                            totalBaseCards: initialQueue.length,
+                            lastStudiedAt: new Date().toLocaleString('zh-CN', { hour12: false })
+                        }
+                    }));
                 }
             }, [tab, unitKey, dbData, mistakeBank, cardLoopData]);
 
             const handleUpdateCardStatus = (card, status) => {
-                setCardLoopData(prev => {
-                    const current = normalizeCardLoopRecord(prev[unitKey]);
-                    const currentQueue = current.queue && current.queue.length ? current.queue : activeCards;
-                    if (!currentQueue || currentQueue.length === 0) return prev;
+                const current = normalizeCardLoopRecord(cardLoopData[unitKey]);
+                const currentQueue = current.queue && current.queue.length ? current.queue : activeCards;
+                if (!currentQueue || currentQueue.length === 0) return;
 
-                    const restQueue = currentQueue.slice(1);
-                    let nextQueue = restQueue;
-                    let wrongIds = current.wrongIds || [];
-                    let masteredIds = current.masteredIds || [];
+                const nextQueue = currentQueue.slice(1);
+                let wrongIds = current.wrongIds || [];
+                let masteredIds = current.masteredIds || [];
 
-                    if (status === 'known') {
-                        wrongIds = wrongIds.filter(id => id !== card.id);
-                        masteredIds = unique([...masteredIds, card.id]);
-                    } else {
-                        if (!wrongIds.includes(card.id)) wrongIds = [...wrongIds, card.id];
-                        masteredIds = masteredIds.filter(id => id !== card.id);
+                if (status === 'known') {
+                    wrongIds = wrongIds.filter(id => id !== card.id);
+                    masteredIds = unique([...masteredIds, card.id]);
+                } else {
+                    if (!wrongIds.includes(card.id)) wrongIds = [...wrongIds, card.id];
+                    masteredIds = masteredIds.filter(id => id !== card.id);
+                }
+
+                setActiveCards(nextQueue);
+                setCardLoopData(prev => ({
+                    ...prev,
+                    [unitKey]: {
+                        ...normalizeCardLoopRecord(prev[unitKey]),
+                        queue: nextQueue,
+                        wrongIds,
+                        masteredIds,
+                        reviewed: (current.reviewed || 0) + 1,
+                        completed: nextQueue.length === 0,
+                        lastStudiedAt: new Date().toLocaleString('zh-CN', { hour12: false })
                     }
-
-                    setActiveCards(nextQueue);
-
-                    return {
-                        ...prev,
-                        [unitKey]: {
-                            ...current,
-                            queue: nextQueue,
-                            wrongIds,
-                            masteredIds,
-                            reviewed: (current.reviewed || 0) + 1,
-                            completed: nextQueue.length === 0,
-                            lastStudiedAt: new Date().toLocaleString('zh-CN', { hour12: false })
-                        }
-                    };
-                });
+                }));
             };
 
             const playAudio = useCallback((text, e) => {
@@ -1674,11 +1695,6 @@ Which option best expresses its meaning?`,
                             </div>
                         </div>
                     );
-                }
-
-                if (tab === 'gaokao') {
-                    startQuiz('gaokao');
-                    return null;
                 }
 
                 return null;

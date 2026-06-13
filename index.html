@@ -309,7 +309,225 @@
           'S4-5':{title:'The Virtual World (虚拟世界)', msg:'糖糖，这是高中英语的最后一关！搞定间接引语的“时空大挪移”，保持陈述语序，你就完成了高中英语的完美通关！',words:[{w:'artificial',m:'adj.人造的',d:'artificial intelligence'},{w:'virtual',m:'adj.虚拟的',d:'virtual reality'},{w:'interact',m:'v.互动',d:'interaction n.'},{w:'simulation',m:'n.模拟',d:'simulate v.'},{w:'ethics',m:'n.伦理',d:'ethical adj.'},{w:'breakthrough',m:'n.突破',d:'make a breakthrough'},{w:'application',m:'n.应用',d:'apply v.'},{w:'vision',m:'n.远见',d:'visionary adj.'},{w:'initial',m:'adj.最初的',d:'initiative n.'},{w:'enable',m:'v.使能够',d:'enable sb to do'}],l2:[{w:'boundary', m:'生义:边界/界限'},{w:'enhance', m:'生义:增强/提高 (enhancement)'},{w:'reality', m:'派生: realistic(现实的)'},{w:'automatic', m:'派生: automatically(自动地)'}],grammar:[{t:'间接引语的时空大挪移',r:'转述别人的话，时态降级 (will->would, is->was)。',p:'He said he would come.'},{t:'间接引语的语序陷阱',r:'疑问句必须变回陈述语序（主语在前，谓语在后）。绝不能倒装！',p:'He asked where the hotel was. (不能写 where was the hotel)'},{t:'enable sb to do sth',r:'使某人能够做某事。高考语法填空常客。',p:'Virtual reality enables us to explore the world.'}],sentences:[{e:'Virtual reality enables us to explore the world without leaving our homes.',z:'虚拟现实使我们足不出户就能探索世界。'},{e:'While AI brings great convenience, we must consider ethical issues.',z:'虽然人工智能带来了极大便利，我们也必须考虑伦理问题。'}]}
         };
 
-        const getUnitData = (key) => UNIT_DB[key] || UNIT_DB['B2-1']; 
+        const getUnitData = (key) => UNIT_DB[key] || UNIT_DB['B2-1'];
+
+        // ==========================================
+        // 3.5 AI 精选题库（人工校验，source 标记“AI生成”，与动态题/真题区分）
+        //     每题已自检：正确答案唯一、错误项确属错误、解析自洽；
+        //     存疑题加 "需复核": true 并在解析中说明。
+        // ==========================================
+        const QUESTION_BANK = {
+          'B1-1': [
+            { q: "The maths problem was so ___ that many students felt ___ about it.", opts: ["confusing; confused", "confused; confusing", "confusing; confusing", "confused; confused"], ans: 0, source: "AI生成", rat: "-ing 形容词修饰事物表“令人……的”，problem 用 confusing；-ed 形容词修饰人表“感到……的”，students 用 confused。B 主被对调；C、D 不分人与物，均错。" },
+            { q: "I'm really looking forward to ___ from you again soon.", opts: ["hear", "hearing", "heard", "be hearing"], ans: 1, source: "AI生成", rat: "look forward to 中 to 是介词，后接动名词 doing，故选 hearing。A 原形、C 过去式、D 结构错误，均不符“介词+doing”。" },
+            { q: "As the monitor, Li Hua should be responsible ___ the class affairs.", opts: ["to", "for", "of", "with"], ans: 1, source: "AI生成", rat: "固定搭配 be responsible for（对……负责）。其余介词与 responsible 不搭配。" },
+            { q: "After three years of hard work, she will ___ from high school next summer.", opts: ["survive", "graduate", "volunteer", "improve"], ans: 1, source: "AI生成", rat: "graduate from（从……毕业）符合语境。survive 幸存、volunteer 自愿、improve 提高均与“毕业”不符。" }
+          ],
+          'B1-2': [
+            { q: "Don't worry. My father ___ to pick us up in ten minutes.", opts: ["comes", "is coming", "came", "has come"], ans: 1, source: "AI生成", rat: "come 等位移动词用现在进行时可表按计划即将发生的将来动作，故选 is coming。A 表客观、C 过去时、D 完成时均不能表“马上要来”。" },
+            { q: "I'm going to ___ a passport before my trip abroad.", opts: ["apply to", "apply for", "apply with", "apply at"], ans: 1, source: "AI生成", rat: "apply for + 某物（申请护照）。apply to 用于“向某机构申请”，其余搭配不存在。" },
+            { q: "When we got to the hotel, we ___ at the front desk first.", opts: ["checked in", "checked out", "checked up", "checked off"], ans: 0, source: "AI生成", rat: "check in 指（酒店）登记入住，符合“刚到酒店”。check out 退房、check up 检查、check off 核对均不符。" },
+            { q: "The view from the mountain top was absolutely ___.", opts: ["breathtaking", "disappointing", "boring", "confusing"], ans: 0, source: "AI生成", rat: "breathtaking（令人惊叹的）符合赞美风景；其余三项为消极或不相关词义。" }
+          ],
+          'B1-3': [
+            { q: "All the homework must ___ before the class begins.", opts: ["finish", "be finished", "finished", "finishing"], ans: 1, source: "AI生成", rat: "情态动词被动结构为 must + be + 过去分词；homework 是被完成，选 be finished。A 主动、C、D 形式错误。" },
+            { q: "___ matters most is how hard you try, not the result.", opts: ["What", "That", "Which", "It"], ans: 0, source: "AI生成", rat: "主语从句缺主语，用 What（……的事物）。That 引导主语从句时从句不缺成分；Which、It 不能这样引导。" },
+            { q: "You should ___ your diet if you want to keep fit.", opts: ["balances", "balance", "balancing", "to balance"], ans: 1, source: "AI生成", rat: "情态动词 should 后接动词原形 balance。其余为第三人称、-ing、to do 形式，均错。" },
+            { q: "Great success usually requires strong ___ and hard work.", opts: ["determination", "failure", "diet", "track"], ans: 0, source: "AI生成", rat: "determination（决心）与“成功、努力”搭配最佳；failure 失败、diet 饮食、track 跑道均不符。" }
+          ],
+          'B1-4': [
+            { q: "The brave girl ___ saved the little boy has been praised by everyone.", opts: ["which", "who", "whom", "whose"], ans: 1, source: "AI生成", rat: "先行词 girl 指人且在从句中作主语，用 who。which 指物；whom 作宾语；whose 表所属，均不合。" },
+            { q: "The houses ___ were destroyed in the earthquake will soon be rebuilt.", opts: ["who", "what", "which", "whose"], ans: 2, source: "AI生成", rat: "先行词 houses 指物作主语，用 which（或 that）。who 指人；what 不引导定语从句；whose 表所属。" },
+            { q: "After the earthquake, many people were ___ under the ruins.", opts: ["trapped", "trap", "trapping", "to trap"], ans: 0, source: "AI生成", rat: "be trapped under/in（被困）为被动结构，主语 people 是被困者，用过去分词 trapped。其余形式不能构成被动。" },
+            { q: "In an emergency, you should keep ___ instead of panicking.", opts: ["calm", "calmly", "calmness", "calming"], ans: 0, source: "AI生成", rat: "keep 是系动词，后接形容词作表语，calm（冷静的）为形容词。calmly 副词、calmness 名词、calming 修饰物，均不符。" }
+          ],
+          'B1-5': [
+            { q: "I would appreciate ___ if you could give me a hand.", opts: ["it", "that", "this", "(不填)"], ans: 0, source: "AI生成", rat: "appreciate it if... 是固定结构，it 作形式宾语指代 if 从句内容，不可省略。其余选项不能作此形式宾语。" },
+            { q: "This is the old house in ___ the famous writer once lived.", opts: ["that", "which", "where", "who"], ans: 1, source: "AI生成", rat: "介词 in 后只能接 which 引导定语从句（live in the house）。that、where 不能紧跟介词；who 指人。" },
+            { q: "We should keep a positive ___ towards learning English.", opts: ["attitude", "expression", "symbol", "system"], ans: 0, source: "AI生成", rat: "固定搭配 attitude towards（对……的态度）。其余名词与 towards 不构成该习惯表达。" },
+            { q: "After years of practice, she can now speak English ___.", opts: ["fluent", "fluently", "fluency", "fluentness"], ans: 1, source: "AI生成", rat: "修饰动词 speak 用副词 fluently（流利地）。fluent 形容词、fluency 名词、fluentness 非常用词。" }
+          ],
+          'B2-1': [
+            { q: "These ancient buildings are well worth ___.", opts: ["protect", "protecting", "to protect", "being protected"], ans: 1, source: "AI生成", rat: "be worth doing 用主动形式表被动含义，选 protecting。worth 后不接 to do，也不接 being done。" },
+            { q: "Thanks to local people, the temple was prevented from ___ during the war.", opts: ["destroy", "destroying", "being destroyed", "destroyed"], ans: 2, source: "AI生成", rat: "prevent...from doing；temple 是被毁，用被动动名词 being destroyed。其余形式不能表“被阻止被毁”。" },
+            { q: "The government has set a ___ on the number of daily visitors to the site.", opts: ["limit", "balance", "proposal", "heritage"], ans: 0, source: "AI生成", rat: "set a limit on（对……设限）符合“控制游客数量”。balance 平衡、proposal 提议、heritage 遗产均不搭配 set a ... on。" },
+            { q: "There is no doubt ___ these traditions are worth keeping alive.", opts: ["that", "which", "what", "whether"], ans: 0, source: "AI生成", rat: "doubt 后接同位语从句，肯定句中用 that（不缺成分、不表疑问）。which/what 作成分；whether 表“是否”与 no doubt 矛盾。" }
+          ],
+          'B2-2': [
+            { q: "Look! The giant panda ___ by the keeper right now.", opts: ["is feeding", "is being fed", "feeds", "has fed"], ans: 1, source: "AI生成", rat: "由 Look 和 right now 知用现在进行时被动 is being fed（正在被喂）。其余为主动或非进行时态。" },
+            { q: "It is high time that we ___ effective measures to protect wildlife.", opts: ["take", "took", "will take", "taking"], ans: 1, source: "AI生成", rat: "It is high time that 从句谓语用一般过去时 took（或 should take）。原形、将来时、-ing 均错。" },
+            { q: "Hunting these rare animals for their fur is strictly ___.", opts: ["illegal", "unlegal", "inlegal", "dislegal"], ans: 0, source: "AI生成", rat: "legal 的反义词加前缀 il-，构成 illegal。unlegal、inlegal、dislegal 均非正确构词。" },
+            { q: "The local government has taken effective ___ to reduce air pollution.", opts: ["measures", "measure", "measuring", "measured"], ans: 0, source: "AI生成", rat: "take measures to do（采取措施）中 measures 用复数。单数、-ing、-ed 均不符该固定搭配。" }
+          ],
+          'B2-3': [
+            { q: "A lot of new apps ___ since the beginning of last year.", opts: ["have developed", "have been developed", "developed", "are developing"], ans: 1, source: "AI生成", rat: "由 since 知用现在完成时；apps 是被开发，用完成时被动 have been developed。其余时态或语态错误。" },
+            { q: "Nowadays students have easy access ___ a great deal of information.", opts: ["of", "for", "to", "with"], ans: 2, source: "AI生成", rat: "have access to（有获取……的途径）中 to 是介词。其余介词不与 access 搭配。" },
+            { q: "___ for me to look up new words on my phone.", opts: ["I am convenient", "It is convenient", "I feel convenient", "There is convenient"], ans: 1, source: "AI生成", rat: "convenient 不能用人作主语，须用 It is convenient for sb to do。A、C 以人作主语错误；D 结构不通。" },
+            { q: "We should be careful to protect our ___ when using the Internet.", opts: ["privacy", "account", "benefit", "update"], ans: 0, source: "AI生成", rat: "protect one's privacy（保护隐私）符合网络安全语境。account 账户、benefit 利益、update 更新均不是“隐私”。" }
+          ],
+          'B2-4': [
+            { q: "This ancient map ___ to my grandfather; please don't take it away.", opts: ["is belonged", "belongs", "is belonging", "has been belonged"], ans: 1, source: "AI生成", rat: "belong to 没有被动语态，也没有进行时，只用一般时态 belongs。其余三项均违反该规则。" },
+            { q: "The bridge ___ in 1900 is still in good use today.", opts: ["building", "built", "to build", "builds"], ans: 1, source: "AI生成", rat: "bridge 与 build 是被动且已完成的关系，用过去分词 built 作定语。building 表主动/进行；to build 表将来；builds 是谓语形式。" },
+            { q: "Honesty and kindness are exactly ___ I want you to learn.", opts: ["what", "that", "which", "how"], ans: 0, source: "AI生成", rat: "表语从句缺宾语（learn 的宾语），用 what。that 引导表语从句时不作成分；which、how 不合语义。" },
+            { q: "Children are naturally ___ about everything around them.", opts: ["curious", "generous", "unusual", "ancient"], ans: 0, source: "AI生成", rat: "be curious about（对……好奇）符合儿童天性。generous 慷慨、unusual 不寻常、ancient 古老均不搭配此语境。" }
+          ],
+          'B2-5': [
+            { q: "___ by the beautiful music, the whole audience began to cry.", opts: ["Move", "Moving", "Moved", "To move"], ans: 2, source: "AI生成", rat: "audience 与 move 是被动关系（被感动），用过去分词 Moved 作状语。Moving 表“令人感动”；Move、To move 形式错误。" },
+            { q: "___ our great relief, the lost child was finally found safe.", opts: ["To", "For", "In", "At"], ans: 0, source: "AI生成", rat: "固定结构 to one's relief（令某人宽慰的是）。其余介词不构成该习惯表达。" },
+            { q: "It suddenly ___ to me that I had left my keys at home.", opts: ["happened", "occurred", "thought", "came"], ans: 1, source: "AI生成", rat: "It occurs to sb that...（某人突然想到）为固定句式，与 to me 搭配用 occurred。happen 不接 to sb that 表“想到”；think、come 结构不符。" },
+            { q: "The music ___ in this studio is very expensive and modern.", opts: ["equipment", "equipments", "an equipment", "equipment are"], ans: 0, source: "AI生成", rat: "equipment 是不可数名词，没有复数，也不加 a/an，谓语用单数。故只有 equipment 正确。" }
+          ],
+          'B3-1': [
+            { q: "___ he said at the meeting greatly surprised all of us.", opts: ["That", "What", "Which", "It"], ans: 1, source: "AI生成", rat: "主语从句中 said 缺宾语，用 What（他所说的话）。That 引导的从句不缺成分；Which、It 不合。" },
+            { q: "___ the festival has a history of over 1,000 years is well known to all.", opts: ["What", "That", "Which", "Whether"], ans: 1, source: "AI生成", rat: "主语从句不缺成分，用 That。What 需作成分；Which 不引导此类从句；Whether 表“是否”与“众所周知”矛盾。" },
+            { q: "He expressed the hope ___ he could visit the festival again.", opts: ["which", "that", "what", "where"], ans: 1, source: "AI生成", rat: "hope 后的同位语从句用 that 引导，不作成分。which/what 要作成分；where 表地点，均不符。" },
+            { q: "Every year, people from all over the country ___ together to celebrate the festival.", opts: ["gather", "range", "decorate", "feature"], ans: 0, source: "AI生成", rat: "gather together（聚集）符合“庆祝节日”。range 范围、decorate 装饰、feature 以……为特色均不符。" }
+          ],
+          'B3-2': [
+            { q: "Modern technology has made ___ possible for us to study online.", opts: ["it", "that", "this", "(不填)"], ans: 0, source: "AI生成", rat: "make it + adj + to do 中 it 作形式宾语，真正宾语是后面的不定式，不可省。其余选项不能作形式宾语。" },
+            { q: "He devoted almost all his free time to ___ children in poor areas.", opts: ["help", "helping", "helped", "to help"], ans: 1, source: "AI生成", rat: "devote...to 中 to 是介词，后接动名词 helping。原形、过去式、to do 均不符“介词+doing”。" },
+            { q: "___ we need most at present is patience and confidence.", opts: ["That", "What", "Which", "It"], ans: 1, source: "AI生成", rat: "主语从句中 need 缺宾语，用 What。其余选项不能引导缺宾语的主语从句。" },
+            { q: "She is always ___ to help others whenever they are in trouble.", opts: ["willing", "tough", "moral", "ancient"], ans: 0, source: "AI生成", rat: "be willing to do（乐意做）符合“乐于助人”。tough 艰难、moral 道德的、ancient 古老均不搭配此结构与语义。" }
+          ],
+          'B3-3': [
+            { q: "When ___ about his future plans, the boy just smiled and said nothing.", opts: ["asked", "asking", "ask", "to ask"], ans: 0, source: "AI生成", rat: "状语从句省略，When (he was) asked，主语与主句一致且为被动，用过去分词 asked。asking 表主动；ask、to ask 形式错误。" },
+            { q: "The young man finally admitted ___ the wallet on the bus.", opts: ["take", "taking", "to take", "taken"], ans: 1, source: "AI生成", rat: "admit 后只能接动名词 doing，选 taking。其余形式不符 admit doing 的用法。" },
+            { q: "Shanghai is the city ___ I spent my happy childhood.", opts: ["which", "that", "where", "when"], ans: 2, source: "AI生成", rat: "先行词 city 表地点，关系词在从句中作地点状语，用 where。which/that 须作主宾语；when 表时间。" },
+            { q: "Many young people come to big cities to ___ better job opportunities.", opts: ["seek", "escape", "claim", "retire"], ans: 0, source: "AI生成", rat: "seek（寻找）与 opportunities 搭配，符合“到大城市找机会”。escape 逃避、claim 宣称、retire 退休均不符。" }
+          ],
+          'B3-4': [
+            { q: "The ground is all wet. It ___ heavily last night.", opts: ["must rain", "must have rained", "must be raining", "may rain"], ans: 1, source: "AI生成", rat: "对过去情况的肯定推测用 must have done，选 must have rained。must rain、must be raining 指现在；由“地面湿透”的确凿证据看，may rain 把握不足，不如 must。" },
+            { q: "We should attach great importance ___ protecting the environment.", opts: ["of", "for", "to", "on"], ans: 2, source: "AI生成", rat: "attach importance to 中 to 是介词，后接动名词。其余介词不与该短语搭配。" },
+            { q: "A new rocket ___ into space next month according to the plan.", opts: ["is to be launched", "is to launch", "launches", "has launched"], ans: 0, source: "AI生成", rat: "be to do 表按计划将发生；rocket 是被发射，用被动 is to be launched。is to launch 主动、一般现在、完成时均不符。" },
+            { q: "China plans to ___ another satellite into orbit this year.", opts: ["launch", "attach", "orbit", "signal"], ans: 0, source: "AI生成", rat: "launch a satellite（发射卫星）为固定搭配。attach 附上、orbit 绕轨运行、signal 发信号均不符。" }
+          ],
+          'B3-5': [
+            { q: "___ your timely help, I couldn't have finished the project on time.", opts: ["Thanks to", "Without", "Because of", "Due to"], ans: 1, source: "AI生成", rat: "由主句 couldn't have finished（与过去事实相反的含蓄虚拟）知需用 Without（=要不是）。其余三项表“由于”，与虚拟语气及句意矛盾。" },
+            { q: "I must apologize ___ you ___ being late for the meeting.", opts: ["to; for", "for; to", "to; of", "with; for"], ans: 0, source: "AI生成", rat: "apologize to sb for sth（因某事向某人道歉），故为 to you for being late。其余介词搭配错误。" },
+            { q: "___ from his accent, he must come from the south of China.", opts: ["Judge", "Judging", "Judged", "To judge"], ans: 1, source: "AI生成", rat: "judging from 是固定的独立状语，表“从……来判断”。其余形式不能构成该习惯用法。" },
+            { q: "Teaching young children well requires a great deal of ___.", opts: ["patience", "fault", "apology", "bet"], ans: 0, source: "AI生成", rat: "patience（耐心）符合“教孩子需要耐心”。fault 过失、apology 道歉、bet 打赌均不符。" }
+          ],
+          'S1-1': [
+            { q: "Tu Youyou, ___ won the Nobel Prize, has devoted herself to medical research.", opts: ["that", "who", "which", "whom"], ans: 1, source: "AI生成", rat: "非限制性定语从句修饰人且作主语，用 who，且不能用 that。which 指物；whom 作宾语。" },
+            { q: "Under no circumstances ___ give up our dreams of success.", opts: ["we should", "should we", "we will", "we can"], ans: 1, source: "AI生成", rat: "否定词组 Under no circumstances 置于句首，主句部分倒装（助动词提前），故 should we。其余语序未倒装。" },
+            { q: "As a doctor, she is committed to ___ the health of poor villagers.", opts: ["improve", "improving", "improved", "to improve"], ans: 1, source: "AI生成", rat: "be committed to 中 to 是介词，后接动名词 improving。原形、过去式、to do 均不符。" },
+            { q: "Careful preparation is ___ to the success of any big project.", opts: ["crucial", "academic", "subjective", "ordinary"], ans: 0, source: "AI生成", rat: "be crucial to（对……至关重要）符合语境。academic 学术、subjective 主观、ordinary 普通均不合。" }
+          ],
+          'S1-2': [
+            { q: "At this time tomorrow, I ___ over the Pacific Ocean to New York.", opts: ["will fly", "will be flying", "fly", "am flying"], ans: 1, source: "AI生成", rat: "At this time tomorrow 表示将来某刻正在进行，用将来进行时 will be flying。其余时态不能表达该含义。" },
+            { q: "Experts say that AI ___ to change the way we live in the near future.", opts: ["is likely", "is possible", "is probable", "maybe"], ans: 0, source: "AI生成", rat: "be likely to do（很可能做某事）主语可为物。possible、probable 不接“to do”这种结构（须用 It is possible/probable that）；maybe 是副词。" },
+            { q: "With technology ___ so fast, our daily life is becoming more convenient.", opts: ["develop", "developing", "developed", "to develop"], ans: 1, source: "AI生成", rat: "with 复合结构中，technology 与 develop 是主动关系，用现在分词 developing。其余形式不符主动进行的逻辑。" },
+            { q: "The newly designed system is far more ___ than the old one, saving us much time.", opts: ["efficient", "relevant", "automatic", "available"], ans: 0, source: "AI生成", rat: "由“saving us much time”知强调“高效”，用 efficient。relevant 相关、automatic 自动、available 可获得均不符“省时”的对比语境。" }
+          ],
+          'S1-3': [
+            { q: "___ the natural environment is the responsibility of every citizen.", opts: ["Protect", "Protecting", "Protected", "Protects"], ans: 1, source: "AI生成", rat: "动词作主语须用动名词 Protecting；谓语用单数 is。原形、过去分词、第三人称单数均不能作主语。" },
+            { q: "In this national park, visitors are prohibited from ___ the wild animals.", opts: ["feed", "feeding", "fed", "to feed"], ans: 1, source: "AI生成", rat: "prohibit sb from doing（禁止某人做某事），用动名词 feeding。其余形式不符。" },
+            { q: "With its beautiful scenery, the park ___ to thousands of tourists every year.", opts: ["appeals", "prohibits", "observes", "accompanies"], ans: 0, source: "AI生成", rat: "appeal to（吸引）符合语境。prohibit 禁止、observe 观察、accompany 陪伴均不符“吸引游客”。" },
+            { q: "We were all deeply attracted by the ___ scenery of the national park.", opts: ["fascinating", "fascinated", "fascination", "fascinate"], ans: 0, source: "AI生成", rat: "修饰事物 scenery 用 -ing 形容词 fascinating（迷人的）。fascinated 修饰人；fascination 名词；fascinate 动词。" }
+          ],
+          'S1-4': [
+            { q: "In some cultures, you should avoid ___ too much direct eye contact.", opts: ["make", "making", "to make", "made"], ans: 1, source: "AI生成", rat: "avoid 后只接动名词 doing，选 making。原形、to do、过去分词均不符 avoid doing。" },
+            { q: "I ___ post the letter yesterday, but I'm afraid you didn't receive it.", opts: ["do", "did", "have", "am"], ans: 1, source: "AI生成", rat: "用 did + 动词原形强调过去的谓语动作（确实寄了）；由 yesterday 知用过去时 did。do 表现在；have、am 结构错误。" },
+            { q: "My favourite way to relax is ___ to soft music after school.", opts: ["listen", "listening", "listened", "to listening"], ans: 1, source: "AI生成", rat: "-ing 形式作表语，说明主语 way 的内容，用 listening。原形、过去分词、to listening 形式错误。" },
+            { q: "It is not ___ to speak loudly in a public library.", opts: ["appropriate", "reliable", "identical", "visible"], ans: 0, source: "AI生成", rat: "appropriate（恰当的）符合“在图书馆大声说话不合适”。reliable 可靠、identical 相同、visible 可见均不符。" }
+          ],
+          'S1-5': [
+            { q: "It is essential that every student ___ careful during the chemistry experiment.", opts: ["is", "be", "was", "being"], ans: 1, source: "AI生成", rat: "It is essential that 从句用虚拟语气 (should) + 动词原形，should 省略后用 be。is、was、being 均不符虚拟语气。" },
+            { q: "It was in 1973 ___ he first succeeded in growing high-yield rice.", opts: ["when", "that", "which", "who"], ans: 1, source: "AI生成", rat: "强调句强调时间状语 in 1973，连接词仍用 that，不用 when。which、who 不用于此强调句。" },
+            { q: "He worked day and night to ___ his goal of feeding more people.", opts: ["attain", "obtain", "contain", "maintain"], ans: 0, source: "AI生成", rat: "attain a goal（达到目标）搭配恰当。obtain 获得（具体物）、contain 包含、maintain 维持均不与 goal 这样搭配此意。" },
+            { q: "His research greatly helped to solve the food ___ in many poor regions.", opts: ["shortage", "innovation", "reality", "expansion"], ans: 0, source: "AI生成", rat: "food shortage（粮食短缺）符合语境。innovation 创新、reality 现实、expansion 扩张均不符。" }
+          ],
+          'S2-1': [
+            { q: "Who do you think ___ for the terrible traffic accident?", opts: ["is to blame", "is to be blamed", "blames", "is blaming"], ans: 0, source: "AI生成", rat: "be to blame 用主动形式表被动含义（应受责备），不能写成 is to be blamed。blames、is blaming 不表“应受责备”。" },
+            { q: "The police strongly suspected him ___ breaking into the house.", opts: ["of", "for", "with", "in"], ans: 0, source: "AI生成", rat: "suspect sb of doing（怀疑某人做了某事），介词用 of。for、with、in 均不与 suspect 这样搭配。" },
+            { q: "___ to strong sunlight for too long, his skin was badly burned.", opts: ["Expose", "Exposing", "Exposed", "To expose"], ans: 2, source: "AI生成", rat: "skin/he 与 expose 是被动关系（被暴露），用过去分词 Exposed 作状语。Exposing 表主动；Expose、To expose 形式错误。" },
+            { q: "The scientists are working hard to ___ the real cause of the disease.", opts: ["investigate", "defeat", "cure", "suspect"], ans: 0, source: "AI生成", rat: "investigate the cause（调查原因）搭配恰当。defeat 击败、cure 治愈、suspect 怀疑均不符“查明原因”。" }
+          ],
+          'S2-2': [
+            { q: "___ with so many difficulties, the young teacher never lost heart.", opts: ["Face", "Facing", "Faced", "To face"], ans: 2, source: "AI生成", rat: "be faced with（面临）为被动，逻辑主语 teacher 用过去分词 Faced with。Facing 后不接 with（face sth 直接接宾语），故 B 错；Face、To face 形式不符状语用法。" },
+            { q: "It took the new student some time to ___ to life in a foreign country.", opts: ["adapt", "adopt", "admit", "adore"], ans: 0, source: "AI生成", rat: "adapt to（适应）符合语境。adopt 采纳/收养、admit 承认、adore 喜爱均不符“适应新生活”。" },
+            { q: "All the students are encouraged to ___ in various club activities.", opts: ["participate", "attend", "join", "devote"], ans: 0, source: "AI生成", rat: "participate in（参加活动）中有 in，故选 participate。attend、join 后不接 in；devote 需接 to。" },
+            { q: "She is very ___ about learning Chinese and practises it every day.", opts: ["enthusiastic", "complex", "ambitious", "comfortable"], ans: 0, source: "AI生成", rat: "be enthusiastic about（对……热情）符合语境。complex 复杂、ambitious 有野心、comfortable 舒适均不搭配此意。" }
+          ],
+          'S2-3': [
+            { q: "Our research team ___ of ten experienced scientists.", opts: ["is consisted", "consists", "is consisting", "has been consisted"], ans: 1, source: "AI生成", rat: "consist of 没有被动语态，也没有进行时，用一般现在时 consists。其余三项均违反该规则。" },
+            { q: "In many people's minds, fast food is often ___ with health problems.", opts: ["associated", "consisted", "consumed", "stuffed"], ans: 0, source: "AI生成", rat: "be associated with（与……有关联）符合语境。consist 不这样用；consume 消耗、stuff 塞满均不符。" },
+            { q: "Large air conditioners ___ a great amount of electricity in summer.", opts: ["consume", "consist", "stuff", "trick"], ans: 0, source: "AI生成", rat: "consume（消耗）与 electricity 搭配。consist 组成、stuff 填塞、trick 欺骗均不符。" },
+            { q: "Doctors say you need ___ of eight hours' sleep every night.", opts: ["a minimum", "a maximum", "a number", "a couple"], ans: 0, source: "AI生成", rat: "a minimum of（至少）符合“需要充足睡眠”的建议。a maximum of 是“至多”，与建议相悖；a number of、a couple of 不表“最低限度”。" }
+          ],
+          'S2-4': [
+            { q: "___ in the far north, the city has very long and cold winters.", opts: ["Locate", "Locating", "Located", "To locate"], ans: 2, source: "AI生成", rat: "be located in（位于）为被动，作状语用过去分词 Located。Locating、Locate、To locate 均不符“位于”的被动状语用法。" },
+            { q: "___ with China, Canada has a much smaller population.", opts: ["Compare", "Comparing", "Compared", "To compare"], ans: 2, source: "AI生成", rat: "compared with（与……相比）是固定的过去分词短语作状语。其余形式不构成该习惯表达。" },
+            { q: "The newly built bridge ___ about 1,200 metres in length.", opts: ["measures", "is measured", "is measuring", "has been measured"], ans: 0, source: "AI生成", rat: "measure 表示“量度为（某长度）”时是系动词用法，无被动、无进行，用 measures。其余被动/进行形式均错。" },
+            { q: "From the mountain top, we enjoyed the ___ view of the whole valley.", opts: ["spectacular", "slight", "urban", "distant"], ans: 0, source: "AI生成", rat: "spectacular view（壮观的景色）符合登高远望。slight 轻微、urban 城市的、distant 遥远的均不贴合“壮观”。" }
+          ],
+          'S2-5': [
+            { q: "Apply some pressure to the wound, ___ necessary, to stop the bleeding.", opts: ["if", "unless", "while", "since"], ans: 0, source: "AI生成", rat: "if necessary 是 if it is necessary 的省略，意为“如有必要”。unless 除非、while 当……时、since 既然均不符语境。" },
+            { q: "It is vital that the injured man ___ to hospital without delay.", opts: ["is sent", "be sent", "sends", "sent"], ans: 1, source: "AI生成", rat: "It is vital that 从句用虚拟语气 (should) be done，故 be sent。is sent、sends、sent 均不符虚拟语气被动。" },
+            { q: "You'd better ___ some medicine to the burned skin at once.", opts: ["apply", "appeal", "attach", "adapt"], ans: 0, source: "AI生成", rat: "apply...to（把……涂/敷于）符合急救语境。appeal 呼吁、attach 附上、adapt 适应均不符。" },
+            { q: "First aid is a ___ skill that may save a person's life in an emergency.", opts: ["vital", "temporary", "slight", "modest"], ans: 0, source: "AI生成", rat: "vital（至关重要的）符合“可救命”。temporary 暂时、slight 轻微、modest 谦虚/适中均不符。" }
+          ],
+          'S3-1': [
+            { q: "If I ___ you, I would spend more time appreciating great paintings.", opts: ["am", "was", "were", "be"], ans: 2, source: "AI生成", rat: "与现在事实相反的虚拟条件句，be 动词一律用 were。am、was、be 均不符虚拟语气。" },
+            { q: "I wish I ___ harder on my drawing skills when I was young.", opts: ["study", "studied", "had studied", "have studied"], ans: 2, source: "AI生成", rat: "wish 后表示对过去的遗憾用过去完成时 had studied。studied 表对现在愿望；其余时态不符。" },
+            { q: "If it had not been for his guidance, I ___ this masterpiece.", opts: ["couldn't finish", "couldn't have finished", "can't finish", "didn't finish"], ans: 1, source: "AI生成", rat: "与过去事实相反的虚拟条件句，主句用 would/could have done，故 couldn't have finished。其余时态不符。" },
+            { q: "The painting is so ___ that the apples in it look almost real.", opts: ["realistic", "visual", "influential", "ancient"], ans: 0, source: "AI生成", rat: "realistic（逼真的）符合“看起来像真的”。visual 视觉的、influential 有影响力的、ancient 古老的均不符。" }
+          ],
+          'S3-2': [
+            { q: "It is high time that you ___ to give up smoking for your health.", opts: ["decide", "decided", "will decide", "deciding"], ans: 1, source: "AI生成", rat: "It is high time that 从句谓语用一般过去时 decided（或 should decide）。原形、将来时、deciding 均不符。" },
+            { q: "After thinking it over, she made up her ___ to live a healthier life.", opts: ["mind", "brain", "head", "idea"], ans: 0, source: "AI生成", rat: "make up one's mind（下定决心）为固定搭配。brain、head、idea 均不能用于该习语。" },
+            { q: "Building a good habit calls for a strong sense of self-___.", opts: ["discipline", "surgery", "tobacco", "reward"], ans: 0, source: "AI生成", rat: "self-discipline（自律）符合“养成好习惯”。surgery 手术、tobacco 烟草、reward 回报均不符。" },
+            { q: "Regular exercise benefits both our physical and ___ health.", opts: ["mental", "negative", "dynamic", "temporary"], ans: 0, source: "AI生成", rat: "mental health（心理健康）与 physical health 相对应。negative 消极、dynamic 动态、temporary 暂时均不符。" }
+          ],
+          'S3-3': [
+            { q: "Global warming will probably ___ more frequent extreme weather.", opts: ["result in", "result from", "come from", "date from"], ans: 0, source: "AI生成", rat: "result in（导致，接结果）符合“变暖→极端天气”。result from、come from 表“源于”（接原因）；date from 表“追溯到”，均不符。" },
+            { q: "We find ___ necessary to take immediate action against pollution.", opts: ["it", "that", "this", "what"], ans: 0, source: "AI生成", rat: "find it + adj + to do 中 it 作形式宾语，真正宾语是不定式。that、this、what 不能作此形式宾语。" },
+            { q: "It was the burning of fossil fuels ___ caused the global temperature to rise.", opts: ["that", "which", "what", "when"], ans: 0, source: "AI生成", rat: "这是强调句 It was...that...，强调主语 the burning of fossil fuels，连接词用 that。which/what/when 不用于此强调结构。" },
+            { q: "Countries must work together to reduce the ___ of greenhouse gases.", opts: ["emission", "policy", "decade", "ecology"], ans: 0, source: "AI生成", rat: "emission of greenhouse gases（温室气体排放）符合语境。policy 政策、decade 十年、ecology 生态均不符。" }
+          ],
+          'S3-4': [
+            { q: "The little boy was seen ___ into the old house alone.", opts: ["go", "to go", "gone", "goes"], ans: 1, source: "AI生成", rat: "see sb do 变为被动语态时，省略的 to 要还原，故 was seen to go。go、gone、goes 在被动结构中均不符。" },
+            { q: "The old teacher often makes us ___ the text aloud in the morning.", opts: ["read", "to read", "reading", "reads"], ans: 0, source: "AI生成", rat: "make sb do sth（使役动词主动省 to），用原形 read。to read、reading、reads 均不符使役结构。" },
+            { q: "Against all odds, the explorers finally ___ to survive in the desert.", opts: ["managed", "tried", "wanted", "hoped"], ans: 0, source: "AI生成", "需复核": true, rat: "由“finally...survive”知最终成功，manage to do 强调“设法做成”，选 managed。tried to do 仅表“努力”不一定成功；wanted/hoped 不含“做成”。【需复核】若命题侧重“努力过程”而非“结果”，tried 亦有可成立的解读，建议结合上下文确认。" },
+            { q: "No matter how hard life is, never ___ your dream.", opts: ["abandon", "assign", "endure", "crush"], ans: 0, source: "AI生成", rat: "abandon one's dream（放弃梦想）符合“永不放弃”。assign 分配、endure 忍受、crush 压碎均不符。" }
+          ],
+          'S3-5': [
+            { q: "The idea ___ we should protect traditional poetry is widely accepted.", opts: ["that", "which", "what", "where"], ans: 0, source: "AI生成", rat: "idea 后的同位语从句用 that 引导，且 that 不作成分。which/what 需作成分；where 表地点，均不符。" },
+            { q: "Poetry is a special form of literature ___ touches people's hearts deeply.", opts: ["what", "it", "that", "where"], ans: 2, source: "AI生成", rat: "定语从句中关系词作主语，先行词为物，用 that（或 which）。what、it 不引导定语从句；where 作状语，均不符。" },
+            { q: "By no means ___ easy to write a poem that truly moves readers.", opts: ["it is", "is it", "it was", "does it"], ans: 1, source: "AI生成", rat: "否定词组 By no means 置于句首，主句部分倒装，故 is it。其余语序未正确倒装。" },
+            { q: "The short poem vividly ___ the poet's deep love for his homeland.", opts: ["conveys", "translates", "rhymes", "repeats"], ans: 0, source: "AI生成", rat: "convey（传达情感）符合语境。translate 翻译、rhyme 押韵、repeat 重复均不符“传达情感”。" }
+          ],
+          'S4-1': [
+            { q: "By the time I got to the station, the train ___.", opts: ["left", "had left", "has left", "leaves"], ans: 1, source: "AI生成", rat: "主句 got 是过去时，火车开走发生在“到达”之前，即“过去的过去”，用过去完成时 had left。一般过去、现在完成、现在时均不符。" },
+            { q: "It is the first time that I ___ such a wonderful English play.", opts: ["saw", "have seen", "had seen", "see"], ans: 1, source: "AI生成", rat: "It is the first time that 从句用现在完成时 have seen。saw、had seen、see 均不符该固定句式。" },
+            { q: "He often ___ on his school days and feels grateful to his teachers.", opts: ["reflects", "contrasts", "predicts", "abandons"], ans: 0, source: "AI生成", rat: "reflect on（反思、回顾）符合语境。contrast 对比、predict 预测、abandon 放弃均不符。" },
+            { q: "These ___ memories of childhood will stay in my heart forever.", opts: ["vivid", "subjective", "explicit", "precise"], ans: 0, source: "AI生成", rat: "vivid memories（生动的回忆）符合语境。subjective 主观、explicit 明确、precise 精确均不贴合“生动”。" }
+          ],
+          'S4-2': [
+            { q: "A serious traffic accident ___ at this crossroads last weekend.", opts: ["was happened", "happened", "is happened", "has been happened"], ans: 1, source: "AI生成", rat: "happen 是不及物动词，没有被动语态，用一般过去时 happened。其余被动形式均错。" },
+            { q: "Throughout his life, he was committed to ___ the lives of ordinary people.", opts: ["improve", "improving", "improved", "to improve"], ans: 1, source: "AI生成", rat: "be committed to 中 to 是介词，后接动名词 improving。原形、过去式、to do 均不符。" },
+            { q: "It is widely ___ that he is one of the greatest scientists of our time.", opts: ["acknowledged", "acknowledge", "acknowledging", "to acknowledge"], ans: 0, source: "AI生成", rat: "It is widely acknowledged that...（人们普遍认为）为固定被动句式，用过去分词 acknowledged。其余形式不符。" },
+            { q: "Her ___ efforts over many years finally led to a great breakthrough.", opts: ["persistent", "iconic", "initial", "virtual"], ans: 0, source: "AI生成", rat: "persistent efforts（坚持不懈的努力）符合“多年努力终有突破”。iconic 标志性、initial 最初、virtual 虚拟均不符。" }
+          ],
+          'S4-3': [
+            { q: "___ in the fierce battle, the young soldier was quickly sent to hospital.", opts: ["Wounding", "Wounded", "To wound", "Wound"], ans: 1, source: "AI生成", rat: "soldier 与 wound 是被动关系（被打伤），用过去分词 Wounded 作状语。Wounding 表主动；To wound、Wound 形式不符。" },
+            { q: "In 1939, that country officially ___ war on its neighbour.", opts: ["declared", "announced", "informed", "spoke"], ans: 0, source: "AI生成", rat: "declare war on（向……宣战）为固定搭配。announce 通告消息、inform 通知某人、speak 说话，均不与 war on 搭配。" },
+            { q: "Lasting peace was finally won ___ the cost of countless lives.", opts: ["at", "in", "for", "with"], ans: 0, source: "AI生成", rat: "at the cost of（以……为代价）为固定短语。in、for、with 均不构成该习惯表达。" },
+            { q: "Many brave heroes made the ultimate ___ to defend their country.", opts: ["sacrifice", "conflict", "violence", "honour"], ans: 0, source: "AI生成", rat: "make the ultimate sacrifice（做出最大牺牲，指捐躯）符合语境。conflict 冲突、violence 暴力、honour 荣誉均不与 make the ultimate ... 搭配此意。" }
+          ],
+          'S4-4': [
+            { q: "Only by working closely together ___ build a community with a shared future.", opts: ["we can", "can we", "we are able to", "we will be able to"], ans: 1, source: "AI生成", rat: "Only + 方式状语 (by working...) 置于句首，主句须部分倒装，情态动词提前，故 can we。其余三项均未倒装，不符 Only 引导状语提前的倒装规则。" },
+            { q: "Not until he completed all the work ___ home for a rest.", opts: ["he went", "did he go", "he did go", "went he"], ans: 1, source: "AI生成", rat: "Not until 置于句首，主句部分倒装（从句不倒装），故 did he go。he went、he did go 未倒装；went he 完全倒装不符。" },
+            { q: "Gradually we reached a point ___ a major change was badly needed.", opts: ["which", "that", "where", "when"], ans: 2, source: "AI生成", rat: "先行词 point 表抽象“境地/地步”，关系词作状语，用 where。which/that 作宾语；when 表时间，均不符。" },
+            { q: "People everywhere hope to live in ___ with the natural world.", opts: ["harmony", "stability", "reform", "consultation"], ans: 0, source: "AI生成", rat: "live in harmony with（与……和谐相处）为固定搭配。stability 稳定、reform 改革、consultation 磋商均不符。" }
+          ],
+          'S4-5': [
+            { q: "The foreign visitor asked me where ___.", opts: ["the station was", "was the station", "is the station", "the station is"], ans: 0, source: "AI生成", rat: "间接引语用陈述语序（主语在前），且主句为过去时，从句时态相应降为过去，故 the station was。B、C 用疑问语序；D 时态未降，均不符。" },
+            { q: "He told us that he ___ visit the science museum the next day.", opts: ["will", "would", "can", "shall"], ans: 1, source: "AI生成", rat: "间接引语中主句为过去时，直接引语的 will 相应变为 would。can、shall 不符时态降级规则。" },
+            { q: "Virtual reality technology ___ us to explore the deep sea without any danger.", opts: ["enables", "makes", "lets", "has"], ans: 0, source: "AI生成", rat: "enable sb to do（使某人能够做）符合结构。make/let sb do 后不接 to；has 不构成此意，故均不符。" },
+            { q: "___ Intelligence is gradually changing the way people work and live.", opts: ["Artificial", "Virtual", "Initial", "Visual"], ans: 0, source: "AI生成", rat: "Artificial Intelligence（人工智能，AI）为固定术语。Virtual 虚拟、Initial 最初、Visual 视觉均不与 Intelligence 构成该术语。" }
+          ]
+        };
 
         // ==========================================
         // 4. 扩充版识字卡生成器
@@ -743,7 +961,7 @@ Which option best expresses its meaning?`,
             };
         };
 
-        const generateZhejiangQuiz = (unitData, isGaokaoMode = false) => {
+        const generateZhejiangQuiz = (unitData, isGaokaoMode = false, unitKey = '') => {
             const { words, l2, all } = getWordPool(unitData);
             const grammar = getGrammarPool(unitData);
             const sentences = getSentencePool(unitData);
@@ -759,6 +977,21 @@ Which option best expresses its meaning?`,
                 seen.add(key);
                 quiz.push(q);
             };
+
+            // 先放入该单元的 AI 精选题（已人工校验），保证一定出现并与动态题区分
+            (QUESTION_BANK[unitKey] || []).forEach(item => {
+                pushQ({
+                    type: '精选题（AI生成）',
+                    q: item.q,
+                    opts: item.opts,
+                    ans: item.ans,
+                    rat: item.rat,
+                    source: item.source || 'AI生成',
+                    needsReview: item['需复核'] === true,
+                    meta: null
+                });
+            });
+            const curatedCount = quiz.length;
 
             pickN(words, isGaokaoMode ? 5 : 3).forEach(w => {
                 pushQ(buildThemeMeaningQ(unitData, w, all));
@@ -803,7 +1036,10 @@ Which option best expresses its meaning?`,
                 }
             }
 
-            return shuffle(quiz).slice(0, minCount);
+            // 精选题始终保留在前，其余动态题打乱后填充
+            const head = shuffle(quiz.slice(0, Math.min(curatedCount, minCount)));
+            const tail = shuffle(quiz.slice(curatedCount));
+            return [...head, ...tail].slice(0, minCount);
         };
 
         const buildReinforcementQs = (mistakeMeta) => {
@@ -1279,7 +1515,7 @@ Which option best expresses its meaning?`,
 
             const startQuiz = (mode = 'full') => {
                 const isGaokao = mode === 'gaokao';
-                const qs = generateZhejiangQuiz(dbData, isGaokao);
+                const qs = generateZhejiangQuiz(dbData, isGaokao, unitKey);
                 const modeLabel = isGaokao ? '重点练习' : '单元练习';
                 setQuizArr(qs);
                 setQIdx(0);
@@ -1510,6 +1746,12 @@ Which option best expresses its meaning?`,
                                         <span className="text-xs font-bold text-slate-400">{qIdx + 1} / {quizArr.length}</span>
                                     </div>
 
+                                    {quizArr[qIdx]?.source && (
+                                        <div className="flex gap-2 mb-3">
+                                            <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-violet-100 text-violet-700 tracking-wide">AI生成</span>
+                                            {quizArr[qIdx]?.needsReview && <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-100 text-amber-700 tracking-wide">需复核</span>}
+                                        </div>
+                                    )}
                                     <p className="text-[17px] font-semibold leading-relaxed mb-6 whitespace-pre-wrap">{quizArr[qIdx]?.q}</p>
 
                                     <div className="space-y-3">

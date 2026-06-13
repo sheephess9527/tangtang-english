@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>糖糖提分通</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="糖糖提分通">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <meta name="theme-color" content="#6366f1">
     
     <!-- Tailwind Play CDN 未发布到 npm，无法校验 SRI 哈希，仅锁定版本号 -->
     <script src="https://cdn.tailwindcss.com/3.4.16"></script>
@@ -240,17 +246,19 @@
                 try {
                     const item = window.localStorage.getItem(key);
                     return item ? JSON.parse(item) : initialValue;
-                } catch (error) { 
+                } catch (error) {
                     console.warn(`Local storage access disabled. Falling back to memory state for ${key}.`);
-                    return initialValue; 
+                    return initialValue;
                 }
             });
+            // Use functional updater so multiple calls within one event batch
+            // chain correctly (each gets the output of the previous, not stale closure).
             const setValue = (value) => {
-                try {
-                    const valueToStore = value instanceof Function ? value(storedValue) : value;
-                    setStoredValue(valueToStore);
-                    window.localStorage.setItem(key, JSON.stringify(valueToStore));
-                } catch (error) {}
+                setStoredValue(prev => {
+                    const next = value instanceof Function ? value(prev) : value;
+                    try { window.localStorage.setItem(key, JSON.stringify(next)); } catch (e) {}
+                    return next;
+                });
             };
             return [storedValue, setValue];
         };

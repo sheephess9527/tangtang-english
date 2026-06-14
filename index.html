@@ -342,322 +342,1022 @@
             ],
         };
 
-        const EXAM_TIPS_DB = {
-            'B1-1': {
-                examTips: [
-                    { t: '空格是形容词还是副词？看它修饰谁', r: '修饰名词 → 形容词；修饰动词/形容词/整句 → 副词。考法：空在be动词后修饰主语 → 形容词；空在实义动词后修饰动作 → 副词。填入后试读：名词前改成of结构能换掉吗？能 → 名词；不能 → 考虑其他。', eg: 'The lecture was ___(confuse). → 主语lecture是物，用-ing形式 → confusing' },
-                    { t: '-ed vs -ing：一秒判断法', r: '看空格前的名词/代词。人或动物（感受主体）→ -ed（感到…）；事情/情况（引发感受的原因）→ -ing（令人…）。没有例外，高考必考，背下来比理解快。', eg: 'He felt ___(bore) because the speech was ___. → bored（他是人）/ boring（演讲是事）' },
+                const EXAM_TIPS_DB = {
+            "B1-1": {
+                "examTips": [
+                    {
+                        "t": "形容词还是副词？看它修饰谁",
+                        "r": "修饰名词→形容词；修饰动词/形容词/整句→副词。考法：be动词后修饰主语→形容词；实义动词后修饰动作→副词。",
+                        "eg": "She is a ___(care) girl who drives ___(care). → careful（修饰girl）/ carefully（修饰drive）"
+                    },
+                    {
+                        "t": "-ed vs -ing：一秒判断",
+                        "r": "看空格前的名词/代词。人或动物（感受方）→-ed（感到…）；事情/情况（引发感受的原因）→-ing（令人…）。无例外，浙江卷必考。",
+                        "eg": "He felt ___(bore) because the speech was ___. → bored（他是人）/ boring（演讲是事）"
+                    },
+                    {
+                        "t": "介词后只能接名词或doing",
+                        "r": "look forward to / a solution to / be used to 里的to是介词，后面绝不接动词原形。括号给动词→变-ing；空着→填名词。",
+                        "eg": "I look forward to ___(hear) from you. → hearing（to是介词）"
+                    }
                 ],
-                readingTips: [
-                    { t: '主旨题：答案藏在首尾段', r: '问"What is the main idea/best title"时，直接看首段和末段。首段给出背景，末段给出结论，主旨在这两处之间。如果首尾矛盾，以末段为准——那是作者最终立场。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "建议/成长类记叙文：主旨在首尾段",
+                        "r": "问\"main idea / best title\"时直接看首段和末段。首段给背景，末段给结论，作者真实立场以末段为准。"
+                    },
+                    {
+                        "t": "细节题：圈关键词回原文定位",
+                        "r": "把题干里的人名/数字/特定名词圈出来→回文章找到同一个词→只读它前后2-3句，选最接近的。不要从头通读。"
+                    }
+                ]
             },
-            'B1-2': {
-                examTips: [
-                    { t: '时态信号词一览表', r: '看到以下词，直接判断时态 → tomorrow/next week/soon：将来时；already/just/since/for+时段/yet/recently：完成时；now/at the moment/look!/listen!：进行时；yesterday/last.../in 2010/ago：过去时。括号给动词时，信号词是第一步，不要跳过。', eg: 'Look! The train ___(leave). → 进行时信号Look → is leaving' },
-                    { t: '进行时表将来：位移动词+确定时间', r: '当动词是go/come/leave/arrive/start/fly/take off，且时间已经确定（明天/下周）→ 用am/is/are + doing表将来（计划好的事），不要用will。will表示临时决定，进行时表示已安排好。', eg: 'We ___(fly) to Beijing next Monday. → are flying（已订票，用进行时表将来）' },
+            "B1-2": {
+                "examTips": [
+                    {
+                        "t": "时态信号词一览",
+                        "r": "tomorrow/next week/soon→将来；already/just/since/for+时段/yet→完成；now/look!/listen!→进行；yesterday/ago/last…→过去。括号给动词时，先找信号词。",
+                        "eg": "Look! The train ___(leave). → is leaving（信号Look→进行时）"
+                    },
+                    {
+                        "t": "进行时表将来：位移动词+确定时间",
+                        "r": "go/come/leave/arrive/start/fly + 已确定的时间（明天/下周）→ am/is/are doing 表\"按计划即将发生\"，不用will（will是临时决定）。",
+                        "eg": "We ___(fly) to Beijing next Monday. → are flying（已订票）"
+                    },
+                    {
+                        "t": "apply 的介词陷阱",
+                        "r": "apply for + 某物（申请签证/奖学金）；apply to + 机构（向某大学申请）；apply to + 人/情况（适用于）。完形看后面接的是物还是机构。",
+                        "eg": "She decided to apply ___ a top university. → to（机构）"
+                    }
                 ],
-                readingTips: [
-                    { t: '数字/时间细节题：30秒答完', r: '题干含数字、年份、价格、百分比 → 直接在原文找那个数，把数字前后一句读懂即可，不要读整段。这类题最机械、最快，别在这里浪费时间，留给理解类题。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "旅游/应用文：数字时间题30秒答完",
+                        "r": "题干含价格、时间、年份、百分比→直接在原文找那个数字，读懂它前后一句即可，绝不读整段。这是最该抢分的题。"
+                    },
+                    {
+                        "t": "细节题顺序原则",
+                        "r": "阅读题顺序≈文章段落顺序。做完第1题，第2题答案在更靠后的地方找，不要倒回去翻。"
+                    }
+                ]
             },
-            'B1-3': {
-                examTips: [
-                    { t: '情态动词后面：永远是动词原形', r: '看到can/could/will/would/should/must/may/might + 空格 → 填动词原形（不加to，不加-ing，不加-s）。情态+be+空格 → 填过去分词（被动语态）。语法填空里情态后面括号给动词，必须还原成原形。', eg: 'You must ___(complete) the task by Friday. → complete（原形）/ The report must be ___(submit). → submitted（被动）' },
-                    { t: 'What引导主语从句 vs 其他连词', r: '"What + 不完整句子"作主语/宾语，what在从句里充当主语或宾语（可替换为"the thing that"）。谓语动词一般用单数（What he said is true）。不要和"that"混淆：that引导完整句，what引导不完整句。', eg: '___ he did surprised us all. → What（从句缺宾语，what=the thing that）' },
+            "B1-3": {
+                "examTips": [
+                    {
+                        "t": "情态动词后永远接原形",
+                        "r": "can/could/will/should/must/may + 空格→动词原形（不加to、不加-ing、不加-s）。括号给动词直接还原成原形。",
+                        "eg": "You must ___(complete) it by Friday. → complete（原形）"
+                    },
+                    {
+                        "t": "情态动词的被动：情态+be+过去分词",
+                        "r": "主语是\"被做\"的对象时→情态 + be + 过去分词。判断：先看主语是施动者还是受动者，受动者就加被动。",
+                        "eg": "The report must ___(submit) on time. → be submitted（报告被提交）"
+                    },
+                    {
+                        "t": "What 引导主语从句",
+                        "r": "\"What + 不完整句子\"作主语，what在从句里充当主语或宾语（=the thing that），谓语通常用单数。区别that：that引导完整句。",
+                        "eg": "___ he said is true.（缺宾语）→ What"
+                    }
                 ],
-                readingTips: [
-                    { t: '推断题：必须有原文依据', r: '"We can infer/conclude that..."正确答案一定有原文支撑，不靠生活常识。方法：找原文对应句 → 问自己"这句话合理推出什么" → 选项里和这个推论最贴近的就是答案。凭感觉猜的基本都是陷阱。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "人物励志类：抓\"困难→努力→成功\"",
+                        "r": "体育人物文章按这条线展开。在挫折、坚持、突破处各做标记，问\"成功原因/品质\"时直接定位到\"努力/坚持\"那一句。"
+                    },
+                    {
+                        "t": "人物品质题：用事例反推形容词",
+                        "r": "问\"What kind of person…\"：找人物做的具体事→反推品质词（坚持→determined，乐于助人→helpful，勇敢→brave）。答案一定有原文事例支撑。"
+                    }
+                ]
             },
-            'B1-4': {
-                examTips: [
-                    { t: '定语从句关系词两步判断', r: '第1步：先行词是人 → who/that/whom；先行词是物 → which/that。第2步：关系词在从句中作主语 → who/which/that均可；作宾语 → 可省略；前有介词 → 只能which/whom，不能that；有逗号 → 只能who/which，不能that。', eg: 'The scientist ___ discovered penicillin is Fleming. → who/that（人，作主语）' },
-                    { t: '定语从句谓语的单复数跟先行词', r: '从句谓语动词的数不由关系词决定，而由先行词决定。先行词单数 → 从句谓语is/was/has；先行词复数 → are/were/have。语法填空里括号给动词，先往左找先行词，再决定单复数。', eg: 'The books that ___(be) in the bag are mine. → are（先行词books是复数）' },
+            "B1-4": {
+                "examTips": [
+                    {
+                        "t": "定语从句 who/which/that 二分法",
+                        "r": "先行词是人→who/that；是物→which/that。逗号后只用who/which（不用that）；介词后只用which/whom。",
+                        "eg": "The girl ___ saved the boy is brave. → who/that（人作主语）"
+                    },
+                    {
+                        "t": "从句谓语单复数跟先行词",
+                        "r": "从句谓语的数由先行词决定，不由关系词决定。先行词单数→is/was/has；复数→are/were/have。括号给动词先往左找先行词。",
+                        "eg": "The books that ___(be) here are mine. → are（先行词books复数）"
+                    },
+                    {
+                        "t": "rescue vs save 的差别",
+                        "r": "rescue=（从危险中）营救，强调专业救援行动（rescue sb from…）；save=救/挽救/省，含义更广。灾难语境的\"营救被困者\"用rescue。",
+                        "eg": "Firefighters ___ the trapped child. → rescued（专业营救）"
+                    }
                 ],
-                readingTips: [
-                    { t: '图表/数据题：只看数字，不读文字', r: '题目含数字/比例/排名 → 直接看图表数据核对选项，不要跑去段落里找文字描述。数字题30秒，不要超过。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "灾难新闻报道：抓五要素",
+                        "r": "新闻开头通常一句话给全：何时(when)、何地(where)、何人(who)、何事(what)、结果(result)。先在导语圈出这五点，细节题按要素定位。"
+                    },
+                    {
+                        "t": "数字/伤亡细节题",
+                        "r": "题干问死伤人数、受灾范围、发生时间→直接找原文数字，前后一句读懂即可。注意区分\"超过/接近/将近\"等范围词，别被扩大化的选项骗。"
+                    }
+                ]
             },
-            'B1-5': {
-                examTips: [
-                    { t: '介词+which：介词取决于动词搭配', r: '步骤：① 找从句里的谓语动词 → ② 该动词习惯搭配什么介词 → ③ 就填那个介词在which/whom前。常见组合：live in → in which；dream of → of which；look forward to → to which；belong to → to which；talk about → about which。', eg: 'This is the school ___ I studied for 3 years. → in which（study in a school → in which）' },
-                    { t: 'I would appreciate it if... 里的it绝对不能省', r: '固定句型：appreciate/find/think/consider/make + it + adj/n + to do/that从句。it是形式宾语，语法填空遇到这类空 → 填it。错误：直接写appreciate if（少了it→语法错误，0分）。', eg: 'I would appreciate ___ if you could help me. → it（形式宾语，必填）' },
+            "B1-5": {
+                "examTips": [
+                    {
+                        "t": "介词+which：介词由动词搭配决定",
+                        "r": "找从句谓语动词→它习惯搭配哪个介词→把介词放在which/whom前。live in→in which；dream of→of which；look forward to→to which。",
+                        "eg": "the school ___ I studied. → in which（study in）"
+                    },
+                    {
+                        "t": "形式宾语 it 不能省",
+                        "r": "appreciate/find/think/consider/make + it + adj/n + to do/that从句。it是形式宾语，真正宾语在后面。遇到这类结构空→填it。",
+                        "eg": "I would appreciate ___ if you could help. → it（形式宾语必填）"
+                    },
+                    {
+                        "t": "refer to 等无被动/固定搭配",
+                        "r": "refer to（指的是/查阅）、belong to、consist of 这类无被动语态，只用主动。完形里\"指代\"语境用refer to，后面接名词。",
+                        "eg": "This sign ___ to danger. → refers（主动，无被动）"
+                    }
                 ],
-                readingTips: [
-                    { t: '作者态度题：看情感词和语气', r: '问"What is the author\'s attitude"：正面→ beneficial/remarkable/encouraging；负面→ concerning/disappointing/critical；中立（客观）→ 只叙述事实，无明显感情词。不要被话题骗——写坏事的文章，作者可能是客观中立的。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "语言文化说明文：每段首句是主旨",
+                        "r": "说明文每段第一句通常是主题句。问\"段落大意\"直接看首句；全文主旨看首段+末段。不要逐句通读。"
+                    },
+                    {
+                        "t": "态度/观点题：找情感词和评价词",
+                        "r": "问作者态度：正面→beneficial/remarkable；负面→concerning/critical；中立→只陈述事实无评价词。别被话题骗——写坏事也可能是客观中立。"
+                    }
+                ]
             },
-            'B2-1': {
-                examTips: [
-                    { t: 'be worth + doing：永远主动，永远-ing', r: '死规定，无例外：be worth doing（主动形式表被动含义）。语法填空：空在worth后 → 填动词-ing。错误写法：be worth to do / be worth being done，全部0分。记忆口诀：worth后面+ing，等于被动含义。', eg: 'These temples are worth ___(visit). → visiting（不是to visit / to be visited）' },
-                    { t: 'prevent/stop/keep/ban + sb + from + doing', r: '"阻止类"5词固定搭配：全都接from + doing。被动语态里from绝对不能省（被动：sb is prevented from doing）。完形里看到"阻止/禁止/妨碍"语境 → 选这类词后面找from，确认有from才对。', eg: 'The storm prevented us from ___(leave) on time. → leaving（from后面-ing）' },
+            "B2-1": {
+                "examTips": [
+                    {
+                        "t": "be worth + doing（主动表被动）",
+                        "r": "死规定：be worth doing，用主动形式表被动含义。错误：worth to do / worth being done。空在worth后→填-ing。",
+                        "eg": "These temples are worth ___(visit). → visiting"
+                    },
+                    {
+                        "t": "prevent/stop/keep/ban + sb + from + doing",
+                        "r": "\"阻止类\"动词统一接from + doing，被动时from不能省（be prevented from doing）。完形看到\"阻止/妨碍\"语境，后面找from。",
+                        "eg": "The storm prevented us from ___(leave). → leaving"
+                    },
+                    {
+                        "t": "定语从句万金油 that 的使用边界",
+                        "r": "that既可指人又可指物，作主语/宾语都行；但逗号后、介词后绝对不能用that。先行词被序数词/最高级/all/the only修饰时优先用that。",
+                        "eg": "This is the only thing ___ matters. → that（the only用that）"
+                    }
                 ],
-                readingTips: [
-                    { t: '遗产保护类文章：标出"原因-现状-措施"', r: '这类文章结构固定：问题（被破坏的原因）→ 现状 → 保护措施 → 展望。做题前给三个部分标记，细节题按标记定位，效率翻倍。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "遗产保护说明文：标\"原因-现状-措施\"",
+                        "r": "这类文章结构固定：被破坏的原因→现状→保护措施→展望。做题前给三部分各标记，细节题按标记秒定位。"
+                    },
+                    {
+                        "t": "主旨大意题：别选太窄或太宽",
+                        "r": "主旨要\"不偏不漏\"。只覆盖某一段的选项太窄；超出文章范围的选项太宽。选能概括全文、又不夸大的那个。"
+                    }
+                ]
             },
-            'B2-2': {
-                examTips: [
-                    { t: '正在被做：am/is/are + being + 过去分词', r: '信号组合：时间信号（now/look/at the moment）+ 主语是被做的对象 → 现在进行时被动。语法填空括号给动词：先判断主语是施动者还是受动者 → 受动者 + 进行时信号 → is/are being + 过去分词。', eg: 'The bridge ___(build) right now. → is being built（正在被建造）' },
-                    { t: 'It is high time that + 过去式（绝不用现在时）', r: '"是时候做某事了"固定句型：It is high time that + 主语 + 动词过去式 / should + 原形。从句绝对不用现在时/将来时。这是语法填空必考句型。', eg: 'It is high time that we ___(take) measures to protect wildlife. → took / should take' },
+            "B2-2": {
+                "examTips": [
+                    {
+                        "t": "现在进行时的被动：is/are being done",
+                        "r": "时间信号(now/look/at the moment) + 主语是被做的对象→is/are being + 过去分词。先判断主语主动还是被动。",
+                        "eg": "The bridge ___(build) right now. → is being built（正在被建）"
+                    },
+                    {
+                        "t": "It is high time that + 过去式",
+                        "r": "\"是时候做某事了\"：It is high time that + 主语 + 动词过去式 / should + 原形。从句绝不用现在时/将来时。",
+                        "eg": "It is high time that we ___(take) action. → took / should take"
+                    },
+                    {
+                        "t": "反义词前缀规律",
+                        "r": "un-/in-/im-/ir-/il-/dis-/non- 都表否定：unfair, impossible, irregular, illegal, dislike。完形/语法填空要\"反义\"时，按词首字母选前缀（l前用il-，r前用ir-，m/p前用im-）。",
+                        "eg": "Hunting them is not legal→ ___legal. → illegal（l前用il-）"
+                    }
                 ],
-                readingTips: [
-                    { t: '多人观点类文章：分清"谁说了什么"', r: '文中出现多个人/机构发表观点，先在每个名字旁边标观点关键词。题目问"According to X..."时，只在X那部分找答案，不要混淆。新闻报道/科学研究类文章多见此模式。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "动物保护说明文：问题-原因-措施",
+                        "r": "结构：物种现状（濒危）→原因（栖息地破坏/偷猎）→保护措施。给三部分标签，问\"为什么濒危\"去原因段，问\"怎么保护\"去措施段。"
+                    },
+                    {
+                        "t": "指代题：代词指前面最近的名词",
+                        "r": "问\"it/they/this refers to…\"：往前找最近的、数一致的名词代入验证。读起来通顺的就是答案。"
+                    }
+                ]
             },
-            'B2-3': {
-                examTips: [
-                    { t: '现在完成时被动：have/has + been + 过去分词', r: '双重判断：① 有since/for/already/yet/recently → 考虑完成时 ② 主语是被做的对象 → 加被动 → have/has been done。语法填空：括号给动词，先查时间信号词，再看主语是主动还是被动。', eg: 'Great progress ___(make) in this field since 2010. → has been made（完成时+被动）' },
-                    { t: 'access to 后面只接名词（to是介词）', r: '固定搭配：have/get access to + 名词（获得使用权/进入权）。to是介词，后面只能接名词或动名词，不能接动词原形。括号里给动词 → 填名词形式（-ion/-ment/-ance结尾）。', eg: 'All students have access to ___(inform) online. → information（名词）' },
+            "B2-3": {
+                "examTips": [
+                    {
+                        "t": "现在完成时的被动：have/has been done",
+                        "r": "有since/for/already/yet/recently + 主语是被做的对象→have/has been + 过去分词。先查时间信号，再看主被动。",
+                        "eg": "Great progress ___(make) since 2010. → has been made"
+                    },
+                    {
+                        "t": "access to 后面只接名词（to是介词）",
+                        "r": "have/get access to + 名词/-ing（获得使用权）。to是介词，括号给动词→变名词(-ion/-ment)或-ing。",
+                        "eg": "Students have access to ___(inform) online. → information"
+                    },
+                    {
+                        "t": "\"很方便做某事\"别说It is convenient to sb",
+                        "r": "中式英语陷阱：表\"某人方便\"用It is convenient for sb to do，或sth is convenient。convenient的主语只能是物，不能是人（×I am convenient）。",
+                        "eg": "It is convenient ___ us to shop online. → for"
+                    }
                 ],
-                readingTips: [
-                    { t: '猜词题：4步推测法', r: '① 看词的词根前缀（bio-=生命，micro-=微小，-tion=名词）→ ② 看上下文有无解释词（that is/or/which means/namely）→ ③ 判断正负语境（这个词出现在褒义还是贬义的句子里）→ ④ 把4个选项逐一替换进去，看哪个最通顺。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "互联网议论文：利弊对比要分清",
+                        "r": "这类文章常列优点和缺点。在每个优点/缺点旁标\"+/-\"，问\"benefit/drawback\"时按符号定位，别把利当弊。"
+                    },
+                    {
+                        "t": "\"NOT/EXCEPT\"题：三对一错",
+                        "r": "三个选项与原文一致（是干扰），一个与原文矛盾（才是答案）。逐个回原文核对，找出那个\"对不上\"的。"
+                    }
+                ]
             },
-            'B2-4': {
-                examTips: [
-                    { t: 'belong to / consist of / lack 永远不能被动', r: '"状态动词"没有被动语态，记住这几个：belong to（属于）/ consist of（由…组成）/ lack（缺乏）/ contain（包含）/ fit（适合）/ resemble（像）。语法填空：括号给这类词 → 只填主动形式。be consisted of是错的！', eg: 'The team ___(consist) of 5 experts. → consists of（不是is consisted of）' },
-                    { t: '过去分词作定语：-ed放名词前/后修饰', r: '过去分词 = "被…的/已经…的"：① 放名词前：a broken window / the written report ② 放名词后（有补充成分时）：the report written by him。与-ing区分：-ing主动/进行，-ed被动/完成。', eg: 'The cars ___(make) in China are popular worldwide. → made（被制造，后置定语）' },
+            "B2-4": {
+                "examTips": [
+                    {
+                        "t": "belong to / consist of 永远不被动",
+                        "r": "belong to（属于）、consist of（由…组成）、contain、fit、lack 这类状态动词无被动。×be belonged to。括号给这类词只填主动形式。",
+                        "eg": "These paintings ___(belong) to the museum. → belong（主动）"
+                    },
+                    {
+                        "t": "过去分词(-ed)作定语/表语",
+                        "r": "过去分词=\"被…的/已…的\"：放名词前(a broken window)或名词后(the report written by him)；作表语表状态(The door is closed)。与-ing区分：-ed被动，-ing主动。",
+                        "eg": "The cars ___(make) in China are popular. → made（被制造，后置定语）"
+                    },
+                    {
+                        "t": "what 引导表语从句",
+                        "r": "主系表结构中，be动词后的从句若缺主语/宾语→用what引导（This is what I need）。从句完整→用that。",
+                        "eg": "That is ___ we need most. → what（need缺宾语）"
+                    }
                 ],
-                readingTips: [
-                    { t: 'but/however是立场转换信号', r: '读到but/however/yet/although/while，前后观点/情感相反。"作者观点"题：以转折后为准（那才是真实立场）。"人物心理变化"题：转折前是初始状态，转折后是变化后的状态。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "历史传统说明文：建时间轴",
+                        "r": "在时间词(in 1900 / during the Tang Dynasty / later)旁标对应事件，建立时间线。问\"某朝代/某时期做了什么\"沿时间轴定位。"
+                    },
+                    {
+                        "t": "猜词题：看上下文不查字典",
+                        "r": "①看词根前缀 ②看有无解释词(that is/or/means) ③判断正负语境 ④四个选项逐一代入选最通顺。考的是理解，不是词汇量。"
+                    }
+                ]
             },
-            'B2-5': {
-                examTips: [
-                    { t: '句首分词：-ing还是-ed？问主句主语', r: '句首分词作状语，判断步骤：把主句主语代入分词的位置 → 主语"主动做"这件事 → -ing；主语"被做"这件事 → -ed。默读：主语是"施动者"→ing；是"受动者"→-ed。', eg: '___(defeat) in the game, he trained even harder. → Defeated（他被击败，是受动者）' },
-                    { t: 'to one\'s + 情感名词（令某人…的是）', r: '高频固定结构：to one\'s surprise/delight/disappointment/relief/amazement，置于句首接逗号，表示"令某人…的是"。完形填空：看后文描述的是好事还是坏事 → 好事选delight/relief；坏事选surprise/disappointment。', eg: 'To our great ___, the experiment failed. → disappointment（坏事）' },
+            "B2-5": {
+                "examTips": [
+                    {
+                        "t": "-ed 放句首作状语：主语是受动者",
+                        "r": "句首过去分词作状语，主句主语就是\"被做\"的对象。判断：主语主动做→-ing；主语被做→-ed。",
+                        "eg": "___(defeat) in the game, he trained harder. → Defeated（他被击败）"
+                    },
+                    {
+                        "t": "It occurs to sb that…（突然想到）",
+                        "r": "固定句型：It occurs to sb that 从句 / It occurred to me that…（我突然想到）。it是形式主语，that从句是真正主语。不能说I occurred that。",
+                        "eg": "It suddenly ___ to me that I was wrong. → occurred"
+                    },
+                    {
+                        "t": "to one's + 情感名词（令某人…的是）",
+                        "r": "to one's surprise/delight/disappointment/relief，句首接逗号。完形看后文是好事还是坏事：好事→delight/relief；坏事→surprise/disappointment。",
+                        "eg": "To our ___, the show was cancelled. → disappointment（坏事）"
+                    }
                 ],
-                readingTips: [
-                    { t: '七选五：关联词首词快速分类', r: '看7个选项的第一个词：However/Yet/But → 转折（前文有一个与之相反的观点）；Besides/Furthermore/Moreover → 补充（与前文立场相同）；Therefore/Thus/As a result → 结论（前面是原因）；For example/For instance → 举例（前文有一个待举例的观点）。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "音乐/人物记叙文：抓心理变化",
+                        "r": "记叙文常写情绪起伏。在转折词(but/however)处标\"前→后\"心理（紧张→放松）。问\"心情变化\"题答转折前后两个状态。"
+                    },
+                    {
+                        "t": "推断题：必须有原文依据",
+                        "r": "\"infer/conclude\"的答案是原文某句的合理延伸，不是生活常识。找到对应句→问\"这句直接说明什么\"→选最贴近的。凭感觉猜的都是坑。"
+                    }
+                ]
             },
-            'B3-1': {
-                examTips: [
-                    { t: 'That vs What引导名词从句：看从句完不完整', r: '把连词去掉，看从句能否独立成句：能独立（有完整主谓宾）→ that；不能独立（缺主语或宾语）→ what。口诀：that+完整句；what=the thing that（充当句子成分）。', eg: 'I know ___ she is a kind person.（完整）→ that / ___ he said is true.（缺主语）→ What' },
-                    { t: '同位语从句：that不可省、不可换成which', r: '抽象名词（news/fact/idea/belief/hope/suggestion/doubt）后跟从句解释其内容 → 同位语从句，只用that。区别于定语从句：同位语从句的that无句子成分（可删除），定语从句的关系词有成分。', eg: 'The news ___ he won the gold medal delighted us. → that（同位语从句，不能用which）' },
+            "B3-1": {
+                "examTips": [
+                    {
+                        "t": "That vs What：看从句完不完整",
+                        "r": "去掉连词看从句：能独立成句(主谓宾齐全)→that；缺主语或宾语→what(=the thing that)。",
+                        "eg": "___ he did surprised us.（缺主语）→ What / I know ___ he is kind.（完整）→ that"
+                    },
+                    {
+                        "t": "同位语从句的 that 不可省不可换",
+                        "r": "抽象名词(news/fact/idea/belief/hope/suggestion)后跟从句解释其内容→同位语从句，只用that且that无句子成分（可删）。区别定语从句：定从的关系词有成分。",
+                        "eg": "The news ___ he won delighted us. → that（同位语，不能换which）"
+                    },
+                    {
+                        "t": "介词 + which 的搭配",
+                        "r": "从句谓语缺介词时，把介词提到which前：a city in which I live；the way in which… 找动词的固定介词搭配。",
+                        "eg": "the festival ___ which we eat dumplings. → during/on which"
+                    }
                 ],
-                readingTips: [
-                    { t: '七选五：话题词连接法', r: '给每个空格前后的段落圈出核心名词（话题词）。再看7个选项里哪个含有和这些话题词相同/同义的词 → 那就是候选答案。话题词对上了，80%确定。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "节日说明文：文化细节题",
+                        "r": "这类文章讲节日由来、习俗、食物。题目常问\"某节日做什么/吃什么/象征什么\"→直接定位到该节日那段的对应句。"
+                    },
+                    {
+                        "t": "七选五：话题词连接法",
+                        "r": "给空格前后段落圈核心名词→看7个选项里哪个含相同/同义的词→那就是候选。话题词对上，八成确定。"
+                    }
+                ]
             },
-            'B3-2': {
-                examTips: [
-                    { t: 'It作形式宾语：find/think/consider/make + it + adj + to do', r: '语法填空：如果find/think/consider后面有形容词，形容词后面是to do或that从句 → 中间一定有it（形式宾语）。it不可省略，否则句子结构错误。', eg: 'She found ___ difficult to memorize all the words. → it（形式宾语，不能省）' },
-                    { t: 'devote/contribute/be used to + doing（to是介词）', r: '这一批"to是介词"结构必须背下来：be devoted to / be committed to / be used to / contribute to / get used to / object to / look forward to / pay attention to + 名词/-ing。括号给动词 → 填-ing。', eg: 'She devotes herself to ___(improve) students\' English. → improving' },
+            "B3-2": {
+                "examTips": [
+                    {
+                        "t": "主语从句：What/That/Whether引导",
+                        "r": "从句作主语放句首：缺成分→What；不缺成分→That；表\"是否\"→Whether。谓语用单数(What matters is…)。",
+                        "eg": "___ he will come is still unknown. → Whether（是否）"
+                    },
+                    {
+                        "t": "It 作形式宾语",
+                        "r": "find/think/consider/make + it + adj + to do/that从句，中间的it是形式宾语不能省。看到这类结构有形容词，后接to do→中间填it。",
+                        "eg": "She found ___ hard to memorize words. → it（形式宾语）"
+                    },
+                    {
+                        "t": "devote/be devoted to + doing（to是介词）",
+                        "r": "devote oneself to / be devoted to / be committed to / contribute to + 名词/-ing。to是介词，括号给动词→变-ing。",
+                        "eg": "She devotes herself to ___(help) others. → helping"
+                    }
                 ],
-                readingTips: [
-                    { t: '文章目的题：看文体就能判断', r: '① 说明文 → to inform/explain ② 议论文 → to persuade/argue ③ 新闻报道 → to report ④ 广告/通知 → to advertise/announce ⑤ 记叙文 → to entertain/share experience。文体判断对了，目的大概率对。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "人物传记/慈善文：抓\"贡献+品质\"",
+                        "r": "问\"为什么受尊敬/做了什么贡献\"→找人物的具体行为(捐款/创办/坚持)。品质题用事例反推形容词(generous/devoted)。"
+                    },
+                    {
+                        "t": "例子目的题：往上找论点",
+                        "r": "\"The example is used to…\"→往上看，例子前那句或同段首句通常是要证明的论点。答：to illustrate/support the idea that…（填那个论点）。"
+                    }
+                ]
             },
-            'B3-3': {
-                examTips: [
-                    { t: '状语从句省略：还原后再判断填什么', r: '省略了主语和be动词的从句（when/while/if/unless/though + 分词），解题时先还原：补回"主语（=主句主语）+ be动词"，还原成完整从句，看还原后是进行时(-ing)还是被动(-ed)或形容词，再填对应形式。', eg: 'When ___(compare) with others, she is more creative. → compared（还原：When she is compared → 被动→-ed）' },
-                    { t: '10个只接-ing宾语的高频动词（必背）', r: 'avoid/consider/enjoy/finish/mind/practise/suggest/admit/deny/delay + doing。注意：suggest既可接doing也可接that从句（虚拟语气）。这10个动词后面出现动词，选项里有to do的全部排除。', eg: 'He denied ___(steal) the money. → stealing（deny后只能-ing）' },
+            "B3-3": {
+                "examTips": [
+                    {
+                        "t": "状语从句的省略：先还原",
+                        "r": "when/while/if/unless/though + 分词，省了\"主语+be\"。还原：补回\"主语(=主句主语)+be\"，看是进行(-ing)还是被动(-ed)。",
+                        "eg": "When ___(compare) with others, she is creative. → compared（还原When she is compared→被动）"
+                    },
+                    {
+                        "t": "admit/avoid/enjoy 等只接-ing",
+                        "r": "admit/avoid/consider/enjoy/finish/mind/practise/suggest/deny/delay + doing。这批动词后绝不接to do。完形里这些词后的to do选项直接排除。",
+                        "eg": "He admitted ___(steal) the money. → stealing"
+                    },
+                    {
+                        "t": "where 引导定语从句",
+                        "r": "先行词是地点(place/city/school/situation/case)且关系词在从句中作地点状语→用where(=in/at which)。若作主/宾语则用which。",
+                        "eg": "This is the village ___ I grew up. → where（在那里长大，作状语）"
+                    }
                 ],
-                readingTips: [
-                    { t: '细节题：先看题干的限定语', r: '"According to paragraph 2 / the author / the survey..."这些限定语告诉你答案在哪里找。找到范围后只在那个范围内搜索，不要扩大到全文。限定语越具体，定位越精准。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "多元文化说明文：分清\"谁的文化\"",
+                        "r": "文章对比多种文化/群体时，在每种文化旁标关键词。问\"According to X culture…\"只在X那部分找，别混淆。"
+                    },
+                    {
+                        "t": "观点态度题：找主观判断词",
+                        "r": "问\"作者认为\"→找believe/argue/suggest/claim/consider/maintain后面的内容，那是作者观点。无这些词的句子是客观事实。"
+                    }
+                ]
             },
-            'B3-4': {
-                examTips: [
-                    { t: '情态+have done：对过去的3种推测', r: '① must have done = 过去一定做了（确定）② should have done = 过去本该做但没做（遗憾/批评）③ can\'t / couldn\'t have done = 过去不可能做了（否定确定）。语法填空：有过去时间背景+推测语气 → 情态+have+过去分词。', eg: 'He ___ have taken my umbrella—his is still here. → must（一定拿了我的）' },
-                    { t: 'attach importance to + 名词/-ing（to是介词）', r: '固定搭配：attach importance/attention/significance to + 名词/-ing。"to"是介词。同类结构：pay attention to / devote time to / object to，全部后接名词/-ing，不接原形。', eg: 'We should attach great importance to ___(protect) the environment. → protecting' },
+            "B3-4": {
+                "examTips": [
+                    {
+                        "t": "情态+have done：对过去的推测",
+                        "r": "must have done=过去一定做了（确定）；should have done=本该做却没做（遗憾）；can't have done=过去不可能做了（否定）。有过去背景+推测语气用此结构。",
+                        "eg": "He ___ have taken my umbrella—his is here. → must（一定拿了）"
+                    },
+                    {
+                        "t": "attach importance to + 名词/-ing",
+                        "r": "attach importance/attention to + 名词/-ing，to是介词。同类：pay attention to / devote time to。括号给动词→变-ing。",
+                        "eg": "We attach importance to ___(protect) nature. → protecting"
+                    },
+                    {
+                        "t": "be to do：计划/命令/注定",
+                        "r": "be + to do 表按计划将发生、命令或注定(The rocket is to be launched tomorrow)。被动时be to be done。语法填空遇\"将要/应该\"语气可用。",
+                        "eg": "The satellite is ___(launch) next week. → to be launched"
+                    }
                 ],
-                readingTips: [
-                    { t: '题目顺序=文章顺序（最后一题例外）', r: '阅读题的顺序和文章段落顺序基本一致，最后一道通常是全文主旨或推断题。做完第1题，下一题的答案在文章更靠后的地方找，不要倒回去。按顺序扫描，找得快，不绕圈。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "太空科普文：抓\"是什么-怎么运作-意义\"",
+                        "r": "科普文按定义→原理→应用/意义展开。给每段标签，问原理去原理段，问意义去末段。专业词不慌，看解释词。"
+                    },
+                    {
+                        "t": "事实细节题：找数据和专有名词",
+                        "r": "科普文常考具体数字、卫星名、年份。题干含这些→直接定位那个词，读懂它所在句即可，不必懂整段原理。"
+                    }
+                ]
             },
-            'B3-5': {
-                examTips: [
-                    { t: '同位语从句 vs 定语从句：一个问题判断', r: '问自己：that从句是"解释这个名词的内容"还是"限定这个名词是哪一个"？解释内容 → 同位语从句（that不能换成which）；限定 → 定语从句。先行词是抽象名词（news/fact/idea/belief/hope/suggestion/doubt）→ 95%是同位语从句。', eg: 'The news that he passed（解释news内容→同位语从句）vs The news that I read（限定哪条新闻→定语从句）' },
-                    { t: '否定词在句首→部分倒装（口诀：助动词+主语）', r: '触发倒装的否定词/短语：by no means / under no circumstances / never / seldom / hardly / not until / no sooner / not only。格式：否定词 + 助动词（do/did/will/can/should/have）+ 主语 + 动词原形。', eg: 'By no means ___ we give up halfway. → should we give up（助动词提前）' },
+            "B3-5": {
+                "examTips": [
+                    {
+                        "t": "含蓄虚拟语气：but for / without / otherwise",
+                        "r": "没有if但暗含虚拟：\"But for/Without + 名词, 主句would have done\"（对过去）；otherwise前后时态分裂。看到这些词，主句用would/could (have) done。",
+                        "eg": "Without your help, I ___(fail). → would have failed（对过去）"
+                    },
+                    {
+                        "t": "apologize 的完整搭配",
+                        "r": "apologize to sb for sth/doing（为某事向某人道歉）。两个介词都不能少。名词形式：make an apology to sb for sth。",
+                        "eg": "He apologized ___ me ___ being late. → to / for"
+                    },
+                    {
+                        "t": "judge by/from（根据…判断）",
+                        "r": "judge sb/sth by/from + 依据；Don't judge a book by its cover。短语judging from/by（从…来看）作插入语。",
+                        "eg": "Don't judge a person ___ appearance. → by/from"
+                    }
                 ],
-                readingTips: [
-                    { t: '七选五：代词指代是最强武器', r: '7个选项里，开头是it/they/this/these/such的，先在空格上下文里找这个代词指代的名词 → 找到了就确定这道题。代词指代法比关联词法更精准，优先用。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "金钱/品德记叙议论文：抓中心道理",
+                        "r": "这类文章常借故事讲道理。结尾或转折后通常点明寓意，问\"main idea / what we learn\"看末段的总结句。"
+                    },
+                    {
+                        "t": "推理题：原文延伸，不是个人联想",
+                        "r": "推断答案=原文某句的合理推论，靠原文不靠生活经验。找到依据句→选最近的推论。范围扩大(all/every)、无中生有的选项排除。"
+                    }
+                ]
             },
-            'S1-1': {
-                examTips: [
-                    { t: '非限制性定语从句：有逗号，只用which/who', r: '有逗号 = 非限制性 → 绝对不能用that。先行词是人 → who/whom；先行词是物/整件事 → which。当先行词是整个主句内容时（表示"这件事"）→ 一律用which。', eg: 'She passed the exam, ___ made her parents proud. → which（指代整件事，非限制性）' },
-                    { t: '否定词/短语在句首→部分倒装（倒装公式）', r: '句首出现：under no circumstances / by no means / never / seldom / hardly / not until / no sooner → 主句倒装：助动词/情态动词提到主语前。从句不倒装，只有主句倒装。', eg: 'Under no circumstances ___ you tell lies. → should you（情态动词提前）' },
+            "S1-1": {
+                "examTips": [
+                    {
+                        "t": "非限制性定语从句：逗号后只用which/who",
+                        "r": "有逗号→不能用that。指人who/whom，指物或指整件事用which。先行词是整个主句内容时一律which。",
+                        "eg": "She passed, ___ made her parents proud. → which（指整件事）"
+                    },
+                    {
+                        "t": "under no circumstances 等否定词句首→倒装",
+                        "r": "under no circumstances/by no means/never/not until/seldom/hardly 在句首→主句倒装：助动词/情态提到主语前。",
+                        "eg": "Under no circumstances ___ you give up. → should you（情态提前）"
+                    },
+                    {
+                        "t": "be committed/devoted to + doing",
+                        "r": "be committed to / be devoted to / be dedicated to + 名词/-ing（致力于）。to是介词，括号给动词→-ing。",
+                        "eg": "He is committed to ___(improve) education. → improving"
+                    }
                 ],
-                readingTips: [
-                    { t: '长难句拆解三步', r: '① 找谓语动词（主句核心）→ ② 谓语左边找主语（常被定语从句包围）→ ③ 谓语右边找宾语/补语。把嵌入的定语从句/状语从句先括起来跳过，读完主干再补细节。主干理解了，长句就通了。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "杰出人物传记：建时间轴",
+                        "r": "传记按时间叙述。在时间词(at the age of / in / after / later)旁标关键事件，建立时间线。问\"某时期做了什么/成功转折\"沿轴定位。"
+                    },
+                    {
+                        "t": "成就原因题：找\"努力/品质/机遇\"",
+                        "r": "问\"为什么成功/取得成就\"→定位到描写人物努力、坚持、关键决定的句子。答案有原文事例支撑，不是泛泛的\"聪明\"。"
+                    }
+                ]
             },
-            'S1-2': {
-                examTips: [
-                    { t: '将来进行时(will be doing)：将来某时正在发生', r: '信号词：at this time tomorrow / this time next week / in + 一段时间（将来某个时间节点正在进行）→ will be doing。与"be going to"区别：will be doing强调届时正在进行；be going to强调打算/计划。', eg: 'At this time tomorrow, we ___(cross) the Pacific Ocean. → will be crossing' },
-                    { t: 'with复合结构：with+名词+分词，判断-ing/-ed', r: 'with + 名词 + 现在分词（名词主动）/ 过去分词（名词被动）/ 形容词 / 副词。判断-ing还是-ed：看名词和动作的关系 → 名词"做"动作 → -ing；名词"被做" → -ed。', eg: 'She sat there, with her arms ___(fold). → folded（手臂被折叠，被动）' },
+            "S1-2": {
+                "examTips": [
+                    {
+                        "t": "将来进行时 will be doing",
+                        "r": "信号：at this time tomorrow / this time next week→将来某刻正在进行→will be doing。强调\"届时正在做\"。",
+                        "eg": "At this time tomorrow, we ___(cross) the ocean. → will be crossing"
+                    },
+                    {
+                        "t": "be likely to do（很可能）",
+                        "r": "sb/sth is likely to do = It is likely that从句（很可能）。likely的主语可以是人或物。区别possible/probable：它们主语只能是It。",
+                        "eg": "AI is likely to ___(change) our life. → change（原形）"
+                    },
+                    {
+                        "t": "with 复合结构：with+名词+分词/形容词",
+                        "r": "with + 名词 + 现在分词(名词主动)/过去分词(名词被动)/形容词/副词。判断-ing还是-ed：名词做动作→-ing；被做→-ed。",
+                        "eg": "She sat there with her arms ___(fold). → folded（手臂被交叉）"
+                    }
                 ],
-                readingTips: [
-                    { t: '七选五第一个空：找承上启下的过渡句', r: '文章第一段后的第一个空格，通常是"引入正文话题"的过渡句：选项里含有与第一段相同的关键词，同时引入一个新方向/视角。过渡性+话题词匹配=第一空。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "科技预测说明文：抓\"现状-趋势-影响\"",
+                        "r": "这类文章讲技术发展。标出现状、未来趋势、可能影响。问\"未来会怎样\"去趋势段，问\"影响\"去影响段。"
+                    },
+                    {
+                        "t": "利弊/态度题：作者支持还是担忧",
+                        "r": "科技文常含作者立场。找评价词：promising/beneficial(乐观)；concerning/risky(担忧)；on the one hand…on the other(中立)。以转折后为准。"
+                    }
+                ]
             },
-            'S1-3': {
-                examTips: [
-                    { t: '-ing作主语=动名词：谓语动词用单数', r: '"Doing sth + is/takes/requires/seems..."中，-ing短语作主语，谓语动词用单数（它是"一件事"）。与"It is...to do..."可互换。语法填空：空在句首，后面谓语是单数形式，且内容是动作 → 填Doing。', eg: '___(learn) a new language takes time and effort. → Learning（作主语，谓语takes是单数）' },
-                    { t: 'prohibit/ban/prevent/stop + sb + from + doing', r: '"禁止/阻止"类动词统一格式：动词 + sb + from + doing。被动时：sb is prohibited from doing（from绝不省略）。完形/语法填空：看到禁止语境，后面一定有from，from后面-ing。', eg: 'The law prohibits people from ___(throw) rubbish in the street. → throwing' },
+            "S1-3": {
+                "examTips": [
+                    {
+                        "t": "-ing 作主语：谓语用单数",
+                        "r": "\"Doing sth + is/takes/requires…\"，-ing短语作主语谓语用单数(它是一件事)。可与\"It is…to do\"互换。句首是动作且后面谓语单数→填Doing。",
+                        "eg": "___(learn) a language takes time. → Learning（谓语takes单数）"
+                    },
+                    {
+                        "t": "preserve/protect/conserve 辨析",
+                        "r": "preserve=保存(使保持原样,文物/食物)；protect=保护(免受伤害,protect…from)；conserve=节约保护(资源/能源)。看宾语：文物用preserve，资源用conserve。",
+                        "eg": "We must ___ water and energy. → conserve（资源）"
+                    },
+                    {
+                        "t": "prohibit/ban + sb + from + doing",
+                        "r": "禁止类：prohibit/ban/prevent/stop/keep + sb + from + doing。被动from不省。看到\"禁止\"语境后面找from + -ing。",
+                        "eg": "The law prohibits people from ___(throw) rubbish. → throwing"
+                    }
                 ],
-                readingTips: [
-                    { t: '说明文结构：定义→原因→影响→建议', r: '说明文按这个框架展开。做题前给每段贴标签（什么是X→为什么→有什么影响→怎么做），题目问"原因"去原因段，问"影响"去影响段，精准定位，不读全文。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "公园/景观说明描写文：细节定位",
+                        "r": "介绍公园特色、动植物、设施。题目多问具体细节(几点开放/有什么动物/门票)→圈关键词回原文定位对应句。"
+                    },
+                    {
+                        "t": "段落大意题：首句原则",
+                        "r": "问\"paragraph X mainly about\"→看该段首句(主题句)，选与首句意思最接近的。首句太抽象时看末句。不要逐句读。"
+                    }
+                ]
             },
-            'S1-4': {
-                examTips: [
-                    { t: '10个只接-ing的顽固动词（必背）', r: 'avoid/consider/enjoy/finish/mind/practise/suggest/admit/deny/delay + doing。语法填空遇到这10个词后有括号 → 填-ing，不管括号里是什么动词。完形里这10个词后面出现to do的选项直接排除。', eg: 'I suggest ___(hold) a meeting next week. → holding（不是to hold）' },
-                    { t: 'do/does/did强调谓语：加了它，后面动词用原形', r: '谓语前加助动词do/does/did（时态与主句一致）表示"确实/真的"。加了之后，后面的实义动词必须变回原形。语法填空：空+动词原形，时间是过去 → did；现在三单 → does；其他 → do。', eg: 'He ___ study hard every day—you just never see it. → does study（三单现在时，强调）' },
+            "S1-4": {
+                "examTips": [
+                    {
+                        "t": "只接-ing的顽固动词",
+                        "r": "avoid/consider/enjoy/finish/mind/practise/suggest/admit/deny/delay/keep/imagine + doing。这批动词后括号→-ing，不管什么词。",
+                        "eg": "I suggest ___(hold) a meeting. → holding"
+                    },
+                    {
+                        "t": "-ing作表语 vs 现在进行时",
+                        "r": "be + -ing 若表\"事物的特征\"→动名词作表语(My job is teaching)；若表\"此刻正在做\"→进行时(He is teaching now)。看主语是物/抽象还是人在动作。",
+                        "eg": "Her hobby is ___(paint). → painting（特征,作表语）"
+                    },
+                    {
+                        "t": "do/does/did 强调谓语",
+                        "r": "谓语前加do/does/did(时态与句一致)表\"确实/真的\"，后面实义动词变回原形。过去→did；三单→does。",
+                        "eg": "He ___ study hard, though you never see it. → does study（强调）"
+                    }
                 ],
-                readingTips: [
-                    { t: 'NOT/EXCEPT题：找三个对的，剩下的是答案', r: '"Which is NOT true..."是排除题：三个选项和原文一致（干扰项），一个与原文矛盾（答案）。策略：先找明显和原文一致的，排除，剩下的最可疑的就是答案。别被"错的才是对的"这个逻辑绕晕。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "肢体语言说明文：跨文化细节",
+                        "r": "讲不同文化的手势/表情含义。题目常问\"某动作在某国表示什么\"→定位到该国那段，注意\"相反/不同\"的对比。"
+                    },
+                    {
+                        "t": "\"NOT true\"排除题",
+                        "r": "三个选项符合原文，一个矛盾。逐个回原文核对，找出对不上的那个。别被\"错的才是答案\"绕晕。"
+                    }
+                ]
             },
-            'S1-5': {
-                examTips: [
-                    { t: 'It is essential/important that + (should) + 动词原形', r: '"重要/必要/建议/命令"类主语从句用虚拟语气：that后面的从句一律用(should +)动词原形，不管主语是什么，一律不加-s/-ed。括号里给动词，直接填原形。', eg: 'It is essential that every student ___(attend) the meeting. → attend（虚拟，不加s）' },
-                    { t: '识别强调句型：去掉It is/was...that/who，句子仍完整', r: '强调句判断法：把"It is/was"和"that/who"去掉，剩下的如果是一个完整句子 → 是强调句。如果去掉后句子不完整 → 不是强调句。强调人时可以用who，强调其他用that。', eg: 'It was in the library ___ I met her. → that（去掉It was...that，剩余I met her in the library → 完整 → 强调句）' },
+            "S1-5": {
+                "examTips": [
+                    {
+                        "t": "It is essential that + (should) + 原形",
+                        "r": "重要/必要/建议/命令类(essential/important/necessary/vital/advisable)主语从句用虚拟：that从句一律(should+)动词原形，不加-s/-ed。",
+                        "eg": "It is essential that everyone ___(attend). → attend（虚拟,不加s）"
+                    },
+                    {
+                        "t": "attain vs obtain vs achieve",
+                        "r": "attain=（经努力）达到(目标/标准)；obtain=（设法）获得(具体物/许可)；achieve=取得(成就/成功)。目标/水平用attain，实物用obtain。",
+                        "eg": "With effort, anyone can ___ their goals. → attain（达到目标）"
+                    },
+                    {
+                        "t": "强调句强调状语",
+                        "r": "It is/was + 被强调的状语(时间/地点/原因) + that + 其余。判断：去掉It is…that剩余仍完整→强调句。",
+                        "eg": "It was in 1949 ___ New China was founded. → that（强调时间状语）"
+                    }
                 ],
-                readingTips: [
-                    { t: '七选五最后一空：总结/展望型', r: '文章最后一个空格，通常填全文总结或展望未来的句子。特征：选项含有in conclusion/in short/in the future/therefore，或对全文主题有高度概括。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "农业科技人物文：抓因果链",
+                        "r": "讲技术/人物如何解决问题。标出\"问题→方法→结果\"。问\"为什么/带来什么\"沿因果词(because/so/as a result/led to)定位。"
+                    },
+                    {
+                        "t": "主旨标题题：覆盖全文不夸大",
+                        "r": "标题要概括全文核心。排除只讲一段的(太窄)和超出文章的(太宽)。选既全面又贴切的。"
+                    }
+                ]
             },
-            'S2-1': {
-                examTips: [
-                    { t: 'be to blame = 主动形式表被动（固定结构）', r: '"谁应该被责备"英文说：sb/sth is to blame（主动形式，被动含义）。错误：sb is to be blamed。记住这个结构，它是固定的，不按"主动/被动"常规来，高考考的就是这个意外。', eg: 'Who is to ___ for the accident? → blame（固定结构，不是blamed）' },
-                    { t: 'suspect sb of doing / accuse sb of doing', r: '怀疑/指控类动词三个：① suspect sb of doing（怀疑某人做了…）② accuse sb of doing（指控某人做了…）③ charge sb with doing（控告某人）。介词不同（of/of/with），完形填空介词题重点考这三个的区分。', eg: 'The police accused the man ___ stealing the car. → of stealing（accuse of）' },
+            "S2-1": {
+                "examTips": [
+                    {
+                        "t": "be to blame（主动表被动）",
+                        "r": "\"该受责备\"用sb is to blame(主动形式被动含义)，不说is to be blamed。固定结构，高考考的就是这个意外。",
+                        "eg": "Who is to ___ for the accident? → blame（固定,不是blamed）"
+                    },
+                    {
+                        "t": "suspect/accuse sb of doing",
+                        "r": "suspect sb of doing(怀疑)；accuse sb of doing(指控)；charge sb with doing(控告)。介词区别of/of/with，完形重点考。",
+                        "eg": "The police accused him ___ stealing. → of"
+                    },
+                    {
+                        "t": "be exposed to（被动考法）",
+                        "r": "expose sb/sth to…（使暴露于）；被动be exposed to + 名词(暴露在…中/接触)。to是介词后接名词。",
+                        "eg": "Children should not be exposed ___ violence. → to"
+                    }
                 ],
-                readingTips: [
-                    { t: '推理题：答案是原文的逻辑延伸，不是你的联想', r: '推理/推断题和细节题答题方法相同：都要找原文依据。"推理"的答案是原文某句的合理延伸，不是生活经验或个人判断。找到原文句，问"这句话直接说明了什么" → 选项里最近那个就是答案。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "科学家人物/科普文：事实vs观点",
+                        "r": "区分事实句(数据/实验结果,无评价)和观点句(believe/argue/according to)。问\"which is a FACT\"→找无情感的陈述。"
+                    },
+                    {
+                        "t": "猜词题：四步推测",
+                        "r": "①词根前缀(bio-生命,micro-微) ②有无解释词(that is/or/means) ③正负语境 ④四选项代入选最顺。"
+                    }
+                ]
             },
-            'S2-2': {
-                examTips: [
-                    { t: '过去分词(-ed)作状语：主语是"被做"的那个', r: '句首/句中分词作状语：主语与分词的关系 → 主语"被做" → -ed；主语"主动做" → -ing。口诀：被 → -ed；做 → -ing。先问：这件事是主语做的，还是对主语做的？', eg: '___(give) another chance, he would do better. → Given（他被给予机会 → 被动 → -ed）' },
-                    { t: 'adapt vs adopt：字形相近，含义完全不同', r: 'adapt（适应/改编）→ adapt to doing / adapt A for B；adopt（采纳/收养）→ adopt a policy / adopt a child / be adopted。完形考法：含"适应环境/改写" → adapt；含"采用方法/收养" → adopt。看语境，不看字形。', eg: 'The company decided to ___ a new marketing strategy. → adopt（采纳策略）' },
+            "S2-2": {
+                "examTips": [
+                    {
+                        "t": "-ed作状语：主语被做",
+                        "r": "句首/句中过去分词作状语，主句主语是\"被做\"的对象。口诀：被→-ed；主动做→-ing。",
+                        "eg": "___(give) another chance, he would do better. → Given（他被给机会）"
+                    },
+                    {
+                        "t": "adapt vs adopt（形近词）",
+                        "r": "adapt=适应/改编(adapt to doing)；adopt=采纳/收养(adopt a plan/child)。\"适应环境\"用adapt，\"采用方法\"用adopt。看语境不看字形。",
+                        "eg": "The company decided to ___ a new strategy. → adopt（采纳）"
+                    },
+                    {
+                        "t": "participate in（参加）",
+                        "r": "participate in = take part in（参加活动），in不能少。区别join(加入组织/团体)、attend(出席会议/课)。",
+                        "eg": "All students participate ___ the activity. → in"
+                    }
                 ],
-                readingTips: [
-                    { t: '观点类题：找有明显主观判断词的句子', r: '题目问"作者认为/相信"，在原文找含有：believe/argue/suggest/claim/consider/think/maintain/emphasize的句子，这些是观点标记词。紧跟在这些词后面的内容，就是作者的观点。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "跨文化记叙/议论文：观点态度",
+                        "r": "讲文化交流的体验或看法。找作者立场的评价句，注意转折(but/however)后才是真实态度。"
+                    },
+                    {
+                        "t": "词义猜测+态度结合",
+                        "r": "遇生词先看正负语境(出现在褒义还是贬义句)。判断作者态度也靠这些情感词：appreciate/admire(正)，concern/criticize(负)。"
+                    }
+                ]
             },
-            'S2-3': {
-                examTips: [
-                    { t: 'consist of / be composed of / be made up of：辨析', r: 'consist of（主动，不可被动）= be composed of = be made up of（被动形式，主动含义，两者都对）。语法填空：空在"consist"后 → 填of；括号给"consist"→ 只填主动形式（consists）。be consisted of是错的。', eg: 'Water ___(consist) of hydrogen and oxygen. → consists of（不是is consisted of）' },
-                    { t: 'a minimum of / at least：数量下限', r: 'a minimum of + 数字 = at least（至少/最少）；a maximum of = at most（至多/最多）。完形/语法填空：看到"至少"语境 → minimum；"至多" → maximum。两者都接数字，用法相同。', eg: 'You need a minimum of 8 hours of sleep. → minimum（at least 8 hours）' },
+            "S2-3": {
+                "examTips": [
+                    {
+                        "t": "consist of 的霸道属性",
+                        "r": "consist of=be made up of=be composed of（由…组成）。consist of无被动(×is consisted of)；be made up of本身已是被动形式。",
+                        "eg": "The team ___(consist) of 5 experts. → consists of"
+                    },
+                    {
+                        "t": "be associated with（与…相关）",
+                        "r": "be associated with / be linked to / be connected with + 名词。表\"联系/关联\"。associate A with B（把A与B联系）。",
+                        "eg": "This dish is associated ___ festivals. → with"
+                    },
+                    {
+                        "t": "a minimum of / at least",
+                        "r": "a minimum of + 数字 = at least；a maximum of = at most。看到\"至少/最多\"语境用min/max，都接数字。",
+                        "eg": "You need a minimum ___ 8 hours sleep. → of"
+                    }
                 ],
-                readingTips: [
-                    { t: '科普文：按步骤顺序标注过程', r: '科技/自然类文章常考"步骤/过程"，在文中找序列词（first/then/next/after/finally/as a result），给每个步骤编号，答"顺序"题时按编号找，绝对不会搞混。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "饮食文化说明文：细节定位",
+                        "r": "讲菜系、食材、做法。问\"某菜用什么/怎么做/来自哪\"→圈关键词回原文找对应句，读前后2-3句。"
+                    },
+                    {
+                        "t": "同义改写：正确答案换个说法",
+                        "r": "正确选项是原文某句的同义改写(词不同意同)。与原文用词一模一样的常是陷阱。做完对照原文句学会\"A=B\"。"
+                    }
+                ]
             },
-            'S2-4': {
-                examTips: [
-                    { t: 'Located/Situated/Compared作句首状语', r: '句首过去分词短语后面跟逗号，主句的主语就是"被located/situated/compared"的对象。记住这几个常见句首分词：Located in（位于）/ Situated on（坐落于）/ Compared with（与…相比）/ Born in（出生于）/ Surrounded by（被…围绕）。', eg: '___(locate) in the mountains, the village is very peaceful. → Located（村子被定位在山里→被动）' },
-                    { t: 'measure 名词vs动词：看搭配', r: 'measure 名词=措施（take/adopt/implement measures）；动词=测量（measure the length/temperature）。完形填空：take后面 → 名词措施（measures）；需要谓语的位置 → 动词（measured/measuring）。', eg: 'Effective ___ should be taken to solve the problem. → measures（名词，take measures）' },
+            "S2-4": {
+                "examTips": [
+                    {
+                        "t": "Located/Compared 作句首状语",
+                        "r": "句首过去分词+逗号，主句主语就是被located/compared的对象。常见：Located in(位于)/Compared with(与…相比)/Surrounded by(被围绕)。",
+                        "eg": "___(locate) in the mountains, the village is quiet. → Located"
+                    },
+                    {
+                        "t": "measure 的被动陷阱",
+                        "r": "measure作动词=测量(主动be measured被动)；作名词=措施(take measures)。take后→名词measures；做谓语→动词。",
+                        "eg": "Effective ___ should be taken. → measures（名词）"
+                    },
+                    {
+                        "t": "mixture 等词性变形",
+                        "r": "mix(v.)→mixture(n.混合物)；记一批-ure名词：mixture/pressure/pleasure/failure。空在冠词/形容词后→填名词形式。",
+                        "eg": "The culture is a ___(mix) of East and West. → mixture"
+                    }
                 ],
-                readingTips: [
-                    { t: '图表数据题：找最高/最低/最大变化', r: '配图表的阅读，题目常考：① 哪个最高/最低 ② 哪段时间增长最快 ③ 两者之间的差异。直接在图上看，不要在文字里找。30秒内答完，给理解类题目留时间。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "地理/景观描写文：方位与图表",
+                        "r": "讲地形、城市、路线。配地图/图表时直接看图核对，问方位/距离按图定位，不在文字里绕。"
+                    },
+                    {
+                        "t": "图表数据题：找最高/最低/最大变化",
+                        "r": "题问哪个最高/低、哪段增长最快、两者差异→直接看数据，30秒答完，给理解题留时间。"
+                    }
+                ]
             },
-            'S2-5': {
-                examTips: [
-                    { t: 'It is vital/necessary that + (should) + 动词原形', r: '"重要/必要/紧迫"类虚拟语气：凡是表示主观态度（vital/necessary/important/essential/urgent/advisable）的主语从句，that后面一律用(should +)动词原形。括号给动词 → 直接填原形，不加-s/-ed。', eg: 'It is vital that everyone ___(be) aware of the risks. → be（虚拟语气，不是is）' },
-                    { t: 'apply的三种用法：看后面的介词', r: 'apply for（申请某物）→ apply for a scholarship；apply to（向某机构申请/适用于）→ apply to us all；apply...to...（将...应用于...）→ apply theory to practice。完形考法：后面是介词for/to，判断含义。', eg: 'This rule applies ___ all students in the school. → to（适用于）' },
+            "S2-5": {
+                "examTips": [
+                    {
+                        "t": "状语从句省略的还原",
+                        "r": "when/while/if/though + 分词，先补回\"主语+be\"还原成完整从句，看是进行(-ing)、被动(-ed)还是形容词。",
+                        "eg": "If ___(treat) early, the disease is curable. → treated（还原If it is treated→被动）"
+                    },
+                    {
+                        "t": "It is vital/important that + (should) + 原形",
+                        "r": "紧迫/重要/必要类(vital/essential/urgent/important)主语从句用虚拟，that从句(should+)原形，不加-s。",
+                        "eg": "It is vital that everyone ___(be) aware. → be（不是is）"
+                    },
+                    {
+                        "t": "apply 的多重含义",
+                        "r": "apply for(申请)；apply to(适用于/向…申请)；apply…to…(把…应用于)；apply pressure(施加,急救语境=按压)。看搭配定意思。",
+                        "eg": "Apply pressure ___ the wound to stop bleeding. → to"
+                    }
                 ],
-                readingTips: [
-                    { t: '词汇量不够时的应对策略', r: '① 词根前缀推测（un-/dis-=否定，re-=再，micro-=小，bio-=生命）→ ② 看上下文有无同义解释（that is / or / namely）→ ③ 判断正负语境（好事/坏事环境里，这个词是褒义还是贬义）→ ④ 直接跳过不认识的词，用已知信息答题。高考不考词汇量，考理解力。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "急救说明/应用文：步骤顺序",
+                        "r": "讲操作步骤。找序列词(first/then/next/after/finally)给步骤编号，问\"先做什么/第几步\"按号定位，绝不搞混。"
+                    },
+                    {
+                        "t": "\"按顺序排列\"题",
+                        "r": "题给打乱的步骤要排序→回原文找序列词，按first→then→finally的标记重排。注意\"before/after\"会颠倒先后。"
+                    }
+                ]
             },
-            'S3-1': {
-                examTips: [
-                    { t: '虚拟语气"时间退步法"（最重要的规则）', r: '虚拟语气的时态比真实时态"退一步"：① 对现在虚拟→if从句用过去时（were/did），主句用would/could/might + do ② 对过去虚拟→if从句用过去完成时（had done），主句用would/could/might + have done ③ If I were you（注意be动词永远用were）。', eg: 'If he ___(study) harder, he would pass the exam. → studied（对现在，过去时）' },
-                    { t: 'wish从句的时态：愿望越美好，时态越"过去"', r: '① 对现在的愿望（但无法实现）→ wish + 过去时（I wish I knew）② 对过去的遗憾 → wish + had done（I wish I had studied）③ 对将来的期望 → wish + would do（I wish it would stop raining）。be动词一律用were。', eg: 'I wish I ___(be) taller. → were（对现在的愿望，be动词用were）' },
+            "S3-1": {
+                "examTips": [
+                    {
+                        "t": "虚拟语气\"时间退步法\"",
+                        "r": "对现在虚拟→if从句过去时(were/did)，主句would/could do；对过去虚拟→if从句过去完成(had done)，主句would have done。If I were you(be永远用were)。",
+                        "eg": "If he ___(study) harder, he would pass. → studied（对现在）"
+                    },
+                    {
+                        "t": "wish 从句：愿望越美时态越\"过去\"",
+                        "r": "对现在愿望→wish + 过去时(I wish I knew)；对过去遗憾→wish + had done；对将来→wish + would do。be用were。",
+                        "eg": "I wish I ___(be) taller. → were"
+                    },
+                    {
+                        "t": "be worthy of + 名词/being done",
+                        "r": "be worthy of + 名词/动名词(被动)；be worth + doing(主动表被动)；be worthwhile to do。三者区分别混。",
+                        "eg": "The work is worthy of ___(praise). → praise / being praised"
+                    }
                 ],
-                readingTips: [
-                    { t: '人物传记：给时间轴打标签', r: '传记类按时间叙述，题目考"某时期做了什么/成功原因/重要转折"。做题前在时间词（at the age of/in/after/later）旁边标记关键事件，建立时间轴。细节题沿时间轴定位，不绕弯。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "艺术说明/议论文：主观评价",
+                        "r": "讲艺术作品、风格、流派。注意作者的评价是主观的，找评价词判断态度(masterpiece/remarkable=褒)。"
+                    },
+                    {
+                        "t": "态度题：别被话题带偏",
+                        "r": "问作者态度看情感词和语气，不看话题本身。写争议话题作者也可能中立(只陈述,无明显褒贬)。"
+                    }
+                ]
             },
-            'S3-2': {
-                examTips: [
-                    { t: 'It is high time that从句用过去式（必考！）', r: '"是时候做某事了"固定句型：It is high time that + 主语 + 动词过去式 / should + 原形。从句绝对不用现在时。区别：It is time to do（不定式，没有强调意味），It is high time that（强调"早该做了"，虚拟语气）。', eg: 'It is high time that we ___(take) action to protect the environment. → took（虚拟，过去式）' },
-                    { t: 'reward vs award：都是奖励，但场景不同', r: 'reward（回报/奖励）侧重对已有贡献/行为的物质回报；award（颁奖/授予）侧重正式典礼颁发的奖项。搭配：reward sb with sth / for doing；award sth to sb / award sb sth。', eg: 'The author was ___ the Nobel Prize for Literature. → awarded（正式颁奖 → award）' },
+            "S3-2": {
+                "examTips": [
+                    {
+                        "t": "It is high time that + 过去式",
+                        "r": "\"早该做某事了\"：It is high time that + 主语 + 过去式/should + 原形。从句绝不用现在时。区别It is time to do(无强调意味)。",
+                        "eg": "It is high time that we ___(take) action. → took"
+                    },
+                    {
+                        "t": "reward vs award",
+                        "r": "reward=回报/酬谢(对行为的物质回报,reward sb for/with)；award=颁奖/授予(正式奖项,award sb sth)。颁奖典礼用award。",
+                        "eg": "He was ___ the Nobel Prize. → awarded（正式颁奖）"
+                    },
+                    {
+                        "t": "健康类高频搭配",
+                        "r": "be addicted to(沉迷于,to是介词)；do harm to / be harmful to(有害)；keep fit / stay healthy。完形健康话题常考这几个。",
+                        "eg": "He is addicted ___ playing games. → to"
+                    }
                 ],
-                readingTips: [
-                    { t: '对比/比较题：找对比信号词', r: '题目问"两者如何比较"，在原文找：more...than / less...than / compared with / while / whereas / unlike / in contrast / on the other hand。找到对比词，前后两者分别是什么，就是题目答案。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "健康生活议论文：利弊+建议",
+                        "r": "讲坏习惯危害和健康建议。标出\"危害\"和\"建议\"两部分。问\"如何保持健康\"去建议段，问\"危害\"去危害段。"
+                    },
+                    {
+                        "t": "建议/做法细节题",
+                        "r": "题问\"作者建议怎么做\"→找含should/suggest/advise/it is better to的句子，那是建议所在。"
+                    }
+                ]
             },
-            'S3-3': {
-                examTips: [
-                    { t: '强调句识别法：去掉It is/was...that/who，句子还完整', r: '判断是否是强调句：① 去掉"It is/was"和"that/who" → 如果剩余是完整句 → 强调句 ② 如果不完整 → 不是强调句（可能是主语从句或定语从句）。强调句的that/who前后不能有名词，否则是定语从句。', eg: 'It was my father ___ taught me to be honest. → who（强调人用who，去掉后I taught... → 完整 → 强调句）' },
-                    { t: 'result in（导致）vs result from（由…造成）', r: '易混介词：result in（导致/造成某结果）→ 原因result in结果；result from（由…引起）→ 结果results from原因。记忆：in=进入，想象原因"进入"结果里导致结果；from=来自，结果来自原因。', eg: 'The accident ___ poor road conditions. → resulted from（事故来自/由于路况差）' },
+            "S3-3": {
+                "examTips": [
+                    {
+                        "t": "一眼识别强调句 It is…that…",
+                        "r": "去掉It is/was…that/who，剩余仍是完整句→强调句。强调人可用who。区别形式主语(去掉后不完整)。",
+                        "eg": "It was in the lab ___ I met her. → that（去掉后I met her in the lab完整）"
+                    },
+                    {
+                        "t": "find it adj to do",
+                        "r": "find/think/consider/make + it + adj + to do，it是形式宾语不能省，真宾语是后面的to do。",
+                        "eg": "We find ___ important to protect nature. → it"
+                    },
+                    {
+                        "t": "result in vs result from",
+                        "r": "result in=导致(原因result in结果)；result from=由…造成(结果results from原因)。in后接结果，from后接原因。",
+                        "eg": "The flood ___ heavy rain. → resulted from（由暴雨造成）"
+                    }
                 ],
-                readingTips: [
-                    { t: '例子的目的：往上看找观点', r: '说明文/议论文里举例，目的是支持某个观点。题目问"The example in paragraph 3 is used to..."→ 往上看：例子前那段或同段第一句通常是要证明的中心论点，答：to illustrate/support the idea that...（填那个论点）。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "环保议论文：论点-论据-结论",
+                        "r": "议论文找中心论点(段首或转折后)→论据(数据/例子)→结论(末段)。问\"作者观点\"找论点，问\"why\"找论据。"
+                    },
+                    {
+                        "t": "例子作用题",
+                        "r": "\"the example shows/proves…\"→往上找它支持的论点。答to illustrate/support the idea that + 那个论点。"
+                    }
+                ]
             },
-            'S3-4': {
-                examTips: [
-                    { t: '省略to的动词：感官动词和使役动词', r: '① 感官动词：see/hear/feel/watch/notice/observe + sb + do（省to）② 使役动词：make/let/have + sb + do（省to）③ help后接to do或do（两种都对）。注意：被动时to必须还原！see sb do → sb is seen to do。', eg: 'I heard her ___(sing) in the next room. → sing（hear + sb + do，省to）' },
-                    { t: 'manage to do（设法做到了）vs try to do（努力试图）', r: '两个"尝试"词有本质区别：manage to do = 最终成功做到了（结果正面）；try to do = 努力尝试，但不确定是否成功。完形填空：语境明确"最终做到了" → manage；"努力尝试但不一定成功" → try。', eg: 'After hours of effort, he finally ___ to fix the machine. → managed（最终成功了）' },
+            "S3-4": {
+                "examTips": [
+                    {
+                        "t": "省略to：感官+使役动词",
+                        "r": "感官see/hear/feel/watch/notice + sb + do(省to)；使役make/let/have + sb + do(省to)。但被动时to还原(be made to do)。",
+                        "eg": "I heard her ___(sing). → sing（hear sb do省to）"
+                    },
+                    {
+                        "t": "manage to do vs try to do",
+                        "r": "manage to do=最终做成了(结果正面)；try to do=努力尝试(不一定成功)。语境\"终于做到了\"用managed。",
+                        "eg": "After hours, he finally ___ to fix it. → managed（成功了）"
+                    },
+                    {
+                        "t": "turn out（结果是/原来是）",
+                        "r": "turn out + to be/that从句（结果证明是）。It turned out that…/ The plan turned out to be a success。表事情最终的结果。",
+                        "eg": "The rumor turned ___ to be false. → out"
+                    }
                 ],
-                readingTips: [
-                    { t: '段落主旨：首句原则', r: '每段主旨通常是首句（主题句）。题目问"What is paragraph 3 mainly about?"→ 直接看该段首句，选项里与首句意思最接近的就是答案。首句太抽象时，看末句（通常是总结）。不要逐句通读整段。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "逆境励志人物文：抓转折",
+                        "r": "讲人物如何战胜困难。在转折词(but/however/yet)处标\"低谷→反转\"。问\"成功品质\"找坚持/勇气的事例。"
+                    },
+                    {
+                        "t": "心理变化/情感题",
+                        "r": "问人物心情变化→定位转折前后的情绪词(despair→hope)。答案是两个状态,有原文事件支撑。"
+                    }
+                ]
             },
-            'S3-5': {
-                examTips: [
-                    { t: 'convey vs express：都是"表达"，宾语不同', r: 'convey（传递/传达）宾语通常是信息/含义/感情（convey a message/feeling/idea）；express（表达）宾语通常是情感/观点（express one\'s feelings/views/thanks）。区别：convey更强调"传达给别人"，express更强调"主观表达"。', eg: 'His painting ___ a sense of loneliness. → conveys（传递一种孤独感）' },
-                    { t: 'by no means + 倒装（助动词提前公式）', r: '触发倒装的否定短语：by no means / in no case / under no circumstances / not until / never / seldom / hardly / barely / scarcely。公式：否定词 + 助动词（do/did/will/can/should/have）+ 主语 + 动词原形。', eg: 'By no means ___ she give up her dream. → will she give up / should she give up（倒装）' },
+            "S3-5": {
+                "examTips": [
+                    {
+                        "t": "同位语从句 vs 定语从句",
+                        "r": "问that从句是\"解释名词内容\"还是\"限定哪一个\"。解释内容→同位语(that不能换which,可删)；限定→定语(关系词有成分)。抽象名词(fact/idea/belief)后多为同位语。",
+                        "eg": "The fact that he lied(解释fact内容→同位语) vs The fact that I know(限定→定语)"
+                    },
+                    {
+                        "t": "convey vs express",
+                        "r": "convey=传达(信息/含义/情感给别人,convey a message)；express=表达(主观情感/观点,express feelings/views)。诗歌\"传递情感\"用convey。",
+                        "eg": "His poem ___ a sense of loneliness. → conveys（传递）"
+                    },
+                    {
+                        "t": "by no means + 倒装",
+                        "r": "by no means/in no case/never/seldom/hardly + 助动词(do/did/will/can/should/have) + 主语 + 原形。否定词句首必倒装。",
+                        "eg": "By no means ___ she give up. → will she give up"
+                    }
                 ],
-                readingTips: [
-                    { t: '阅读长难句：主干拆解法', r: '遇到超长句：① 找主要谓语动词（通常全句只有一个主谓结构）→ ② 谓语左边是主语（常夹着定语从句）→ ③ 谓语右边是宾语/补语 → ④ 把夹在中间的定语从句/插入语括起来跳过，先读主干。主干理解了，再补充细节。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "诗歌/文学赏析文：抓主旨情感",
+                        "r": "讲诗歌主题、意象、情感。问\"诗表达什么/什么情感\"→看反复出现的意象和情感词，主旨常在首尾。"
+                    },
+                    {
+                        "t": "词义/修辞理解题",
+                        "r": "问某词/某句\"means/implies\"→结合上下文和整首诗的情感基调推断,不取字面义。比喻/象征要看它指代什么。"
+                    }
+                ]
             },
-            'S4-1': {
-                examTips: [
-                    { t: '过去完成时(had done)：两个过去动作，先发生的用它', r: '时间线判断：两个都在过去，哪个发生在"更早"→ 用had done；哪个发生在"稍后" → 用一般过去时did。信号词：by the time / when / before / after + 过去时。当only有一个过去动作时，不需要过去完成时。', eg: 'When I arrived, the meeting ___(already start). → had already started（会议先开始）' },
-                    { t: 'It is the first/second time that + 现在完成时', r: '现在时背景：It is the first time that + have/has done；过去时背景：It was the first time that + had done。这是固定搭配，不用一般现在时。', eg: 'It is the first time that she ___(visit) the Great Wall. → has visited（现在时背景）' },
+            "S4-1": {
+                "examTips": [
+                    {
+                        "t": "过去完成时 had done",
+                        "r": "两个过去动作,先发生的用had done,后发生用一般过去时。信号by the time/when/before/after。只有一个过去动作不用过去完成。",
+                        "eg": "When I arrived, the meeting ___(already start). → had already started（先开始）"
+                    },
+                    {
+                        "t": "It is/was the first time that…",
+                        "r": "现在背景：It is the first time that + have/has done；过去背景：It was the first time that + had done。固定搭配,不用一般时。",
+                        "eg": "It is the first time that she ___(visit) here. → has visited"
+                    },
+                    {
+                        "t": "reflect on/upon（反思）",
+                        "r": "reflect on/upon sth=思考/反思；reflect=反映(reflect the truth)。on后接反思的对象。",
+                        "eg": "Take time to reflect ___ what you learned. → on/upon"
+                    }
                 ],
-                readingTips: [
-                    { t: '历史文化类：抓时间轴和因果链', r: '这类文章描述事物发展过程。两件事：① 在时间词（in 1900 / after WWII）旁边标记对应事件 → ② 在因果词（because / therefore / as a result / led to）旁边标记原因和结果。答题时按这两个标记定位，快而准。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "回忆记叙文：时间轴+情感",
+                        "r": "回忆类按时间叙述往事。建时间线标关键事件,同时注意情感基调(怀念/遗憾/感恩)。问\"作者感受\"看情感词。"
+                    },
+                    {
+                        "t": "细节题+顺序原则",
+                        "r": "题序≈文序。圈题干关键词回原文定位,做完一题下一题往后找,最后一题常是主旨/感悟。"
+                    }
+                ]
             },
-            'S4-2': {
-                examTips: [
-                    { t: 'commit/devote + to + doing（to是介词，后接-ing）', r: 'be committed to doing = be devoted to doing = devote oneself to doing。所有to都是介词，后面只能接名词或-ing，绝对不能接动词原形。语法填空括号给动词 → 填-ing。', eg: 'She committed herself to ___(protect) endangered species. → protecting' },
-                    { t: '被动语态四种时态：一表搞定', r: '① 一般被动：am/is/are done ② 进行被动：is/are being done ③ 完成被动：have/has been done ④ 情态被动：should/must/can be done。语法填空：先判断时态（一般/进行/完成/情态）→ 再填对应的被动结构。', eg: 'The problem ___(discuss) in the next meeting. → will be discussed（将来被动）' },
+            "S4-2": {
+                "examTips": [
+                    {
+                        "t": "commit vs devote",
+                        "r": "be committed to / commit oneself to doing(致力,to是介词)；devote oneself to / be devoted to doing(献身)。两者to都接-ing,别接原形。",
+                        "eg": "She committed herself to ___(protect) wildlife. → protecting"
+                    },
+                    {
+                        "t": "被动语态四时态",
+                        "r": "一般be done；进行is being done；完成have been done；情态should be done。先判断时态再加被动结构。",
+                        "eg": "The problem ___(discuss) at the next meeting. → will be discussed"
+                    },
+                    {
+                        "t": "It is widely acknowledged that…",
+                        "r": "It is widely acknowledged/believed/reported/said that + 从句（普遍认为/据报道）。it形式主语,that从句是真主语。写作高级句型。",
+                        "eg": "It is widely ___(acknowledge) that he is a genius. → acknowledged"
+                    }
                 ],
-                readingTips: [
-                    { t: '科技类：区分"事实"和"观点"', r: '事实句特征：含有数据/实验结果/已观测现象，无情感评价词。观点句特征：含有believe/argue/suggest/claim/consider/according to等主观标记词。题目问"Which is a FACT"→ 找无情感词的陈述句。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "标志人物传记：抓成就+原因",
+                        "r": "讲人物的突破和贡献。标出主要成就和成功原因(品质/努力/机遇)。问\"为什么伟大/有何贡献\"定位事例。"
+                    },
+                    {
+                        "t": "推断人物品质题",
+                        "r": "问\"what kind of person\"→从其言行反推形容词(persistent/devoted/humble),答案有原文事例,不选无依据的。"
+                    }
+                ]
             },
-            'S4-3': {
-                examTips: [
-                    { t: '非谓语作状语：逻辑主语必须与主句主语一致', r: '非谓语（-ing/-ed/to do）作状语时，它的逻辑主语=主句的主语。判断：① 主句主语"主动做"该动作 → -ing ② 主句主语"被做"该动作 → -ed ③ 逻辑主语≠主句主语时，用独立主格（名词+分词）。这是作文里很多人写错的地方。', eg: '___(walk) along the street, I saw an old friend. → Walking（我主动走，主语一致）' },
-                    { t: 'at the cost of / at the expense of：以…为代价', r: '固定搭配：at the cost of + 名词（以...为代价）/ at the expense of + 名词（以损害...为代价）。区别：at the expense of更强调"损害了某人/某事物"；at the cost of更侧重"付出了什么"。完形/语法填空看语境选。', eg: 'He succeeded at the ___ of his health. → cost / expense（两者均可）' },
+            "S4-3": {
+                "examTips": [
+                    {
+                        "t": "非谓语作状语：主仆关系一致",
+                        "r": "非谓语(-ing/-ed/to do)的逻辑主语=主句主语。主语主动做→-ing;被做→-ed。逻辑主语不同时用独立主格(名词+分词)。",
+                        "eg": "___(walk) along the street, I saw a friend. → Walking（我主动走）"
+                    },
+                    {
+                        "t": "declare vs announce",
+                        "r": "declare=宣布/宣告(declare war/independence,正式郑重)；announce=宣布(announce the news,告知消息)。宣战/宣布独立用declare。",
+                        "eg": "The country ___ war on the enemy. → declared"
+                    },
+                    {
+                        "t": "at the cost/expense of（以…为代价）",
+                        "r": "at the cost of + 名词(付出代价)；at the expense of(以损害…为代价)。固定搭配,of后接名词。",
+                        "eg": "He succeeded at the ___ of his health. → cost/expense"
+                    }
                 ],
-                readingTips: [
-                    { t: '做阅读的正确顺序（再强调一遍）', r: '① 先读所有题目的题干和选项，把关键词圈出来 → ② 带关键词回原文扫描，找到对应句 → ③ 在对应句附近读2-3句 → ④ 选最接近的选项。全文先通读再答题是最低效的方法，考试时间不够用。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "战争与和平议论/记叙文：抓立场",
+                        "r": "讲战争、和平、正义。找作者立场的评价句,注意反战/呼吁和平的倾向。转折后是真实态度。"
+                    },
+                    {
+                        "t": "态度/写作目的题",
+                        "r": "问目的→看文体:议论to persuade/argue;记叙to share/reflect。问态度找情感词,谴责暴力(critical)、呼吁和平(hopeful)。"
+                    }
+                ]
             },
-            'S4-4': {
-                examTips: [
-                    { t: 'Only + 状语在句首 → 主句部分倒装', r: '公式：Only + when/if/by/after/in this way + 从句，主句 → 助动词 + 主语 + 动词原形。注意：Only后面的从句本身不倒装，只有主句倒装。有"才能"语境且Only在句首 → 必然考倒装。', eg: 'Only when he failed ___ he realize the importance of hard work. → did he realize（主句倒装）' },
-                    { t: 'Not until + 从句/时间 → 主句倒装', r: '"直到…才"的强调用法：Not until + 时间从句，+ 主句倒装（助动词+主语）。注意：Not until的时间从句本身不倒装；只有主句倒装。普通的"not...until"不需要倒装（It was not until...that...也是强调句型）。', eg: 'Not until she heard the news ___ she burst into tears. → did she burst（主句倒装）' },
+            "S4-4": {
+                "examTips": [
+                    {
+                        "t": "Only + 状语句首→主句倒装",
+                        "r": "Only + when/if/by/after/in this way + 从句,主句倒装(助动词+主语+原形)。Only后的从句本身不倒装,只主句倒装。",
+                        "eg": "Only when he failed ___ he realize it. → did he realize"
+                    },
+                    {
+                        "t": "Not until + 从句→主句倒装",
+                        "r": "Not until + 时间/从句,主句倒装。时间从句本身不倒装。强调句It was not until…that…不倒装(另一种用法)。",
+                        "eg": "Not until she left ___ I know the truth. → did I know"
+                    },
+                    {
+                        "t": "where 引导抽象地点从句",
+                        "r": "where不止指实际地点,也引导抽象\"情况/方面\"的定语从句(a situation where / a case where / the point where)。",
+                        "eg": "This is a case ___ cooperation matters. → where"
+                    }
                 ],
-                readingTips: [
-                    { t: '议论文：论点→论据→结论三部曲', r: '议论文框架：① 引出话题 → ② 提出论点（段首或转折后）→ ③ 论据（举例/数据）→ ④ 可能有反驳/让步（although/admittedly）→ ⑤ 结论（末段）。问"作者观点"→找论点；问"why"→找论据；问"conclusion"→找末段。' },
-                ],
+                "readingTips": [
+                    {
+                        "t": "全球合作议论文：论点-论据-结论",
+                        "r": "讲合作、共享、可持续。找中心论点和支撑论据(数据/例子)。问\"作者主张\"找论点,问\"如何实现\"找措施。"
+                    },
+                    {
+                        "t": "主旨/标题题",
+                        "r": "标题概括全文核心,排除太窄(只一段)和太宽(超范围)。合作类文章主旨常在首段提出、末段重申。"
+                    }
+                ]
             },
-            'S4-5': {
-                examTips: [
-                    { t: '间接引语：时态统一"退一步"', r: '直接→间接引语，时态一律退后一步：现在时→过去时；进行时→过去进行时；完成时→过去完成时；will→would；can→could；may→might。时间状语：today→that day；tomorrow→the next day；here→there；this→that。', eg: '"I am studying," he said. → He said (that) he ___ studying. → was（现在时退到过去时）' },
-                    { t: '间接引语：疑问句改为陈述句语序', r: '直接引语里的疑问句，变间接引语时语序必须改为"主语+谓语"的陈述句语序（不倒装）。一般疑问句用whether/if引导；特殊疑问句用原来的疑问词（what/when/where/why/how）引导。', eg: '"Where does she live?" → He asked where she ___(live). → lived（过去时，陈述语序不倒装）' },
+            "S4-5": {
+                "examTips": [
+                    {
+                        "t": "间接引语：时态退一步",
+                        "r": "直接→间接,时态退后:现在→过去;进行→过去进行;完成→过去完成;will→would;can→could。时间状语today→that day,tomorrow→the next day。",
+                        "eg": "\"I am busy,\" he said. → He said he ___ busy. → was"
+                    },
+                    {
+                        "t": "间接引语：疑问句改陈述语序",
+                        "r": "疑问句变间接引语,语序改为\"主语+谓语\"(不倒装)。一般疑问句用whether/if,特殊疑问句用原疑问词引导。",
+                        "eg": "\"Where does she live?\" → He asked where she ___(live). → lived（陈述语序）"
+                    },
+                    {
+                        "t": "enable sb to do sth",
+                        "r": "enable sb to do(使某人能够做)；allow/permit sb to do；require sb to do。这批动词接sb + to do,to不省。",
+                        "eg": "Technology enables us ___(learn) anywhere. → to learn"
+                    }
                 ],
-                readingTips: [
-                    { t: '应用文写作（书信/邮件）四步骤', r: '① 读清楚：你的身份/给谁写/写信目的/必须包含的要点 ② 开头：直接表明目的（I am writing to...）③ 正文：按要点逐条展开，每条2-3句 ④ 结尾：固定句式（I look forward to hearing from you. / I hope my suggestions will be helpful.）。别在开头浪费字数。' },
-                ],
-            },
+                "readingTips": [
+                    {
+                        "t": "虚拟世界科技议论文：利弊+预测",
+                        "r": "讲AI/VR等技术。标出优点、风险、未来趋势。问\"好处/风险\"按标记定位,作者立场看转折后。"
+                    },
+                    {
+                        "t": "应用文写作：四步法",
+                        "r": "①读清身份/对象/目的/要点 ②开头表明目的(I am writing to…) ③正文按要点展开每条2-3句 ④结尾固定句(I look forward to hearing from you)。别在开头浪费字数。"
+                    }
+                ]
+            }
         };
 
 

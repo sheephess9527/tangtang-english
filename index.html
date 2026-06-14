@@ -235,6 +235,7 @@
         const Lightbulb = (p) => <SvgIcon {...p}><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.9 1.2 1.5 1.5 2.5"/><path d="M9 18h6M10 22h4"/></SvgIcon>;
         const X = (p) => <SvgIcon {...p}><path d="M18 6 6 18M6 6l12 12"/></SvgIcon>;
         const Book = (p) => <SvgIcon {...p}><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></SvgIcon>;
+        const Brain = (p) => <SvgIcon {...p}><path d="M12 5a3 3 0 1 0-5.997.142 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.142 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></SvgIcon>;
         const Menu = (p) => <SvgIcon {...p}><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></SvgIcon>;
         const ChevronRight = (p) => <SvgIcon {...p}><path d="m9 18 6-6-6-6"/></SvgIcon>;
 
@@ -274,7 +275,7 @@
         ];
 
         const UNIT_DB = {
-          'B1-1':{title:'Teenage Life (青少年生活)', msg:'糖糖，欢迎来到高中英语的第一站！这一关我们要攻克的是“-ed”和“-ing”形容词的混淆点，这可是必考的送分题哦，加油！',words:[{w:'challenge',m:'n./v.挑战',d:'face a challenge'},{w:'confused',m:'adj.感到困惑的',d:'confusing 令人困惑的'},{w:'solution',m:'n.解决办法',d:'solution to (to是介词)'},{w:'schedule',m:'n.时间表',d:'on schedule'},{w:'responsible',m:'adj.负责任的',d:'be responsible for'},{w:'extra-curricular',m:'adj.课外的',d:'activities'},{w:'improve',m:'v.提高',d:'improvement n.'},{w:'survival',m:'n.生存',d:'survive v.'},{w:'graduate',m:'v.毕业',d:'graduate from'},{w:'volunteer',m:'n./v.自愿',d:'volunteer to do'}],l2:[{w:'course', m:'熟义:课程；生义:过程/进程'},{w:'suit', m:'熟义:西装；生义:适合'},{w:'content', m:'熟义:内容；生义:满足的(adj.)'},{w:'sign', m:'派生: signal(信号) / signature(签名)'},{w:'attract', m:'派生: attraction(吸引力/景点)'}],grammar:[{t:'形容词与副词各司其职',r:'大白话公式：名词前填形容词（形容什么样），动词后/句尾填副词（形容怎么做）。',p:'She is a talented girl and plays the piano beautifully.'},{t:'-ed vs -ing 情感分词生死线',r:'-ed修饰人（感到...），-ing修饰事/物（令人...）。浙江卷最爱考！',p:'The confusing problem made me confused.'},{t:'介词的隐形地雷',r:'look forward to 或 a solution to 中的 to 是介词，后面必须接 doing 或名词，严禁接原形！',p:'I am looking forward to hearing from you.'}],sentences:[{e:'I suggest that you should take part in some extra-curricular activities.',z:'我建议你应该参加一些课外活动。'},{e:'She was so focused on her book that she forgot the time.',z:'她太专注于书本以至于忘了时间。'}]},
+          'B1-1':{title:'Teenage Life (青少年生活)', msg:'糖糖，欢迎来到高中英语的第一站！这一关我们要攻克的是“-ed”和“-ing”形容词的混淆点，这可是必考的送分题哦，加油！',words:[{w:'challenge',m:'n./v.挑战',d:'face a challenge',ex:'Starting high school is a big challenge for every teenager.',exCn:'上高中对每个青少年来说都是一大挑战。'},{w:'confused',m:'adj.感到困惑的',d:'confusing 令人困惑的',ex:'I was completely confused by the new timetable.',exCn:'新课表把我彻底搞糊涂了。'},{w:'solution',m:'n.解决办法',d:'solution to (to是介词)',ex:'We finally found a solution to the problem.',exCn:'我们终于找到了这个问题的解决办法。'},{w:'schedule',m:'n.时间表',d:'on schedule',ex:'My daily schedule is very tight this term.',exCn:'这学期我的日程安排得很紧。'},{w:'responsible',m:'adj.负责任的',d:'be responsible for',ex:'A monitor should be responsible for the whole class.',exCn:'班长应该对整个班级负责。'},{w:'extra-curricular',m:'adj.课外的',d:'activities',ex:'She takes part in many extra-curricular activities after class.',exCn:'她课后参加很多课外活动。'},{w:'improve',m:'v.提高',d:'improvement n.',ex:'Reading every day can improve your English quickly.',exCn:'每天阅读能迅速提高你的英语。'},{w:'survival',m:'n.生存',d:'survive v.',ex:'Water is necessary for the survival of all living things.',exCn:'水是一切生物生存的必需品。'},{w:'graduate',m:'v.毕业',d:'graduate from',ex:'He hopes to graduate from a top university.',exCn:'他希望从一所顶尖大学毕业。'},{w:'volunteer',m:'n./v.自愿',d:'volunteer to do',ex:'Many students volunteer to help clean the park.',exCn:'许多学生自愿帮忙打扫公园。'}],l2:[{w:'course', m:'熟义:课程；生义:过程/进程'},{w:'suit', m:'熟义:西装；生义:适合'},{w:'content', m:'熟义:内容；生义:满足的(adj.)'},{w:'sign', m:'派生: signal(信号) / signature(签名)'},{w:'attract', m:'派生: attraction(吸引力/景点)'}],grammar:[{t:'形容词与副词各司其职',r:'大白话公式：名词前填形容词（形容什么样），动词后/句尾填副词（形容怎么做）。',p:'She is a talented girl and plays the piano beautifully.'},{t:'-ed vs -ing 情感分词生死线',r:'-ed修饰人（感到...），-ing修饰事/物（令人...）。浙江卷最爱考！',p:'The confusing problem made me confused.'},{t:'介词的隐形地雷',r:'look forward to 或 a solution to 中的 to 是介词，后面必须接 doing 或名词，严禁接原形！',p:'I am looking forward to hearing from you.'}],sentences:[{e:'I suggest that you should take part in some extra-curricular activities.',z:'我建议你应该参加一些课外活动。'},{e:'She was so focused on her book that she forgot the time.',z:'她太专注于书本以至于忘了时间。'}],examTips:[{t:'语法填空：给了词，要变形式',r:'括号里给一个词，先判断空格位置。名词前→变形容词；动词后/句末→变副词。本单元最爱考 -ed/-ing：形容人的感受用 -ed（confused 感到困惑），形容事物用 -ing（confusing 令人困惑）。',eg:'The news was so ___(surprise) that we were all ___(surprise). → surprising / surprised'},{t:'语法填空：横线后面是 to',r:'看到 look forward to、a solution to，这个 to 是介词，后面必须填 doing 或名词，绝不能填动词原形。判断窍门：把 to 当成「对/朝着」，后面自然跟名词。',eg:'I look forward to ___(hear) from you. → hearing'},{t:'完形填空：情感词怎么选',r:'完形里出现人物心情，先读上下文是好事还是坏事。好事→开心类（excited, pleased）；难题/压力→困惑、沮丧类（confused, frustrated）。本单元的 confused 就是高频选项。',eg:'Facing so many new subjects, Tom felt ___.（A. excited  B. confused✔）由「so many new」判断是压力，选 confused。'}],readingTips:[{t:'细节题：回原文定位',r:'细节题的答案一定在原文里。先圈出题干里的关键词（人名、数字、地点、专有名词），回到文章找到同一个词，答案就在那句话附近。读不懂全文没关系，能定位就能得分。'},{t:'正确答案 = 原文换个说法',r:'阅读的正确选项几乎都是原文某句话的「同义改写」，而不是原句照抄。看到和原文用词一模一样的选项，反而要小心是「偷换」。要学会认 same meaning, different words。'},{t:'猜词题：别查词典，看上下文',r:'遇到不认识的词别慌。看它前后：有没有 but/however（表相反）、or/that is（表相同）、such as（举例子）。用认识的词去推不认识的词，这正是高考想考的能力。'}]},
           'B1-2':{title:'Travelling Around (环球旅行)', msg:'糖糖，这一单元咱们去“环球旅行”。重点掌握“进行时表将来”，学会用英语规划你的完美旅程，高分就在前方！',words:[{w:'destination',m:'n.目的地',d:'destine v.'},{w:'accommodation',m:'n.住宿',d:'双c双m拼写'},{w:'transport',m:'n.交通',d:'public transport'},{w:'sightseeing',m:'n.观光',d:'go sightseeing'},{w:'ancient',m:'adj.古老的',d:'ancient temples'},{w:'apply',m:'v.申请',d:'apply for(某物)/to(机构)'},{w:'breathtaking',m:'adj.令人窒息的',d:'breathtaking view'},{w:'gaze',m:'v.凝视',d:'gaze at'},{w:'pack',m:'v.打包',d:'pack light'},{w:'explore',m:'v.探索',d:'exploration n.'}],l2:[{w:'view', m:'熟义:风景；生义:观点/看法'},{w:'check', m:'搭配: check in(登记入住) / check out(退房)'},{w:'apply', m:'派生: application(申请/应用)'},{w:'pack', m:'熟义:包裹；生义:打包行李(v.)'}],grammar:[{t:'进行时表将来',r:'当表示已经计划好、马上要去做的事情（特别是 go, come, leave, start 等位移动词）时，用 am/is/are + doing。',p:'Don’t worry. My father is coming to pick us up in ten minutes.'},{t:'apply 的搭配陷阱',r:'apply for 申请某物（如护照、奖学金）；apply to 向某机构申请。',p:'I want to apply for a scholarship to study abroad.'},{t:'check 的场景词辨析',r:'check in 登记入住/办登机；check out 退房/看个究竟。',p:'We need to check in for our flight.'}],sentences:[{e:'I am writing to recommend some must-visit tourist attractions.',z:'我写信推荐必去的旅游胜地。'},{e:'The view from the top of the mountain is breathtaking.',z:'山顶的景色令人窒息。'}]},
           'B1-3':{title:'Sports and Fitness (体育与健康)', msg:'糖糖，运动不仅强身健体，还能提分！记住情态动词的“大哥原则”，像郎平一样，用决心和汗水拿下这一局！',words:[{w:'fitness',m:'n.健康',d:'physical fitness'},{w:'determination',m:'n.决心',d:'determine v.'},{w:'failure',m:'n.失败',d:'fail v.'},{w:'positive',m:'adj.积极的',d:'negative 反义'},{w:'diet',m:'n.饮食',d:'balanced diet'},{w:'strength',m:'n.力量',d:'strengthen v.'},{w:'sweat',m:'n.汗水',d:'sweat rolling down'},{w:'cheer',m:'v.欢呼',d:'cheer up'},{w:'track',m:'n.跑道',d:'track and field'},{w:'legend',m:'n.传奇',d:'legendary adj.'}],l2:[{w:'fit', m:'熟义:合适的；生义:健壮的'},{w:'match', m:'熟义:火柴；生义:比赛/匹配'},{w:'determination', m:'派生: determine(决定)'},{w:'compete', m:'派生: competition(比赛) / competitor(竞争者)'}],grammar:[{t:'情态动词的大哥原则',r:'情态动词 (can, could, should, must, may) 后面必须接“动词原形”。',p:'You should balance your diet to stay healthy.'},{t:'情态动词的被动语态',r:'如果要表达“应该被做”，结构为：情态动词 + be + 过去分词 (done)。',p:'Your homework must be finished on time.'},{t:'What 引导主语从句',r:'What 在从句作主语或宾语，意为“...的事情”。',p:'What matters is how you play the game.'}],sentences:[{e:'Success requires strong determination and hard work.',z:'成功需要坚定的决心和艰苦的努力。'},{e:'He pushed through the pain to finish the race.',z:'他强忍疼痛完成了比赛。'}]},
           'B1-4':{title:'Natural Disasters (自然灾害)', msg:'糖糖，灾难无情，但定语从句有规律可循。分清修饰人还是物，咱们就能在地震废墟中精准“营救”出正确答案！',words:[{w:'rescue',m:'n./v.营救',d:'come to rescue'},{w:'survive',m:'v.幸存',d:'survival n.'},{w:'damage',m:'n./v.损害',d:'do damage to (to是介词)'},{w:'shelter',m:'n.避难所',d:'take shelter'},{w:'ruin',m:'n.废墟',d:'in ruins'},{w:'shock',m:'n./v.震惊',d:'shocked adj.'},{w:'trap',m:'v.困住',d:'be trapped in'},{w:'breathe',m:'v.呼吸',d:'breath n.'},{w:'effort',m:'n.努力',d:'make an effort'},{w:'calm',m:'adj.冷静的',d:'keep calm'}],l2:[{w:'affect', m:'派生: effect(影响/效果)'},{w:'strike', m:'熟义:罢工；生义:(灾难)袭击'},{w:'erupt', m:'派生: eruption(爆发)'},{w:'bury', m:'变形: buried(被埋葬的)'}],grammar:[{t:'定语从句 (who/which/that) 二分法',r:'看空格前的名词（先行词）。如果是人 -> 填 who/that；如果是物 -> 填 which/that。',p:'The girl who saved the little boy was very brave.'},{t:'关系代词作主语的单复数',r:'关系代词作主语时，谓语动词的单复数同先行词一致。',p:'The buildings that were destroyed will be rebuilt.'},{t:'rescue vs save 的细微差别',r:'两者都有“救”的意思，但 rescue 更强调从危险中（如地震、火灾）营救出来。',p:'The rescue team worked hard to save the victims.'}],sentences:[{e:'I express my heartfelt thanks to you for your timely help.',z:'我对你的及时帮助表示衷心感谢。'},{e:'He stood there, staring at the ruins in shock.',z:'他震惊地盯着废墟。'}]},
@@ -1856,6 +1857,136 @@ Which option best expresses its meaning?`,
         };
 
         // ==========================================
+        // 6.5 单词闯关：间隔重复 + 语境回想引擎
+        // ==========================================
+        // Leitner 5 盒，盒号越高复习间隔越长（天）。答对升一盒，答错回到 1 盒。
+        const SRS_INTERVALS = [0, 1, 3, 7, 15]; // index = box-1
+        const SRS_DAY = 24 * 60 * 60 * 1000;
+        const vocabKey = (unitKey, w) => `${unitKey}::${w}`;
+
+        const VocabDrill = ({ unitData, unitKey, vocabData, setVocabData, playAudio, playingWord }) => {
+            const words = (unitData.words || []).filter(w => w.ex); // 仅练有例句的词
+            const buildDeck = () => {
+                const now = Date.now();
+                if (words.length === 0) return [];
+                const due = words.filter(w => {
+                    const rec = vocabData[vocabKey(unitKey, w.w)];
+                    return !rec || (rec.due || 0) <= now;
+                });
+                return shuffle((due.length > 0 ? due : words).slice());
+            };
+            const [deck, setDeck] = useState(buildDeck);
+            const [pos, setPos] = useState(0);
+            const [picked, setPicked] = useState(null);
+            const [roundDone, setRoundDone] = useState(0);
+            const [roundRight, setRoundRight] = useState(0);
+            const [finished, setFinished] = useState(false);
+
+            // 切换单元时重置
+            useEffect(() => {
+                setDeck(buildDeck()); setPos(0); setPicked(null);
+                setRoundDone(0); setRoundRight(0); setFinished(false);
+            }, [unitKey]);
+
+            if (words.length === 0) {
+                return (
+                    <div className="text-center p-10 card-lg text-slate-400 font-medium">
+                        本单元的单词闯关正在制作中，敬请期待。
+                    </div>
+                );
+            }
+
+            const masteredCount = words.filter(w => (vocabData[vocabKey(unitKey, w.w)]?.box || 0) >= 5).length;
+
+            const restart = () => {
+                setDeck(buildDeck()); setPos(0); setPicked(null);
+                setRoundDone(0); setRoundRight(0); setFinished(false);
+            };
+
+            if (finished || deck.length === 0) {
+                return (
+                    <div className="max-w-xl mx-auto">
+                        <div className="text-center bg-white rounded-[32px] p-10 shadow-[0_10px_40px_rgba(15,23,42,0.06)] border border-white/70">
+                            <div className="w-20 h-20 bg-gradient-to-br from-violet-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-violet-500/30">
+                                <Brain className="w-10 h-10 text-white" />
+                            </div>
+                            <h2 className="text-2xl font-bold mb-2 tracking-tight">本组完成</h2>
+                            {roundDone > 0 && <div className="text-5xl font-bold text-violet-500 mb-2 tracking-tighter">{roundRight}<span className="text-xl text-slate-300 mx-1 font-medium">/</span>{roundDone}</div>}
+                            <p className="text-slate-500 font-medium mb-8">本单元已掌握 {masteredCount} / {words.length} 个单词</p>
+                            <button onClick={restart} className="w-full bg-gradient-to-r from-violet-500 to-indigo-500 text-white py-4 rounded-2xl font-bold active:scale-95 transition-transform mb-3">再来一组</button>
+                        </div>
+                    </div>
+                );
+            }
+
+            const cur = deck[pos];
+            // 干扰项：同单元其他词
+            const others = words.filter(w => w.w !== cur.w);
+            const distractors = shuffle(others.slice()).slice(0, 3).map(w => w.w);
+            const opts = (cur._opts || (cur._opts = shuffle([cur.w, ...distractors])));
+            const blanked = cur.ex.replace(new RegExp(cur.w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'), '_____');
+
+            const onPick = (idx) => {
+                if (picked !== null) return;
+                setPicked(idx);
+                const correct = opts[idx] === cur.w;
+                const rec = vocabData[vocabKey(unitKey, cur.w)] || { box: 1, seen: 0 };
+                const newBox = correct ? Math.min((rec.box || 1) + 1, 5) : 1;
+                const due = Date.now() + SRS_INTERVALS[newBox - 1] * SRS_DAY;
+                setVocabData(prev => ({ ...prev, [vocabKey(unitKey, cur.w)]: { box: newBox, due, seen: (rec.seen || 0) + 1 } }));
+                setRoundDone(n => n + 1);
+                if (correct) setRoundRight(n => n + 1);
+                else setDeck(d => [...d, cur]); // 答错本组内再练一次
+            };
+
+            const next = () => {
+                if (pos + 1 >= deck.length) setFinished(true);
+                else { setPos(p => p + 1); setPicked(null); }
+            };
+
+            const isCorrect = picked !== null && opts[picked] === cur.w;
+
+            return (
+                <div className="max-w-xl mx-auto">
+                    <div className="card-lg p-6 md:p-8">
+                        <div className="flex justify-between items-center mb-6">
+                            <span className="px-3 py-1 rounded-lg text-[11px] font-bold tracking-wide bg-violet-100 text-violet-700">语境回想</span>
+                            <span className="text-xs font-bold text-slate-400">本单元已掌握 {masteredCount}/{words.length}</span>
+                        </div>
+
+                        <div className="text-[11px] font-bold text-violet-400 uppercase tracking-widest mb-2">选出填入空格的词</div>
+                        <p className="text-[18px] font-semibold leading-relaxed mb-2 whitespace-pre-wrap">{blanked}</p>
+                        <p className="text-sm font-medium text-slate-500 mb-6">{cur.exCn}（提示：{cur.m}）</p>
+
+                        <div className="space-y-3">
+                            {opts.map((opt, i) => (
+                                <button key={i} onClick={() => onPick(i)} className={`w-full p-4 rounded-2xl border-2 text-left transition-all flex items-center justify-between text-[15px] font-bold ${picked === null ? 'border-slate-100 bg-white active:bg-slate-50 hover:border-violet-200' : opt === cur.w ? 'option-correct text-emerald-800' : picked === i ? 'option-wrong text-rose-800' : 'border-slate-50 opacity-40'}`}>
+                                    <span>{opt}</span>
+                                    {picked !== null && opt === cur.w && <CheckCircle2 className="w-5 h-5 text-emerald-500" />}
+                                    {picked !== null && picked === i && opt !== cur.w && <XCircle className="w-5 h-5 text-rose-500" />}
+                                </button>
+                            ))}
+                        </div>
+
+                        {picked !== null && (
+                            <div className="mt-8">
+                                <div className="p-5 bg-slate-50 rounded-2xl mb-6">
+                                    <div className={`font-bold text-[11px] mb-2 uppercase tracking-widest ${isCorrect ? 'text-emerald-500' : 'text-rose-500'}`}>{isCorrect ? 'Correct' : '记住它'}</div>
+                                    <p className="text-slate-800 text-[15px] font-bold mb-1 cursor-pointer inline-flex items-center gap-2" onClick={(e) => playAudio(cur.w, e)}>
+                                        {cur.w} <Volume2 className={`w-4 h-4 ${playingWord === cur.w ? 'text-violet-500' : 'text-slate-300'}`} />
+                                    </p>
+                                    <p className="text-slate-600 text-sm font-medium leading-relaxed">{cur.ex}</p>
+                                    <p className="text-slate-400 text-xs font-medium mt-1">{cur.exCn}</p>
+                                </div>
+                                <button onClick={next} className="w-full bg-gradient-to-r from-violet-500 to-indigo-500 text-white py-4 rounded-2xl font-bold text-[17px] active:scale-95 transition-transform shadow-lg shadow-violet-500/20">{pos + 1 >= deck.length ? '完成本组' : '下一个'}</button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        // ==========================================
         // 7. 主应用程序
         // ==========================================
         const App = () => {
@@ -1875,6 +2006,7 @@ Which option best expresses its meaning?`,
             const progressData = userData.progress  || {};
             const cardLoopData = userData.cardLoop  || {};
             const mistakeBank  = userData.mistakes  || [];
+            const vocabData    = userData.vocab     || {};
 
             const setMasteryData = (updater) => setAllUsersData(prev => {
                 const u = prev[userPrefix] || {};
@@ -1895,6 +2027,11 @@ Which option best expresses its meaning?`,
                 const u = prev[userPrefix] || {};
                 const next = typeof updater === 'function' ? updater(u.mistakes || []) : updater;
                 return { ...prev, [userPrefix]: { ...u, mistakes: next } };
+            });
+            const setVocabData = (updater) => setAllUsersData(prev => {
+                const u = prev[userPrefix] || {};
+                const next = typeof updater === 'function' ? updater(u.vocab || {}) : updater;
+                return { ...prev, [userPrefix]: { ...u, vocab: next } };
             });
 
             const normalizeProgressRecord = (record) => {
@@ -2240,6 +2377,7 @@ Which option best expresses its meaning?`,
 
             const navItems = [
                 { id: 'notes', label: '核心笔记', icon: <BookOpen className="w-4 h-4" /> },
+                { id: 'vocab', label: '单词闯关', icon: <Brain className="w-4 h-4" /> },
                 { id: 'gaokao', label: '重点练习', icon: <Award className="w-4 h-4" /> },
                 { id: 'cards', label: '互动卡片', icon: <Layers className="w-4 h-4" /> },
                 { id: 'mistakes', label: '错题库', icon: <AlertCircle className="w-4 h-4" /> },
@@ -2279,6 +2417,12 @@ Which option best expresses its meaning?`,
                                                     <span className="text-[9px] font-bold text-slate-400 bg-slate-200/50 px-2 py-0.5 rounded-full uppercase tracking-wider">Usage</span>
                                                     <div className="text-xs font-bold text-blue-700 bg-blue-50 px-2.5 py-1.5 rounded-lg inline-block border border-blue-100/50">{w.d}</div>
                                                 </div>
+                                                {w.ex && (
+                                                    <div className="mt-3 pt-3 border-t border-slate-200/70">
+                                                        <p className="text-[13px] font-medium text-slate-600 italic leading-relaxed">{w.ex}</p>
+                                                        <p className="text-[11px] text-slate-400 mt-0.5">{w.exCn}</p>
+                                                    </div>
+                                                )}
                                             </div>
                                             <Volume2 className={`w-5 h-5 flex-shrink-0 mt-1 ${playingWord === w.w ? 'text-blue-500' : 'text-slate-300'} group-hover:text-blue-400 transition-colors`} />
                                         </div>
@@ -2313,6 +2457,35 @@ Which option best expresses its meaning?`,
                                     ))}
                                 </div>
 
+                                {dbData.examTips && dbData.examTips.length > 0 && (
+                                    <>
+                                        <h3 className="text-[11px] font-bold text-amber-500 uppercase tracking-widest mb-3 flex items-center gap-1.5"><Target className="w-3.5 h-3.5" />题型诀窍 · 语法填空/完形</h3>
+                                        <div className="space-y-4 mb-10">
+                                            {dbData.examTips.map((tip, i) => (
+                                                <div key={i} className="bg-amber-50 border border-amber-100 p-5 rounded-[24px]">
+                                                    <h4 className="font-bold text-amber-800 mb-2 text-[15px]">{tip.t}</h4>
+                                                    <p className="text-[14px] font-medium text-slate-700 leading-relaxed mb-3 whitespace-pre-wrap">{tip.r}</p>
+                                                    <div className="bg-white/70 p-3.5 rounded-xl text-[13px] font-semibold text-amber-900 leading-relaxed border border-amber-100"><span className="text-amber-500 mr-2">举例：</span>{tip.eg}</div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </>
+                                )}
+
+                                {dbData.readingTips && dbData.readingTips.length > 0 && (
+                                    <>
+                                        <h3 className="text-[11px] font-bold text-rose-500 uppercase tracking-widest mb-3 flex items-center gap-1.5"><BookOpen className="w-3.5 h-3.5" />阅读诀窍</h3>
+                                        <div className="space-y-3 mb-10">
+                                            {dbData.readingTips.map((tip, i) => (
+                                                <div key={i} className="bg-rose-50/70 border border-rose-100 p-5 rounded-[24px]">
+                                                    <h4 className="font-bold text-rose-800 mb-2 text-[15px] flex items-center gap-2"><span className="w-5 h-5 rounded-full bg-rose-500 text-white text-[11px] flex items-center justify-center shrink-0">{i + 1}</span>{tip.t}</h4>
+                                                    <p className="text-[14px] font-medium text-slate-700 leading-relaxed whitespace-pre-wrap">{tip.r}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </>
+                                )}
+
                                 <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">Sentences</h3>
                                 <div className="space-y-3">
                                     {dbData.sentences.map((s, i) => (
@@ -2325,6 +2498,10 @@ Which option best expresses its meaning?`,
                             </div>
                         </div>
                     );
+                }
+
+                if (tab === 'vocab') {
+                    return <VocabDrill unitData={dbData} unitKey={unitKey} vocabData={vocabData} setVocabData={setVocabData} playAudio={playAudio} playingWord={playingWord} />;
                 }
 
                 if (tab === 'cards') {

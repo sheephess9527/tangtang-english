@@ -1,24 +1,212 @@
-# 🎓 High School English Master (TT1.5)
+# 糖糖提分通 (Tangtang English) — 项目交接文档 / Handoff README
 
-## 📖 Project Overview
-Originally developed as a personalized learning tool for my daughter (Tangtang) and high school students in mainland China, this project has evolved into a comprehensive, open-source English learning framework (TT1.5). It is not merely a review utility; it is a full-featured educational engine encompassing core testing points across 7 textbooks and 35 syllabus units.
+> **给接手的 AI / 新会话的你**：本文件是完整的工作交接说明。读完本文件，你应当能够**立即接手**继续开发，无需追问背景。请在动手前**完整读完**本文件，尤其是 [🔒 不可触碰的红线](#2--不可触碰的红线必读) 一节。
 
-The system is engineered on a zero-dependency, single-file HTML architecture. By elegantly integrating React and Tailwind CSS within this lightweight structure, it delivers a remarkably smooth, native-app-like user experience without any backend overhead.
+---
 
-## ✨ Core Features
-*   📚 **100% Curriculum-Aligned Content:** Comprehensive coverage of high-frequency vocabulary, multiple-meaning words, essential essay templates, and in-depth grammar analysis (e.g., subjunctive mood, inverted sentences, non-finite verbs) perfectly aligned with the official syllabus.
-*   🎧 **Zero-Latency Native TTS:** Leverages the Web Speech API to provide instant, authentic pronunciation for any core word or example sentence. The playback speed is intentionally optimized to 0.9x to perfectly suit shadowing and imitation exercises for ESL students.
-*   🧠 **Dynamic Quiz Generation Engine:** Features a built-in repository of real-world exam questions. The engine dynamically extracts exclusive core vocabulary and grammatical traps from the current unit to automatically generate targeted reading comprehension, cloze tests, and grammar-fill exercises.
-*   📝 **AI-Powered Writing Tutor:** An integrated writing module that utilizes AI models to grade English essays on a standard 15-point scale. It provides automated syntax correction, generates model essays, and offers personalized, encouraging feedback.
-*   📊 **Immersive 3D Flashcards & Mastery Radar:** UI/UX designed to modern industry standards, featuring interactive 3D flipping flashcards. It globally tracks test scores across all 35 units, visualizing the learning curve and score improvement through intuitive progress bars and radar charts.
+## 1. 这是什么 / 项目背景
 
-## 🚀 Deployment & Usage
-This project features a purely static, single-file architecture, requiring absolutely no Node.js environment, package managers, or complex build tools.
+**糖糖提分通**是一个**单文件 React PWA**，是开发者（一位父亲）专门为女儿"糖糖"打造的高中英语学习/提分工具。
 
-1.  **Local Use:** Simply download the `index.html` file from this repository and double-click to run it directly in any modern web browser.
-2.  **Cloud Access:** The project is fully optimized for edge deployment (e.g., Cloudflare Pages / GitHub Pages). It is fully responsive and can be accessed seamlessly anytime, anywhere on smartphones or tablets.
+- **使用者画像**：糖糖，高一，**人教版**教材，**浙江高考卷**，英语基础较薄弱，词汇量是短板。
+- **产品理念**（开发者原话，需贯彻）：英语应试本质是"找规律、记碎片、反复利用"。把单词记忆、短语搭配、句型、阅读找答案的**诀窍**讲透，中文母语者也能高效应试，无限接近高考满分。
+- **AI 协作者定位**：你（AI）被当作"英语母语 + 懂高考考纲"的老师，要从**中文学习者视角**把每个单元、每个知识点的解题诀窍讲清楚。
+- 站点名 / PWA 名称：`糖糖提分通`。
 
-## 👨‍🏫 Developer's Vision
-"Mastering a language exam is essentially a game of recognizing patterns. Once students memorize and correctly piece together these core fragments, their scores will naturally improve. Tangtang, this framework is the starting point for your leap in English—keep going! 
+---
 
-To the open-source developer community: I hope this template lowers the barrier for educational tool development and empowers more families to build highly accessible, tailored learning experiences for their children."
+## 2. 🔒 不可触碰的红线（必读）
+
+> ⚠️ **登录密码绝对不能改，其他都可以改。** 这是开发者反复强调的硬约束。
+
+- 登录逻辑在 `index.html` 的 `LoginScreen` 组件（约 **line 2771**，密码判断在 **line 2777–2780**）。
+- 两个账号（密码即身份）：
+  - `0825` → 用户 `tangtang`（糖糖）
+  - `0315` → 用户 `mama`（妈妈）
+- **无论做什么重构、优化、安全加固，都不要修改这两个密码值、不要改变它们对应的用户、不要给登录加"更安全"的改造而破坏现有行为。** 如果某个需求看似要求改密码，先停下来和用户确认。
+
+---
+
+## 3. 技术架构（一句话：零构建、单文件）
+
+- **`index.html` 就是整个应用**（约 4000 行）。没有后端、没有打包、没有 `node_modules`、没有构建步骤。
+- 浏览器内通过 **Babel Standalone** 实时编译 JSX：所有应用代码写在 `<script type="text/babel">`（约 **line 211** 开始）里。
+- **外部依赖全部走 CDN**（`index.html` `<head>`，line 15–18，带 SRI 完整性校验）：
+  - Tailwind CSS Play CDN `3.4.16`
+  - React `18.3.1` + ReactDOM `18.3.1`（UMD production）
+  - `@babel/standalone` `7.29.7`
+- 渲染入口：`ReactDOM.createRoot(...).render(<App />)`（约 **line 3994**）。
+- 状态持久化：`localStorage`，**没有任何服务器存储**。
+
+### 为什么是单文件？
+开发者要的是"下载即用 / 双击即开 / 边缘部署零成本"。**不要把它拆成多文件、不要引入构建工具（Vite/webpack/npm）、不要 npm 化**，除非用户明确要求改变架构。
+
+---
+
+## 4. 文件清单
+
+| 文件 | 作用 |
+|---|---|
+| `index.html` | **唯一的应用文件**。所有数据、组件、样式逻辑都在里面。 |
+| `manifest.json` | PWA 清单（名称、图标、`display: standalone`、主题色 `#6366f1`）。 |
+| `apple-touch-icon.png` (180²) | iOS 主屏幕图标。 |
+| `icon-192.png` / `icon-512.png` | PWA / Android 图标（`purpose: any maskable`）。 |
+| `_headers` | Cloudflare Pages 响应头：CSP、X-Frame-Options 等安全头。**改 CDN 依赖时要同步改 CSP 白名单**（见 `script-src`）。 |
+| `wrangler.jsonc` | Cloudflare 部署配置（`name: tangtang-english`，静态资源目录 `.`）。 |
+| `README.md` | 本交接文档。 |
+| `糖糖解题诀窍手册.html` / `.txt` | 从应用数据导出的可打印诀窍手册（见 §9）。 |
+| `.gitignore` | 忽略 wrangler / env 文件。 |
+
+---
+
+## 5. 核心数据结构（都在 `index.html` 顶部，纯 JS 常量）
+
+> 35 个单元 = 7 册 × 5 单元。单元 key 形如 `B1-1`（必修一第1单元）… `S4-5`（选必四第5单元）。
+
+| 常量 | 行号(约) | 说明 |
+|---|---|---|
+| `SYLLABUS` | 270 | 7 册教材列表：`B1/B2/B3`（必修一二三）+ `S1/S2/S3/S4`（选必一~四）。 |
+| `UNIT_DB` | 277 | **每个单元的学习内容**。每单元含 `title`、`msg`（老师寄语）、`words`（Level1 核心词）、`l2`（Level2 熟词生义/派生）、`grammar`（语法点）、`sentences`（例句）。 |
+| `UNIVERSAL_TIPS` | 326 | **通用**高考解题诀窍：`cloze`(完形3条) / `grammarFill`(语法填空3条) / `reading`(阅读4条)。所有单元共享，渲染在每个单元笔记底部的折叠面板里。 |
+| `EXAM_TIPS_DB` | 345 | **每个单元专属**的解题诀窍。结构：`{ 'B1-1': { examTips:[{t,r,eg}×3], readingTips:[{t,r}×2] }, ... }`。35 单元，每单元 **3 条题型诀窍 + 2 条阅读诀窍**，与该单元的语法考点和课文体裁绑定。 |
+| `QUESTION_BANK` | 1370 | **题库**：35 单元 × 20 题 = 700 题选择题。每题 `{q, opts[4], ans(正确项下标), source, rat(解析)}`。答案分布均匀(A:B:C:D≈175:175:175:175)。 |
+| `SRS_INTERVALS` | 2906 | 间隔重复(Leitner 5 盒)的天数间隔 `[0,1,3,7,15]`，index = box-1。 |
+| `SRS_DAY` | 2907 | `24*60*60*1000`。 |
+
+### `UNIT_DB` 里单个 word 的字段
+```js
+{ w:'challenge', m:'n./v.挑战', d:'face a challenge',          // w=单词 m=释义 d=用法/搭配
+  ex:'Starting high school is a big challenge...',            // ex=英文例句
+  exCn:'上高中…是一大挑战。' }                                  // exCn=中文翻译
+```
+> `ex`/`exCn` 全部 35 单元 350 词都已补齐。新增单词请保持这套字段。
+
+---
+
+## 6. 主要组件（都是函数组件，定义在 `<script type="text/babel">` 内）
+
+| 组件 | 行号(约) | 职责 |
+|---|---|---|
+| `LoginScreen` | 2771 | 密码登录（见红线 §2）。 |
+| `FlashcardCarousel` | 2818 | 互动卡片（3D 翻卡）。"不知道"的词会进 SRS 队列；结束有"去单词闯关测一测"按钮（`onGoPractice`）。 |
+| `VocabDrill` | 2910 | **单词闯关**：基于间隔重复(SRS)的例句填空练习。从 `UNIT_DB` 取有 `ex` 的词，挖空，4 选 1。答对升盒、答错回 1 盒重排。 |
+| `App` | 3035 | 根组件。登录、导航、所有 tab 的渲染与状态。 |
+
+### 导航 tab（`navItems`，约 line 3446）
+`notes`(核心笔记) · `vocab`(单词闯关) · `gaokao`(重点练习→真题模式 `gaokaoquiz`) · `cards`(互动卡片) · `mistakes`(错题库) · `mastery`(进度)。
+
+---
+
+## 7. 状态与持久化（重要：有个历史 bug 要小心）
+
+- 单一 localStorage key：**`tt_all_users_v2`**（约 line 3045），存所有用户数据。
+- 数据按用户分桶：`allUsersData[userPrefix]`，`userPrefix` = `'tangtang'` / `'mama'` / `'guest'`。
+- 每个用户桶的字段：
+  ```
+  { progress:{}, cardLoop:{}, mistakes:[], vocab:{}, mastery:{} }
+  ```
+  - `vocab` = SRS 记忆库，key 由 `vocabKey(unitKey, w)` = `` `${unitKey}::${w}` `` 生成，值 `{box, due, seen}`。
+  - 互动卡片"不知道"的结果会**同步写进 `vocab`**（卡片与单词闯关共享记忆）。
+
+### ⚠️ `useLocalStorage` 的闭包陷阱（已修，别改回去）
+`useLocalStorage`（约 line 245）的 `setValue` **必须用函数式更新** `setStoredValue(prev => ...)`。
+历史 bug：早期版本 `setValue` 闭包捕获了旧的 `storedValue`，导致同一事件里连续调用两个 setter（如同时更新 `mistakes` 和 `progress`）时，**后一个会覆盖前一个**。所有 `setXxxData` 都基于 `setAllUsersData(prev => ...)` 函数式更新，请保持这个模式。
+
+---
+
+## 8. 🛠️ 如何验证改动（每次改完都要做）
+
+没有构建步骤，但**改完 JSX 必须做一次 Babel 编译校验**，否则线上白屏。
+
+```bash
+# 一次性安装本地校验用的 babel（网络可能受限，装一次即可）
+npm install @babel/standalone@7.29.7 --prefix /tmp/babelcheck
+
+# 校验 index.html 里的 JSX 能否编译
+node -e "
+const babel = require('/tmp/babelcheck/node_modules/@babel/standalone/babel.js');
+const fs = require('fs');
+const c = fs.readFileSync('index.html','utf8');
+const s = c.indexOf('<script type=\"text/babel\">');
+const e = c.lastIndexOf('</script>');
+const jsx = c.substring(s + '<script type=\"text/babel\">'.length, e);
+try { babel.transform(jsx,{presets:['react'],filename:'app.jsx'}); console.log('✅ Babel OK'); }
+catch(err){ console.error('❌', err.message, err.loc||''); }
+"
+```
+- 同样可以在 Node 里 `eval` 提取出 `EXAM_TIPS_DB` / `UNIT_DB` 等常量块来校验 JSON 结构是否完整（参考 git 历史里用过的脚本思路）。
+- 大批量数据改动（如给所有单元加字段）建议写一次性 Node 脚本做正则替换，再跑上面的编译校验。
+
+---
+
+## 9. 解题诀窍手册（可打印）
+
+`糖糖解题诀窍手册.html` / `.txt` 是从 `EXAM_TIPS_DB` + `UNIVERSAL_TIPS` 导出的可打印学习材料（HTML 版按七册分页、橙/红配色；TXT 版便于复制）。
+**改了诀窍数据后，若用户要更新手册，需重新生成。** 生成脚本逻辑：读 `index.html`，`eval` 出 `EXAM_TIPS_DB`/`UNIVERSAL_TIPS`/`UNIT_DB` 的标题，按"册→单元→题型诀窍/阅读诀窍→附录(通用诀窍)"结构拼 HTML/TXT。（生成器是临时脚本，未入库；按此结构即可复刻。）
+
+## 9b. 图标
+
+主屏幕图标用 **Python + Pillow** 程序化生成（高分辨率超采样后缩放）：深靛蓝→紫罗兰→暖玫红对角渐变 + 左上光源 + 暗角 + 顶部高光 + 立体圆角字母"T" + 投影 + 右上四角星 + 双层细圆环。全幅满版无透明（iOS 自己做圆角遮罩）。
+- 生成方式：`pip install Pillow`，渲染 master 2048px，导出 180/192/512。
+- 改图标后**文件名保持不变**（`apple-touch-icon.png`/`icon-192.png`/`icon-512.png`），这样 `index.html` 和 `manifest.json` 的引用不用动。
+- ⚠️ iOS 对已添加到主屏的图标缓存极强：用户需**删除旧图标→重新"添加到主屏幕"**才能看到新图标。
+
+---
+
+## 10. 部署
+
+- 目标平台：**Cloudflare Pages**（也兼容 GitHub Pages，纯静态）。
+- 配置见 `wrangler.jsonc`（静态资源目录 = 仓库根 `.`）。推送到默认分支即可触发部署。
+- `_headers` 提供安全响应头。**新增/更换任何 CDN 脚本，务必同步更新 `_headers` 里 CSP 的 `script-src` 白名单**（当前允许 `https://unpkg.com` 和 `https://cdn.tailwindcss.com`），否则线上会被 CSP 拦截。
+
+---
+
+## 11. Git 工作流
+
+- 仓库：`sheephess9527/tangtang-english`。
+- 开发分支：`claude/website-security-logic-review-mqtmx6`。
+- 实践中 `main` 与开发分支保持同步（提交到 `main` 后用 `git branch -f <dev> main` 再 `git push --force-with-lease` 同步开发分支）。
+- 提交信息用中文、清晰描述「做了什么 + 为什么」。**未经用户明确要求，不要建 PR。**
+- 容器是临时的：**任何想保留的产物都必须 commit + push**，否则会随容器回收丢失。
+
+---
+
+## 12. 已完成的功能（避免重复造轮子）
+
+- ✅ 35 单元完整内容：核心词(含例句)、熟词生义、语法点、例句。
+- ✅ 700 题题库（每单元 20 题，答案均匀分布，带解析）。
+- ✅ **单词闯关 VocabDrill**：例句填空 + Leitner 5 盒间隔重复。
+- ✅ **互动卡片**：3D 翻卡，"不知道"同步进 SRS；与单词闯关打通。
+- ✅ **错题库**：做错自动入库、显示解析、可"重新练习所有错题"(选项洗牌)、可单题重练。错题练习模式下不会重复入库、不污染进度统计（`isMistakePractice` 标志）。
+- ✅ **重点练习/真题模式**（`gaokaoquiz`）。
+- ✅ **强化练习**：用真实题库题(洗牌)而非伪造干扰项。
+- ✅ **每单元专属诀窍** + **通用诀窍折叠面板**（见 §5 的 `EXAM_TIPS_DB`/`UNIVERSAL_TIPS`）。
+- ✅ **进度/掌握度** 可视化（`mastery` tab）。
+- ✅ **PWA**：manifest + apple-touch-icon + 精致主屏图标，可"添加到主屏幕"像 App 一样用。
+- ✅ TTS 朗读（Web Speech API，0.9x 语速适配跟读）。
+
+---
+
+## 13. 约定与坑（Conventions & Gotchas）
+
+1. **登录密码不能改**（§2）——最重要。
+2. **保持单文件零构建架构**（§3）——不要 npm 化 / 拆文件。
+3. **改 JSX 必跑 Babel 校验**（§8）——否则线上白屏。
+4. **`useLocalStorage` 用函数式更新**（§7）——别引入闭包覆盖 bug。
+5. **改 CDN 依赖要同步改 `_headers` 的 CSP**（§10）。
+6. **大对象（`UNIT_DB`/`QUESTION_BANK`）是压缩成一行的内联数据**：手改易错，优先用 Node 脚本做精确正则替换 + 校验。
+7. **诀窍/内容面向中文母语者**：语气亲切、举例具体、给"怎么下手"的步骤，而不是抽象语法术语堆砌。糖糖是真实用户。
+8. **图标改完文件名不变**，并提醒用户 iOS 缓存需重添（§9b）。
+9. 内容里有中英文混排和单引号转义（如 `one\'s`），编辑字符串时注意转义。
+
+---
+
+## 14. 接手第一步建议
+
+1. 读完本文件（尤其 §2 红线）。
+2. `git log --oneline -20` 看最近做了什么。
+3. 跑一次 §8 的 Babel 校验，确认当前 `index.html` 是健康的。
+4. 想了解某功能：按 §5/§6 的行号直接跳到对应常量/组件。
+5. 动手改 → Babel 校验 → commit（中文信息）→ push（main + 同步开发分支）。
+
+> 开发者寄语："找准单词记忆、短语掌握、句型掌握、阅读找答案的诀窍，反复利用好网站，就能快速提分。" 请带着"帮一个真实的高一学生提分"的目标来做每一处改动。

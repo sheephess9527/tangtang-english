@@ -238,6 +238,10 @@
         const Brain = (p) => <SvgIcon {...p}><path d="M12 5a3 3 0 1 0-5.997.142 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.142 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></SvgIcon>;
         const Menu = (p) => <SvgIcon {...p}><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></SvgIcon>;
         const ChevronRight = (p) => <SvgIcon {...p}><path d="m9 18 6-6-6-6"/></SvgIcon>;
+        const PenLine = (p) => <SvgIcon {...p}><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></SvgIcon>;
+        const Flame = (p) => <SvgIcon {...p}><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></SvgIcon>;
+        const Download = (p) => <SvgIcon {...p}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></SvgIcon>;
+        const Upload = (p) => <SvgIcon {...p}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></SvgIcon>;
 
         // ==========================================
         // 2. 本地持久化 Hook (安全降级)
@@ -342,7 +346,189 @@
             ],
         };
 
-                const EXAM_TIPS_DB = {
+                // ==========================================
+        // 3.4 写作宝典（应用文 15 分 + 读后续写 25 分 = 浙江卷 40 分）
+        // ==========================================
+        const WRITING_DB = {
+            principles: [
+                { t: '字数与结构：三段定天下', r: '应用文 80 词左右，正文固定 3 段：开头一句点明身份和来意 → 中间按题目要点展开（每个要点 1-2 句，缺一个要点扣一档）→ 结尾客套 + 期待回复。开头绕弯子 = 浪费字数 + 印象分下降。' },
+                { t: '提档三件套', r: '① 高级句型至少 2 个（定语从句 / 非谓语开头 / Only倒装 任选）② 连接词至少 3 个（Firstly / What\'s more / Therefore / In a word）③ 卷面整洁不涂改。改卷老师平均 30 秒看一篇，第一印象基本就是分数。' },
+                { t: '低级词替换表（背下来直接用）', r: 'very good→fantastic / marvelous；very important→essential / vital；think→maintain / hold the view that；many→a great many / numerous；happy→delighted / overjoyed；tired→exhausted；but→however / nevertheless；so→therefore / as a result。' },
+                { t: '读后续写：先读懂再动笔', r: '续写 25 分的第一杀手是"接不上"。动笔前必做：① 划出原文人物 + 情节冲突 ② 圈出两段续写的首句（它们规定了情节方向）③ 找伏笔（原文特意提到的物品/人物一定要用上）。情节合理 > 语言华丽。' },
+                { t: '读后续写：动作 + 情绪交替推进', r: '高分续写的节奏：一句动作（他做了什么）→ 一句情绪/心理（他感到什么）→ 再一句动作。全是动作像流水账，全是心理像散文。结尾一定呼应主题：成长 / 感恩 / 勇气 / 爱。' },
+            ],
+            letters: [
+                {
+                    type: '建议信', scene: '给朋友/笔友提建议：学习方法、如何过节、健康生活等',
+                    frame: '① 得知你的困扰，写信来提建议 → ② 建议 2-3 条，每条 = 建议 + 理由/好处 → ③ 希望有帮助，期待回信',
+                    phrases: [
+                        { e: 'I\'m sorry to hear that you are having trouble learning Chinese.', c: '很遗憾听说你在学中文方面遇到了困难。（开头）' },
+                        { e: 'Here are a few suggestions that might be helpful.', c: '以下几条建议或许有帮助。（引出建议）' },
+                        { e: 'To begin with, it would be a good idea to watch Chinese films with subtitles.', c: '首先，看带字幕的中文电影会是个好主意。（建议1）' },
+                        { e: 'What\'s more, why not join a language club, where you can practise with native speakers?', c: '另外，何不加入语言社团？在那里你可以和母语者练习。（建议2+定语从句加分）' },
+                        { e: 'I hope you will find these suggestions helpful, and I\'m looking forward to your good news.', c: '希望这些建议有用，期待你的好消息。（结尾）' },
+                    ],
+                    sample: { en: 'Dear Jim,\n    I\'m sorry to hear that you are having trouble learning Chinese. Here are a few suggestions that might be helpful.\n    To begin with, it would be a good idea to watch Chinese films with subtitles, which can make learning more enjoyable. What\'s more, why not join a language club, where you can practise speaking with native speakers? Finally, don\'t be afraid of making mistakes — the more you speak, the faster you will improve.\n    I hope you will find these suggestions helpful. Looking forward to your good news.\nYours,\nLi Hua', cn: '大意：听说你学中文有困难 → 三条建议（看电影/进社团/别怕犯错）→ 希望有帮助。注意 which 和 where 两个从句是提分点。' }
+                },
+                {
+                    type: '邀请信', scene: '邀请外教/朋友参加活动：文化节、比赛、讲座等',
+                    frame: '① 代表 XX 邀请你参加 XX 活动 → ② 活动详情：时间地点 + 内容安排（2-3 项）+ 为什么值得来 → ③ 期待你的到来，盼复',
+                    phrases: [
+                        { e: 'On behalf of the Student Union, I\'m writing to invite you to attend our Chinese Culture Festival.', c: '我代表学生会写信邀请你参加中国文化节。（开头，on behalf of 提分）' },
+                        { e: 'The activity is scheduled to take place in the school hall from 3 to 5 p.m. on Friday, June 20th.', c: '活动定于6月20日周五下午3-5点在学校礼堂举行。（时间地点一句话说完）' },
+                        { e: 'A variety of activities will be organized, ranging from paper-cutting to dumpling-making.', c: '将组织丰富多彩的活动，从剪纸到包饺子。（ranging from...to 提分）' },
+                        { e: 'It would be a great honor if you could come and enjoy it with us.', c: '如果你能来和我们同乐，将是莫大的荣幸。（客套）' },
+                        { e: 'Please let me know your decision at your earliest convenience.', c: '请尽早告知你的决定。（盼复）' },
+                    ],
+                    sample: { en: 'Dear Mr. Smith,\n    On behalf of the Student Union, I\'m writing to invite you to our Chinese Culture Festival, which aims to help foreign friends better understand Chinese traditions.\n    The festival is scheduled to take place in the school hall from 3 to 5 p.m. on Friday, June 20th. A variety of activities will be organized, ranging from paper-cutting to dumpling-making. As a big fan of Chinese culture, you will surely find it interesting and rewarding.\n    It would be a great honor if you could come. Please let me know your decision soon.\nYours,\nLi Hua', cn: '大意：代表学生会邀请 → 时间地点+活动内容+为什么适合你 → 盼复。which 从句、ranging from 是亮点。' }
+                },
+                {
+                    type: '申请信', scene: '申请加入社团/志愿者/参加交换项目',
+                    frame: '① 得知 XX 招募，我写信申请 → ② 我的优势 2-3 条（英语好/有经验/热心）+ 如果入选我会怎么做 → ③ 恳请考虑，盼复',
+                    phrases: [
+                        { e: 'Learning that volunteers are wanted for the coming sports meet, I\'m writing to apply for the position.', c: '得知运动会招募志愿者，我写信申请。（非谓语开头，提分）' },
+                        { e: 'There are several reasons why I\'m qualified for the job.', c: '有几个理由说明我能胜任。（引出优势）' },
+                        { e: 'First, I have a good command of English, which enables me to communicate with foreign guests freely.', c: '第一，我英语好，这让我能自如地与外宾交流。（优势+which从句）' },
+                        { e: 'In addition, I once served as a volunteer in the city marathon, so I\'m rich in experience.', c: '另外，我曾在城市马拉松做过志愿者，经验丰富。（用事实说话）' },
+                        { e: 'I would appreciate it if you could give me the opportunity. I\'m looking forward to your reply.', c: '如蒙给我机会，不胜感激。期待回复。（appreciate it if 必背）' },
+                    ],
+                    sample: { en: 'Dear Sir or Madam,\n    Learning that volunteers are wanted for the coming International Culture Week, I\'m writing to apply for the position.\n    There are several reasons why I\'m qualified for the job. First, I have a good command of English, which enables me to communicate with foreign guests freely. In addition, I once served as a volunteer in the city marathon, so I\'m rich in relevant experience. If given the chance, I will spare no effort to do the job well.\n    I would appreciate it if you could consider my application. I\'m looking forward to your reply.\nYours,\nLi Hua', cn: '大意：得知招募→申请 → 两条优势+入选后的承诺 → 恳请考虑。非谓语开头、which 从句、appreciate it if 三个亮点。' }
+                },
+                {
+                    type: '感谢信', scene: '感谢外教/朋友/志愿者的帮助',
+                    frame: '① 写信表达诚挚感谢 → ② 回顾对方帮了什么 + 这帮助带来的改变（具体！）→ ③ 再次感谢 + 欢迎来做客/保持联系',
+                    phrases: [
+                        { e: 'I\'m writing to express my sincere gratitude for your generous help.', c: '写信对你慷慨的帮助表达诚挚谢意。（开头必背）' },
+                        { e: 'But for your help, I couldn\'t have made such great progress in spoken English.', c: '要不是你的帮助，我的口语不可能有这么大进步。（含蓄虚拟语气，高级！）' },
+                        { e: 'It was you who encouraged me to open my mouth and speak up.', c: '正是你鼓励我开口大胆说。（强调句，提分）' },
+                        { e: 'Words fail to convey my gratitude to you.', c: '言语无法表达我对你的感激。（高级客套）' },
+                        { e: 'I do hope you can visit my hometown some day so that I can show you around.', c: '真心希望你能来我家乡，让我带你四处看看。（do 强调+邀请收尾）' },
+                    ],
+                    sample: { en: 'Dear Ms. Green,\n    I\'m writing to express my sincere gratitude for your patient guidance during the past year.\n    When I first came to your class, I was too shy to speak English in public. It was you who kept encouraging me to open my mouth. But for your help, I couldn\'t have won the first prize in the English Speech Contest last week. This experience has given me great confidence.\n    Words fail to convey my gratitude. I do hope you can visit my hometown some day so that I can show you around.\nYours,\nLi Hua', cn: '大意：致谢 → 回顾（曾经害羞→你鼓励→拿了演讲一等奖）→ 再次感谢+邀请。强调句和虚拟语气是两个大亮点。' }
+                },
+                {
+                    type: '道歉信', scene: '因故失约/损坏物品/打扰他人而道歉',
+                    frame: '① 为 XX 事真诚道歉 → ② 解释原因（合理、简短）+ 提出补救方案 → ③ 再次致歉 + 请求谅解',
+                    phrases: [
+                        { e: 'I\'m writing to make a sincere apology to you for failing to attend your birthday party.', c: '为未能参加你的生日聚会，我写信真诚道歉。（开头必背）' },
+                        { e: 'The reason is that my grandma suddenly fell ill and I had to look after her in hospital.', c: '原因是我奶奶突然生病，我必须在医院照顾她。（解释原因）' },
+                        { e: 'To make up for it, I\'d like to invite you to dinner this weekend — how does that sound?', c: '为了弥补，我想这周末请你吃饭——你觉得怎么样？（补救方案）' },
+                        { e: 'I hope you can accept my apology and understand my situation.', c: '希望你能接受我的道歉、理解我的处境。（请求谅解）' },
+                        { e: 'Again, I\'m terribly sorry for any inconvenience caused.', c: '再次为带来的不便深表歉意。（结尾加强）' },
+                    ],
+                    sample: { en: 'Dear Anna,\n    I\'m writing to make a sincere apology to you for failing to attend your birthday party last Saturday.\n    I had been looking forward to it for days, but that morning my grandma suddenly fell ill and I had to accompany her to hospital. I didn\'t even have time to inform you in advance. To make up for it, I\'d like to invite you to dinner this weekend, when I will give you the present I prepared.\n    I hope you can understand my situation. Again, I\'m terribly sorry.\nYours,\nLi Hua', cn: '大意：道歉 → 原因（奶奶生病陪护）+ 补救（周末请吃饭+补礼物）→ 请求谅解。when 引导的非限制性从句是亮点。' }
+                },
+                {
+                    type: '求助/咨询信', scene: '向外教/笔友请教问题、咨询课程或活动信息',
+                    frame: '① 写信是想请你帮个忙/咨询 XX → ② 具体说明困难或想了解的 2-3 个问题 → ③ 感谢 + 盼复',
+                    phrases: [
+                        { e: 'I\'m writing to ask you a favor: could you help me improve my English writing?', c: '写信想请你帮个忙：能帮我提高英语写作吗？（开头直接）' },
+                        { e: 'I wonder if you could recommend some suitable books for a beginner like me.', c: '不知你能否给我这样的初学者推荐一些合适的书。（I wonder if 客气提问）' },
+                        { e: 'Another question is whether the summer course is open to high school students.', c: '另一个问题是暑期课程是否对高中生开放。（whether 从句）' },
+                        { e: 'I would be grateful if you could reply at your earliest convenience.', c: '如能尽早回复，将不胜感激。（结尾必背）' },
+                        { e: 'Thank you in advance for your kind help.', c: '提前感谢你的热心帮助。（结尾客套）' },
+                    ],
+                    sample: { en: 'Dear Professor Lee,\n    I\'m Li Hua, a senior high school student who is a big fan of your online history lectures. I\'m writing to ask for some information about your summer course.\n    First, I wonder if the course is open to high school students. Second, could you tell me how to sign up and whether there is any fee? Additionally, it would be great if you could recommend some books to read in advance.\n    I would be grateful if you could reply at your earliest convenience. Thank you!\nYours,\nLi Hua', cn: '大意：自我介绍+来意 → 三个问题（是否开放/如何报名/推荐书目）→ 盼复。问题用 I wonder if / whether 包装显得礼貌。' }
+                },
+                {
+                    type: '通知', scene: '以学生会名义通知讲座/活动/安排变更',
+                    frame: '① 标题 NOTICE + 一句话说明活动 → ② 时间、地点、对象、内容、要求（条理清晰）→ ③ 欢迎参加 + 落款（学生会+日期）',
+                    phrases: [
+                        { e: 'An English lecture on Western table manners will be given in the school hall.', c: '一场关于西方餐桌礼仪的英语讲座将在学校礼堂举行。（一句话点明活动）' },
+                        { e: 'It is scheduled to begin at 3:00 p.m. on Friday, May 10th, and will last about two hours.', c: '定于5月10日周五下午3点开始，持续约两小时。（时间说清楚）' },
+                        { e: 'All students interested in it are welcome to attend.', c: '欢迎所有感兴趣的同学参加。（对象）' },
+                        { e: 'Those who want to take part are required to sign up at the office before Wednesday.', c: '想参加的同学须在周三前到办公室报名。（要求+定语从句）' },
+                        { e: 'Please arrive on time and take notes if necessary.', c: '请准时到场，必要时做笔记。（注意事项）' },
+                    ],
+                    sample: { en: 'NOTICE\n    An English lecture on Western table manners will be given in the school hall, delivered by Professor Smith from Oxford University.\n    It is scheduled to begin at 3:00 p.m. on Friday, May 10th, and will last about two hours. All students interested in it are welcome. Those who want to attend are required to sign up at the Student Union office before Wednesday. Please arrive on time.\n    Don\'t miss the chance!\nThe Student Union\nMay 6th', cn: '大意：标题→什么活动谁来讲 → 时间/对象/报名方式/要求 → 号召。通知不用 Dear 开头，落款是单位+日期。' }
+                },
+                {
+                    type: '倡议书', scene: '发起倡议：环保、读书、运动、节约粮食等',
+                    frame: '① 指出现状/问题，发出倡议 → ② 具体行动 3 条（从我做起，可操作）→ ③ 呼吁大家一起行动，展望美好结果',
+                    phrases: [
+                        { e: 'As is known to all, plastic pollution has become a serious problem.', c: '众所周知，塑料污染已成为严重问题。（点明现状）' },
+                        { e: 'Therefore, we propose that everyone (should) do the following things.', c: '因此我们倡议每个人做到以下几点。（propose that+虚拟，高级）' },
+                        { e: 'First, use cloth bags instead of plastic ones when shopping.', c: '第一，购物时用布袋代替塑料袋。（行动要具体）' },
+                        { e: 'Only in this way can we make a real difference to our environment.', c: '只有这样我们才能真正改变环境。（Only倒装，重磅加分）' },
+                        { e: 'Let\'s join hands and take action right now — every small effort counts!', c: '让我们携手立即行动——每一份小努力都很重要！（呼吁收尾）' },
+                    ],
+                    sample: { en: 'Dear fellow students,\n    As is known to all, food waste has become a serious problem on campus. To build a green school, we hereby propose the following.\n    First, order only what you can eat in the canteen. Second, take the "Clear Your Plate" challenge and encourage your friends to join. Third, share leftover-free tips on the class board. Only in this way can we truly reduce waste.\n    Let\'s join hands and take action right now — every small effort counts!\nThe Student Union', cn: '大意：指出浪费粮食问题→倡议 → 三条具体行动 → Only 倒装 + 呼吁。倡议书的行动一定要"具体可做"，不要空喊口号。' }
+                },
+            ],
+            xuxie: {
+                tips: [
+                    { t: '第一步：三划原文', r: '划人物关系 → 划情节冲突（谁遇到了什么困难）→ 划伏笔道具（原文特意提到的物品、天气、人物，续写里必须用上，这是改卷老师checking的"协同性"）。' },
+                    { t: '第二步：两个首句定框架', r: '第一段首句通常是"事情继续发展/尝试解决"，第二段首句通常是"转折/结果出现"。先想清楚两段各写什么（每段 5-6 句），再动笔。' },
+                    { t: '节奏公式：动作→情绪→动作', r: '一句动作推进情节，一句心理/情绪描写增加感染力，交替进行。忌讳整段全是 He did... Then he did...（流水账没有分）。' },
+                    { t: '结尾必须点题升华', r: '最后 1-2 句呼应全文主题：成长感悟 / 亲情友情 / 勇气坚持。背几个万能结尾：That night, I understood the true meaning of... / Tears welled up in my eyes — not of sadness, but of gratitude.' },
+                ],
+                emotions: [
+                    { name: '紧张 / 害怕', items: [
+                        { e: 'My heart was pounding wildly against my chest.', c: '我的心在胸口狂跳。' },
+                        { e: 'A wave of panic washed over me and my palms began to sweat.', c: '一阵恐慌涌上心头，我的手心开始出汗。' },
+                        { e: 'Frozen with fear, she couldn\'t move a single step.', c: '她吓呆了，一步也挪不动。（非谓语开头加分）' },
+                    ]},
+                    { name: '开心 / 激动', items: [
+                        { e: 'Her eyes lit up with excitement at the news.', c: '听到消息，她的眼睛激动得亮了起来。' },
+                        { e: 'He jumped up and down, unable to contain his joy.', c: '他高兴得跳来跳去，抑制不住喜悦。' },
+                        { e: 'A broad smile spread across her face.', c: '她的脸上绽开灿烂的笑容。' },
+                    ]},
+                    { name: '感动 / 温暖', items: [
+                        { e: 'Tears welled up in my eyes — not of sadness, but of gratitude.', c: '泪水涌上我的眼眶——不是因为难过，而是因为感激。（万能结尾）' },
+                        { e: 'A warm current surged through my heart.', c: '一股暖流涌上心头。' },
+                        { e: 'Deeply touched, I hugged her tightly without a word.', c: '我深受感动，一言不发地紧紧抱住她。' },
+                    ]},
+                    { name: '伤心 / 失望', items: [
+                        { e: 'His heart sank when he saw the result.', c: '看到结果，他的心一沉。' },
+                        { e: 'She bit her lip, fighting back tears.', c: '她咬着嘴唇，强忍泪水。' },
+                        { e: 'A sense of loss overwhelmed me at that moment.', c: '那一刻，一种失落感将我淹没。' },
+                    ]},
+                    { name: '惊讶 / 意外', items: [
+                        { e: 'He froze, his eyes widening in disbelief.', c: '他愣住了，难以置信地睁大眼睛。（独立主格加分）' },
+                        { e: 'To her astonishment, the box was completely empty.', c: '令她震惊的是，盒子完全是空的。' },
+                        { e: 'I couldn\'t believe my eyes — it was Dad standing at the door.', c: '我不敢相信自己的眼睛——站在门口的正是爸爸。' },
+                    ]},
+                ],
+                actions: [
+                    { name: '跑 / 追（代替 run）', items: [
+                        { e: 'He dashed out of the room and raced down the street.', c: '他冲出房间，沿街飞奔。（dash/race 比 run 高级）' },
+                        { e: 'She sprinted towards the finish line with all her strength.', c: '她用尽全力向终点冲刺。' },
+                        { e: 'Out of breath, he finally caught up with the old man.', c: '他上气不接下气，终于追上了老人。' },
+                    ]},
+                    { name: '看 / 观察（代替 look）', items: [
+                        { e: 'He stared at the letter, his hands trembling slightly.', c: '他盯着那封信，双手微微颤抖。' },
+                        { e: 'She glanced around nervously before knocking at the door.', c: '敲门前，她紧张地环顾四周。' },
+                        { e: 'The boy fixed his eyes on the medal, lost in thought.', c: '男孩目不转睛地盯着奖牌，陷入沉思。' },
+                    ]},
+                    { name: '说 / 喊（代替 say）', items: [
+                        { e: '"We made it!" he exclaimed, punching the air.', c: '"我们成功了！"他挥拳喊道。（exclaim+动作）' },
+                        { e: 'She whispered a "thank you", her voice trembling with emotion.', c: '她轻声说了句"谢谢"，声音因激动而颤抖。' },
+                        { e: '"Never give up," Grandpa murmured, patting me on the shoulder.', c: '"永远别放弃，"爷爷轻声说，拍了拍我的肩。' },
+                    ]},
+                    { name: '哭 / 笑（更有画面感）', items: [
+                        { e: 'Tears streamed down her cheeks as she read the note.', c: '读着字条，泪水顺着她的脸颊流下。' },
+                        { e: 'He burst into laughter, all his worries melting away.', c: '他大笑起来，所有的烦恼烟消云散。（独立主格）' },
+                        { e: 'She managed a weak smile through her tears.', c: '她含着泪勉强挤出一丝微笑。' },
+                    ]},
+                ],
+                scenery: [
+                    { name: '渲染紧张压抑', items: [
+                        { e: 'Dark clouds were gathering, and the wind began to howl.', c: '乌云密布，狂风开始呼啸。' },
+                        { e: 'The room fell into dead silence; even a pin drop could be heard.', c: '房间陷入死寂，连针掉在地上都能听见。' },
+                    ]},
+                    { name: '烘托温馨明快', items: [
+                        { e: 'The golden sunlight streamed through the window, warming everything it touched.', c: '金色的阳光洒进窗户，温暖了它触及的一切。' },
+                        { e: 'Birds were singing merrily in the trees, as if celebrating for us.', c: '鸟儿在枝头欢快歌唱，仿佛在为我们庆祝。（as if 拟人）' },
+                    ]},
+                    { name: '表现时间流逝 / 转场', items: [
+                        { e: 'Time seemed to freeze at that moment.', c: '那一刻，时间仿佛凝固了。' },
+                        { e: 'Before I knew it, the sun had already set behind the hills.', c: '不知不觉，太阳已落到山后。（过去完成时）' },
+                    ]},
+                ],
+            },
+        };
+
+        const EXAM_TIPS_DB = {
             "B1-1": {
                 "examTips": [
                     {
@@ -2907,13 +3093,18 @@ Which option best expresses its meaning?`,
         const SRS_DAY = 24 * 60 * 60 * 1000;
         const vocabKey = (unitKey, w) => `${unitKey}::${w}`;
 
-        const VocabDrill = ({ unitData, unitKey, vocabData, setVocabData, playAudio, playingWord }) => {
-            const words = (unitData.words || []).filter(w => w.ex); // 仅练有例句的词
+        const VocabDrill = ({ unitData, unitKey, vocabData, setVocabData, playAudio, playingWord, globalItems }) => {
+            const isGlobal = !!globalItems; // 跨单元"今日复习"模式
+            // 全局词表在挂载时冻结：作答会让到期列表实时缩小，若跟随 props 变化会跳过结算画面
+            const [frozenGlobal] = useState(() => globalItems || null);
+            const words = isGlobal ? (frozenGlobal || []) : (unitData.words || []).filter(w => w.ex); // 仅练有例句的词
+            const keyOf = (w) => vocabKey(w._uk || unitKey, w.w);
             const buildDeck = () => {
-                const now = Date.now();
                 if (words.length === 0) return [];
+                if (isGlobal) return shuffle(words.slice()); // 全局模式：传入的都是到期词
+                const now = Date.now();
                 const due = words.filter(w => {
-                    const rec = vocabData[vocabKey(unitKey, w.w)];
+                    const rec = vocabData[keyOf(w)];
                     return !rec || (rec.due || 0) <= now;
                 });
                 return shuffle((due.length > 0 ? due : words).slice());
@@ -2921,28 +3112,31 @@ Which option best expresses its meaning?`,
             const [deck, setDeck] = useState(buildDeck);
             const [pos, setPos] = useState(0);
             const [picked, setPicked] = useState(null);
+            const [mode, setMode] = useState('choice'); // choice 选择 | spell 拼写 | listen 听写
+            const [typed, setTyped] = useState('');
+            const [inputResult, setInputResult] = useState(null);
             const [roundDone, setRoundDone] = useState(0);
             const [roundRight, setRoundRight] = useState(0);
             const [finished, setFinished] = useState(false);
 
-            // 切换单元时重置
+            // 切换单元/模式来源时重置
             useEffect(() => {
-                setDeck(buildDeck()); setPos(0); setPicked(null);
+                setDeck(buildDeck()); setPos(0); setPicked(null); setTyped(''); setInputResult(null);
                 setRoundDone(0); setRoundRight(0); setFinished(false);
-            }, [unitKey]);
+            }, [unitKey, isGlobal]);
 
             if (words.length === 0) {
                 return (
                     <div className="text-center p-10 card-lg text-slate-400 font-medium">
-                        本单元的单词闯关正在制作中，敬请期待。
+                        {isGlobal ? '🎉 今天没有到期待复习的单词，记忆保持得很好！' : '本单元的单词闯关正在制作中，敬请期待。'}
                     </div>
                 );
             }
 
-            const masteredCount = words.filter(w => (vocabData[vocabKey(unitKey, w.w)]?.box || 0) >= 5).length;
+            const masteredCount = words.filter(w => (vocabData[keyOf(w)]?.box || 0) >= 5).length;
 
             const restart = () => {
-                setDeck(buildDeck()); setPos(0); setPicked(null);
+                setDeck(buildDeck()); setPos(0); setPicked(null); setTyped(''); setInputResult(null);
                 setRoundDone(0); setRoundRight(0); setFinished(false);
             };
 
@@ -2953,9 +3147,9 @@ Which option best expresses its meaning?`,
                             <div className="w-20 h-20 bg-gradient-to-br from-violet-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-violet-500/30">
                                 <Brain className="w-10 h-10 text-white" />
                             </div>
-                            <h2 className="text-2xl font-bold mb-2 tracking-tight">本组完成</h2>
+                            <h2 className="text-2xl font-bold mb-2 tracking-tight">{isGlobal ? '今日复习完成' : '本组完成'}</h2>
                             {roundDone > 0 && <div className="text-5xl font-bold text-violet-500 mb-2 tracking-tighter">{roundRight}<span className="text-xl text-slate-300 mx-1 font-medium">/</span>{roundDone}</div>}
-                            <p className="text-slate-500 font-medium mb-8">本单元已掌握 {masteredCount} / {words.length} 个单词</p>
+                            <p className="text-slate-500 font-medium mb-8">{isGlobal ? '到期的单词都过了一遍，记忆曲线已更新' : `本单元已掌握 ${masteredCount} / ${words.length} 个单词`}</p>
                             <button onClick={restart} className="w-full bg-gradient-to-r from-violet-500 to-indigo-500 text-white py-4 rounded-2xl font-bold active:scale-95 transition-transform mb-3">再来一组</button>
                         </div>
                     </div>
@@ -2963,55 +3157,113 @@ Which option best expresses its meaning?`,
             }
 
             const cur = deck[pos];
-            // 干扰项：同单元其他词
-            const others = words.filter(w => w.w !== cur.w);
+            // 干扰项：同单元其他词；全局模式下不足时用该词所在单元补齐
+            let others = words.filter(w => w.w !== cur.w);
+            if (others.length < 3) {
+                const pool = ((UNIT_DB[cur._uk || unitKey] || {}).words || []).filter(w => w.ex && w.w !== cur.w);
+                others = [...others, ...pool.filter(p => !others.some(o => o.w === p.w))];
+            }
             const distractors = shuffle(others.slice()).slice(0, 3).map(w => w.w);
             const opts = (cur._opts || (cur._opts = shuffle([cur.w, ...distractors])));
             const blanked = cur.ex.replace(new RegExp(cur.w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'), '_____');
 
-            const onPick = (idx) => {
-                if (picked !== null) return;
-                setPicked(idx);
-                const correct = opts[idx] === cur.w;
-                const rec = vocabData[vocabKey(unitKey, cur.w)] || { box: 1, seen: 0 };
+            const answered = mode === 'choice' ? picked !== null : inputResult !== null;
+            const isCorrect = mode === 'choice' ? (picked !== null && opts[picked] === cur.w) : inputResult === true;
+
+            const applyResult = (correct) => {
+                const rec = vocabData[keyOf(cur)] || { box: 1, seen: 0 };
                 const newBox = correct ? Math.min((rec.box || 1) + 1, 5) : 1;
                 const due = Date.now() + SRS_INTERVALS[newBox - 1] * SRS_DAY;
-                setVocabData(prev => ({ ...prev, [vocabKey(unitKey, cur.w)]: { box: newBox, due, seen: (rec.seen || 0) + 1 } }));
+                setVocabData(prev => ({ ...prev, [keyOf(cur)]: { box: newBox, due, seen: (rec.seen || 0) + 1 } }));
                 setRoundDone(n => n + 1);
                 if (correct) setRoundRight(n => n + 1);
                 else setDeck(d => [...d, cur]); // 答错本组内再练一次
             };
 
-            const next = () => {
-                if (pos + 1 >= deck.length) setFinished(true);
-                else { setPos(p => p + 1); setPicked(null); }
+            const onPick = (idx) => {
+                if (picked !== null) return;
+                setPicked(idx);
+                applyResult(opts[idx] === cur.w);
             };
 
-            const isCorrect = picked !== null && opts[picked] === cur.w;
+            const onSubmitTyped = () => {
+                if (inputResult !== null || !typed.trim()) return;
+                const ok = typed.trim().toLowerCase() === cur.w.toLowerCase();
+                setInputResult(ok);
+                applyResult(ok);
+            };
+
+            const next = () => {
+                if (pos + 1 >= deck.length) setFinished(true);
+                else { setPos(p => p + 1); setPicked(null); setTyped(''); setInputResult(null); }
+            };
+
+            const switchMode = (m) => {
+                if (m === mode) return;
+                setMode(m); setPicked(null); setTyped(''); setInputResult(null);
+            };
+
+            const modeTabs = [
+                { id: 'choice', label: '选择' },
+                { id: 'spell', label: '拼写' },
+                { id: 'listen', label: '听写' },
+            ];
 
             return (
                 <div className="max-w-xl mx-auto">
                     <div className="card-lg p-6 md:p-8">
-                        <div className="flex justify-between items-center mb-6">
-                            <span className="px-3 py-1 rounded-lg text-[11px] font-bold tracking-wide bg-violet-100 text-violet-700">语境回想</span>
-                            <span className="text-xs font-bold text-slate-400">本单元已掌握 {masteredCount}/{words.length}</span>
+                        <div className="flex justify-between items-center mb-4">
+                            <span className={`px-3 py-1 rounded-lg text-[11px] font-bold tracking-wide ${isGlobal ? 'bg-amber-100 text-amber-700' : 'bg-violet-100 text-violet-700'}`}>{isGlobal ? '📌 今日复习' : '语境回想'}</span>
+                            <span className="text-xs font-bold text-slate-400">{isGlobal ? `第 ${Math.min(pos + 1, deck.length)} / ${deck.length} 个` : `本单元已掌握 ${masteredCount}/${words.length}`}</span>
                         </div>
 
-                        <div className="text-[11px] font-bold text-violet-400 uppercase tracking-widest mb-2">选出填入空格的词</div>
-                        <p className="text-[18px] font-semibold leading-relaxed mb-2 whitespace-pre-wrap">{blanked}</p>
-                        <p className="text-sm font-medium text-slate-500 mb-6">{cur.exCn}（提示：{cur.m}）</p>
-
-                        <div className="space-y-3">
-                            {opts.map((opt, i) => (
-                                <button key={i} onClick={() => onPick(i)} className={`w-full p-4 rounded-2xl border-2 text-left transition-all flex items-center justify-between text-[15px] font-bold ${picked === null ? 'border-slate-100 bg-white active:bg-slate-50 hover:border-violet-200' : opt === cur.w ? 'option-correct text-emerald-800' : picked === i ? 'option-wrong text-rose-800' : 'border-slate-50 opacity-40'}`}>
-                                    <span>{opt}</span>
-                                    {picked !== null && opt === cur.w && <CheckCircle2 className="w-5 h-5 text-emerald-500" />}
-                                    {picked !== null && picked === i && opt !== cur.w && <XCircle className="w-5 h-5 text-rose-500" />}
-                                </button>
+                        <div className="flex gap-2 mb-6">
+                            {modeTabs.map(t => (
+                                <button key={t.id} onClick={() => switchMode(t.id)} className={`px-4 py-1.5 rounded-full text-[12px] font-bold transition-all ${mode === t.id ? 'bg-violet-500 text-white shadow-md shadow-violet-500/25' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}>{t.label}</button>
                             ))}
                         </div>
 
-                        {picked !== null && (
+                        {mode !== 'listen' && (
+                            <>
+                                <div className="text-[11px] font-bold text-violet-400 uppercase tracking-widest mb-2">{mode === 'choice' ? '选出填入空格的词' : '拼出填入空格的词'}</div>
+                                <p className="text-[18px] font-semibold leading-relaxed mb-2 whitespace-pre-wrap">{blanked}</p>
+                                <p className="text-sm font-medium text-slate-500 mb-6">{cur.exCn}（提示：{cur.m}{mode === 'spell' ? ` · 首字母 ${cur.w[0]}` : ''}）</p>
+                            </>
+                        )}
+                        {mode === 'listen' && (
+                            <div className="text-center mb-6">
+                                <div className="text-[11px] font-bold text-violet-400 uppercase tracking-widest mb-4">听发音，拼出这个单词</div>
+                                <button onClick={(e) => playAudio(cur.w, e)} className="w-24 h-24 rounded-full bg-gradient-to-br from-violet-500 to-indigo-500 text-white flex items-center justify-center mx-auto shadow-lg shadow-violet-500/30 active:scale-95 transition-transform mb-4">
+                                    <Volume2 className="w-10 h-10" />
+                                </button>
+                                <p className="text-sm font-medium text-slate-500">提示：{cur.m}（点喇叭可重复播放）</p>
+                            </div>
+                        )}
+
+                        {mode === 'choice' ? (
+                            <div className="space-y-3">
+                                {opts.map((opt, i) => (
+                                    <button key={i} onClick={() => onPick(i)} className={`w-full p-4 rounded-2xl border-2 text-left transition-all flex items-center justify-between text-[15px] font-bold ${picked === null ? 'border-slate-100 bg-white active:bg-slate-50 hover:border-violet-200' : opt === cur.w ? 'option-correct text-emerald-800' : picked === i ? 'option-wrong text-rose-800' : 'border-slate-50 opacity-40'}`}>
+                                        <span>{opt}</span>
+                                        {picked !== null && opt === cur.w && <CheckCircle2 className="w-5 h-5 text-emerald-500" />}
+                                        {picked !== null && picked === i && opt !== cur.w && <XCircle className="w-5 h-5 text-rose-500" />}
+                                    </button>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="flex gap-2">
+                                <input
+                                    type="text" value={typed} onChange={(e) => setTyped(e.target.value)}
+                                    onKeyDown={(e) => { if (e.key === 'Enter') onSubmitTyped(); }}
+                                    disabled={inputResult !== null}
+                                    placeholder="在这里输入单词…" autoCapitalize="off" autoCorrect="off" autoComplete="off" spellCheck="false"
+                                    className={`flex-1 p-4 rounded-2xl border-2 text-[16px] font-bold outline-none transition-all ${inputResult === null ? 'border-slate-200 focus:border-violet-400 bg-white' : inputResult ? 'border-emerald-300 bg-emerald-50 text-emerald-800' : 'border-rose-300 bg-rose-50 text-rose-800'}`}
+                                />
+                                <button onClick={onSubmitTyped} disabled={inputResult !== null || !typed.trim()} className="px-6 rounded-2xl bg-violet-500 text-white font-bold disabled:opacity-40 active:scale-95 transition-all">确认</button>
+                            </div>
+                        )}
+
+                        {answered && (
                             <div className="mt-8">
                                 <div className="p-5 bg-slate-50 rounded-2xl mb-6">
                                     <div className={`font-bold text-[11px] mb-2 uppercase tracking-widest ${isCorrect ? 'text-emerald-500' : 'text-rose-500'}`}>{isCorrect ? 'Correct' : '记住它'}</div>
@@ -3020,11 +3272,116 @@ Which option best expresses its meaning?`,
                                     </p>
                                     <p className="text-slate-600 text-sm font-medium leading-relaxed">{cur.ex}</p>
                                     <p className="text-slate-400 text-xs font-medium mt-1">{cur.exCn}</p>
+                                    {isGlobal && cur._uk && <p className="text-[10px] font-bold text-amber-500 mt-2 uppercase tracking-wider">来自 {cur._uk} 单元</p>}
                                 </div>
                                 <button onClick={next} className="w-full bg-gradient-to-r from-violet-500 to-indigo-500 text-white py-4 rounded-2xl font-bold text-[17px] active:scale-95 transition-transform shadow-lg shadow-violet-500/20">{pos + 1 >= deck.length ? '完成本组' : '下一个'}</button>
                             </div>
                         )}
                     </div>
+                </div>
+            );
+        };
+
+        // ==========================================
+        // 6.5 写作宝典（应用文模板 + 读后续写素材）
+        // ==========================================
+        const WritingView = ({ playAudio, playingWord }) => {
+            const [sec, setSec] = useState('letters');
+            const [openType, setOpenType] = useState(null);
+            const secTabs = [
+                { id: 'letters', label: '应用文模板' },
+                { id: 'xuxie', label: '读后续写' },
+                { id: 'principles', label: '写作心法' },
+            ];
+            const Sentence = ({ e, c }) => (
+                <div className="p-3.5 bg-white rounded-xl border border-slate-100 cursor-pointer active:bg-slate-50 hover:border-indigo-200 transition-all" onClick={(ev) => playAudio(e, ev)}>
+                    <p className={`text-[14px] font-semibold leading-relaxed ${playingWord === e ? 'text-indigo-600' : 'text-slate-800'}`}>{e}</p>
+                    <p className="text-[12px] text-slate-400 mt-1">{c}</p>
+                </div>
+            );
+            return (
+                <div className="max-w-3xl mx-auto space-y-5">
+                    <div className="flex gap-2">
+                        {secTabs.map(t => (
+                            <button key={t.id} onClick={() => setSec(t.id)} className={`px-4 py-2 rounded-full text-[13px] font-bold transition-all ${sec === t.id ? 'bg-indigo-500 text-white shadow-md shadow-indigo-500/25' : 'bg-white text-slate-500 border border-slate-200 hover:bg-slate-50'}`}>{t.label}</button>
+                        ))}
+                    </div>
+
+                    {sec === 'principles' && (
+                        <div className="space-y-4">
+                            {WRITING_DB.principles.map((p, i) => (
+                                <div key={i} className="card-lg p-6">
+                                    <h4 className="font-bold text-indigo-700 mb-2 text-[15px] flex items-center gap-2"><Lightbulb className="w-4 h-4" />{p.t}</h4>
+                                    <p className="text-[14px] text-slate-600 leading-relaxed whitespace-pre-wrap">{p.r}</p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {sec === 'letters' && (
+                        <div className="space-y-3">
+                            <p className="text-[13px] text-slate-500 font-medium px-1">浙江卷应用文 15 分 · 8 大类模板，每类含结构框架 + 必背句型 + 范文。点句子可听发音。</p>
+                            {WRITING_DB.letters.map((L, i) => (
+                                <div key={i} className="card-lg overflow-hidden">
+                                    <button onClick={() => setOpenType(openType === i ? null : i)} className="w-full p-5 flex items-center justify-between text-left">
+                                        <div>
+                                            <span className="font-bold text-[16px] text-slate-900">{L.type}</span>
+                                            <p className="text-[12px] text-slate-400 mt-0.5">{L.scene}</p>
+                                        </div>
+                                        <ChevronDown className={`w-5 h-5 text-slate-300 transition-transform shrink-0 ${openType === i ? 'rotate-180' : ''}`} />
+                                    </button>
+                                    {openType === i && (
+                                        <div className="px-5 pb-6 space-y-4">
+                                            <div className="p-4 bg-indigo-50 rounded-2xl">
+                                                <div className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest mb-1.5">结构框架</div>
+                                                <p className="text-[13px] font-semibold text-indigo-900 leading-relaxed">{L.frame}</p>
+                                            </div>
+                                            <div>
+                                                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">必背句型</div>
+                                                <div className="space-y-2">
+                                                    {L.phrases.map((p, j) => <Sentence key={j} e={p.e} c={p.c} />)}
+                                                </div>
+                                            </div>
+                                            <div className="p-4 bg-emerald-50/70 rounded-2xl border border-emerald-100">
+                                                <div className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mb-2">范文</div>
+                                                <p className="text-[13px] font-medium text-slate-700 leading-relaxed whitespace-pre-wrap mb-3">{L.sample.en}</p>
+                                                <p className="text-[12px] text-emerald-700 leading-relaxed border-t border-emerald-100 pt-2">{L.sample.cn}</p>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {sec === 'xuxie' && (
+                        <div className="space-y-5">
+                            <p className="text-[13px] text-slate-500 font-medium px-1">读后续写 25 分 · 先看技巧，再背素材。素材按"情绪 → 动作 → 环境"分类，点句子可听发音。</p>
+                            <div className="space-y-3">
+                                {WRITING_DB.xuxie.tips.map((t, i) => (
+                                    <div key={i} className="card-lg p-5">
+                                        <h4 className="font-bold text-rose-700 mb-1.5 text-[14px] flex items-center gap-2"><span className="w-5 h-5 rounded-full bg-rose-500 text-white text-[11px] flex items-center justify-center shrink-0">{i + 1}</span>{t.t}</h4>
+                                        <p className="text-[13px] text-slate-600 leading-relaxed">{t.r}</p>
+                                    </div>
+                                ))}
+                            </div>
+                            {[['情绪描写', WRITING_DB.xuxie.emotions, 'text-amber-600'], ['动作升级', WRITING_DB.xuxie.actions, 'text-sky-600'], ['环境烘托', WRITING_DB.xuxie.scenery, 'text-emerald-600']].map(([title, groups, color], gi) => (
+                                <div key={gi} className="card-lg p-6">
+                                    <h3 className={`text-[15px] font-bold mb-4 ${color}`}>{title}</h3>
+                                    <div className="space-y-5">
+                                        {groups.map((g, i) => (
+                                            <div key={i}>
+                                                <div className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">{g.name}</div>
+                                                <div className="space-y-2">
+                                                    {g.items.map((s, j) => <Sentence key={j} e={s.e} c={s.c} />)}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             );
         };
@@ -3051,6 +3408,16 @@ Which option best expresses its meaning?`,
             const mistakeBank  = userData.mistakes  || [];
             const vocabData    = userData.vocab     || {};
 
+            // ── 打卡：任何学习动作都盖上"今天学过"的章 ──────────
+            const todayStr = () => {
+                const d = new Date();
+                return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+            };
+            const stampCheckin = (c) => {
+                const t = todayStr();
+                return c && c[t] ? c : { ...(c || {}), [t]: true };
+            };
+
             const setMasteryData = (updater) => setAllUsersData(prev => {
                 const u = prev[userPrefix] || {};
                 const next = typeof updater === 'function' ? updater(u.mastery || {}) : updater;
@@ -3059,23 +3426,84 @@ Which option best expresses its meaning?`,
             const setProgressData = (updater) => setAllUsersData(prev => {
                 const u = prev[userPrefix] || {};
                 const next = typeof updater === 'function' ? updater(u.progress || {}) : updater;
-                return { ...prev, [userPrefix]: { ...u, progress: next } };
+                return { ...prev, [userPrefix]: { ...u, progress: next, checkins: stampCheckin(u.checkins) } };
             });
             const setCardLoopData = (updater) => setAllUsersData(prev => {
                 const u = prev[userPrefix] || {};
                 const next = typeof updater === 'function' ? updater(u.cardLoop || {}) : updater;
-                return { ...prev, [userPrefix]: { ...u, cardLoop: next } };
+                return { ...prev, [userPrefix]: { ...u, cardLoop: next, checkins: stampCheckin(u.checkins) } };
             });
             const setMistakeBank = (updater) => setAllUsersData(prev => {
                 const u = prev[userPrefix] || {};
                 const next = typeof updater === 'function' ? updater(u.mistakes || []) : updater;
-                return { ...prev, [userPrefix]: { ...u, mistakes: next } };
+                return { ...prev, [userPrefix]: { ...u, mistakes: next, checkins: stampCheckin(u.checkins) } };
             });
             const setVocabData = (updater) => setAllUsersData(prev => {
                 const u = prev[userPrefix] || {};
                 const next = typeof updater === 'function' ? updater(u.vocab || {}) : updater;
-                return { ...prev, [userPrefix]: { ...u, vocab: next } };
+                return { ...prev, [userPrefix]: { ...u, vocab: next, checkins: stampCheckin(u.checkins) } };
             });
+
+            // ── 连续学习天数 ──────────
+            const checkins = userData.checkins || {};
+            const fmtDate = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+            const streakDays = (() => {
+                let n = 0;
+                const d = new Date();
+                if (!checkins[fmtDate(d)]) d.setDate(d.getDate() - 1); // 今天还没学，从昨天起算
+                while (checkins[fmtDate(d)]) { n++; d.setDate(d.getDate() - 1); }
+                return n;
+            })();
+            const totalCheckinDays = Object.keys(checkins).length;
+
+            // ── 跨单元"今日复习"：汇总所有学过且到期的单词 ──────────
+            const dueReviewItems = useMemo(() => {
+                const now = Date.now();
+                const items = [];
+                Object.keys(UNIT_DB).forEach(uk => {
+                    (UNIT_DB[uk].words || []).forEach(w => {
+                        if (!w.ex) return;
+                        const rec = vocabData[vocabKey(uk, w.w)];
+                        if (rec && (rec.seen || 0) > 0 && (rec.due || 0) <= now) items.push({ ...w, _uk: uk });
+                    });
+                });
+                return items;
+            }, [vocabData]);
+
+            // ── 学习数据导出 / 导入（防 localStorage 丢失）──────────
+            const importFileRef = useRef(null);
+            const exportUserData = () => {
+                const payload = { app: 'tangtang-english', version: 2, exportedAt: new Date().toISOString(), data: allUsersData };
+                const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `糖糖提分通-学习数据-${todayStr().replace(/-/g, '')}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            };
+            const importUserData = (e) => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = () => {
+                    try {
+                        const parsed = JSON.parse(reader.result);
+                        const data = parsed && parsed.app === 'tangtang-english' && parsed.data ? parsed.data : parsed;
+                        if (!data || typeof data !== 'object' || Array.isArray(data)) throw new Error('bad format');
+                        if (window.confirm('导入将覆盖当前设备上的全部学习数据（所有用户），确定吗？\n建议先点"导出"做个备份。')) {
+                            setAllUsersData(data);
+                            window.alert('✅ 导入成功！学习数据已恢复。');
+                        }
+                    } catch (err) {
+                        window.alert('❌ 导入失败：这个文件不是有效的学习数据备份。');
+                    }
+                };
+                reader.readAsText(file);
+                e.target.value = '';
+            };
 
             const normalizeProgressRecord = (record) => {
                 const base = {
@@ -3447,13 +3875,14 @@ Which option best expresses its meaning?`,
                 { id: 'notes', label: '核心笔记', icon: <BookOpen className="w-4 h-4" /> },
                 { id: 'vocab', label: '单词闯关', icon: <Brain className="w-4 h-4" /> },
                 { id: 'gaokao', label: '重点练习', icon: <Award className="w-4 h-4" /> },
+                { id: 'writing', label: '写作宝典', icon: <PenLine className="w-4 h-4" /> },
                 { id: 'cards', label: '互动卡片', icon: <Layers className="w-4 h-4" /> },
                 { id: 'mistakes', label: '错题库', icon: <AlertCircle className="w-4 h-4" /> },
                 { id: 'mastery', label: '进度', icon: <BarChart3 className="w-4 h-4" /> },
             ];
 
             const currentBookName = SYLLABUS.find((b) => b.id === activeBookId)?.name || '教材';
-            const currentTabLabel = navItems.find((item) => item.id === (tab === 'gaokaoquiz' ? 'gaokao' : tab))?.label || '学习中心';
+            const currentTabLabel = navItems.find((item) => item.id === (tab === 'gaokaoquiz' ? 'gaokao' : tab))?.label || (tab === 'review' ? '今日复习' : '学习中心');
 
             if (!isLoggedIn) return <LoginScreen onLogin={(user) => { setCurrentUser(user); setIsLoggedIn(true); }} />;
 
@@ -3461,6 +3890,18 @@ Which option best expresses its meaning?`,
                 if (tab === 'notes') {
                     return (
                         <div className="space-y-6">
+                            {dueReviewItems.length > 0 && (
+                                <button onClick={() => setTab('review')} className="w-full text-left p-5 rounded-[24px] bg-gradient-to-r from-amber-400 to-orange-400 shadow-lg shadow-amber-400/25 active:scale-[0.99] transition-transform flex items-center justify-between gap-4">
+                                    <div className="flex items-center gap-3 min-w-0">
+                                        <div className="bg-white/25 p-2.5 rounded-xl shrink-0"><RotateCcw className="w-5 h-5 text-white" /></div>
+                                        <div className="min-w-0">
+                                            <div className="font-bold text-white text-[15px]">今日复习：{dueReviewItems.length} 个单词到期啦</div>
+                                            <div className="text-amber-50 text-[12px] mt-0.5 truncate">按记忆曲线，现在复习效果最好 · 覆盖 {new Set(dueReviewItems.map(i => i._uk)).size} 个单元</div>
+                                        </div>
+                                    </div>
+                                    <ChevronRight className="w-5 h-5 text-white shrink-0" />
+                                </button>
+                            )}
                             <div className="card-lg p-6 md:p-8 xl:p-10">
                                 {dbData.msg && (
                                     <div className="mb-10 teacher-banner p-6 flex items-start gap-4">
@@ -3618,7 +4059,25 @@ Which option best expresses its meaning?`,
                 }
 
                 if (tab === 'vocab') {
-                    return <VocabDrill unitData={dbData} unitKey={unitKey} vocabData={vocabData} setVocabData={setVocabData} playAudio={playAudio} playingWord={playingWord} />;
+                    return (
+                        <div className="max-w-xl mx-auto space-y-4">
+                            {dueReviewItems.length > 0 && (
+                                <button onClick={() => setTab('review')} className="w-full text-left px-5 py-3.5 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-between gap-3 active:bg-amber-100 transition-colors">
+                                    <span className="text-[13px] font-bold text-amber-700">📌 跨单元今日复习：{dueReviewItems.length} 个词到期</span>
+                                    <ChevronRight className="w-4 h-4 text-amber-400 shrink-0" />
+                                </button>
+                            )}
+                            <VocabDrill unitData={dbData} unitKey={unitKey} vocabData={vocabData} setVocabData={setVocabData} playAudio={playAudio} playingWord={playingWord} />
+                        </div>
+                    );
+                }
+
+                if (tab === 'review') {
+                    return <VocabDrill unitData={dbData} unitKey={unitKey} vocabData={vocabData} setVocabData={setVocabData} playAudio={playAudio} playingWord={playingWord} globalItems={dueReviewItems} />;
+                }
+
+                if (tab === 'writing') {
+                    return <WritingView playAudio={playAudio} playingWord={playingWord} />;
                 }
 
                 if (tab === 'cards') {
@@ -3735,7 +4194,13 @@ Which option best expresses its meaning?`,
                     return (
                         <div className="space-y-6">
                             <div>
-                                <h2 className="text-2xl font-bold tracking-tight mb-6">学习进度</h2>
+                                <div className="flex items-center justify-between flex-wrap gap-3 mb-6">
+                                    <h2 className="text-2xl font-bold tracking-tight">学习进度</h2>
+                                    <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-orange-50 border border-orange-100">
+                                        <Flame className="w-4 h-4 text-orange-500" />
+                                        <span className="text-[13px] font-bold text-orange-600">{streakDays > 0 ? `连续学习 ${streakDays} 天` : '今天还没打卡，学一组单词就点亮火苗'}{totalCheckinDays > 0 ? ` · 累计 ${totalCheckinDays} 天` : ''}</span>
+                                    </div>
+                                </div>
                                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                                     <div className="card rounded-[28px] p-5">
                                         <div className="text-xs text-slate-400 font-semibold mb-2">已学习单元</div>
@@ -3885,6 +4350,17 @@ Which option best expresses its meaning?`,
                                 </div>
 
                                 <div className="mt-auto">
+                                    {streakDays > 0 && (
+                                        <div className="flex items-center gap-2 px-4 py-2.5 mb-2 rounded-2xl bg-orange-50 border border-orange-100">
+                                            <Flame className="w-4 h-4 text-orange-500 shrink-0" />
+                                            <span className="text-xs font-bold text-orange-600">连续学习 {streakDays} 天 · 累计 {totalCheckinDays} 天</span>
+                                        </div>
+                                    )}
+                                    <div className="flex gap-2 mb-2">
+                                        <button onClick={exportUserData} className="flex-1 flex items-center justify-center gap-1.5 text-xs text-slate-500 hover:text-slate-700 py-2 rounded-xl bg-slate-50 hover:bg-slate-100 transition-all font-semibold"><Download className="w-3.5 h-3.5" />导出数据</button>
+                                        <button onClick={() => importFileRef.current && importFileRef.current.click()} className="flex-1 flex items-center justify-center gap-1.5 text-xs text-slate-500 hover:text-slate-700 py-2 rounded-xl bg-slate-50 hover:bg-slate-100 transition-all font-semibold"><Upload className="w-3.5 h-3.5" />导入恢复</button>
+                                    </div>
+                                    <input ref={importFileRef} type="file" accept=".json,application/json" onChange={importUserData} className="hidden" />
                                     <button onClick={() => { setIsLoggedIn(false); setCurrentUser(''); }} className="w-full text-xs text-slate-400 hover:text-slate-600 py-2 mb-2 rounded-xl hover:bg-slate-100 transition-all font-medium">退出登录</button>
                                     <div className="rounded-[24px] card p-4">
                                         <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">当前学习</div>
@@ -3958,6 +4434,20 @@ Which option best expresses its meaning?`,
                                                     </button>
                                                 ))}
                                             </div>
+
+                                            <div className="mt-5 pt-4 border-t border-slate-100">
+                                                {streakDays > 0 && (
+                                                    <div className="flex items-center gap-2 px-4 py-2.5 mb-2 rounded-2xl bg-orange-50 border border-orange-100">
+                                                        <Flame className="w-4 h-4 text-orange-500 shrink-0" />
+                                                        <span className="text-xs font-bold text-orange-600">连续学习 {streakDays} 天 · 累计 {totalCheckinDays} 天</span>
+                                                    </div>
+                                                )}
+                                                <div className="flex gap-2 mb-2">
+                                                    <button onClick={exportUserData} className="flex-1 flex items-center justify-center gap-1.5 text-xs text-slate-500 py-2 rounded-xl bg-slate-50 active:bg-slate-100 font-semibold"><Download className="w-3.5 h-3.5" />导出数据</button>
+                                                    <button onClick={() => importFileRef.current && importFileRef.current.click()} className="flex-1 flex items-center justify-center gap-1.5 text-xs text-slate-500 py-2 rounded-xl bg-slate-50 active:bg-slate-100 font-semibold"><Upload className="w-3.5 h-3.5" />导入恢复</button>
+                                                </div>
+                                                <button onClick={() => { setIsLoggedIn(false); setCurrentUser(''); setSidebarOpen(false); }} className="w-full text-xs text-slate-400 py-2 rounded-xl active:bg-slate-100 font-medium">退出登录</button>
+                                            </div>
                                         </div>
                                     </div>
                                 )}
@@ -3993,6 +4483,14 @@ Which option best expresses its meaning?`,
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
+    </script>
+    <script>
+        // 注册 Service Worker：离线可用 + 缓存 CDN 依赖（详见 sw.js）
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('/sw.js').catch(function () { /* 注册失败不影响使用 */ });
+            });
+        }
     </script>
 </body>
 </html>

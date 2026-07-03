@@ -19,7 +19,7 @@
 
 > ⚠️ **登录密码绝对不能改，其他都可以改。** 这是开发者反复强调的硬约束。
 
-- 登录逻辑在 `index.html` 的 `LoginScreen` 组件（约 **line 2771**，密码判断在 **line 2777–2780**）。
+- 登录逻辑在 `index.html` 的 `LoginScreen` 组件（约 **line 2957**，密码判断在 **line 2963–2966**）。
 - 两个账号（密码即身份）：
   - `0825` → 用户 `tangtang`（糖糖）
   - `0315` → 用户 `mama`（妈妈）
@@ -51,7 +51,8 @@
 | `manifest.json` | PWA 清单（名称、图标、`display: standalone`、主题色 `#6366f1`）。 |
 | `apple-touch-icon.png` (180²) | iOS 主屏幕图标。 |
 | `icon-192.png` / `icon-512.png` | PWA / Android 图标（`purpose: any maskable`）。 |
-| `_headers` | Cloudflare Pages 响应头：CSP、X-Frame-Options 等安全头。**改 CDN 依赖时要同步改 CSP 白名单**（见 `script-src`）。 |
+| `sw.js` | **Service Worker**：预缓存页面+图标+全部 CDN 依赖（React/Babel/Tailwind），离线可用；CDN 缓存优先、本站网络优先。**升级 CDN 版本时要同步更新这里的预缓存清单**。 |
+| `_headers` | Cloudflare Pages 响应头：CSP、X-Frame-Options 等安全头。**改 CDN 依赖时要同步改 CSP 白名单**（`script-src` 和 `connect-src` 都要）。 |
 | `wrangler.jsonc` | Cloudflare 部署配置（`name: tangtang-english`，静态资源目录 `.`）。 |
 | `README.md` | 本交接文档。 |
 | `糖糖解题诀窍手册.html` / `.txt` | 从应用数据导出的可打印诀窍手册（见 §9）。 |
@@ -65,13 +66,14 @@
 
 | 常量 | 行号(约) | 说明 |
 |---|---|---|
-| `SYLLABUS` | 270 | 7 册教材列表：`B1/B2/B3`（必修一二三）+ `S1/S2/S3/S4`（选必一~四）。 |
-| `UNIT_DB` | 277 | **每个单元的学习内容**。每单元含 `title`、`msg`（老师寄语）、`words`（Level1 核心词）、`l2`（Level2 熟词生义/派生）、`grammar`（语法点）、`sentences`（例句）。 |
-| `UNIVERSAL_TIPS` | 326 | **通用**高考解题诀窍：`cloze`(完形3条) / `grammarFill`(语法填空3条) / `reading`(阅读4条)。所有单元共享，渲染在每个单元笔记底部的折叠面板里。 |
-| `EXAM_TIPS_DB` | 345 | **每个单元专属**的解题诀窍。结构：`{ 'B1-1': { examTips:[{t,r,eg}×3], readingTips:[{t,r}×2] }, ... }`。35 单元，每单元 **3 条题型诀窍 + 2 条阅读诀窍**，与该单元的语法考点和课文体裁绑定。 |
-| `QUESTION_BANK` | 1370 | **题库**：35 单元 × 20 题 = 700 题选择题。每题 `{q, opts[4], ans(正确项下标), source, rat(解析)}`。答案分布均匀(A:B:C:D≈175:175:175:175)。 |
-| `SRS_INTERVALS` | 2906 | 间隔重复(Leitner 5 盒)的天数间隔 `[0,1,3,7,15]`，index = box-1。 |
-| `SRS_DAY` | 2907 | `24*60*60*1000`。 |
+| `SYLLABUS` | 274 | 7 册教材列表：`B1/B2/B3`（必修一二三）+ `S1/S2/S3/S4`（选必一~四）。 |
+| `UNIT_DB` | 281 | **每个单元的学习内容**。每单元含 `title`、`msg`（老师寄语）、`words`（Level1 核心词）、`l2`（Level2 熟词生义/派生）、`grammar`（语法点）、`sentences`（例句）。 |
+| `UNIVERSAL_TIPS` | 330 | **通用**高考解题诀窍：`cloze`(完形3条) / `grammarFill`(语法填空3条) / `reading`(阅读4条)。所有单元共享，渲染在每个单元笔记底部的折叠面板里。 |
+| `WRITING_DB` | 352 | **写作宝典**：`principles`(写作心法5条) + `letters`(8 大类应用文，每类 结构框架+5必背句型+范文) + `xuxie`(读后续写：4技巧 + 情绪5组/动作4组/环境3组素材句)。 |
+| `EXAM_TIPS_DB` | 531 | **每个单元专属**的解题诀窍。结构：`{ 'B1-1': { examTips:[{t,r,eg}×3], readingTips:[{t,r}×2] }, ... }`。35 单元，每单元 **3 条题型诀窍 + 2 条阅读诀窍**，与该单元的语法考点和课文体裁绑定。 |
+| `QUESTION_BANK` | 1556 | **题库**：35 单元 × 20 题 = 700 题选择题。每题 `{q, opts[4], ans(正确项下标), source, rat(解析)}`。答案分布均匀(A:B:C:D≈175:175:175:175)。 |
+| `SRS_INTERVALS` | 3092 | 间隔重复(Leitner 5 盒)的天数间隔 `[0,1,3,7,15]`，index = box-1。 |
+| `SRS_DAY` | 3093 | `24*60*60*1000`。 |
 
 ### `UNIT_DB` 里单个 word 的字段
 ```js
@@ -87,13 +89,14 @@
 
 | 组件 | 行号(约) | 职责 |
 |---|---|---|
-| `LoginScreen` | 2771 | 密码登录（见红线 §2）。 |
-| `FlashcardCarousel` | 2818 | 互动卡片（3D 翻卡）。"不知道"的词会进 SRS 队列；结束有"去单词闯关测一测"按钮（`onGoPractice`）。 |
-| `VocabDrill` | 2910 | **单词闯关**：基于间隔重复(SRS)的例句填空练习。从 `UNIT_DB` 取有 `ex` 的词，挖空，4 选 1。答对升盒、答错回 1 盒重排。 |
-| `App` | 3035 | 根组件。登录、导航、所有 tab 的渲染与状态。 |
+| `LoginScreen` | 2957 | 密码登录（见红线 §2）。 |
+| `FlashcardCarousel` | 3004 | 互动卡片（3D 翻卡）。"不知道"的词会进 SRS 队列；结束有"去单词闯关测一测"按钮（`onGoPractice`）。 |
+| `VocabDrill` | 3096 | **单词闯关**：基于间隔重复(SRS)的练习，三种作答模式：**选择**(4 选 1) / **拼写**(输入，给首字母提示) / **听写**(TTS 放音+输入)。传入 `globalItems` 时变身**跨单元"今日复习"**模式（词条带 `_uk` 标记所属单元）。答对升盒、答错回 1 盒重排。 |
+| `WritingView` | 3286 | **写作宝典**：渲染 `WRITING_DB`（应用文模板/读后续写/写作心法 三个子页），句子可点读。 |
+| `App` | 3390 | 根组件。登录、导航、所有 tab 的渲染与状态。含：打卡(`stampCheckin`嵌在各 setter 里)、连续天数(`streakDays`)、跨单元到期词(`dueReviewItems`)、数据导出导入(`exportUserData`/`importUserData`)。 |
 
-### 导航 tab（`navItems`，约 line 3446）
-`notes`(核心笔记) · `vocab`(单词闯关) · `gaokao`(重点练习→真题模式 `gaokaoquiz`) · `cards`(互动卡片) · `mistakes`(错题库) · `mastery`(进度)。
+### 导航 tab（`navItems`，约 line 3872）
+`notes`(核心笔记) · `vocab`(单词闯关) · `gaokao`(重点练习→真题模式 `gaokaoquiz`) · `writing`(写作宝典) · `cards`(互动卡片) · `mistakes`(错题库) · `mastery`(进度)。另有不在导航里的 `review`(今日复习，由 notes/vocab 页的横幅进入)。
 
 ---
 
@@ -103,8 +106,9 @@
 - 数据按用户分桶：`allUsersData[userPrefix]`，`userPrefix` = `'tangtang'` / `'mama'` / `'guest'`。
 - 每个用户桶的字段：
   ```
-  { progress:{}, cardLoop:{}, mistakes:[], vocab:{}, mastery:{} }
+  { progress:{}, cardLoop:{}, mistakes:[], vocab:{}, mastery:{}, checkins:{} }
   ```
+  - `checkins` = 打卡记录 `{'2026-07-03': true, ...}`，由各 setter 里的 `stampCheckin` 自动盖章，用于计算连续学习天数。
   - `vocab` = SRS 记忆库，key 由 `vocabKey(unitKey, w)` = `` `${unitKey}::${w}` `` 生成，值 `{box, due, seen}`。
   - 互动卡片"不知道"的结果会**同步写进 `vocab`**（卡片与单词闯关共享记忆）。
 
@@ -127,9 +131,9 @@ node -e "
 const babel = require('/tmp/babelcheck/node_modules/@babel/standalone/babel.js');
 const fs = require('fs');
 const c = fs.readFileSync('index.html','utf8');
-const s = c.indexOf('<script type=\"text/babel\">');
-const e = c.lastIndexOf('</script>');
-const jsx = c.substring(s + '<script type=\"text/babel\">'.length, e);
+const s = c.indexOf('<script type=\"text/babel\">') + '<script type=\"text/babel\">'.length;
+const e = c.indexOf('</script>', s); // babel 块后面还有 SW 注册的普通 script，不能用 lastIndexOf
+const jsx = c.substring(s, e);
 try { babel.transform(jsx,{presets:['react'],filename:'app.jsx'}); console.log('✅ Babel OK'); }
 catch(err){ console.error('❌', err.message, err.loc||''); }
 "
@@ -181,9 +185,14 @@ catch(err){ console.error('❌', err.message, err.loc||''); }
 - ✅ **重点练习/真题模式**（`gaokaoquiz`）。
 - ✅ **强化练习**：用真实题库题(洗牌)而非伪造干扰项。
 - ✅ **每单元专属诀窍** + **通用诀窍折叠面板**（见 §5 的 `EXAM_TIPS_DB`/`UNIVERSAL_TIPS`）。
-- ✅ **进度/掌握度** 可视化（`mastery` tab）。
+- ✅ **进度/掌握度** 可视化（`mastery` tab）+ **连续学习打卡**（🔥 streak，任何学习动作自动记录）。
 - ✅ **PWA**：manifest + apple-touch-icon + 精致主屏图标，可"添加到主屏幕"像 App 一样用。
-- ✅ TTS 朗读（Web Speech API，0.9x 语速适配跟读）。
+- ✅ **离线可用**：`sw.js` Service Worker 缓存页面和全部 CDN 依赖，断网/CDN 不稳时照常打开。
+- ✅ **写作宝典**（`writing` tab）：8 大类应用文模板 + 读后续写技巧与素材库（对应浙江卷 40 分写作）。
+- ✅ **跨单元今日复习**（`review` tab）：汇总全书到期单词一键复习，SRS 真正闭环。
+- ✅ **数据导出/导入**：侧边栏按钮，下载/恢复 JSON 备份，防 localStorage 丢失。
+- ✅ **拼写/听写模式**：单词闯关三模式切换，拼写贴近真题语法填空（无选项），听写练听力基本功。
+- ✅ TTS 朗读（Web Speech API，0.85x 语速适配跟读）。
 
 ---
 

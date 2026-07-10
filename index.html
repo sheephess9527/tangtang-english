@@ -2,11 +2,12 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>糖糖提分通</title>
     <link rel="manifest" href="/manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- default 而非 black-translucent：浅色背景上半透明状态栏的白色文字会看不清，且内容会被压到刘海下 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="糖糖提分通">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <meta name="theme-color" content="#6366f1">
@@ -5982,6 +5983,19 @@ Which option best expresses its meaning?`,
             const [tab, setTab] = useState('today');
             const [playingWord, setPlayingWord] = useState(null);
             const [sidebarOpen, setSidebarOpen] = useState(false);
+
+            // 切换页面/单元时回到页顶（长页面切走后不再落在半中腰）
+            useEffect(() => { window.scrollTo(0, 0); }, [tab, activeBookId, activeUnit]);
+
+            // 单元前后切换（跨册连续：B1-5 的下一个是 B2-1）
+            const flatUnitIndex = SYLLABUS.findIndex(b => b.id === activeBookId) * 5 + (activeUnit - 1);
+            const gotoFlatUnit = (i) => {
+                if (i < 0 || i >= SYLLABUS.length * 5) return;
+                setActiveBookId(SYLLABUS[Math.floor(i / 5)].id);
+                setActiveUnit((i % 5) + 1);
+                // 测验进行中切单元会导致成绩记错单元，跳回笔记页；其余页面原地切换
+                if (tab === 'quiz' || tab === 'gaokaoquiz') setTab('notes');
+            };
             // ── 每位用户数据完全隔离：同一个 key 下按用户分区 ──────────
             const userPrefix = currentUser || 'guest';
             const [allUsersData, setAllUsersData] = useLocalStorage('tt_all_users_v2', {});
@@ -6516,6 +6530,13 @@ Which option best expresses its meaning?`,
                 { id: 'mistakes', label: '错题库', icon: <AlertCircle className="w-4 h-4" /> },
                 { id: 'mastery', label: '进度', icon: <BarChart3 className="w-4 h-4" /> },
             ];
+            // 侧栏/抽屉里按学习行为分组展示，结构一眼可读
+            const navGroups = [
+                { title: null, ids: ['today'] },
+                { title: '学一学', ids: ['notes', 'cards', 'writing'] },
+                { title: '练一练', ids: ['vocab', 'grammarfill', 'reading', 'gaokao'] },
+                { title: '查漏补缺', ids: ['mistakes', 'mastery'] },
+            ];
 
             const currentBookName = SYLLABUS.find((b) => b.id === activeBookId)?.name || '教材';
             const currentTabLabel = navItems.find((item) => item.id === (tab === 'gaokaoquiz' ? 'gaokao' : tab))?.label || (tab === 'review' ? '今日复习' : '学习中心');
@@ -6567,7 +6588,18 @@ Which option best expresses its meaning?`,
                                     </div>
                                 ))}
                             </div>
-                            <p className="text-center text-[12px] text-slate-400 font-medium">当前学习单元：{currentBookName} · Unit {activeUnit}（可在侧边栏切换）</p>
+                            <div className="card-lg px-4 py-3 flex items-center justify-between gap-2">
+                                <button onClick={() => gotoFlatUnit(flatUnitIndex - 1)} disabled={flatUnitIndex <= 0} className="flex items-center gap-1 px-3 py-2 rounded-xl text-[13px] font-bold text-slate-500 bg-slate-100/70 active:bg-slate-200 disabled:opacity-30 transition-colors">
+                                    <ChevronRight className="w-3.5 h-3.5 rotate-180" />上一单元
+                                </button>
+                                <div className="text-center min-w-0">
+                                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">当前学习单元</div>
+                                    <div className="text-[13px] font-bold text-slate-800 truncate">{currentBookName} · Unit {activeUnit}</div>
+                                </div>
+                                <button onClick={() => gotoFlatUnit(flatUnitIndex + 1)} disabled={flatUnitIndex >= SYLLABUS.length * 5 - 1} className="flex items-center gap-1 px-3 py-2 rounded-xl text-[13px] font-bold text-slate-500 bg-slate-100/70 active:bg-slate-200 disabled:opacity-30 transition-colors">
+                                    下一单元<ChevronRight className="w-3.5 h-3.5" />
+                                </button>
+                            </div>
                         </div>
                     );
                 }
@@ -6608,7 +6640,13 @@ Which option best expresses its meaning?`,
                                     </div>
                                 )}
 
-                                <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">Level 1</h3>
+                                <div className="flex gap-2 mb-6 flex-wrap">
+                                    {[['sec-words', '📖 词汇'], ['sec-grammar', '🧩 语法'], ['sec-tips', '🎯 诀窍'], ['sec-sentences', '✍️ 句型']].map(([id, label]) => (
+                                        <button key={id} onClick={() => { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }} className="px-3.5 py-1.5 rounded-full text-[12px] font-bold bg-slate-100 text-slate-600 active:bg-slate-200 hover:bg-slate-200/70 transition-colors">{label}</button>
+                                    ))}
+                                </div>
+
+                                <h3 id="sec-words" className="scroll-mt-24 text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">Level 1</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-10">
                                     {dbData.words.map((w, i) => (
                                         <div key={i} className="bg-slate-50 p-4 rounded-2xl flex items-start justify-between group active:bg-slate-100 cursor-pointer hover:bg-white hover:shadow-md border border-transparent hover:border-blue-100 transition-all" onClick={(e) => playAudio(w.w, e)}>
@@ -6648,7 +6686,7 @@ Which option best expresses its meaning?`,
                                     </>
                                 )}
 
-                                <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">Grammar</h3>
+                                <h3 id="sec-grammar" className="scroll-mt-24 text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">Grammar</h3>
                                 <div className="space-y-4 mb-10">
                                     {dbData.grammar.map((g, i) => (
                                         <div key={i} className="bg-slate-900 text-white p-6 rounded-[24px] shadow-md">
@@ -6666,7 +6704,7 @@ Which option best expresses its meaning?`,
                                     return (<>
                                         {tips.length > 0 && (
                                             <>
-                                                <h3 className="text-[11px] font-bold text-amber-500 uppercase tracking-widest mb-3 flex items-center gap-1.5"><Target className="w-3.5 h-3.5" />题型诀窍 · 语法填空/完形</h3>
+                                                <h3 id="sec-tips" className="scroll-mt-24 text-[11px] font-bold text-amber-500 uppercase tracking-widest mb-3 flex items-center gap-1.5"><Target className="w-3.5 h-3.5" />题型诀窍 · 语法填空/完形</h3>
                                                 <div className="space-y-4 mb-6">
                                                     {tips.map((tip, i) => (
                                                         <div key={i} className="bg-amber-50 border border-amber-100 p-5 rounded-[24px]">
@@ -6737,7 +6775,7 @@ Which option best expresses its meaning?`,
                                     </>);
                                 })()}
 
-                                <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">Sentences</h3>
+                                <h3 id="sec-sentences" className="scroll-mt-24 text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">Sentences</h3>
                                 <div className="space-y-3">
                                     {dbData.sentences.map((s, i) => (
                                         <div key={i} className="p-5 bg-emerald-50 rounded-2xl active:bg-emerald-100 cursor-pointer" onClick={(e) => playAudio(s.e, e)}>
@@ -7125,29 +7163,36 @@ Which option best expresses its meaning?`,
 
                                 <div className="space-y-3 mb-5">
                                     <div className="relative">
-                                        <select value={activeBookId} onChange={(e) => { setActiveBookId(e.target.value); setActiveUnit(1); setTab('notes'); }} className="w-full bg-white/80 border border-slate-200 font-semibold rounded-2xl pl-4 pr-10 py-3 outline-none shadow-sm">
+                                        <select value={activeBookId} onChange={(e) => { setActiveBookId(e.target.value); setActiveUnit(1); if (tab === 'quiz' || tab === 'gaokaoquiz') setTab('notes'); }} className="w-full bg-white/80 border border-slate-200 font-semibold rounded-2xl pl-4 pr-10 py-3 outline-none shadow-sm">
                                             {SYLLABUS.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
                                         </select>
                                         <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                                     </div>
                                     <div className="relative">
-                                        <select value={activeUnit} onChange={(e) => { setActiveUnit(Number(e.target.value)); setTab('notes'); }} className="w-full bg-white/80 border border-slate-200 font-semibold rounded-2xl pl-4 pr-10 py-3 outline-none shadow-sm">
+                                        <select value={activeUnit} onChange={(e) => { setActiveUnit(Number(e.target.value)); if (tab === 'quiz' || tab === 'gaokaoquiz') setTab('notes'); }} className="w-full bg-white/80 border border-slate-200 font-semibold rounded-2xl pl-4 pr-10 py-3 outline-none shadow-sm">
                                             {[1,2,3,4,5].map((u) => <option key={u} value={u}>Unit {u}</option>)}
                                         </select>
                                         <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                                     </div>
                                 </div>
 
-                                <div className="space-y-2 flex-1 min-h-0 overflow-y-auto">
-                                    {navItems.map((item) => (
-                                        <button
-                                            key={item.id}
-                                            onClick={() => { if (item.id === 'gaokao') startQuiz('gaokao'); else setTab(item.id); }}
-                                            className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all font-semibold ${((tab === item.id) || (tab === 'gaokaoquiz' && item.id === 'gaokao')) ? 'nav-item active' : 'nav-item'}`}
-                                        >
-                                            {item.icon}
-                                            <span>{item.label}</span>
-                                        </button>
+                                <div className="flex-1 min-h-0 overflow-y-auto">
+                                    {navGroups.map((g, gi) => (
+                                        <div key={gi}>
+                                            {g.title && <div className="px-4 pt-3 pb-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-widest">{g.title}</div>}
+                                            <div className="space-y-1.5">
+                                                {g.ids.map(id => { const item = navItems.find(n => n.id === id); return (
+                                                    <button
+                                                        key={item.id}
+                                                        onClick={() => { if (item.id === 'gaokao') startQuiz('gaokao'); else setTab(item.id); }}
+                                                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all font-semibold ${((tab === item.id) || (tab === 'gaokaoquiz' && item.id === 'gaokao')) ? 'nav-item active' : 'nav-item'}`}
+                                                    >
+                                                        {item.icon}
+                                                        <span>{item.label}</span>
+                                                    </button>
+                                                ); })}
+                                            </div>
+                                        </div>
                                     ))}
                                 </div>
 
@@ -7211,29 +7256,36 @@ Which option best expresses its meaning?`,
 
                                             <div className="space-y-3 mb-5">
                                                 <div className="relative">
-                                                    <select value={activeBookId} onChange={(e) => { setActiveBookId(e.target.value); setActiveUnit(1); setTab('notes'); setSidebarOpen(false); }} className="w-full bg-white/80 border border-slate-200 font-semibold rounded-2xl pl-4 pr-10 py-3 outline-none shadow-sm">
+                                                    <select value={activeBookId} onChange={(e) => { setActiveBookId(e.target.value); setActiveUnit(1); if (tab === 'quiz' || tab === 'gaokaoquiz') setTab('notes'); setSidebarOpen(false); }} className="w-full bg-white/80 border border-slate-200 font-semibold rounded-2xl pl-4 pr-10 py-3 outline-none shadow-sm">
                                                         {SYLLABUS.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
                                                     </select>
                                                     <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                                                 </div>
                                                 <div className="relative">
-                                                    <select value={activeUnit} onChange={(e) => { setActiveUnit(Number(e.target.value)); setTab('notes'); setSidebarOpen(false); }} className="w-full bg-white/80 border border-slate-200 font-semibold rounded-2xl pl-4 pr-10 py-3 outline-none shadow-sm">
+                                                    <select value={activeUnit} onChange={(e) => { setActiveUnit(Number(e.target.value)); if (tab === 'quiz' || tab === 'gaokaoquiz') setTab('notes'); setSidebarOpen(false); }} className="w-full bg-white/80 border border-slate-200 font-semibold rounded-2xl pl-4 pr-10 py-3 outline-none shadow-sm">
                                                         {[1,2,3,4,5].map((u) => <option key={u} value={u}>Unit {u}</option>)}
                                                     </select>
                                                     <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                                                 </div>
                                             </div>
 
-                                            <div className="space-y-2">
-                                                {navItems.map((item) => (
-                                                    <button
-                                                        key={item.id}
-                                                        onClick={() => { if (item.id === 'gaokao') startQuiz('gaokao'); else setTab(item.id); setSidebarOpen(false); }}
-                                                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all font-semibold ${((tab === item.id) || (tab === 'gaokaoquiz' && item.id === 'gaokao')) ? 'nav-item active' : 'nav-item'}`}
-                                                    >
-                                                        {item.icon}
-                                                        <span>{item.label}</span>
-                                                    </button>
+                                            <div>
+                                                {navGroups.map((g, gi) => (
+                                                    <div key={gi}>
+                                                        {g.title && <div className="px-4 pt-3 pb-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-widest">{g.title}</div>}
+                                                        <div className="space-y-1.5">
+                                                            {g.ids.map(id => { const item = navItems.find(n => n.id === id); return (
+                                                                <button
+                                                                    key={item.id}
+                                                                    onClick={() => { if (item.id === 'gaokao') startQuiz('gaokao'); else setTab(item.id); setSidebarOpen(false); }}
+                                                                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all font-semibold ${((tab === item.id) || (tab === 'gaokaoquiz' && item.id === 'gaokao')) ? 'nav-item active' : 'nav-item'}`}
+                                                                >
+                                                                    {item.icon}
+                                                                    <span>{item.label}</span>
+                                                                </button>
+                                                            ); })}
+                                                        </div>
+                                                    </div>
                                                 ))}
                                             </div>
 
@@ -7273,12 +7325,41 @@ Which option best expresses its meaning?`,
                                             ))}
                                         </div>
                                     </div>
+                                    {['notes', 'vocab', 'grammarfill', 'reading', 'cards'].includes(tab) && (
+                                        <div className="flex items-center justify-between gap-2 mt-3 pt-3 border-t border-slate-100/80">
+                                            <button onClick={() => gotoFlatUnit(flatUnitIndex - 1)} disabled={flatUnitIndex <= 0} className="flex items-center gap-1 px-3 py-2 rounded-xl text-[13px] font-bold text-slate-500 bg-slate-100/70 active:bg-slate-200 disabled:opacity-30 transition-colors">
+                                                <ChevronRight className="w-3.5 h-3.5 rotate-180" />上一单元
+                                            </button>
+                                            <span className="text-[13px] font-bold text-slate-700 truncate">{currentBookName} · Unit {activeUnit}</span>
+                                            <button onClick={() => gotoFlatUnit(flatUnitIndex + 1)} disabled={flatUnitIndex >= SYLLABUS.length * 5 - 1} className="flex items-center gap-1 px-3 py-2 rounded-xl text-[13px] font-bold text-slate-500 bg-slate-100/70 active:bg-slate-200 disabled:opacity-30 transition-colors">
+                                                下一单元<ChevronRight className="w-3.5 h-3.5" />
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
 
-                                <main className="pb-10">{renderMainContent()}</main>
+                                <main className="pb-28 lg:pb-10">{renderMainContent()}</main>
                             </section>
                         </div>
                     </div>
+
+                    {/* 手机底部导航：高频五入口，拇指可及；其余功能走右上角菜单 */}
+                    <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white/90 backdrop-blur-xl border-t border-slate-200/70 shadow-[0_-4px_20px_rgba(15,23,42,0.06)]" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+                        <div className="flex items-stretch justify-around max-w-xl mx-auto">
+                            {[
+                                { id: 'today', label: '今日', icon: <CheckCircle2 className="w-5 h-5" /> },
+                                { id: 'vocab', label: '单词', icon: <Brain className="w-5 h-5" /> },
+                                { id: 'grammarfill', label: '语法', icon: <Zap className="w-5 h-5" /> },
+                                { id: 'reading', label: '阅读', icon: <Book className="w-5 h-5" /> },
+                                { id: 'mistakes', label: '错题', icon: <AlertCircle className="w-5 h-5" /> },
+                            ].map(item => (
+                                <button key={item.id} onClick={() => setTab(item.id)} className={`flex-1 flex flex-col items-center gap-0.5 pt-2.5 pb-2 transition-colors ${tab === item.id ? 'text-indigo-600' : 'text-slate-400 active:text-slate-600'}`}>
+                                    {item.icon}
+                                    <span className={`text-[10px] tracking-wide ${tab === item.id ? 'font-bold' : 'font-semibold'}`}>{item.label}</span>
+                                </button>
+                            ))}
+                        </div>
+                    </nav>
                 </div>
             );
         };

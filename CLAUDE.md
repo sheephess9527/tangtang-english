@@ -42,6 +42,12 @@ catch(err){console.error('❌',err.message,err.loc||'');}
 - 单一 localStorage key `tt_all_users_v2`；按用户分桶 `{progress,cardLoop,mistakes,vocab,mastery}`。
 - **`useLocalStorage`(约 line 245) 必须用函数式更新 `setStoredValue(prev=>...)`**。历史 bug：闭包捕获旧值导致同一事件里后一个 setter 覆盖前一个。所有 `setXxxData` 都基于 `setAllUsersData(prev=>...)`，保持此模式。
 
+## UI 约定
+- 手机端主导航是**底部 5 tab**（今日/单词/语法/阅读/错题，App 根部 fixed nav）；其余功能走右上角抽屉（按 学一学/练一练/查漏补缺 分组，navGroups）。桌面端为左侧栏+顶部横向 tab。
+- 色彩语义（新功能配色遵守）：紫=单词 · 靛=语法填空 · 天蓝=阅读 · 琥珀=今日复习/到期 · 玫红=错题 · 橙=打卡火苗 · 粉=妈妈督学 · 绿=成功/攻克。
+- iOS 适配：viewport-fit=cover + 底部导航 env(safe-area-inset-bottom)；状态栏用 default（勿改回 black-translucent，浅色背景下白字看不清）。
+- 切 tab/切单元自动回页顶（App 里的 useEffect）；切单元保持当前页面（仅测验中跳回笔记）。
+
 ## 内容创作准则
 - 面向**中文母语**的高一学生：语气亲切、举例具体、给"怎么下手"的步骤，而非堆砌语法术语。糖糖是真实用户。
 - 大对象（`UNIT_DB`/`QUESTION_BANK`）是压缩成一行的内联数据：手改易错，**优先写一次性 Node 脚本做正则替换 + 跑上面的校验**。

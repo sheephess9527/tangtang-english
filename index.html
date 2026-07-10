@@ -528,6 +528,433 @@
             },
         };
 
+        // ==========================================
+        // 3.45 语法填空整篇仿真（每单元 1 篇 × 10 空，高考同款格式：给词变形 + 纯空格）
+        //      blanks[i]: hint=括号提示词(空串=纯空格) / ans=可接受答案数组(小写比对) / tag=考点
+        // ==========================================
+        const GRAMMAR_FILL_DB = {
+            'B1-1': { title: 'My New Life at Senior High', text: "Life in senior high school is full of challenges. On my first day, I was completely {1} (confuse) by the timetable, and the first maths problem was even more {2} (confuse). Luckily, my teacher gave me some {3} (use) advice. She told me to make a study schedule and follow it {4} (strict). Now I am getting used to {5} (manage) my time well. I also take part in extra-curricular {6} (activity), which help me relax. As a monitor, I should be responsible {7} the class. I am looking forward to {8} (improve) my English. With effort, every problem has a {9} (solve), and my teenage life will be busy but {10} (wonder).", blanks: [
+                { hint: 'confuse', ans: ['confused'], tag: '人用-ed（感到困惑）' },
+                { hint: 'confuse', ans: ['confusing'], tag: '物用-ing（令人困惑）' },
+                { hint: 'use', ans: ['useful'], tag: '名词前用形容词' },
+                { hint: 'strict', ans: ['strictly'], tag: '修饰动词用副词' },
+                { hint: 'manage', ans: ['managing'], tag: 'be used to 的 to 是介词+doing' },
+                { hint: 'activity', ans: ['activities'], tag: '可数名词复数' },
+                { hint: '', ans: ['for'], tag: 'be responsible for 固定搭配' },
+                { hint: 'improve', ans: ['improving'], tag: 'look forward to + doing' },
+                { hint: 'solve', ans: ['solution'], tag: '冠词 a 后填名词' },
+                { hint: 'wonder', ans: ['wonderful'], tag: '表语用形容词' },
+            ] },
+            'B1-2': { title: 'A Trip to Singapore', text: "Dear Chris, I'm so excited! We {1} (fly) to Singapore this Saturday — the tickets have already been booked. Last month we applied {2} our visas, and yesterday they finally arrived. Look! Mum {3} (check) the weather report for the trip now. The tourist {4} (attract) there are said to be {5} (amaze), and we plan to go {6} (sightsee) in the old streets every morning. The hotel offers comfortable {7} (accommodate) at a good price. My brother stayed at home last summer, but this year he {8} (come) with us — he is packing his suitcase at the moment. It is best to pack light so that we can move around {9} (easy). I can hardly wait {10} (share) my photos with you!", blanks: [
+                { hint: 'fly', ans: ['are flying', 'will fly', 'are going to fly'], tag: '位移动词进行时表将来（已订票，最佳答案）' },
+                { hint: '', ans: ['for'], tag: 'apply for + 某物（申请签证）' },
+                { hint: 'check', ans: ['is checking'], tag: 'now → 现在进行时' },
+                { hint: 'attract', ans: ['attractions'], tag: '形容词 tourist 后填名词复数' },
+                { hint: 'amaze', ans: ['amazing'], tag: '物用-ing（令人惊叹）' },
+                { hint: 'sightsee', ans: ['sightseeing'], tag: 'go doing 固定搭配' },
+                { hint: 'accommodate', ans: ['accommodation', 'accommodations'], tag: '形容词后填名词' },
+                { hint: 'come', ans: ['is coming'], tag: '进行时表将来（对比 last summer）' },
+                { hint: 'easy', ans: ['easily'], tag: '修饰动词用副词' },
+                { hint: 'share', ans: ['to share'], tag: 'wait to do 固定搭配' },
+            ] },
+            'B1-3': { title: 'The Road to Fitness', text: "{1} matters most in sports is not winning but never giving up. My cousin Lin used to be weak, so he decided that something must {2} (do) about it. Every morning he runs on the {3} (track) near his home, and his diet {4} (balance) carefully by his mother every day. He believes athletes should {5} (keep) a positive attitude even after failure. Last month, he competed {6} the school swimming match. Though he didn't win, the crowd cheered {7} (loud) for his determination. Sweat never lies — his {8} (strong) has improved greatly. Now he is {9} (physical) fit and full of energy. His story tells us that great {10} (determine) leads to success.", blanks: [
+                { hint: '', ans: ['what'], tag: 'What 引导主语从句（缺主语）' },
+                { hint: 'do', ans: ['be done'], tag: '情态动词被动：must be done' },
+                { hint: 'track', ans: ['track'], tag: '原词（考0变化辨析）', noChange: true },
+                { hint: 'balance', ans: ['is balanced'], tag: '一般现在时被动（every day）' },
+                { hint: 'keep', ans: ['keep'], tag: '情态动词后接原形（零变化陷阱）', noChange: true },
+                { hint: '', ans: ['in'], tag: 'compete in 固定搭配' },
+                { hint: 'loud', ans: ['loudly'], tag: '修饰动词用副词' },
+                { hint: 'strong', ans: ['strength'], tag: '物主代词后填名词' },
+                { hint: 'physical', ans: ['physically'], tag: '修饰形容词 fit 用副词' },
+                { hint: 'determine', ans: ['determination'], tag: '形容词 great 后填名词' },
+            ] },
+            'B1-4': { title: 'After the Earthquake', text: "Last month, a terrible earthquake hit a small town, {1} (cause) great damage. Many buildings {2} (destroy) in a few seconds. The rescue team, {3} arrived within hours, worked day and night. A little boy {4} parents were trapped under the ruins kept calling for help. The rescuers {5} finally saved him were praised by everyone. People who {6} (be) trapped were taken to a safe shelter quickly. Doctors made great {7} (effort) to treat the injured, telling them to stay {8} (calm) and breathe slowly. The town is now being rebuilt, and those {9} survived will never forget the kindness they received. It was a disaster, but also {10} lesson about love and courage.", blanks: [
+                { hint: 'cause', ans: ['causing'], tag: '现在分词作结果状语' },
+                { hint: 'destroy', ans: ['were destroyed'], tag: '过去时被动（被摧毁）' },
+                { hint: '', ans: ['which'], tag: '非限制性定语从句指物（逗号后不能用that）' },
+                { hint: '', ans: ['whose'], tag: '定语从句表所属（男孩的父母）' },
+                { hint: '', ans: ['who', 'that'], tag: '定语从句指人作主语' },
+                { hint: 'be', ans: ['were'], tag: '从句谓语跟先行词 people（复数+过去）' },
+                { hint: 'effort', ans: ['efforts'], tag: 'make great efforts 固定搭配' },
+                { hint: 'calm', ans: ['calm'], tag: 'stay + 形容词作表语', noChange: true },
+                { hint: '', ans: ['who', 'that'], tag: '定语从句指人作主语' },
+                { hint: '', ans: ['a'], tag: '不定冠词（一次教训）' },
+            ] },
+            'B1-5': { title: 'The Journey of Learning English', text: "English is a global language {1} which people from different countries communicate. At first, I found {2} difficult to remember so many new words. My teacher told me that vocabulary refers {3} the words we must master, and she showed me a system {4} which I could review words regularly. I really appreciate {5} (she) help. Now I have a positive {6} (attitude) towards learning. The word 'dragon', for example, is a {7} (symbol) of good luck in China, which shows language and culture are closely connected. Though I still struggle {8} grammar sometimes, I am becoming more {9} (fluence) than before. I would appreciate {10} if you could share your learning methods with me.", blanks: [
+                { hint: '', ans: ['through', 'with', 'in'], tag: '介词+which：communicate through/with' },
+                { hint: '', ans: ['it'], tag: 'find it adj to do 形式宾语' },
+                { hint: '', ans: ['to'], tag: 'refer to 固定搭配' },
+                { hint: '', ans: ['with', 'by'], tag: '介词+which：用这个系统复习' },
+                { hint: 'she', ans: ['her'], tag: '名词前用形容词性物主代词' },
+                { hint: 'attitude', ans: ['attitude'], tag: '原词：attitude towards（考搭配）', noChange: true },
+                { hint: 'symbol', ans: ['symbol'], tag: '原词：a symbol of（考搭配）', noChange: true },
+                { hint: '', ans: ['with'], tag: 'struggle with 固定搭配' },
+                { hint: 'fluence', ans: ['fluent'], tag: 'more 后接形容词比较结构' },
+                { hint: '', ans: ['it'], tag: 'appreciate it if 固定句型' },
+            ] },
+            'B2-1': { title: 'Protecting Our Heritage', text: "Cultural heritage is the memory of a nation, so it is well worth {1} (protect). In my hometown, an ancient temple {2} (build) over 800 years ago still stands by the river. To prevent it {3} being damaged, the local government has taken many measures. Visitors are limited to 500 a day, and a digital copy of every wall painting {4} (create) last year. There is no doubt {5} these measures are effective. The temple, {6} attracts thousands of tourists, has become a symbol of the city. Experts also made a {7} (propose) to promote traditional crafts among young people. I strongly believe {8} keeping a balance between development and protection is possible. Nothing is more {9} (value) than passing our culture on to the next {10} (generate).", blanks: [
+                { hint: 'protect', ans: ['protecting'], tag: 'be worth doing 死规定' },
+                { hint: 'build', ans: ['built'], tag: '过去分词作后置定语（被建造）' },
+                { hint: '', ans: ['from'], tag: 'prevent...from doing（被动from不省）' },
+                { hint: 'create', ans: ['was created'], tag: '过去时被动（last year）' },
+                { hint: '', ans: ['that'], tag: '同位语从句（doubt 的内容）' },
+                { hint: '', ans: ['which'], tag: '非限制性定语从句指物' },
+                { hint: 'propose', ans: ['proposal'], tag: '冠词 a 后填名词' },
+                { hint: '', ans: ['that'], tag: 'believe that 宾语从句（句子完整）' },
+                { hint: 'value', ans: ['valuable'], tag: 'more 后接形容词' },
+                { hint: 'generate', ans: ['generation'], tag: '形容词 next 后填名词' },
+            ] },
+            'B2-2': { title: 'Saving the Tibetan Antelope', text: "The Tibetan antelope is a species living on the plateau. Years ago, its number dropped {1} (sharp) because of illegal hunting, and its habitat {2} (destroy) at that time. It is high time that we {3} (take) action. Luckily, a nature reserve {4} (set) up right now to give them a safer home. Thanks to these {5} (effect) measures, the number is recovering. However, some other species are still in danger of becoming {6} (extinction). Scientists warn that it is {7} (legal) to hunt wild animals, and whoever breaks the law will be punished. The alarm {8} (ring) — we must reduce the threat {9} human activities cause. Only by living in harmony with wildlife {10} we build a beautiful planet.", blanks: [
+                { hint: 'sharp', ans: ['sharply'], tag: '修饰动词用副词' },
+                { hint: 'destroy', ans: ['was being destroyed', 'was destroyed'], tag: '过去(进行)被动' },
+                { hint: 'take', ans: ['took', 'should take'], tag: 'It is high time that + 过去式' },
+                { hint: 'set', ans: ['is being set'], tag: '现在进行时被动（right now）' },
+                { hint: 'effect', ans: ['effective'], tag: '名词前用形容词' },
+                { hint: 'extinction', ans: ['extinct'], tag: 'become + 形容词' },
+                { hint: 'legal', ans: ['illegal'], tag: '否定前缀 il-（语义：违法）' },
+                { hint: 'ring', ans: ['is ringing', 'has rung'], tag: '警钟正在敲响' },
+                { hint: '', ans: ['that', 'which'], tag: '定语从句作宾语（threat 被 cause）' },
+                { hint: '', ans: ['can'], tag: 'Only+状语句首 → 部分倒装' },
+            ] },
+            'B2-3': { title: 'Life Online', text: "The Internet has changed our lives greatly since it {1} (invent). Now we have easy access to {2} (inform) from all over the world. Great progress {3} (make) in online education in the past few years. It is convenient {4} students to attend classes at home. However, problems have appeared as well. Some netizens' private information {5} (steal) recently, which reminds us to update our passwords {6} (regular). Besides, a lot of fake news spreads quickly, so we should think {7} (critical) before believing anything online. Experts suggest that parents monitor {8} children spend their time online. The Internet is a tool — {9} it brings benefits or harm depends on the {10} (use) themselves.", blanks: [
+                { hint: 'invent', ans: ['was invented'], tag: 'since + 过去时被动' },
+                { hint: 'inform', ans: ['information'], tag: 'access to + 名词（不可数）' },
+                { hint: 'make', ans: ['has been made'], tag: '现在完成时被动（in the past few years）' },
+                { hint: '', ans: ['for'], tag: 'It is convenient for sb to do' },
+                { hint: 'steal', ans: ['has been stolen', 'was stolen'], tag: 'recently → 完成时被动' },
+                { hint: 'regular', ans: ['regularly'], tag: '修饰动词用副词' },
+                { hint: 'critical', ans: ['critically'], tag: '修饰动词 think 用副词' },
+                { hint: '', ans: ['how', 'where'], tag: '宾语从句：监督孩子如何/在哪上网' },
+                { hint: '', ans: ['whether'], tag: 'whether...or... 主语从句' },
+                { hint: 'use', ans: ['users'], tag: '冠词后名词（使用者，复数）' },
+            ] },
+            'B2-4': { title: 'A Kingdom of Stories', text: "The United Kingdom consists {1} four parts, and each has its own traditions. Last summer I visited an ancient castle {2} (locate) on a hill in Scotland. The castle, with its walls {3} (paint) hundreds of years ago, belongs {4} a noble family. What surprised me most {5} (be) its unusual architecture. Our guide, a {6} (generosity) old man, told us many puzzles about its history. The collection of old maps {7} (display) in the hall attracts many curious visitors every year. That is {8} the castle is famous for. I took many photos, some of {9} were shared online. It was a(n) {10} (forget) experience indeed.", blanks: [
+                { hint: '', ans: ['of'], tag: 'consist of 固定搭配（无被动）' },
+                { hint: 'locate', ans: ['located'], tag: '过去分词作后置定语' },
+                { hint: 'paint', ans: ['painted'], tag: 'with+名词+过去分词（被画）' },
+                { hint: '', ans: ['to'], tag: 'belong to 固定搭配（主动无被动）' },
+                { hint: 'be', ans: ['was'], tag: '主语从句作主语谓语用单数（过去）' },
+                { hint: 'generosity', ans: ['generous'], tag: '冠词+___+名词 → 形容词' },
+                { hint: 'display', ans: ['displayed'], tag: '过去分词作后置定语（被展出）' },
+                { hint: '', ans: ['what'], tag: 'what 引导表语从句（for 缺宾语）' },
+                { hint: '', ans: ['which'], tag: '介词 of + which（不能用that）' },
+                { hint: 'forget', ans: ['unforgettable'], tag: '否定前缀+able（难忘的）' },
+            ] },
+            'B2-5': { title: 'The Power of Music', text: "{1} (move) by the beautiful melody, the audience stood up and applauded. This was young pianist Lin Yao's first {2} (perform) on the big stage. Born in an ordinary family, Lin showed extraordinary {3} (talented) at the age of five. It suddenly occurred to her father {4} the girl deserved a chance. To everyone's {5} (relieve), years of hard training finally paid off. {6} (compare) with other players, Lin has more previous experience of failure, {7} makes her calmer in competitions. When asked about her secret, she smiled: \"Practice, and never react {8} (nervous) to mistakes.\" Her original works {9} (perform) by many musicians since last year. Music, she believes, is a language {10} everyone can understand.", blanks: [
+                { hint: 'move', ans: ['moved'], tag: '句首-ed作状语（观众被感动）' },
+                { hint: 'perform', ans: ['performance'], tag: '序数词后填名词' },
+                { hint: 'talented', ans: ['talent'], tag: '形容词后填名词' },
+                { hint: '', ans: ['that'], tag: 'It occurred to sb that 固定句型' },
+                { hint: 'relieve', ans: ['relief'], tag: "to one's + 情感名词" },
+                { hint: 'compare', ans: ['compared'], tag: 'Compared with 句首作状语' },
+                { hint: '', ans: ['which'], tag: '非限制性定语从句指代整件事' },
+                { hint: 'nervous', ans: ['nervously'], tag: '修饰动词用副词' },
+                { hint: 'perform', ans: ['have been performed'], tag: 'since → 完成时被动' },
+                { hint: '', ans: ['that', 'which'], tag: '定语从句作宾语（understand的宾语）' },
+            ] },
+            'B3-1': { title: 'The Spring Festival at Grandma\'s', text: "Every year, my family gathers at Grandma's house for the Spring Festival, {1} origin dates back thousands of years. {2} makes this festival special is the atmosphere of family love. It is a custom {3} people eat dumplings and stay up late on New Year's Eve. Grandma always decorates the house {4} red lanterns, believing red drives away bad luck. The moment {5} which we set off fireworks is my favourite. A typical {6} (celebrate) also includes giving lucky money. Last year, my little cousin asked {7} the money was always in red envelopes. Grandma explained that red is a {8} (typical) Chinese colour of joy. Festivals range {9} ancient ones to modern ones, but the belief {10} family comes first never changes.", blanks: [
+                { hint: '', ans: ['whose'], tag: '定语从句表所属（节日的起源）' },
+                { hint: '', ans: ['what'], tag: 'What 主语从句（makes 缺主语）' },
+                { hint: '', ans: ['that'], tag: '同位语从句解释 custom' },
+                { hint: '', ans: ['with'], tag: 'decorate...with 固定搭配' },
+                { hint: '', ans: ['at', 'during', 'in'], tag: '介词+which（在那一刻）' },
+                { hint: 'celebrate', ans: ['celebration'], tag: '冠词+形容词后填名词' },
+                { hint: '', ans: ['why'], tag: '宾语从句：问为什么' },
+                { hint: 'typical', ans: ['typical'], tag: '原词：名词前形容词', noChange: true },
+                { hint: '', ans: ['from'], tag: 'range from...to 固定搭配' },
+                { hint: '', ans: ['that'], tag: '同位语从句解释 belief' },
+            ] },
+            'B3-2': { title: 'A Life That Makes a Difference', text: "Doctor Lin Qiaozhi devoted her whole life {1} helping women and children. {2} she cared about most was her patients' health rather than fame. Born in 1901, she found {3} hard for women to receive medical training at that time, but she never gave up. It is estimated that she delivered over 50,000 babies in her {4} (life). She thought it a great honour {5} (serve) the people. Even after she retired, she made outstanding {6} (contribute) to medical charity. Her moral courage and {7} (virtuous) still inspire us today. {8} is willing to work hard, like Dr. Lin, deserves our respect. Tough as the road was, she overcame every difficulty {9} (patient). Her story proves that {10} matters is not how long you live, but how you live.", blanks: [
+                { hint: '', ans: ['to'], tag: 'devote...to doing（to是介词）' },
+                { hint: '', ans: ['what'], tag: 'What 主语从句（cared about 缺宾语）' },
+                { hint: '', ans: ['it'], tag: 'find it hard to do 形式宾语' },
+                { hint: 'life', ans: ['lifetime', 'life'], tag: '物主代词后填名词', noChange: true },
+                { hint: 'serve', ans: ['to serve'], tag: 'think it an honour to do' },
+                { hint: 'contribute', ans: ['contributions'], tag: 'make contributions to 固定搭配' },
+                { hint: 'virtuous', ans: ['virtue', 'virtues'], tag: '并列名词（and 前后一致）' },
+                { hint: '', ans: ['whoever'], tag: 'Whoever 引导主语从句（任何人）' },
+                { hint: 'patient', ans: ['patiently'], tag: '修饰动词用副词' },
+                { hint: '', ans: ['what'], tag: 'what 主语从句（matters 缺主语）' },
+            ] },
+            'B3-3': { title: 'A City of Many Cultures', text: "San Francisco is a city {1} diverse cultures live in harmony. When {2} (visit) Chinatown last year, I was amazed by its lively atmosphere. The district, {3} history goes back to the 1850s, is home to thousands of Chinese Americans. Many of them admit {4} (miss) their hometown, but they have also earned respect through hard work. If {5} (give) a chance, I would love to stay longer. A local guide told us that early immigrants sought gold here, and a small {6} (minor) of them made a fortune. Their descendants keep the traditions {7} (alive) today. What impressed me most was a museum {8} (build) to record this history. Though {9} (tire), I felt the trip was worthwhile — the city taught me {10} diversity means.", blanks: [
+                { hint: '', ans: ['where'], tag: 'where 引导定语从句（在城市里）' },
+                { hint: 'visit', ans: ['visiting'], tag: '状从省略：When (I was) visiting' },
+                { hint: '', ans: ['whose'], tag: '定语从句表所属（街区的历史）' },
+                { hint: 'miss', ans: ['missing'], tag: 'admit + doing' },
+                { hint: 'give', ans: ['given'], tag: '状从省略：If (I were) given（被给予）' },
+                { hint: 'minor', ans: ['minority'], tag: '冠词+形容词后填名词' },
+                { hint: 'alive', ans: ['alive'], tag: 'keep + 宾语 + 形容词', noChange: true },
+                { hint: 'build', ans: ['built'], tag: '过去分词作后置定语' },
+                { hint: 'tire', ans: ['tired'], tag: '状从省略：Though (I was) tired' },
+                { hint: '', ans: ['what'], tag: '宾语从句缺宾语用 what' },
+            ] },
+            'B3-4': { title: 'Reaching for the Stars', text: "China's space industry has attached great importance {1} exploration since the 1950s. The first satellite, Dongfanghong-1, {2} (launch) in 1970, marked a new age. Scientists {3} have worked so hard must have made countless sacrifices — we can imagine how difficult it {4} (be) in those years. Today, our astronauts {5} (train) for new missions right now, and a new space station is to {6} (complete) in the near future. The universe holds many {7} (mystery), such as black holes, {8} gravity is so strong that even light cannot escape. Some resources on the moon may {9} (use) to benefit mankind one day. Our signal to the stars is clear: we come in peace, with curiosity and {10} (determine).", blanks: [
+                { hint: '', ans: ['to'], tag: 'attach importance to（to是介词）' },
+                { hint: 'launch', ans: ['launched'], tag: '过去分词作后置定语（被发射）' },
+                { hint: '', ans: ['who', 'that'], tag: '定语从句指人作主语' },
+                { hint: 'be', ans: ['was'], tag: '感叹句谓语（过去）' },
+                { hint: 'train', ans: ['are training', 'are being trained'], tag: 'right now → 现在进行时' },
+                { hint: 'complete', ans: ['be completed'], tag: 'be to be done（计划被完成）' },
+                { hint: 'mystery', ans: ['mysteries'], tag: 'many 后可数名词复数' },
+                { hint: '', ans: ['whose'], tag: '定语从句表所属（黑洞的引力）' },
+                { hint: 'use', ans: ['be used'], tag: '情态动词被动：may be used' },
+                { hint: 'determine', ans: ['determination'], tag: '介词 with 后填名词' },
+            ] },
+            'B3-5': { title: 'The Million Pound Bank Note', text: "Have you read The Million Pound Bank Note, a play {1} (write) by Mark Twain? Henry, a poor American, lands in London by accident. Without money or friends, he {2} (starve) on the street — but for a strange bet between two rich brothers, he would have remained penniless. They give him a million-pound note, and people's attitudes change {3} (immediate). Waiters who once judged him {4} his appearance now treat him like a king. The scene {5} the restaurant owner counts the money again and again is really {6} (amuse). The play shows that a large {7} (amount) of money can test human nature. Henry, {8} (honest) speaking, remains genuine and kind. If people today {9} (read) this play carefully, they would understand: good manners cost nothing, but {10} (patient) and honesty are priceless.", blanks: [
+                { hint: 'write', ans: ['written'], tag: '过去分词作后置定语（被写）' },
+                { hint: 'starve', ans: ['is starving', 'starves'], tag: '故事现在时叙述' },
+                { hint: 'immediate', ans: ['immediately'], tag: '修饰动词用副词' },
+                { hint: '', ans: ['by', 'from'], tag: 'judge by/from 固定搭配' },
+                { hint: '', ans: ['where', 'in which'], tag: '定语从句（在场景里）' },
+                { hint: 'amuse', ans: ['amusing'], tag: '物用-ing（令人发笑）' },
+                { hint: 'amount', ans: ['amount'], tag: 'a large amount of 固定搭配', noChange: true },
+                { hint: 'honest', ans: ['honestly'], tag: 'honestly speaking 插入语' },
+                { hint: 'read', ans: ['read'], tag: '虚拟语气：对现在假设用过去式（read过去式同形）', noChange: true },
+                { hint: 'patient', ans: ['patience'], tag: '并列主语填名词' },
+            ] },
+            'S1-1': { title: 'Tu Youyou and Her Great Discovery', text: "Tu Youyou, {1} won the Nobel Prize in 2015, is a scientist committed to {2} (fight) malaria. In the 1960s, the disease was spreading, and under no circumstances {3} scientists allowed to give up the research. Tu and her team read thousands of ancient books, many of {4} recorded traditional Chinese medicine. After 190 failed experiments, they finally made a {5} (remark) discovery — artemisinin. The medicine, {6} (obtain) from a common plant, has saved millions of lives. It was a profound achievement {7} changed the world. Tu once said that honours belonged to the whole team, {8} showed her modesty. Her academic spirit — never stop {9} (evaluate) and improving — is worth {10} (learn) from by every student.", blanks: [
+                { hint: '', ans: ['who'], tag: '非限制性定语从句指人（逗号后不能用that）' },
+                { hint: 'fight', ans: ['fighting'], tag: 'be committed to + doing' },
+                { hint: '', ans: ['were'], tag: '否定短语句首 → 部分倒装' },
+                { hint: '', ans: ['which'], tag: 'many of which（介词后不能用that）' },
+                { hint: 'remark', ans: ['remarkable'], tag: '冠词后接形容词+名词' },
+                { hint: 'obtain', ans: ['obtained'], tag: '过去分词作定语（被提取）' },
+                { hint: '', ans: ['that', 'which'], tag: '定语从句指物作主语' },
+                { hint: '', ans: ['which'], tag: '非限制性定语从句指代整件事' },
+                { hint: 'evaluate', ans: ['evaluating'], tag: 'stop doing（停止做）' },
+                { hint: 'learn', ans: ['learning'], tag: 'be worth doing 死规定' },
+            ] },
+            'S1-2': { title: 'Life in 2050', text: "What will life be like in 2050? Scientists predict that by then, people {1} (live) in smart houses with everything connected. At this time next year, engineers {2} (test) driverless buses in our city. AI doctors are likely {3} (detect) diseases much earlier than humans, and warnings {4} (send) to patients' watches automatically. With technology {5} (develop) so fast, many jobs will disappear, {6} others will be created. Some people worry about security, and their concern is {7} (understand). However, an efficient system with strict rules {8} (design) right now to protect privacy. It is predicted that clean energy, {9} is both cheap and endless, will power our homes. The future belongs to those who prepare for it {10} (innovative).", blanks: [
+                { hint: 'live', ans: ['will be living', 'will live'], tag: '将来(进行)时：by then' },
+                { hint: 'test', ans: ['will be testing'], tag: 'at this time next year → 将来进行时' },
+                { hint: 'detect', ans: ['to detect'], tag: 'be likely to do' },
+                { hint: 'send', ans: ['will be sent'], tag: '将来时被动（被发送）' },
+                { hint: 'develop', ans: ['developing'], tag: 'with复合结构（技术主动发展）' },
+                { hint: '', ans: ['while', 'but', 'and'], tag: '连词表对比/并列' },
+                { hint: 'understand', ans: ['understandable'], tag: '表语形容词（可以理解的）' },
+                { hint: 'design', ans: ['is being designed'], tag: '现在进行时被动（right now）' },
+                { hint: '', ans: ['which'], tag: '非限制性定语从句指物' },
+                { hint: 'innovative', ans: ['innovatively'], tag: '修饰动词用副词' },
+            ] },
+            'S1-3': { title: 'A Walk in the National Park', text: "{1} (visit) a national park is like walking into a living museum. Last month, our class went to a wetland park, {2} appeal lies in its untouched beauty. {3} (protect) the environment, visitors are prohibited {4} feeding the wild birds. Our guide said that {5} (conserve) water and energy is everyone's duty, and even a small action makes a difference. Wandering along the paths, we observed birds {6} (build) their nests. The scenery was so fascinating {7} we forgot the time. The park charges no fee, but the number of visitors {8} (limit) to 2,000 per day, which is a wise theme of management. Broad forests, visible stars at night, fresh air — all these remind us {9} nature gives us and why it is worth {10} (preserve).", blanks: [
+                { hint: 'visit', ans: ['visiting'], tag: '-ing作主语（谓语is单数）' },
+                { hint: '', ans: ['whose'], tag: '定语从句表所属（公园的魅力）' },
+                { hint: 'protect', ans: ['to protect'], tag: '不定式作目的状语' },
+                { hint: '', ans: ['from'], tag: 'prohibit...from doing' },
+                { hint: 'conserve', ans: ['conserving'], tag: '-ing作主语（谓语is单数）' },
+                { hint: 'build', ans: ['building'], tag: 'observe sb doing（正在筑巢）' },
+                { hint: '', ans: ['that'], tag: 'so...that 结果状语从句' },
+                { hint: 'limit', ans: ['is limited'], tag: '一般现在时被动（被限制）' },
+                { hint: '', ans: ['what'], tag: '宾语从句缺宾语用 what' },
+                { hint: 'preserve', ans: ['preserving'], tag: 'be worth doing' },
+            ] },
+            'S1-4': { title: 'The Silent Language', text: "Body language plays an important role in communication, and people cannot avoid {1} (use) it. Different cultures, however, interpret gestures {2} (different). In some countries, nodding means agreement, while in others it {3} (do) mean the same thing — it can even mean \"no\"! My foreign friend Anna admitted {4} (feel) confused when she first came to China. She suggested {5} (make) a list of local gestures, which proved really helpful. Now she doesn't mind {6} (ask) about cultural differences at all; her hobby is {7} (observe) how people interact. Once, seeing me wave my hand, she thought I was angry, but I {8} explain that it was merely a greeting. It is appropriate {9} learners to keep practising {10} they master these unspoken rules.", blanks: [
+                { hint: 'use', ans: ['using'], tag: 'avoid + doing' },
+                { hint: 'different', ans: ['differently'], tag: '修饰动词用副词' },
+                { hint: 'do', ans: ["doesn't"], tag: 'do 否定强调（并不意味着）' },
+                { hint: 'feel', ans: ['feeling', 'having felt'], tag: 'admit + doing' },
+                { hint: 'make', ans: ['making'], tag: 'suggest + doing' },
+                { hint: 'ask', ans: ['being asked'], tag: "mind + being done（被问）" },
+                { hint: 'observe', ans: ['observing'], tag: '-ing作表语（爱好是观察）' },
+                { hint: '', ans: ['did'], tag: 'do/did 强调谓语（我确实解释了）' },
+                { hint: '', ans: ['for'], tag: 'It is appropriate for sb to do' },
+                { hint: '', ans: ['until', 'till', 'before'], tag: '连词：直到掌握为止' },
+            ] },
+            'S1-5': { title: 'The Father of Hybrid Rice', text: "Yuan Longping devoted his life to a dream: {1} (attain) high rice yields to feed the world. In the 1960s, food shortage was a serious problem, and it was essential that a solution {2} (find) quickly. It was in the rice fields {3} Yuan spent most of his time. Facing doubts, he held a conventional-breaking belief {4} hybrid rice could greatly increase production. After years of hard work, he and his team obtained {5} (astonish) results — yields rose by more than 20 percent. His innovation {6} (regard) as a great breakthrough worldwide since then. Even in his eighties, he insisted on {7} (examine) the fields in person every day. It is no exaggeration to say that his expansion of agricultural science tackled world hunger {8} (effective). He once said, \"I am merely a farmer {9} knows some science.\" Such modesty, together with his achievements, {10} (make) him a true pioneer.", blanks: [
+                { hint: 'attain', ans: ['attaining', 'to attain'], tag: '同位语解释 dream' },
+                { hint: 'find', ans: ['be found', 'should be found'], tag: 'essential that + (should)+原形被动' },
+                { hint: '', ans: ['that'], tag: '强调句：It was...that（强调地点状语）' },
+                { hint: '', ans: ['that'], tag: '同位语从句解释 belief' },
+                { hint: 'astonish', ans: ['astonishing'], tag: '物用-ing（惊人的结果）' },
+                { hint: 'regard', ans: ['has been regarded'], tag: 'since then → 完成时被动' },
+                { hint: 'examine', ans: ['examining'], tag: 'insist on + doing（to/on是介词类考法）' },
+                { hint: 'effective', ans: ['effectively'], tag: '修饰动词用副词' },
+                { hint: '', ans: ['who', 'that'], tag: '定语从句指人作主语' },
+                { hint: 'make', ans: ['makes', 'made'], tag: 'together with 不影响主语单数' },
+            ] },
+            'S2-1': { title: 'The Doctor Who Fought Cholera', text: "In 1854, a severe outbreak of cholera hit London, and thousands of victims {1} (expose) to the deadly disease. Most people believed that bad air was to {2} (blame), but Dr John Snow suspected the water {3} being the real cause. To prove his theory, he investigated every case and marked the deaths on a map, {4} showed that most victims lived near one water pump. The evidence was so convincing {5} the government removed the pump handle {6} (immediate). The number of new cases dropped {7} (sharp) soon afterwards. Snow's {8} (conclude) — that polluted water caused the disease — changed public health forever. His scientific characteristic, curiosity plus careful analysis, {9} (praise) ever since. Today, whenever an unknown disease appears, scientists still follow the method {10} Snow created.", blanks: [
+                { hint: 'expose', ans: ['were exposed'], tag: 'be exposed to（过去被动）' },
+                { hint: 'blame', ans: ['blame'], tag: 'be to blame 主动表被动', noChange: true },
+                { hint: '', ans: ['of'], tag: 'suspect...of 固定搭配' },
+                { hint: '', ans: ['which'], tag: '非限制性定语从句指代地图' },
+                { hint: '', ans: ['that'], tag: 'so...that 结果状语从句' },
+                { hint: 'immediate', ans: ['immediately'], tag: '修饰动词用副词' },
+                { hint: 'sharp', ans: ['sharply'], tag: '修饰动词用副词' },
+                { hint: 'conclude', ans: ['conclusion'], tag: '物主代词后填名词' },
+                { hint: 'praise', ans: ['has been praised'], tag: 'ever since → 完成时被动' },
+                { hint: '', ans: ['that', 'which'], tag: '定语从句作宾语' },
+            ] },
+            'S2-2': { title: 'Bridging Two Cultures', text: "{1} (encourage) by her parents, Xie Lei went to study in the UK last year. At first, she found it hard to adapt {2} the new environment. {3} (face) with a totally different teaching style, she once doubted herself. Her tutor advised her to participate {4} class discussions actively instead of just listening. She also joined a host family, {5} helped her understand British culture better. Gradually, she qualified {6} an excellent exchange student. \"Studying abroad is a complex but {7} (reward) journey,\" she recalled. \"You must be ambitious, and more {8} (important), stay true to yourself.\" Now she is engaged {9} building a bridge between the two cultures, motivating more students {10} (chase) their dreams.", blanks: [
+                { hint: 'encourage', ans: ['encouraged'], tag: '句首-ed作状语（被鼓励）' },
+                { hint: '', ans: ['to'], tag: 'adapt to 固定搭配' },
+                { hint: 'face', ans: ['faced'], tag: '(Being) faced with 固定表达' },
+                { hint: '', ans: ['in'], tag: 'participate in 固定搭配' },
+                { hint: '', ans: ['which'], tag: '非限制性定语从句指代这件事' },
+                { hint: '', ans: ['as'], tag: 'qualify as（成为合格的…）' },
+                { hint: 'reward', ans: ['rewarding'], tag: '物用-ing（有回报的）' },
+                { hint: 'important', ans: ['importantly'], tag: 'more importantly 插入语' },
+                { hint: '', ans: ['in'], tag: 'be engaged in 固定搭配' },
+                { hint: 'chase', ans: ['to chase'], tag: 'motivate sb to do' },
+            ] },
+            'S2-3': { title: 'The Art of Chinese Cuisine', text: "Chinese cuisine, {1} is famous worldwide, consists {2} eight major styles. Each style is closely associated {3} its local climate and culture. In the south, people prefer rice, {4} in the north, wheat is the main food. A proper Chinese dinner usually includes a minimum {5} four dishes and one soup. My aunt, an {6} (exception) cook, says the trick lies in balance: colour, smell and taste must all {7} (consider). She gives priority to fresh ingredients and never uses {8} (freeze) food. Last week she made an elegant dish {9} (call) \"Buddha Jumps over the Wall\", which consumed five hours. Modest as she is, she admits her cooking {10} (improve) greatly over the years.", blanks: [
+                { hint: '', ans: ['which'], tag: '非限制性定语从句指物' },
+                { hint: '', ans: ['of'], tag: 'consist of（无被动）' },
+                { hint: '', ans: ['with'], tag: 'be associated with 固定搭配' },
+                { hint: '', ans: ['while'], tag: 'while 表对比（南米北面）' },
+                { hint: '', ans: ['of'], tag: 'a minimum of + 数字' },
+                { hint: 'exception', ans: ['exceptional'], tag: '冠词+___+名词 → 形容词' },
+                { hint: 'consider', ans: ['be considered'], tag: '情态动词被动' },
+                { hint: 'freeze', ans: ['frozen'], tag: '过去分词作定语（被冷冻的）' },
+                { hint: 'call', ans: ['called'], tag: '过去分词作后置定语（被称为）' },
+                { hint: 'improve', ans: ['has improved'], tag: 'over the years → 现在完成时' },
+            ] },
+            'S2-4': { title: 'Across Canada by Train', text: "{1} (locate) in northern North America, Canada is the second largest country in the world. Last month, my cousin took a train trip across it, covering a distance {2} more than 4,000 kilometres. {3} (compare) with flying, travelling by rail offers more spectacular scenery. The route passes the Rocky Mountains, {4} peaks are covered with snow all year round. Her camera, {5} (buy) just for the trip, was busy the whole time! The population of Canada is a mixture {6} people from all over the world, and effective measures {7} (take) to protect minority cultures over the years. In Toronto, she visited an urban market {8} sells food from fifty countries. The trip was slightly tiring but {9} (absolute) worthwhile. \"Only when you cross a vast land {10} you feel how large the world is,\" she said.", blanks: [
+                { hint: 'locate', ans: ['located'], tag: 'Located in 句首作状语' },
+                { hint: '', ans: ['of'], tag: 'a distance of + 数字' },
+                { hint: 'compare', ans: ['compared'], tag: 'Compared with 句首作状语' },
+                { hint: '', ans: ['whose'], tag: '定语从句表所属（山的峰顶）' },
+                { hint: 'buy', ans: ['bought'], tag: '过去分词作定语（被买）' },
+                { hint: '', ans: ['of'], tag: 'a mixture of 固定搭配' },
+                { hint: 'take', ans: ['have been taken'], tag: 'over the years → 完成时被动' },
+                { hint: '', ans: ['that', 'which'], tag: '定语从句指物作主语' },
+                { hint: 'absolute', ans: ['absolutely'], tag: '修饰形容词用副词' },
+                { hint: '', ans: ['can', 'do', 'will'], tag: 'Only+状语句首 → 主句倒装' },
+            ] },
+            'S2-5': { title: 'First Aid Saves Lives', text: "First aid is the temporary help given before a doctor arrives, and {1} (master) basic skills is vital for everyone. If {2} (treat) in time, an injury may get worse quickly. Take bleeding as an example: apply pressure {3} the wound with a clean bandage, and the bleeding will usually stop within minutes. It is essential that the wound {4} (keep) clean to prevent infection. When someone gets burned, cool the burned area with running water — this is far more {5} (help) than ice. If the victim shows severe symptoms, such as {6} (breathe) difficulties, call 120 without delay. A knowledge of first aid techniques makes {7} possible to save a life {8} doctors arrive. Last term, our school organized a training course, {9} we learned these skills. Remember: quick and correct reactions truly make a {10} (different).", blanks: [
+                { hint: 'master', ans: ['mastering'], tag: '-ing作主语（谓语is单数）' },
+                { hint: 'treat', ans: ['not treated'], tag: '状从省略+否定：若不及时处理' },
+                { hint: '', ans: ['to'], tag: 'apply pressure to 固定搭配' },
+                { hint: 'keep', ans: ['be kept', 'should be kept'], tag: 'essential that+(should)+原形被动' },
+                { hint: 'help', ans: ['helpful'], tag: 'more 后接形容词' },
+                { hint: 'breathe', ans: ['breathing'], tag: '-ing作定语（呼吸困难）' },
+                { hint: '', ans: ['it'], tag: 'make it possible to do 形式宾语' },
+                { hint: '', ans: ['before'], tag: '连词：在医生到达之前' },
+                { hint: '', ans: ['where', 'in which'], tag: '定语从句（在课程中）' },
+                { hint: 'different', ans: ['difference'], tag: 'make a difference 固定搭配' },
+            ] },
+            'S3-1': { title: 'A Visit to the Art Museum', text: "If I {1} (be) you, I would not miss the new exhibition at the city art museum. I wish I {2} (have) more time to enjoy it last Sunday! The exhibition, from a realistic perspective, shows how Chinese painting {3} (develop) over 2,000 years. One landscape painting is worthy {4} special attention: its visual technique influenced generations of artists. The painter's reputation was established when he was alive, {5} was rare at that time. By coincidence, I met my art teacher there, and she explained the {6} (influence) styles of different dynasties. Were I a painter, I {7} (spend) a whole month copying these works. The sculptures on the second floor, {8} (rank) among the finest in Asia, are also impressive. Art, {9} its various forms, records the soul of a {10} (civilise).", blanks: [
+                { hint: 'be', ans: ['were'], tag: '虚拟语气 If I were you' },
+                { hint: 'have', ans: ['had had'], tag: 'wish对过去的遗憾：had done' },
+                { hint: 'develop', ans: ['has developed', 'developed'], tag: 'over 2000 years 完成时' },
+                { hint: '', ans: ['of'], tag: 'be worthy of 固定搭配' },
+                { hint: '', ans: ['which'], tag: '非限制性定语从句指代整件事' },
+                { hint: 'influence', ans: ['influential'], tag: '名词前用形容词' },
+                { hint: 'spend', ans: ['would spend'], tag: '虚拟语气主句 would+原形' },
+                { hint: 'rank', ans: ['ranking', 'ranked'], tag: '分词作定语（跻身…之列）' },
+                { hint: '', ans: ['in', 'with'], tag: '介词：以各种形式' },
+                { hint: 'civilise', ans: ['civilisation', 'civilization'], tag: '冠词后填名词' },
+            ] },
+            'S3-2': { title: 'Saying Goodbye to Bad Habits', text: "It is high time that we {1} (talk) about healthy lifestyles. My uncle used to be addicted {2} smoking and alcohol. The doctor warned that if he didn't quit, his health would suffer {3} (serious). What made things worse was his negative attitude — he doubted {4} he could ever succeed. Then a dynamic change happened: his daughter was born. He decided to make a {5} (decide) at once. The first weeks were the toughest, and he had to repeat one sentence to himself: \"Self-discipline {6} (reward) me in the end.\" Whenever he wanted a cigarette, he chewed gum {7} (instead). Half a year later, he had lost weight, and his mental state improved {8} (obvious). The whole family felt proud of {9} he had achieved. His story proves that quitting a bad habit is hard, but sticking to it makes you {10} (strong) than before.", blanks: [
+                { hint: 'talk', ans: ['talked', 'should talk'], tag: 'It is high time that + 过去式' },
+                { hint: '', ans: ['to'], tag: 'be addicted to（to是介词）' },
+                { hint: 'serious', ans: ['seriously'], tag: '修饰动词用副词' },
+                { hint: '', ans: ['whether', 'if'], tag: '宾语从句：是否' },
+                { hint: 'decide', ans: ['decision'], tag: 'make a decision 固定搭配' },
+                { hint: 'reward', ans: ['will reward'], tag: '将来时（最终会回报我）' },
+                { hint: 'instead', ans: ['instead'], tag: '副词位置（作状语）', noChange: true },
+                { hint: 'obvious', ans: ['obviously'], tag: '修饰动词用副词' },
+                { hint: '', ans: ['what'], tag: '介词后缺宾语用 what 从句' },
+                { hint: 'strong', ans: ['stronger'], tag: 'than 前用比较级' },
+            ] },
+            'S3-3': { title: 'Our Fight Against Climate Change', text: "It is carbon emissions {1} have caused most of the global warming over the past decades. Greenhouse gases trap heat in the atmosphere, and scientists find it urgent {2} (cut) the use of fossil fuels. The warming has already resulted {3} more extreme weather — a comprehensive report shows that natural disasters have doubled since the 1980s. If we fail to act, the results could be a {4} (catastrophe) for the whole ecology. Fortunately, many governments have adopted new policies {5} (reduce) emissions. Clean energy, {6} costs keep falling, is spreading fast. As students, we can also make a difference: ride bicycles, save paper and avoid {7} (waste) food. {8} sounds like a small effort actually counts. Only by working together {9} we protect the planet — our one and only home, {10} all life depends.", blanks: [
+                { hint: '', ans: ['that'], tag: '强调句 It is...that' },
+                { hint: 'cut', ans: ['to cut'], tag: 'find it urgent to do 形式宾语' },
+                { hint: '', ans: ['in'], tag: 'result in（导致）' },
+                { hint: 'catastrophe', ans: ['catastrophe'], tag: '冠词后名词（灾难）', noChange: true },
+                { hint: 'reduce', ans: ['to reduce'], tag: '不定式作目的状语/定语' },
+                { hint: '', ans: ['whose'], tag: '定语从句表所属（清洁能源的成本）' },
+                { hint: 'waste', ans: ['wasting'], tag: 'avoid + doing' },
+                { hint: '', ans: ['what', 'whatever'], tag: 'What 主语从句（sounds 缺主语）' },
+                { hint: '', ans: ['can'], tag: 'Only+方式状语句首 → 倒装' },
+                { hint: '', ans: ['on', 'upon'], tag: '介词+which：depend on' },
+            ] },
+            'S3-4': { title: 'Shackleton\'s Great Rescue', text: "In 1914, explorer Ernest Shackleton led an expedition to the Antarctic. But his ship was crushed by ice, {1} (leave) 27 men on the frozen sea. Shackleton made every man {2} (believe) one thing: nobody would be abandoned. The crew watched their leader {3} (give) his own food to the weak, which built up their courage. He managed {4} (sail) 1,300 kilometres in a small lifeboat to seek help — by no means {5} an easy task in the stormy ocean. When he finally reached the whaling station, he didn't rest; he turned {6} to be more determined than ever, organizing rescue attempt after attempt. It took four tries, but every single man survived, {7} turned the failed expedition into a legend of endurance. As one crew member wrote, they persevered because their leader let them {8} (see) hope every day. His resolution and {9} (qualify) as a leader still teach us today: when facing adversity, what matters most is the courage never {10} (surrender).", blanks: [
+                { hint: 'leave', ans: ['leaving'], tag: '现在分词作结果状语' },
+                { hint: 'believe', ans: ['believe'], tag: 'make sb do（省to，零变化陷阱）', noChange: true },
+                { hint: 'give', ans: ['give', 'giving'], tag: 'watch sb do/doing', noChange: true },
+                { hint: 'sail', ans: ['to sail'], tag: 'manage to do（设法成功做到）' },
+                { hint: '', ans: ['was it', 'was that'], tag: 'by no means 句首 → 倒装' },
+                { hint: '', ans: ['out'], tag: 'turn out 固定搭配（结果是）' },
+                { hint: '', ans: ['which'], tag: '非限制性定语从句指代整件事' },
+                { hint: 'see', ans: ['see'], tag: 'let sb do（省to，零变化陷阱）', noChange: true },
+                { hint: 'qualify', ans: ['qualification', 'qualifications'], tag: '并列名词（and 连接）' },
+                { hint: 'surrender', ans: ['to surrender'], tag: 'courage to do（不定式作定语）' },
+            ] },
+            'S3-5': { title: 'The Magic of Poetry', text: "Poetry is a special form of language {1} conveys emotions that ordinary words cannot express. The belief {2} poems must rhyme is not always true — modern poetry is quite flexible in format. A good poem uses concrete images: instead of saying \"I am sad\", a poet writes, \"The rain knocks {3} my window all night.\" The {4} (repeat) of key words creates a rhythmic effect, which makes poems easy {5} (remember). By no means {6} poetry only for poets; everyone can enjoy it. Last week our class tried {7} (translate) an English poem into Chinese, and we found that a minimum of words can carry a maximum of {8} (emotional). The news {9} our translation won a school prize delighted everyone. Poetry, {10} (honest) speaking, has opened a new window for us.", blanks: [
+                { hint: '', ans: ['that', 'which'], tag: '定语从句指物作主语' },
+                { hint: '', ans: ['that'], tag: '同位语从句解释 belief（不能用which）' },
+                { hint: '', ans: ['on', 'at'], tag: 'knock on/at 固定搭配' },
+                { hint: 'repeat', ans: ['repetition'], tag: '冠词后填名词' },
+                { hint: 'remember', ans: ['to remember'], tag: 'easy to do 固定结构' },
+                { hint: '', ans: ['is'], tag: 'by no means 句首 → 倒装' },
+                { hint: 'translate', ans: ['translating', 'to translate'], tag: 'try doing尝试/try to do设法' },
+                { hint: 'emotional', ans: ['emotion', 'emotions'], tag: 'of 后填名词' },
+                { hint: '', ans: ['that'], tag: '同位语从句解释 news' },
+                { hint: 'honest', ans: ['honestly'], tag: 'honestly speaking 插入语' },
+            ] },
+            'S4-1': { title: 'Looking Back on That Summer', text: "It is the first time that I {1} (write) about that unforgettable summer. When I arrived at my grandpa's village three years ago, the harvest {2} (already begin). Grandpa asked me to help, and by the end of the first day, I {3} (learn) how to use the tools. One evening, he showed me a specific box {4} he kept old photos. Looking at a vivid picture of my father as a boy, I {5} (sudden) understood: Grandpa had raised the whole family through decades of hard work. The outcome of that summer was beyond my expectation — I learned to reflect {6} what really matters in life. In contrast {7} city life, village days were simple but rich. Before I left, Grandpa gave me the box, {8} I treasure to this day. That explicit lesson — happiness lies in hard work and gratitude — {9} (shape) my life ever since. Whenever I feel lost, I recall that summer and the incident {10} changed me.", blanks: [
+                { hint: 'write', ans: ['have written'], tag: 'It is the first time that + 现在完成时' },
+                { hint: 'already begin', ans: ['had already begun'], tag: '过去的过去 → 过去完成时' },
+                { hint: 'learn', ans: ['had learned', 'had learnt'], tag: 'by the end of + 过去时间 → had done' },
+                { hint: '', ans: ['where', 'in which'], tag: '定语从句（在盒子里）' },
+                { hint: 'sudden', ans: ['suddenly'], tag: '修饰动词用副词' },
+                { hint: '', ans: ['on', 'upon'], tag: 'reflect on 固定搭配' },
+                { hint: '', ans: ['to', 'with'], tag: 'in contrast to/with 固定搭配' },
+                { hint: '', ans: ['which'], tag: '非限制性定语从句指物' },
+                { hint: 'shape', ans: ['has shaped'], tag: 'ever since → 现在完成时' },
+                { hint: '', ans: ['that', 'which'], tag: '定语从句指物作主语' },
+            ] },
+            'S4-2': { title: 'Zhong Nanshan: A Hero of Our Time', text: "It is widely acknowledged {1} Dr Zhong Nanshan is one of the most iconic figures in Chinese medicine. Born into a doctor's family, he has been committed to {2} (save) lives for over 60 years. In 2003, when an unknown disease broke out, he made an extraordinary decision: \"Send the most severe patients {3} me.\" His profound knowledge, combined with persistent research, {4} (enable) the country to control the disease at last. In 2020, at the age of 84, he {5} (rush) to Wuhan without hesitation, which moved the whole nation. Countless lives {6} (save) since then thanks to his team's efforts. A true genius never stops learning — even today, he keeps {7} (acknowledge) young doctors' new ideas. His breakthrough in respiratory medicine won him a patent and countless honours, but {8} he values most is patients' trust. Such is his influence {9} thousands of young people have chosen medicine as their career. He proves that a hero is simply an ordinary person with an {10} (influence) sense of duty.", blanks: [
+                { hint: '', ans: ['that'], tag: 'It is acknowledged that 固定句型' },
+                { hint: 'save', ans: ['saving'], tag: 'be committed to + doing' },
+                { hint: '', ans: ['to'], tag: 'send...to（送到我这里）' },
+                { hint: 'enable', ans: ['enabled'], tag: '主语是knowledge（单数），过去时' },
+                { hint: 'rush', ans: ['rushed'], tag: '过去时（2020年）' },
+                { hint: 'save', ans: ['have been saved'], tag: 'since then → 完成时被动' },
+                { hint: 'acknowledge', ans: ['acknowledging'], tag: 'keep + doing' },
+                { hint: '', ans: ['what'], tag: 'what 主语从句（values 缺宾语）' },
+                { hint: '', ans: ['that'], tag: 'Such is...that 结果从句' },
+                { hint: 'influence', ans: ['influential'], tag: '冠词+___+名词 → 形容词' },
+            ] },
+            'S4-3': { title: 'Remembering the Past, Choosing Peace', text: "Standing in front of the war memorial, I felt the weight of history. In 1937, war {1} (declare) on this land, and millions of innocent people suffered. {2} (visit) the museum last year, I saw letters written by young soldiers, many of {3} never returned home. They sacrificed their lives at the cost {4} everything they had, defending justice and their homeland. One letter, {5} (write) by a 19-year-old, said: \"If I fall, tell my mother I fought with honor.\" Reading those words, {6} could hold back tears. The exhibition reminds us {7} peace should never be taken for granted. Today, some countries still suffer from conflicts and violence, {8} makes remembering history more meaningful. {9} (build) a peaceful world, every nation needs moral courage — the courage to declare: never again. May the victims rest in peace, and may we, the living, guard peace {10} (firm).", blanks: [
+                { hint: 'declare', ans: ['was declared'], tag: '过去时被动（战争被宣布）' },
+                { hint: 'visit', ans: ['visiting'], tag: '现在分词作状语（主语我主动参观）' },
+                { hint: '', ans: ['whom'], tag: 'many of whom（介词后指人）' },
+                { hint: '', ans: ['of'], tag: 'at the cost of 固定搭配' },
+                { hint: 'write', ans: ['written'], tag: '过去分词作定语（被写）' },
+                { hint: '', ans: ['nobody', 'no one', 'few'], tag: '语义：没人能忍住眼泪' },
+                { hint: '', ans: ['that'], tag: 'remind sb that 宾语从句' },
+                { hint: '', ans: ['which'], tag: '非限制性定语从句指代整件事' },
+                { hint: 'build', ans: ['to build'], tag: '不定式作目的状语' },
+                { hint: 'firm', ans: ['firmly'], tag: '修饰动词用副词' },
+            ] },
+            'S4-4': { title: 'A Shared Future for Mankind', text: "Only when nations work together {1} the world enjoy real stability. In recent years, China has taken the initiative {2} (promote) international cooperation. The Belt and Road projects, many of {3} focus on green development, have benefited dozens of countries. Not until people share resources fairly {4} true equality be achieved. Sustainable development is a case {5} everyone's interests are connected: no country can tackle climate change alone. Through joint {6} (consult), countries have reached agreements on cutting emissions. Diversity should be respected — differences in culture make the world colourful rather than {7} (divide). As a Chinese saying {8} (go), \"A single flower does not make a spring.\" The reforms we carry out today are {9} (joint) shaping tomorrow. Harmony, in the end, is not the absence of differences, but the wisdom {10} (live) with them.", blanks: [
+                { hint: '', ans: ['can', 'will'], tag: 'Only when 句首 → 主句倒装' },
+                { hint: 'promote', ans: ['to promote'], tag: 'take the initiative to do' },
+                { hint: '', ans: ['which'], tag: 'many of which（介词后指物）' },
+                { hint: '', ans: ['can', 'will'], tag: 'Not until 句首 → 主句倒装' },
+                { hint: '', ans: ['where'], tag: 'where 引导抽象地点定语从句' },
+                { hint: 'consult', ans: ['consultation', 'consultations'], tag: '形容词后填名词' },
+                { hint: 'divide', ans: ['divided'], tag: 'rather than 后保持形容词化（分裂的）' },
+                { hint: 'go', ans: ['goes'], tag: '谚语说 → 一般现在时三单' },
+                { hint: 'joint', ans: ['jointly'], tag: '修饰动词用副词' },
+                { hint: 'live', ans: ['to live'], tag: '不定式作定语（与差异共处的智慧）' },
+            ] },
+            'S4-5': { title: 'When I Met an AI Assistant', text: "Last week, our school invited an engineer to introduce artificial intelligence. She said that AI {1} (change) our lives faster than we expected. A student asked her {2} AI would replace human teachers one day. She smiled and replied that machines {3} (be) good at giving information, but real education needed human hearts. She showed us a virtual classroom, {4} students could do simulation experiments safely. The technology enables disabled children {5} (attend) classes from home, {6} was impossible in the past. Of course, new breakthroughs also bring problems about ethics — for example, {7} should be responsible if an AI makes a mistake? The engineer told us that her team {8} (work) on these questions since 2020. Her initial vision remains unchanged: technology should serve mankind. After the lecture, my friend said she {9} (decide) to study computer science the day before. As for me, the application of AI is exciting, but {10} attracts me more is the wisdom to use it well.", blanks: [
+                { hint: 'change', ans: ['was changing', 'would change'], tag: '间接引语：时态退一步' },
+                { hint: '', ans: ['whether', 'if'], tag: '间接引语一般疑问句用 whether/if' },
+                { hint: 'be', ans: ['were'], tag: '间接引语：时态退一步（复数）' },
+                { hint: '', ans: ['where', 'in which'], tag: '定语从句（在虚拟教室里）' },
+                { hint: 'attend', ans: ['to attend'], tag: 'enable sb to do' },
+                { hint: '', ans: ['which'], tag: '非限制性定语从句指代整件事' },
+                { hint: '', ans: ['who'], tag: '疑问词：谁来负责' },
+                { hint: 'work', ans: ['had been working', 'had worked', 'has been working'], tag: 'since 2020 + 间接引语' },
+                { hint: 'decide', ans: ['had decided'], tag: 'the day before → 过去的过去' },
+                { hint: '', ans: ['what'], tag: 'what 主语从句（attracts 缺主语）' },
+            ] },
+        };
+
         const EXAM_TIPS_DB = {
             "B1-1": {
                 "examTips": [
@@ -3283,6 +3710,95 @@ Which option best expresses its meaning?`,
         };
 
         // ==========================================
+        // 6.4 语法填空整篇仿真（高考同款：给词变形 + 纯空格，自己输入答案）
+        // ==========================================
+        const GrammarFill = ({ unitKey, record, onFinish }) => {
+            const passage = GRAMMAR_FILL_DB[unitKey];
+            const [answers, setAnswers] = useState(() => Array(10).fill(''));
+            const [graded, setGraded] = useState(false);
+
+            useEffect(() => { setAnswers(Array(10).fill('')); setGraded(false); }, [unitKey]);
+
+            if (!passage) {
+                return <div className="text-center p-10 card-lg text-slate-400 font-medium">本单元的语法填空正在制作中，敬请期待。</div>;
+            }
+
+            const norm = (s) => (s || '').trim().toLowerCase().replace(/\s+/g, ' ');
+            const isRight = (i) => passage.blanks[i].ans.some(a => norm(a) === norm(answers[i]));
+            const filledCount = answers.filter(a => a.trim()).length;
+            const score = passage.blanks.reduce((n, _, i) => n + (isRight(i) ? 1 : 0), 0);
+
+            const grade = () => {
+                if (graded) return;
+                setGraded(true);
+                onFinish(passage.blanks.reduce((n, _, i) => n + (isRight(i) ? 1 : 0), 0));
+            };
+            const redo = () => { setAnswers(Array(10).fill('')); setGraded(false); };
+
+            const parts = passage.text.split(/(\{\d+\})/g);
+
+            return (
+                <div className="max-w-3xl mx-auto space-y-5">
+                    <div className="card-lg p-6 md:p-8">
+                        <div className="flex justify-between items-center flex-wrap gap-2 mb-2">
+                            <span className="px-3 py-1 rounded-lg text-[11px] font-bold tracking-wide bg-indigo-100 text-indigo-700">语法填空 · 高考仿真</span>
+                            {record && record.attempts > 0 && <span className="text-xs font-bold text-slate-400">最好成绩 {record.best}/10 · 已练 {record.attempts} 次</span>}
+                        </div>
+                        <h2 className="text-xl font-bold tracking-tight mb-2">{passage.title}</h2>
+                        <p className="text-[12px] text-slate-400 font-medium mb-6">括号里有提示词的，填它的正确形式（注意：有时不用变形！）；没有提示词的，填一个适当的词（介词/连词/冠词/关系词等）。</p>
+
+                        <div className="text-[16px] leading-[2.6] text-slate-800 font-medium">
+                            {parts.map((p, pi) => {
+                                const m = p.match(/^\{(\d+)\}$/);
+                                if (!m) return <span key={pi}>{p}</span>;
+                                const i = Number(m[1]) - 1;
+                                const blank = passage.blanks[i];
+                                return (
+                                    <span key={pi} className="inline-flex items-baseline gap-1 mx-1 whitespace-nowrap">
+                                        <span className="text-[11px] font-bold text-indigo-400">{m[1]}</span>
+                                        <input
+                                            type="text" value={answers[i]} disabled={graded}
+                                            onChange={(e) => setAnswers(prev => prev.map((v, vi) => vi === i ? e.target.value : v))}
+                                            autoCapitalize="off" autoCorrect="off" autoComplete="off" spellCheck="false"
+                                            className={`w-[110px] px-2 py-0.5 text-center text-[15px] font-bold border-0 border-b-2 outline-none bg-transparent transition-colors ${!graded ? 'border-slate-300 focus:border-indigo-500' : isRight(i) ? 'border-emerald-400 text-emerald-700' : 'border-rose-400 text-rose-600'}`}
+                                        />
+                                        {blank.hint && <span className="text-[14px] text-slate-500 font-semibold">({blank.hint})</span>}
+                                    </span>
+                                );
+                            })}
+                        </div>
+
+                        {!graded ? (
+                            <button onClick={grade} disabled={filledCount === 0} className="w-full mt-8 bg-gradient-to-r from-indigo-500 to-blue-500 text-white py-4 rounded-2xl font-bold text-[17px] active:scale-95 transition-transform shadow-lg shadow-indigo-500/20 disabled:opacity-40">交卷（已填 {filledCount}/10）</button>
+                        ) : (
+                            <div className="mt-8">
+                                <div className="text-center mb-6">
+                                    <div className="text-5xl font-bold tracking-tighter mb-1"><span className={score >= 7 ? 'text-emerald-500' : score >= 4 ? 'text-amber-500' : 'text-rose-500'}>{score}</span><span className="text-xl text-slate-300 font-medium"> / 10</span></div>
+                                    <p className="text-sm font-medium text-slate-500">{score === 10 ? '满分！这篇的考点你全部拿下了 🎉' : score >= 7 ? '很棒！把错的几个考点记牢' : '别灰心，每个错空都是一个提分点'}</p>
+                                </div>
+                                <div className="space-y-2.5 mb-6">
+                                    {passage.blanks.map((b, i) => !isRight(i) && (
+                                        <div key={i} className="p-4 bg-rose-50/70 border border-rose-100 rounded-2xl">
+                                            <div className="flex items-baseline gap-2 flex-wrap">
+                                                <span className="w-5 h-5 rounded-full bg-rose-500 text-white text-[11px] flex items-center justify-center shrink-0 self-center">{i + 1}</span>
+                                                {answers[i].trim() ? <span className="text-[14px] font-bold text-rose-500 line-through">{answers[i]}</span> : <span className="text-[12px] text-slate-400">（未填）</span>}
+                                                <span className="text-[15px] font-bold text-emerald-700">→ {b.ans[0]}</span>
+                                                {b.ans.length > 1 && <span className="text-[12px] text-slate-400">（也可：{b.ans.slice(1).join(' / ')}）</span>}
+                                            </div>
+                                            <p className="text-[12px] font-semibold text-amber-700 mt-1.5 ml-7">考点：{b.tag}</p>
+                                        </div>
+                                    ))}
+                                    {score === 10 && <div className="p-4 bg-emerald-50 border border-emerald-100 rounded-2xl text-center text-[14px] font-bold text-emerald-700">全对！可以去挑战下一个单元了</div>}
+                                </div>
+                                <button onClick={redo} className="w-full bg-slate-100 text-slate-700 py-4 rounded-2xl font-bold active:bg-slate-200">再做一遍</button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        // ==========================================
         // 6.5 写作宝典（应用文模板 + 读后续写素材）
         // ==========================================
         const WritingView = ({ playAudio, playingWord }) => {
@@ -3394,7 +3910,7 @@ Which option best expresses its meaning?`,
             const [currentUser, setCurrentUser] = useState('');  // 'tangtang' | 'mama'
             const [activeBookId, setActiveBookId] = useState('B1');
             const [activeUnit, setActiveUnit] = useState(1);
-            const [tab, setTab] = useState('notes');
+            const [tab, setTab] = useState('today');
             const [playingWord, setPlayingWord] = useState(null);
             const [sidebarOpen, setSidebarOpen] = useState(false);
             // ── 每位用户数据完全隔离：同一个 key 下按用户分区 ──────────
@@ -3408,14 +3924,15 @@ Which option best expresses its meaning?`,
             const mistakeBank  = userData.mistakes  || [];
             const vocabData    = userData.vocab     || {};
 
-            // ── 打卡：任何学习动作都盖上"今天学过"的章 ──────────
+            // ── 打卡：任何学习动作都盖上"今天学过"的章（按类型计数，供今日任务统计）──────────
             const todayStr = () => {
                 const d = new Date();
                 return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
             };
-            const stampCheckin = (c) => {
+            const stampCheckin = (c, kind) => {
                 const t = todayStr();
-                return c && c[t] ? c : { ...(c || {}), [t]: true };
+                const day = (c && typeof c[t] === 'object') ? c[t] : {}; // 兼容旧版 true 值
+                return { ...(c || {}), [t]: { ...day, [kind]: (day[kind] || 0) + 1 } };
             };
 
             const setMasteryData = (updater) => setAllUsersData(prev => {
@@ -3426,26 +3943,37 @@ Which option best expresses its meaning?`,
             const setProgressData = (updater) => setAllUsersData(prev => {
                 const u = prev[userPrefix] || {};
                 const next = typeof updater === 'function' ? updater(u.progress || {}) : updater;
-                return { ...prev, [userPrefix]: { ...u, progress: next, checkins: stampCheckin(u.checkins) } };
+                return { ...prev, [userPrefix]: { ...u, progress: next, checkins: stampCheckin(u.checkins, 'quiz') } };
             });
             const setCardLoopData = (updater) => setAllUsersData(prev => {
                 const u = prev[userPrefix] || {};
                 const next = typeof updater === 'function' ? updater(u.cardLoop || {}) : updater;
-                return { ...prev, [userPrefix]: { ...u, cardLoop: next, checkins: stampCheckin(u.checkins) } };
+                return { ...prev, [userPrefix]: { ...u, cardLoop: next, checkins: stampCheckin(u.checkins, 'cards') } };
             });
             const setMistakeBank = (updater) => setAllUsersData(prev => {
                 const u = prev[userPrefix] || {};
                 const next = typeof updater === 'function' ? updater(u.mistakes || []) : updater;
-                return { ...prev, [userPrefix]: { ...u, mistakes: next, checkins: stampCheckin(u.checkins) } };
+                return { ...prev, [userPrefix]: { ...u, mistakes: next, checkins: stampCheckin(u.checkins, 'mistakes') } };
             });
             const setVocabData = (updater) => setAllUsersData(prev => {
                 const u = prev[userPrefix] || {};
                 const next = typeof updater === 'function' ? updater(u.vocab || {}) : updater;
-                return { ...prev, [userPrefix]: { ...u, vocab: next, checkins: stampCheckin(u.checkins) } };
+                return { ...prev, [userPrefix]: { ...u, vocab: next, checkins: stampCheckin(u.checkins, 'vocab') } };
+            });
+            const grammarFillData = userData.grammarFill || {};
+            const setGrammarFillData = (updater) => setAllUsersData(prev => {
+                const u = prev[userPrefix] || {};
+                const next = typeof updater === 'function' ? updater(u.grammarFill || {}) : updater;
+                return { ...prev, [userPrefix]: { ...u, grammarFill: next, checkins: stampCheckin(u.checkins, 'grammarFill') } };
+            });
+            const finishGrammarFill = (score) => setGrammarFillData(prev => {
+                const rec = prev[unitKey] || { attempts: 0, best: 0 };
+                return { ...prev, [unitKey]: { attempts: (rec.attempts || 0) + 1, best: Math.max(rec.best || 0, score), lastAt: new Date().toLocaleString('zh-CN', { hour12: false }) } };
             });
 
-            // ── 连续学习天数 ──────────
+            // ── 连续学习天数 & 今日活动量 ──────────
             const checkins = userData.checkins || {};
+            const todayAct = (typeof checkins[todayStr()] === 'object') ? checkins[todayStr()] : {};
             const fmtDate = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
             const streakDays = (() => {
                 let n = 0;
@@ -3761,8 +4289,18 @@ Which option best expresses its meaning?`,
                     opts = shuffle([m.correctOpt, m.wrongOpt]);
                     ans = opts.indexOf(m.correctOpt);
                 }
-                return { q: m.q, opts, ans, rat: m.rat, source: 'AI生成' };
+                return { q: m.q, opts, ans, rat: m.rat, source: 'AI生成', mistakeId: m.id };
             });
+
+            // 到期错题（记忆曲线：新错题 3 天后到期，答对进 7 天档，连对两次攻克；旧数据无 srsDue 视为已到期）
+            const activeMistakes = mistakeBank.filter(m => !m.cleared);
+            const clearedMistakes = mistakeBank.filter(m => m.cleared);
+            const dueMistakes = activeMistakes.filter(m => (m.srsDue || 0) <= Date.now());
+
+            const startDueMistakePractice = () => {
+                if (dueMistakes.length === 0) return;
+                launchMistakeQuiz(shuffle(buildMistakeQuiz(dueMistakes)));
+            };
 
             const launchMistakeQuiz = (qs) => {
                 setQuizArr(qs);
@@ -3778,8 +4316,8 @@ Which option best expresses its meaning?`,
             };
 
             const startMistakePractice = () => {
-                if (mistakeBank.length === 0) return;
-                launchMistakeQuiz(shuffle(buildMistakeQuiz(mistakeBank)));
+                if (activeMistakes.length === 0) return;
+                launchMistakeQuiz(shuffle(buildMistakeQuiz(activeMistakes)));
             };
 
             const startSingleMistakePractice = (m) => {
@@ -3803,8 +4341,24 @@ Which option best expresses its meaning?`,
                         correctOpt: currentQ.opts[currentQ.ans],
                         rat: currentQ.rat,
                         meta: currentQ.meta,
+                        srsBox: 1,
+                        srsDue: Date.now() + 3 * SRS_DAY, // 3 天后回炉
+                        cleared: false,
                     };
                     setMistakeBank(prev => [mistakeCard, ...prev]);
+                }
+
+                // 错题练习模式：按记忆曲线更新错题状态（连对两次 → 攻克）
+                if (isMistakePractice && currentQ.mistakeId != null) {
+                    setMistakeBank(prev => prev.map(m => {
+                        if (m.id !== currentQ.mistakeId) return m;
+                        if (isCorrect) {
+                            const box = (m.srsBox || 1) + 1;
+                            if (box >= 3) return { ...m, srsBox: box, cleared: true, srsDue: null };
+                            return { ...m, srsBox: box, srsDue: Date.now() + 7 * SRS_DAY, cleared: false };
+                        }
+                        return { ...m, srsBox: 1, srsDue: Date.now() + 3 * SRS_DAY, cleared: false };
+                    }));
                 }
 
                 if (!isReinforcement && !isMistakePractice && (tab === 'quiz' || tab === 'gaokaoquiz')) {
@@ -3872,8 +4426,10 @@ Which option best expresses its meaning?`,
             };
 
             const navItems = [
+                { id: 'today', label: '今日任务', icon: <CheckCircle2 className="w-4 h-4" /> },
                 { id: 'notes', label: '核心笔记', icon: <BookOpen className="w-4 h-4" /> },
                 { id: 'vocab', label: '单词闯关', icon: <Brain className="w-4 h-4" /> },
+                { id: 'grammarfill', label: '语法填空', icon: <Zap className="w-4 h-4" /> },
                 { id: 'gaokao', label: '重点练习', icon: <Award className="w-4 h-4" /> },
                 { id: 'writing', label: '写作宝典', icon: <PenLine className="w-4 h-4" /> },
                 { id: 'cards', label: '互动卡片', icon: <Layers className="w-4 h-4" /> },
@@ -3887,6 +4443,59 @@ Which option best expresses its meaning?`,
             if (!isLoggedIn) return <LoginScreen onLogin={(user) => { setCurrentUser(user); setIsLoggedIn(true); }} />;
 
             const renderMainContent = () => {
+                if (tab === 'today') {
+                    const tasks = [
+                        { key: 'review', icon: <RotateCcw className="w-5 h-5" />, title: '复习到期单词', desc: dueReviewItems.length > 0 ? `${dueReviewItems.length} 个单词按记忆曲线到期` : '到期单词已清零，棒！', done: dueReviewItems.length === 0, action: () => setTab('review'), btn: '去复习' },
+                        { key: 'vocab', icon: <Brain className="w-5 h-5" />, title: '单词闯关练 10 个', desc: `今天已练 ${Math.min(todayAct.vocab || 0, 10)}/10 个`, done: (todayAct.vocab || 0) >= 10, action: () => setTab('vocab'), btn: '去闯关' },
+                        { key: 'grammarfill', icon: <Zap className="w-5 h-5" />, title: '语法填空做 1 篇', desc: '高考同款整篇仿真，10 空', done: (todayAct.grammarFill || 0) >= 1, action: () => setTab('grammarfill'), btn: '去做题' },
+                        { key: 'cards', icon: <Layers className="w-5 h-5" />, title: '互动卡片过一组', desc: '巩固本单元词汇和考点', done: (todayAct.cards || 0) >= 8, action: () => setTab('cards'), btn: '去刷卡' },
+                        ...(activeMistakes.length > 0 ? [{ key: 'mistakes', icon: <AlertCircle className="w-5 h-5" />, title: '清到期错题', desc: dueMistakes.length > 0 ? `${dueMistakes.length} 道错题到期待回炉` : '今天没有到期的错题', done: dueMistakes.length === 0, action: () => { if (dueMistakes.length > 0) startDueMistakePractice(); else setTab('mistakes'); }, btn: '去回炉' }] : []),
+                    ];
+                    const doneCount = tasks.filter(t => t.done).length;
+                    const allDone = doneCount === tasks.length;
+                    const dateLabel = new Date().toLocaleDateString('zh-CN', { month: 'long', day: 'numeric', weekday: 'long' });
+                    return (
+                        <div className="max-w-2xl mx-auto space-y-5">
+                            <div className={`card-lg p-6 md:p-8 ${allDone ? 'bg-gradient-to-br from-emerald-50 to-teal-50' : ''}`}>
+                                <div className="flex items-start justify-between gap-4 flex-wrap">
+                                    <div>
+                                        <div className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400 mb-1">{dateLabel}</div>
+                                        <h2 className="text-2xl font-bold tracking-tight">{currentUser === 'tangtang' ? '糖糖，' : ''}{allDone ? '今日任务全部完成！🎉' : '今天的学习清单'}</h2>
+                                        <p className="text-sm text-slate-500 font-medium mt-1">{allDone ? '坚持就是最了不起的天赋，明天见！' : '每天 20 分钟，按清单走就好'}</p>
+                                    </div>
+                                    <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-orange-50 border border-orange-100 shrink-0">
+                                        <Flame className="w-4 h-4 text-orange-500" />
+                                        <span className="text-[13px] font-bold text-orange-600">{streakDays > 0 ? `连续 ${streakDays} 天` : '点亮今天'}</span>
+                                    </div>
+                                </div>
+                                <div className="mt-5">
+                                    <div className="flex justify-between text-xs font-bold text-slate-400 mb-1.5"><span>完成进度</span><span>{doneCount} / {tasks.length}</span></div>
+                                    <div className="w-full h-2.5 pbar-track"><div className="h-full pbar-fill transition-all" style={{ width: `${Math.round(doneCount / tasks.length * 100)}%` }} /></div>
+                                </div>
+                            </div>
+                            <div className="space-y-3">
+                                {tasks.map(t => (
+                                    <div key={t.key} className={`card-lg p-5 flex items-center gap-4 ${t.done ? 'opacity-70' : ''}`}>
+                                        <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 ${t.done ? 'bg-emerald-100 text-emerald-600' : 'bg-indigo-50 text-indigo-500'}`}>
+                                            {t.done ? <CheckCircle2 className="w-5 h-5" /> : t.icon}
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <div className={`font-bold text-[15px] ${t.done ? 'text-slate-400 line-through' : 'text-slate-900'}`}>{t.title}</div>
+                                            <div className="text-[12px] text-slate-400 font-medium mt-0.5">{t.desc}</div>
+                                        </div>
+                                        {!t.done && <button onClick={t.action} className="px-4 py-2.5 rounded-xl bg-indigo-500 text-white text-[13px] font-bold active:scale-95 transition-transform shrink-0">{t.btn}</button>}
+                                    </div>
+                                ))}
+                            </div>
+                            <p className="text-center text-[12px] text-slate-400 font-medium">当前学习单元：{currentBookName} · Unit {activeUnit}（可在侧边栏切换）</p>
+                        </div>
+                    );
+                }
+
+                if (tab === 'grammarfill') {
+                    return <GrammarFill unitKey={unitKey} record={grammarFillData[unitKey]} onFinish={finishGrammarFill} />;
+                }
+
                 if (tab === 'notes') {
                     return (
                         <div className="space-y-6">
@@ -4146,17 +4755,30 @@ Which option best expresses its meaning?`,
                 }
 
                 if (tab === 'mistakes') {
+                    const srsLabel = (m) => {
+                        if (m.cleared) return null;
+                        if ((m.srsDue || 0) <= Date.now()) return { text: '📌 已到期 · 该回炉了', cls: 'bg-amber-100 text-amber-700' };
+                        const days = Math.ceil((m.srsDue - Date.now()) / SRS_DAY);
+                        return { text: `${(m.srsBox || 1) >= 2 ? '连对1次 · ' : ''}${days} 天后回炉`, cls: 'bg-slate-100 text-slate-500' };
+                    };
                     return (
                         <div>
-                            <h2 className="text-2xl font-bold tracking-tight mb-6">错题库</h2>
+                            <h2 className="text-2xl font-bold tracking-tight mb-2">错题库</h2>
+                            <p className="text-[13px] text-slate-400 font-medium mb-6">错题按记忆曲线回炉：做错 3 天后到期，答对进入 7 天档，连对两次算攻克。</p>
                             {mistakeBank.length === 0 ? (
                                 <div className="text-center p-10 card-lg text-slate-400 font-medium">还没有错题，继续保持。</div>
                             ) : (
                                 <div className="space-y-6">
-                                    {mistakeBank.map((m) => (
+                                    {dueMistakes.length > 0 && (
+                                        <button onClick={startDueMistakePractice} className="w-full py-4 bg-gradient-to-r from-amber-400 to-orange-400 text-white rounded-2xl font-bold active:scale-95 transition-transform flex items-center justify-center gap-2 shadow-lg shadow-amber-400/25"><Zap className="w-4 h-4" />练到期错题（{dueMistakes.length} 题）</button>
+                                    )}
+                                    {activeMistakes.map((m) => (
                                         <div key={m.id} className="card-lg p-6 border-l-4 border-rose-500 relative">
                                             <button onClick={() => setMistakeBank((prev) => prev.filter((x) => x.id !== m.id))} className="absolute top-4 right-4 p-2 text-slate-300 active:text-rose-500"><XCircle className="w-5 h-5" /></button>
-                                            <div className="text-[10px] font-bold text-slate-400 mb-3 uppercase tracking-wider">{m.unitKey}</div>
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{m.unitKey}</span>
+                                                {(() => { const s = srsLabel(m); return s ? <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${s.cls}`}>{s.text}</span> : null; })()}
+                                            </div>
                                             <p className="font-semibold text-[15px] mb-4 leading-relaxed whitespace-pre-wrap">{m.q}</p>
                                             <div className="flex flex-col gap-2 mb-4">
                                                 <div className="bg-rose-50 text-rose-700 px-3 py-2.5 rounded-xl text-sm font-medium flex items-center gap-2"><XCircle className="w-4 h-4" />{m.wrongOpt}</div>
@@ -4166,8 +4788,24 @@ Which option best expresses its meaning?`,
                                             <button onClick={() => startSingleMistakePractice(m)} className="w-full py-3.5 bg-amber-50 text-amber-700 font-bold rounded-xl active:bg-amber-100 transition-colors flex items-center justify-center gap-2"><Zap className="w-4 h-4" />再练这道（换选项顺序）</button>
                                         </div>
                                     ))}
-                                    <button onClick={startMistakePractice} className="w-full mt-6 py-4 bg-rose-500 text-white rounded-2xl font-bold active:scale-95 transition-transform flex items-center justify-center gap-2"><RotateCcw className="w-4 h-4" />重新练习所有错题（{mistakeBank.length} 题）</button>
-                                    <button onClick={() => setMistakeBank([])} className="w-full mt-3 py-4 btn-ghost text-rose-500">清空错题库</button>
+                                    {activeMistakes.length === 0 && <div className="text-center p-8 card-lg text-emerald-600 font-bold">🎉 待攻克的错题清零了！</div>}
+                                    {activeMistakes.length > 0 && <button onClick={startMistakePractice} className="w-full mt-2 py-4 bg-rose-500 text-white rounded-2xl font-bold active:scale-95 transition-transform flex items-center justify-center gap-2"><RotateCcw className="w-4 h-4" />重新练习所有错题（{activeMistakes.length} 题）</button>}
+                                    {clearedMistakes.length > 0 && (
+                                        <div className="card-lg p-6">
+                                            <h3 className="font-bold text-[15px] text-emerald-600 mb-4">✅ 已攻克（{clearedMistakes.length} 题）</h3>
+                                            <div className="space-y-3">
+                                                {clearedMistakes.map((m) => (
+                                                    <div key={m.id} className="p-4 bg-emerald-50/50 border border-emerald-100 rounded-2xl relative">
+                                                        <button onClick={() => setMistakeBank((prev) => prev.filter((x) => x.id !== m.id))} className="absolute top-3 right-3 p-1 text-slate-300 active:text-rose-500"><XCircle className="w-4 h-4" /></button>
+                                                        <div className="text-[10px] font-bold text-slate-400 mb-1 uppercase tracking-wider">{m.unitKey}</div>
+                                                        <p className="text-[13px] font-medium text-slate-600 leading-relaxed pr-6">{m.q}</p>
+                                                        <p className="text-[12px] font-bold text-emerald-700 mt-1">✓ {m.correctOpt}</p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                    <button onClick={() => { if (window.confirm('确定清空全部错题（含已攻克）吗？')) setMistakeBank([]); }} className="w-full mt-3 py-4 btn-ghost text-rose-500">清空错题库</button>
                                 </div>
                             )}
                         </div>
@@ -4336,7 +4974,7 @@ Which option best expresses its meaning?`,
                                     </div>
                                 </div>
 
-                                <div className="space-y-2">
+                                <div className="space-y-2 flex-1 min-h-0 overflow-y-auto">
                                     {navItems.map((item) => (
                                         <button
                                             key={item.id}

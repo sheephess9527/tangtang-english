@@ -70,10 +70,11 @@
 | `UNIT_DB` | 281 | **每个单元的学习内容**。每单元含 `title`、`msg`（老师寄语）、`words`（Level1 核心词）、`l2`（Level2 熟词生义/派生）、`grammar`（语法点）、`sentences`（例句）。 |
 | `UNIVERSAL_TIPS` | 330 | **通用**高考解题诀窍：`cloze`(完形3条) / `grammarFill`(语法填空3条) / `reading`(阅读4条)。所有单元共享，渲染在每个单元笔记底部的折叠面板里。 |
 | `WRITING_DB` | 352 | **写作宝典**：`principles`(写作心法5条) + `letters`(8 大类应用文，每类 结构框架+5必背句型+范文) + `xuxie`(读后续写：4技巧 + 情绪5组/动作4组/环境3组素材句)。 |
-| `EXAM_TIPS_DB` | 531 | **每个单元专属**的解题诀窍。结构：`{ 'B1-1': { examTips:[{t,r,eg}×3], readingTips:[{t,r}×2] }, ... }`。35 单元，每单元 **3 条题型诀窍 + 2 条阅读诀窍**，与该单元的语法考点和课文体裁绑定。 |
-| `QUESTION_BANK` | 1556 | **题库**：35 单元 × 20 题 = 700 题选择题。每题 `{q, opts[4], ans(正确项下标), source, rat(解析)}`。答案分布均匀(A:B:C:D≈175:175:175:175)。 |
-| `SRS_INTERVALS` | 3092 | 间隔重复(Leitner 5 盒)的天数间隔 `[0,1,3,7,15]`，index = box-1。 |
-| `SRS_DAY` | 3093 | `24*60*60*1000`。 |
+| `GRAMMAR_FILL_DB` | 535 | **语法填空整篇仿真**：35 单元 × 1 篇短文 × 10 空。`text` 内 `{1}`–`{10}` 为空位；`blanks[i]` = `{hint(提示词,空串=纯空格), ans(可接受答案数组,小写比对), tag(考点), noChange?(零变化陷阱标记)}`。 |
+| `EXAM_TIPS_DB` | 958 | **每个单元专属**的解题诀窍。结构：`{ 'B1-1': { examTips:[{t,r,eg}×3], readingTips:[{t,r}×2] }, ... }`。35 单元，每单元 **3 条题型诀窍 + 2 条阅读诀窍**，与该单元的语法考点和课文体裁绑定。 |
+| `QUESTION_BANK` | 1983 | **题库**：35 单元 × 20 题 = 700 题选择题。每题 `{q, opts[4], ans(正确项下标), source, rat(解析)}`。答案分布均匀(A:B:C:D≈175:175:175:175)。 |
+| `SRS_INTERVALS` | 3519 | 间隔重复(Leitner 5 盒)的天数间隔 `[0,1,3,7,15]`，index = box-1。 |
+| `SRS_DAY` | 3520 | `24*60*60*1000`。 |
 
 ### `UNIT_DB` 里单个 word 的字段
 ```js
@@ -89,14 +90,18 @@
 
 | 组件 | 行号(约) | 职责 |
 |---|---|---|
-| `LoginScreen` | 2957 | 密码登录（见红线 §2）。 |
-| `FlashcardCarousel` | 3004 | 互动卡片（3D 翻卡）。"不知道"的词会进 SRS 队列；结束有"去单词闯关测一测"按钮（`onGoPractice`）。 |
-| `VocabDrill` | 3096 | **单词闯关**：基于间隔重复(SRS)的练习，三种作答模式：**选择**(4 选 1) / **拼写**(输入，给首字母提示) / **听写**(TTS 放音+输入)。传入 `globalItems` 时变身**跨单元"今日复习"**模式（词条带 `_uk` 标记所属单元）。答对升盒、答错回 1 盒重排。 |
-| `WritingView` | 3286 | **写作宝典**：渲染 `WRITING_DB`（应用文模板/读后续写/写作心法 三个子页），句子可点读。 |
-| `App` | 3390 | 根组件。登录、导航、所有 tab 的渲染与状态。含：打卡(`stampCheckin`嵌在各 setter 里)、连续天数(`streakDays`)、跨单元到期词(`dueReviewItems`)、数据导出导入(`exportUserData`/`importUserData`)。 |
+| `LoginScreen` | 3384 | 密码登录（见红线 §2）。 |
+| `FlashcardCarousel` | 3431 | 互动卡片（3D 翻卡）。"不知道"的词会进 SRS 队列；结束有"去单词闯关测一测"按钮（`onGoPractice`）。 |
+| `VocabDrill` | 3523 | **单词闯关**：基于间隔重复(SRS)的练习，三种作答模式：**选择**(4 选 1) / **拼写**(输入，给首字母提示) / **听写**(TTS 放音+输入)。传入 `globalItems` 时变身**跨单元"今日复习"**模式（词条带 `_uk` 标记所属单元）。答对升盒、答错回 1 盒重排。 |
+| `GrammarFill` | 3715 | **语法填空整篇仿真**：渲染 `GRAMMAR_FILL_DB[unitKey]`，行内输入框 + 交卷判分（多答案容错、大小写不敏感）+ 错空解析（正确答案+考点标签）。`onFinish(score)` 回写 `userData.grammarFill` 并打卡。 |
+| `WritingView` | 3804 | **写作宝典**：渲染 `WRITING_DB`（应用文模板/读后续写/写作心法 三个子页），句子可点读。 |
+| `App` | 3908 | 根组件。登录、导航、所有 tab 的渲染与状态。含：打卡(`stampCheckin(c,kind)`分类计数嵌在各 setter 里)、连续天数(`streakDays`)、今日活动量(`todayAct`)、跨单元到期词(`dueReviewItems`)、到期错题(`dueMistakes`)、数据导出导入(`exportUserData`/`importUserData`)。 |
 
-### 导航 tab（`navItems`，约 line 3872）
-`notes`(核心笔记) · `vocab`(单词闯关) · `gaokao`(重点练习→真题模式 `gaokaoquiz`) · `writing`(写作宝典) · `cards`(互动卡片) · `mistakes`(错题库) · `mastery`(进度)。另有不在导航里的 `review`(今日复习，由 notes/vocab 页的横幅进入)。
+### 导航 tab（`navItems`，约 line 4428）
+`today`(今日任务，**登录默认落地页**) · `notes`(核心笔记) · `vocab`(单词闯关) · `grammarfill`(语法填空) · `gaokao`(重点练习→真题模式 `gaokaoquiz`) · `writing`(写作宝典) · `cards`(互动卡片) · `mistakes`(错题库) · `mastery`(进度)。另有不在导航里的 `review`(今日复习，由今日任务/笔记/闯关页入口进入)。
+
+### 错题 SRS（记忆曲线）
+错题项带 `srsBox / srsDue / cleared`：做错入库 3 天后到期 → 错题练习答对进 7 天档 → 再答对 `cleared:true` 归档"已攻克"；答错任何一次重回 3 天档。错题练习的题目经 `mistakeId` 关联回写。旧数据无 `srsDue` 视为已到期。
 
 ---
 
@@ -106,9 +111,10 @@
 - 数据按用户分桶：`allUsersData[userPrefix]`，`userPrefix` = `'tangtang'` / `'mama'` / `'guest'`。
 - 每个用户桶的字段：
   ```
-  { progress:{}, cardLoop:{}, mistakes:[], vocab:{}, mastery:{}, checkins:{} }
+  { progress:{}, cardLoop:{}, mistakes:[], vocab:{}, mastery:{}, checkins:{}, grammarFill:{} }
   ```
-  - `checkins` = 打卡记录 `{'2026-07-03': true, ...}`，由各 setter 里的 `stampCheckin` 自动盖章，用于计算连续学习天数。
+  - `checkins` = 打卡记录 `{'2026-07-03': {vocab: 12, cards: 8, quiz: 5, grammarFill: 1}, ...}`（旧版值为 `true`，代码已兼容），由各 setter 里的 `stampCheckin(c, kind)` 自动分类计数——既算连续天数，也驱动"今日任务"的完成判定。
+  - `grammarFill` = 语法填空成绩 `{'B1-1': {attempts, best, lastAt}}`。
   - `vocab` = SRS 记忆库，key 由 `vocabKey(unitKey, w)` = `` `${unitKey}::${w}` `` 生成，值 `{box, due, seen}`。
   - 互动卡片"不知道"的结果会**同步写进 `vocab`**（卡片与单词闯关共享记忆）。
 
@@ -192,6 +198,9 @@ catch(err){ console.error('❌', err.message, err.loc||''); }
 - ✅ **跨单元今日复习**（`review` tab）：汇总全书到期单词一键复习，SRS 真正闭环。
 - ✅ **数据导出/导入**：侧边栏按钮，下载/恢复 JSON 备份，防 localStorage 丢失。
 - ✅ **拼写/听写模式**：单词闯关三模式切换，拼写贴近真题语法填空（无选项），听写练听力基本功。
+- ✅ **语法填空整篇仿真**（`grammarfill` tab）：35 篇短文 × 10 空，高考同款格式（给词变形+纯空格），输入判卷、多答案容错、错空带考点解析。
+- ✅ **今日任务**（`today` tab，登录默认页）：每日清单（复习到期词/闯关10词/语法填空1篇/卡片1组/清到期错题），完成自动打勾，全完成点亮火苗。
+- ✅ **错题记忆曲线**：错题 3 天后自动到期回炉，连对两次归档"已攻克"，到期错题在今日任务和错题库置顶提示。
 - ✅ TTS 朗读（Web Speech API，0.85x 语速适配跟读）。
 
 ---

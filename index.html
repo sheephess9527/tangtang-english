@@ -5452,6 +5452,16 @@ Which option best expresses its meaning?`,
         const SRS_DAY = 24 * 60 * 60 * 1000;
         const vocabKey = (unitKey, w) => `${unitKey}::${w}`;
 
+        // 记忆阶梯：记忆越牢，检索方式越难（认识 → 回想 → 语境 → 拼写 → 听写）
+        const VOCAB_LADDER = [
+            { qt: 'meanChoice', label: '看词选义', desc: '刚认识：看英文选中文' },
+            { qt: 'wordChoice', label: '看义选词', desc: '反向回想：看中文选英文' },
+            { qt: 'sentChoice', label: '例句填空', desc: '语境运用：句子里选词' },
+            { qt: 'spell', label: '拼写', desc: '主动输出：自己拼出来' },
+            { qt: 'listen', label: '听写', desc: '终极检验：听音默写' },
+        ];
+        const typeForBox = (box) => VOCAB_LADDER[Math.max(0, Math.min((box || 1) - 1, 4))].qt;
+
         const VocabDrill = ({ unitData, unitKey, vocabData, setVocabData, playAudio, playingWord, globalItems }) => {
             const isGlobal = !!globalItems; // 跨单元"今日复习"模式
             // 全局词表在挂载时冻结：作答会让到期列表实时缩小，若跟随 props 变化会跳过结算画面
@@ -5460,18 +5470,23 @@ Which option best expresses its meaning?`,
             const keyOf = (w) => vocabKey(w._uk || unitKey, w.w);
             const buildDeck = () => {
                 if (words.length === 0) return [];
-                if (isGlobal) return shuffle(words.slice()); // 全局模式：传入的都是到期词
-                const now = Date.now();
-                const due = words.filter(w => {
-                    const rec = vocabData[keyOf(w)];
-                    return !rec || (rec.due || 0) <= now;
-                });
-                return shuffle((due.length > 0 ? due : words).slice());
+                let list;
+                if (isGlobal) list = words.slice(); // 全局模式：传入的都是到期词
+                else {
+                    const now = Date.now();
+                    const due = words.filter(w => {
+                        const rec = vocabData[keyOf(w)];
+                        return !rec || (rec.due || 0) <= now;
+                    });
+                    list = (due.length > 0 ? due : words).slice();
+                }
+                // 智能模式：出题时按当时的记忆等级冻结题型（作答会改盒级，不能跟着变）
+                return shuffle(list).map(w => ({ ...w, _qt: typeForBox(vocabData[keyOf(w)]?.box), _opts: null, _mopts: null }));
             };
             const [deck, setDeck] = useState(buildDeck);
             const [pos, setPos] = useState(0);
             const [picked, setPicked] = useState(null);
-            const [mode, setMode] = useState('choice'); // choice 选择 | spell 拼写 | listen 听写
+            const [mode, setMode] = useState('auto'); // auto 智能(按记忆阶梯) | choice 选择 | spell 拼写 | listen 听写
             const [typed, setTyped] = useState('');
             const [inputResult, setInputResult] = useState(null);
             const [roundDone, setRoundDone] = useState(0);
@@ -5516,6 +5531,12 @@ Which option best expresses its meaning?`,
             }
 
             const cur = deck[pos];
+            const curBox = vocabData[keyOf(cur)]?.box || 1;
+            // 当前题型：智能模式用出题时冻结的 _qt；手动模式按选择的 tab
+            const qType = mode === 'auto' ? (cur._qt || 'sentChoice') : (mode === 'choice' ? 'sentChoice' : mode);
+            const ladderInfo = VOCAB_LADDER.find(l => l.qt === qType) || VOCAB_LADDER[2];
+            const isChoiceType = qType === 'meanChoice' || qType === 'wordChoice' || qType === 'sentChoice';
+
             // 干扰项：同单元其他词；全局模式下不足时用该词所在单元补齐
             let others = words.filter(w => w.w !== cur.w);
             if (others.length < 3) {
@@ -5524,10 +5545,15 @@ Which option best expresses its meaning?`,
             }
             const distractors = shuffle(others.slice()).slice(0, 3).map(w => w.w);
             const opts = (cur._opts || (cur._opts = shuffle([cur.w, ...distractors])));
+            // 词义选项（看词选义用）：正确释义 + 3 个同单元其他词的释义
+            const meanDistractors = shuffle(others.map(o => o.m).filter((m, i, a) => m !== cur.m && a.indexOf(m) === i)).slice(0, 3);
+            const mopts = (cur._mopts || (cur._mopts = shuffle([cur.m, ...meanDistractors])));
+            const choiceOpts = qType === 'meanChoice' ? mopts : opts;
+            const choiceAnswer = qType === 'meanChoice' ? cur.m : cur.w;
             const blanked = cur.ex.replace(new RegExp(cur.w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'), '_____');
 
-            const answered = mode === 'choice' ? picked !== null : inputResult !== null;
-            const isCorrect = mode === 'choice' ? (picked !== null && opts[picked] === cur.w) : inputResult === true;
+            const answered = isChoiceType ? picked !== null : inputResult !== null;
+            const isCorrect = isChoiceType ? (picked !== null && choiceOpts[picked] === choiceAnswer) : inputResult === true;
 
             const applyResult = (correct) => {
                 const rec = vocabData[keyOf(cur)] || { box: 1, seen: 0 };
@@ -5536,13 +5562,13 @@ Which option best expresses its meaning?`,
                 setVocabData(prev => ({ ...prev, [keyOf(cur)]: { box: newBox, due, seen: (rec.seen || 0) + 1 } }));
                 setRoundDone(n => n + 1);
                 if (correct) setRoundRight(n => n + 1);
-                else setDeck(d => [...d, cur]); // 答错本组内再练一次
+                else setDeck(d => [...d, { ...cur, _qt: 'meanChoice', _opts: null, _mopts: null }]); // 答错：本组内退回最基础题型再练一次
             };
 
             const onPick = (idx) => {
                 if (picked !== null) return;
                 setPicked(idx);
-                applyResult(opts[idx] === cur.w);
+                applyResult(choiceOpts[idx] === choiceAnswer);
             };
 
             const onSubmitTyped = () => {
@@ -5563,6 +5589,7 @@ Which option best expresses its meaning?`,
             };
 
             const modeTabs = [
+                { id: 'auto', label: '✦ 智能' },
                 { id: 'choice', label: '选择' },
                 { id: 'spell', label: '拼写' },
                 { id: 'listen', label: '听写' },
@@ -5576,20 +5603,45 @@ Which option best expresses its meaning?`,
                             <span className="text-xs font-bold text-slate-400">{isGlobal ? `第 ${Math.min(pos + 1, deck.length)} / ${deck.length} 个` : `本单元已掌握 ${masteredCount}/${words.length}`}</span>
                         </div>
 
-                        <div className="flex gap-2 mb-6">
+                        <div className="flex gap-2 mb-4 flex-wrap">
                             {modeTabs.map(t => (
                                 <button key={t.id} onClick={() => switchMode(t.id)} className={`px-4 py-1.5 rounded-full text-[12px] font-bold transition-all ${mode === t.id ? 'bg-violet-500 text-white shadow-md shadow-violet-500/25' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}>{t.label}</button>
                             ))}
                         </div>
 
-                        {mode !== 'listen' && (
+                        <div className="flex items-center justify-between gap-3 mb-5 px-3.5 py-2.5 bg-violet-50/70 border border-violet-100 rounded-xl">
+                            <div className="flex items-center gap-1.5">
+                                <span className="text-[10px] font-bold text-violet-400 uppercase tracking-wider mr-1">记忆等级</span>
+                                {[1, 2, 3, 4, 5].map(b => (
+                                    <span key={b} className={`w-2.5 h-2.5 rounded-full transition-colors ${b <= curBox ? 'bg-violet-500' : 'bg-violet-200/70'}`} />
+                                ))}
+                            </div>
+                            <span className="text-[11px] font-bold text-violet-600">{ladderInfo.label}{mode === 'auto' ? ` · ${ladderInfo.desc}` : ''}</span>
+                        </div>
+
+                        {qType === 'meanChoice' && (
+                            <div className="text-center mb-6">
+                                <div className="text-[11px] font-bold text-violet-400 uppercase tracking-widest mb-3">选出正确的中文意思</div>
+                                <p className="text-4xl font-black tracking-tight mb-2 cursor-pointer inline-flex items-center gap-3" onClick={(e) => playAudio(cur.w, e)}>
+                                    {cur.w} <Volume2 className={`w-6 h-6 ${playingWord === cur.w ? 'text-violet-500' : 'text-slate-300'}`} />
+                                </p>
+                                <p className="text-[12px] text-slate-400 font-medium mb-2">点单词可听发音</p>
+                            </div>
+                        )}
+                        {qType === 'wordChoice' && (
+                            <div className="text-center mb-6">
+                                <div className="text-[11px] font-bold text-violet-400 uppercase tracking-widest mb-3">选出对应的英文单词</div>
+                                <p className="text-3xl font-black tracking-tight mb-2">{cur.m}</p>
+                            </div>
+                        )}
+                        {(qType === 'sentChoice' || qType === 'spell') && (
                             <>
-                                <div className="text-[11px] font-bold text-violet-400 uppercase tracking-widest mb-2">{mode === 'choice' ? '选出填入空格的词' : '拼出填入空格的词'}</div>
+                                <div className="text-[11px] font-bold text-violet-400 uppercase tracking-widest mb-2">{qType === 'sentChoice' ? '选出填入空格的词' : '拼出填入空格的词'}</div>
                                 <p className="text-[18px] font-semibold leading-relaxed mb-2 whitespace-pre-wrap">{blanked}</p>
-                                <p className="text-sm font-medium text-slate-500 mb-6">{cur.exCn}（提示：{cur.m}{mode === 'spell' ? ` · 首字母 ${cur.w[0]}` : ''}）</p>
+                                <p className="text-sm font-medium text-slate-500 mb-6">{cur.exCn}（提示：{cur.m}{qType === 'spell' ? ` · 首字母 ${cur.w[0]}` : ''}）</p>
                             </>
                         )}
-                        {mode === 'listen' && (
+                        {qType === 'listen' && (
                             <div className="text-center mb-6">
                                 <div className="text-[11px] font-bold text-violet-400 uppercase tracking-widest mb-4">听发音，拼出这个单词</div>
                                 <button onClick={(e) => playAudio(cur.w, e)} className="w-24 h-24 rounded-full bg-gradient-to-br from-violet-500 to-indigo-500 text-white flex items-center justify-center mx-auto shadow-lg shadow-violet-500/30 active:scale-95 transition-transform mb-4">
@@ -5599,13 +5651,13 @@ Which option best expresses its meaning?`,
                             </div>
                         )}
 
-                        {mode === 'choice' ? (
+                        {isChoiceType ? (
                             <div className="space-y-3">
-                                {opts.map((opt, i) => (
-                                    <button key={i} onClick={() => onPick(i)} className={`w-full p-4 rounded-2xl border-2 text-left transition-all flex items-center justify-between text-[15px] font-bold ${picked === null ? 'border-slate-100 bg-white active:bg-slate-50 hover:border-violet-200' : opt === cur.w ? 'option-correct text-emerald-800' : picked === i ? 'option-wrong text-rose-800' : 'border-slate-50 opacity-40'}`}>
+                                {choiceOpts.map((opt, i) => (
+                                    <button key={i} onClick={() => onPick(i)} className={`w-full p-4 rounded-2xl border-2 text-left transition-all flex items-center justify-between text-[15px] font-bold ${picked === null ? 'border-slate-100 bg-white active:bg-slate-50 hover:border-violet-200' : opt === choiceAnswer ? 'option-correct text-emerald-800' : picked === i ? 'option-wrong text-rose-800' : 'border-slate-50 opacity-40'}`}>
                                         <span>{opt}</span>
-                                        {picked !== null && opt === cur.w && <CheckCircle2 className="w-5 h-5 text-emerald-500" />}
-                                        {picked !== null && picked === i && opt !== cur.w && <XCircle className="w-5 h-5 text-rose-500" />}
+                                        {picked !== null && opt === choiceAnswer && <CheckCircle2 className="w-5 h-5 text-emerald-500" />}
+                                        {picked !== null && picked === i && opt !== choiceAnswer && <XCircle className="w-5 h-5 text-rose-500" />}
                                     </button>
                                 ))}
                             </div>
@@ -5625,9 +5677,9 @@ Which option best expresses its meaning?`,
                         {answered && (
                             <div className="mt-8">
                                 <div className="p-5 bg-slate-50 rounded-2xl mb-6">
-                                    <div className={`font-bold text-[11px] mb-2 uppercase tracking-widest ${isCorrect ? 'text-emerald-500' : 'text-rose-500'}`}>{isCorrect ? 'Correct' : '记住它'}</div>
+                                    <div className={`font-bold text-[11px] mb-2 uppercase tracking-widest ${isCorrect ? 'text-emerald-500' : 'text-rose-500'}`}>{isCorrect ? (mode === 'auto' && curBox < 5 ? `Correct · 记忆升到 ${curBox} 级` : 'Correct') : '记住它（已退回第 1 级，稍后再练）'}</div>
                                     <p className="text-slate-800 text-[15px] font-bold mb-1 cursor-pointer inline-flex items-center gap-2" onClick={(e) => playAudio(cur.w, e)}>
-                                        {cur.w} <Volume2 className={`w-4 h-4 ${playingWord === cur.w ? 'text-violet-500' : 'text-slate-300'}`} />
+                                        {cur.w} <span className="font-medium text-slate-500">{cur.m}</span> <Volume2 className={`w-4 h-4 ${playingWord === cur.w ? 'text-violet-500' : 'text-slate-300'}`} />
                                     </p>
                                     <p className="text-slate-600 text-sm font-medium leading-relaxed">{cur.ex}</p>
                                     <p className="text-slate-400 text-xs font-medium mt-1">{cur.exCn}</p>

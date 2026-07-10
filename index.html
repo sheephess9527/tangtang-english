@@ -960,36 +960,1931 @@
         //      qs[i].skill 标注该题用的解题诀窍，判卷后展示，让诀窍落地
         // ==========================================
         const READING_DB = {
-            'B1-1': { title: 'Fitting In at Senior High', genre: '记叙文 · 成长', text: "When Li Ming started senior high school last September, he felt lost. The campus was three times bigger than his old school, and his new classmates all seemed smarter than him. In the first month, he failed two maths tests and thought about giving up his dream of college.\n\nEverything changed when his English teacher, Ms Chen, asked him to join the school radio station. \"Your voice is a gift,\" she said. At first, Li Ming refused because he was afraid of making mistakes. But Ms Chen told him something he still remembers: \"Confidence doesn't come before success — it comes from small steps.\" He started by reading a two-minute news report every Friday. Slowly, his English improved, and so did his other subjects.\n\nNow, one year later, Li Ming leads the radio station. When new students say they feel nervous, he always smiles and tells them his own story.", qs: [
-                { q: 'How did Li Ming feel when he first entered senior high school?', opts: ['Confident and excited.', 'Lost and stressed.', 'Bored with his classes.', 'Angry with his teacher.'], ans: 1, skill: '细节题：回原文定位', rat: '定位第一段 "he felt lost"、"failed two maths tests and thought about giving up"——他感到迷茫、有压力。A 与原文相反；C、D 原文未提。' },
-                { q: 'Why did Li Ming refuse to join the radio station at first?', opts: ['He disliked reading news.', 'He was too busy with maths.', 'He feared making mistakes.', 'His teacher forced him to study.'], ans: 2, skill: '细节题：because 后找原因', rat: '定位第二段 "he refused because he was afraid of making mistakes"，C 是原文同义改写（fear = be afraid of）。其余选项无原文依据。' },
-                { q: "What does Ms Chen's advice suggest?", opts: ['Success always comes quickly.', 'Confidence grows through small actions.', 'Talent matters more than effort.', 'Students should avoid difficult tasks.'], ans: 1, skill: '推断题：答案是原文的合理延伸', rat: '"Confidence doesn\'t come before success — it comes from small steps" 的合理延伸就是 B：自信从小行动中积累。A、C、D 都与这句话矛盾。' },
-                { q: 'What is the best title for the text?', opts: ['A Famous School Radio Station', 'How to Pass Maths Tests', 'Small Steps, Big Changes', 'A Strict English Teacher'], ans: 2, skill: '主旨题：首尾段+中心句', rat: '全文讲李明通过"每周两分钟"的小步骤走出迷茫、获得成长，C 概括全文。A、B、D 都只是局部细节，范围太窄。' },
-            ] },
-            'B1-2': { title: 'Green Lake Weekend Tours', genre: '应用文 · 广告', text: "Looking for a weekend escape? Join our Green Lake Tours!\n\nTour A: Lakeside Walk (Saturday)\nEnjoy a guided 5-kilometre walk along the lake, visit the 800-year-old Stone Bridge, and taste local snacks at the fishing village. Departure: 8:30 a.m. Price: $25 per person.\n\nTour B: Mountain View (Sunday)\nTake the cable car up Cloud Mountain for a breathtaking view of the whole lake. The tour includes a picnic lunch. Departure: 9:00 a.m. Price: $40 per person, $30 for students with ID cards.\n\nBooking: Book online at least two days in advance. Groups of ten or more get a 20% discount on either tour. Children under six travel free with an adult.\n\nNote: Tour B may be cancelled in bad weather. In that case, visitors can get a full refund or change to Tour A for free.", qs: [
-                { q: 'How much should a student with an ID card pay for Tour B?', opts: ['$40.', '$30.', '$25.', '$20.'], ans: 1, skill: '数字题：直接定位价格', rat: '定位 Tour B 的价格行："$30 for students with ID cards"。别被 $40（成人价）和 $25（Tour A 价格）干扰——数字题一定看清"哪个项目、哪类人"。' },
-                { q: 'What can visitors do on Tour A?', opts: ['Take a cable car.', 'Have a picnic lunch.', 'Visit an ancient bridge.', 'Swim in the lake.'], ans: 2, skill: '细节题：按板块定位', rat: 'Tour A 板块提到 "visit the 800-year-old Stone Bridge"，C 中 ancient 是 800-year-old 的同义改写。A、B 属于 Tour B；D 原文未提。' },
-                { q: 'If Tour B is cancelled because of rain, visitors can ______.', opts: ['get half of their money back', 'only wait for the next Sunday', 'get a full refund or join Tour A free', 'complain to the tour guide'], ans: 2, skill: '细节题：Note/注意事项必出题', rat: '广告类文章的 Note 部分几乎必出题：原文 "get a full refund or change to Tour A for free" 就是 C。A"退一半"篡改了数字，属于偷换细节。' },
-                { q: 'How can a group of twelve save money?', opts: ['By booking on the departure day.', 'By bringing children under six.', 'By showing student ID cards.', 'By using the group discount.'], ans: 3, skill: '细节题：条件匹配', rat: '"Groups of ten or more get a 20% discount"——12 人满足"十人及以上"，用团体折扣。A 与"提前两天预订"矛盾；B、C 与"12人团省钱"无关。' },
-            ] },
-            'B1-3': { title: 'The Slowest Runner', genre: '记叙文 · 体育励志', text: "At the city marathon last year, most eyes were on the fastest runners. Mine were on the slowest one.\n\nHer name was Granny Zhao, aged 68. She had started running only three years before, after a serious illness almost took her life. \"The doctor said walking would help my recovery,\" she told reporters, wiping the sweat from her face. \"So I walked. Then one day, I ran a little. And I never stopped.\"\n\nDuring the race, her legs shook and her speed dropped, but she refused to get on the rescue bus. Young runners passed her, then turned back to run beside her and cheer her on. When she finally crossed the finish line — five hours and forty minutes after the start — the crowd stood up and clapped as if she had won the championship.\n\nIn a way, she had. The prize she won was not a medal, but the belief that it is never too late to start.", qs: [
-                { q: 'Why did Granny Zhao start running?', opts: ['To win a marathon medal.', 'To help her body recover.', 'To become famous in the city.', 'To make young friends.'], ans: 1, skill: '细节题：找原因看引语', rat: '定位她的原话："The doctor said walking would help my recovery"——先走路助康复，后来才开始跑。B 是同义改写。A、C、D 无原文依据。' },
-                { q: 'What happened during the race?', opts: ['She gave up halfway.', 'She took the rescue bus.', 'Young runners encouraged her.', 'She finished first in her group.'], ans: 2, skill: '细节题：动作链定位', rat: '原文 "turned back to run beside her and cheer her on"，C 中 encourage = cheer on（同义改写）。A、B 与 "refused to get on the rescue bus" 相反。' },
-                { q: 'The underlined phrase "In a way, she had" means she had ______.', opts: ['won something more valuable', 'broken the marathon record', 'received a real medal', 'lost the race completely'], ans: 0, skill: '猜词/句意题：看上下文', rat: '往下看下一句："The prize she won was not a medal, but the belief..."——她赢得的是比奖牌更珍贵的东西（信念）。理解代词和省略要看前后句。' },
-                { q: 'What does the story mainly tell us?', opts: ['Marathons are dangerous for old people.', 'Fast runners deserve more attention.', 'It is never too late to begin.', 'Doctors give the best training advice.'], ans: 2, skill: '主旨题：末段点题', rat: '记叙文主旨常在末段升华句："it is never too late to start"，C 是其同义改写。A、B、D 均与文章立场相反或无关。' },
-            ] },
-            'B1-4': { title: 'Dog Hero of the Landslide', genre: '新闻报道 · 灾难救援', text: "XINHUA, Tuesday — A rescue dog named Leo has become a national hero after helping save six people from a landslide in a mountain village last Friday.\n\nHeavy rain had fallen for three days before the disaster happened at about 5 a.m., when most villagers were still asleep. Mud and rocks buried more than twenty houses within minutes. Rescue teams arrived two hours later, but thick mud made the search extremely difficult.\n\nThat was when Leo went to work. Trained to smell people trapped under ruins, the four-year-old dog located six survivors in the first day, including a two-month-old baby sleeping in her mother's arms. \"Every minute matters in a rescue,\" said Leo's trainer, Mr Wang. \"Machines can lift rocks, but they cannot smell hope. Leo can.\"\n\nAll six survivors were taken to hospital and are now in stable condition. The search for two missing villagers continues.", qs: [
-                { q: 'When did the landslide happen?', opts: ['On Tuesday evening.', 'At about 5 a.m. last Friday.', 'Three days before the rain.', 'Two hours after the rescue.'], ans: 1, skill: '新闻五要素：when', rat: '新闻导语和第二段给出时间："last Friday" + "at about 5 a.m."。A 是发稿时间；C 因果颠倒（雨下了三天才发生灾害）；D 顺序颠倒。' },
-                { q: 'What made the search difficult?', opts: ['The cold weather.', 'The thick mud.', 'The dark night.', 'The broken roads.'], ans: 1, skill: '细节题：关键词定位', rat: '原文 "thick mud made the search extremely difficult"，直接对应 B。其余选项听起来合理，但原文没提——阅读只认原文，不认想象。' },
-                { q: 'What can we learn about Leo?', opts: ['He was trained to find people under ruins.', 'He is two months old.', 'He lifted rocks for the rescue team.', 'He found all eight villagers.'], ans: 0, skill: '细节题：数字陷阱排除', rat: '原文 "Trained to smell people trapped under ruins" → A。B 的"两个月"是被救婴儿的年龄（数字张冠李戴）；C 是机器做的事；D "还有两人失踪"，说 all 就错了。' },
-                { q: 'What did Mr Wang mean by "they cannot smell hope"?', opts: ['Machines work faster than dogs.', 'Dogs can find survivors that machines cannot.', 'Rescue work needs no machines.', 'Hope has a special smell.'], ans: 1, skill: '推断题：理解比喻', rat: '"闻到希望"是比喻：狗能嗅出被困的幸存者（=希望），机器不能。B 是这句话的合理解读。C 走极端（no machines）；D 按字面理解比喻，都是典型错误选项。' },
-            ] },
-            'B1-5': { title: 'Do You Speak "Singlish"?', genre: '说明文 · 语言文化', text: "When English travels around the world, it changes. In Singapore, many people speak \"Singlish\" — a lively mix of English, Chinese and Malay. A Singaporean might say \"Can lah!\" to mean \"Yes, no problem!\"\n\nLanguage experts hold different attitudes towards this. Some worry that Singlish may harm students' standard English, which they need for exams and international business. The government even started a \"Speak Good English\" movement in 2000. Others, however, argue that Singlish is a precious symbol of local identity. \"Standard English connects us to the world,\" says Professor Tan, \"but Singlish connects us to each other.\"\n\nInterestingly, research shows that most young Singaporeans can switch between the two: they use standard English in class and Singlish at the dinner table. Perhaps the real skill of a modern language user is not speaking one perfect English, but knowing which English to use, and when.", qs: [
-                { q: 'What is Singlish?', opts: ['A test of standard English.', 'A mix of several languages.', 'An ancient language of Malay.', 'A government movement.'], ans: 1, skill: '细节题：破折号后是解释', rat: '首段破折号后直接解释："a lively mix of English, Chinese and Malay"。破折号、括号、that is 后面常常是概念解释，出题率极高。' },
-                { q: 'Why do some experts worry about Singlish?', opts: ["It may weaken students' standard English.", 'It is too hard to learn.', 'It connects people to the world.', 'It was banned by the government.'], ans: 0, skill: '细节题：观点对立各找各的', rat: '担忧派的理由："may harm students\' standard English"，A 是同义改写（weaken = harm）。C 是 Professor Tan 说标准英语的；文中没有"禁止"，D 过度引申。' },
-                { q: 'What does Professor Tan think of Singlish?', opts: ['It should be given up soon.', 'It is bad for business.', 'It holds people together locally.', 'It is better than standard English.'], ans: 2, skill: '观点题：引语即态度', rat: '"Singlish connects us to each other" → C（维系本地人之间的情感）。D 走极端——他没有比较优劣，而是说两者作用不同。' },
-                { q: "What is the author's conclusion about language use?", opts: ['Everyone should speak perfect English.', 'Switching languages confuses young people.', 'Knowing when to use which English matters most.', 'Singlish will replace standard English.'], ans: 2, skill: '主旨题：末段 Perhaps 后是作者立场', rat: '末句 "the real skill... is knowing which English to use, and when" 就是作者结论，C 是同义改写。留意 Perhaps/In fact 等词后面常藏着作者真实观点。' },
-            ] },
+            "B1-1": {
+                "title": "Fitting In at Senior High",
+                "genre": "记叙文 · 成长",
+                "text": "When Li Ming started senior high school last September, he felt lost. The campus was three times bigger than his old school, and his new classmates all seemed smarter than him. In the first month, he failed two maths tests and thought about giving up his dream of college.\n\nEverything changed when his English teacher, Ms Chen, asked him to join the school radio station. \"Your voice is a gift,\" she said. At first, Li Ming refused because he was afraid of making mistakes. But Ms Chen told him something he still remembers: \"Confidence doesn't come before success — it comes from small steps.\" He started by reading a two-minute news report every Friday. Slowly, his English improved, and so did his other subjects.\n\nNow, one year later, Li Ming leads the radio station. When new students say they feel nervous, he always smiles and tells them his own story.",
+                "qs": [
+                    {
+                        "q": "How did Li Ming feel when he first entered senior high school?",
+                        "opts": [
+                            "Confident and excited.",
+                            "Bored with his classes.",
+                            "Lost and stressed.",
+                            "Angry with his teacher."
+                        ],
+                        "ans": 2,
+                        "skill": "细节题：回原文定位",
+                        "rat": "定位第一段 \"he felt lost\"、\"failed two maths tests and thought about giving up\"——他感到迷茫、有压力。A 与原文相反；B、D 原文未提。"
+                    },
+                    {
+                        "q": "Why did Li Ming refuse to join the radio station at first?",
+                        "opts": [
+                            "He feared making mistakes.",
+                            "He disliked reading news.",
+                            "He was too busy with maths.",
+                            "His teacher forced him to study."
+                        ],
+                        "ans": 0,
+                        "skill": "细节题：because 后找原因",
+                        "rat": "定位第二段 \"he refused because he was afraid of making mistakes\"，A 是原文同义改写（fear = be afraid of）。其余选项无原文依据。"
+                    },
+                    {
+                        "q": "What does Ms Chen's advice suggest?",
+                        "opts": [
+                            "Confidence grows through small actions.",
+                            "Success always comes quickly.",
+                            "Talent matters more than effort.",
+                            "Students should avoid difficult tasks."
+                        ],
+                        "ans": 0,
+                        "skill": "推断题：答案是原文的合理延伸",
+                        "rat": "\"Confidence doesn't come before success — it comes from small steps\" 的合理延伸就是 A：自信从小行动中积累。B、C、D 都与这句话矛盾。"
+                    },
+                    {
+                        "q": "What is the best title for the text?",
+                        "opts": [
+                            "A Famous School Radio Station",
+                            "How to Pass Maths Tests",
+                            "Small Steps, Big Changes",
+                            "A Strict English Teacher"
+                        ],
+                        "ans": 2,
+                        "skill": "主旨题：首尾段+中心句",
+                        "rat": "全文讲李明通过\"每周两分钟\"的小步骤走出迷茫、获得成长，C 概括全文。A、B、D 都只是局部细节，范围太窄。"
+                    }
+                ]
+            },
+            "B1-2": {
+                "title": "Green Lake Weekend Tours",
+                "genre": "应用文 · 广告",
+                "text": "Looking for a weekend escape? Join our Green Lake Tours!\n\nTour A: Lakeside Walk (Saturday)\nEnjoy a guided 5-kilometre walk along the lake, visit the 800-year-old Stone Bridge, and taste local snacks at the fishing village. Departure: 8:30 a.m. Price: $25 per person.\n\nTour B: Mountain View (Sunday)\nTake the cable car up Cloud Mountain for a breathtaking view of the whole lake. The tour includes a picnic lunch. Departure: 9:00 a.m. Price: $40 per person, $30 for students with ID cards.\n\nBooking: Book online at least two days in advance. Groups of ten or more get a 20% discount on either tour. Children under six travel free with an adult.\n\nNote: Tour B may be cancelled in bad weather. In that case, visitors can get a full refund or change to Tour A for free.",
+                "qs": [
+                    {
+                        "q": "How much should a student with an ID card pay for Tour B?",
+                        "opts": [
+                            "$40.",
+                            "$25.",
+                            "$30.",
+                            "$20."
+                        ],
+                        "ans": 2,
+                        "skill": "数字题：直接定位价格",
+                        "rat": "定位 Tour B 的价格行：\"$30 for students with ID cards\"。别被 $40（成人价）和 $25（Tour A 价格）干扰——数字题一定看清\"哪个项目、哪类人\"。"
+                    },
+                    {
+                        "q": "What can visitors do on Tour A?",
+                        "opts": [
+                            "Take a cable car.",
+                            "Visit an ancient bridge.",
+                            "Have a picnic lunch.",
+                            "Swim in the lake."
+                        ],
+                        "ans": 1,
+                        "skill": "细节题：按板块定位",
+                        "rat": "Tour A 板块提到 \"visit the 800-year-old Stone Bridge\"，B 中 ancient 是 800-year-old 的同义改写。A、C 属于 Tour B；D 原文未提。"
+                    },
+                    {
+                        "q": "If Tour B is cancelled because of rain, visitors can ______.",
+                        "opts": [
+                            "get a full refund or join Tour A free",
+                            "get half of their money back",
+                            "only wait for the next Sunday",
+                            "complain to the tour guide"
+                        ],
+                        "ans": 0,
+                        "skill": "细节题：Note/注意事项必出题",
+                        "rat": "广告类文章的 Note 部分几乎必出题：原文 \"get a full refund or change to Tour A for free\" 就是 A。B\"退一半\"篡改了数字，属于偷换细节。"
+                    },
+                    {
+                        "q": "How can a group of twelve save money?",
+                        "opts": [
+                            "By booking on the departure day.",
+                            "By using the group discount.",
+                            "By bringing children under six.",
+                            "By showing student ID cards."
+                        ],
+                        "ans": 1,
+                        "skill": "细节题：条件匹配",
+                        "rat": "\"Groups of ten or more get a 20% discount\"——12 人满足\"十人及以上\"，用团体折扣。A 与\"提前两天预订\"矛盾；C、D 与\"12人团省钱\"无关。"
+                    }
+                ]
+            },
+            "B1-3": {
+                "title": "The Slowest Runner",
+                "genre": "记叙文 · 体育励志",
+                "text": "At the city marathon last year, most eyes were on the fastest runners. Mine were on the slowest one.\n\nHer name was Granny Zhao, aged 68. She had started running only three years before, after a serious illness almost took her life. \"The doctor said walking would help my recovery,\" she told reporters, wiping the sweat from her face. \"So I walked. Then one day, I ran a little. And I never stopped.\"\n\nDuring the race, her legs shook and her speed dropped, but she refused to get on the rescue bus. Young runners passed her, then turned back to run beside her and cheer her on. When she finally crossed the finish line — five hours and forty minutes after the start — the crowd stood up and clapped as if she had won the championship.\n\nIn a way, she had. The prize she won was not a medal, but the belief that it is never too late to start.",
+                "qs": [
+                    {
+                        "q": "Why did Granny Zhao start running?",
+                        "opts": [
+                            "To win a marathon medal.",
+                            "To become famous in the city.",
+                            "To help her body recover.",
+                            "To make young friends."
+                        ],
+                        "ans": 2,
+                        "skill": "细节题：找原因看引语",
+                        "rat": "定位她的原话：\"The doctor said walking would help my recovery\"——先走路助康复，后来才开始跑。C 是同义改写。A、B、D 无原文依据。"
+                    },
+                    {
+                        "q": "What happened during the race?",
+                        "opts": [
+                            "She gave up halfway.",
+                            "Young runners encouraged her.",
+                            "She took the rescue bus.",
+                            "She finished first in her group."
+                        ],
+                        "ans": 1,
+                        "skill": "细节题：动作链定位",
+                        "rat": "原文 \"turned back to run beside her and cheer her on\"，B 中 encourage = cheer on（同义改写）。A、C 与 \"refused to get on the rescue bus\" 相反。"
+                    },
+                    {
+                        "q": "The underlined phrase \"In a way, she had\" means she had ______.",
+                        "opts": [
+                            "broken the marathon record",
+                            "received a real medal",
+                            "lost the race completely",
+                            "won something more valuable"
+                        ],
+                        "ans": 3,
+                        "skill": "猜词/句意题：看上下文",
+                        "rat": "往下看下一句：\"The prize she won was not a medal, but the belief...\"——她赢得的是比奖牌更珍贵的东西（信念）。理解代词和省略要看前后句。"
+                    },
+                    {
+                        "q": "What does the story mainly tell us?",
+                        "opts": [
+                            "It is never too late to begin.",
+                            "Marathons are dangerous for old people.",
+                            "Fast runners deserve more attention.",
+                            "Doctors give the best training advice."
+                        ],
+                        "ans": 0,
+                        "skill": "主旨题：末段点题",
+                        "rat": "记叙文主旨常在末段升华句：\"it is never too late to start\"，A 是其同义改写。B、C、D 均与文章立场相反或无关。"
+                    }
+                ]
+            },
+            "B1-4": {
+                "title": "Dog Hero of the Landslide",
+                "genre": "新闻报道 · 灾难救援",
+                "text": "XINHUA, Tuesday — A rescue dog named Leo has become a national hero after helping save six people from a landslide in a mountain village last Friday.\n\nHeavy rain had fallen for three days before the disaster happened at about 5 a.m., when most villagers were still asleep. Mud and rocks buried more than twenty houses within minutes. Rescue teams arrived two hours later, but thick mud made the search extremely difficult.\n\nThat was when Leo went to work. Trained to smell people trapped under ruins, the four-year-old dog located six survivors in the first day, including a two-month-old baby sleeping in her mother's arms. \"Every minute matters in a rescue,\" said Leo's trainer, Mr Wang. \"Machines can lift rocks, but they cannot smell hope. Leo can.\"\n\nAll six survivors were taken to hospital and are now in stable condition. The search for two missing villagers continues.",
+                "qs": [
+                    {
+                        "q": "When did the landslide happen?",
+                        "opts": [
+                            "At about 5 a.m. last Friday.",
+                            "On Tuesday evening.",
+                            "Three days before the rain.",
+                            "Two hours after the rescue."
+                        ],
+                        "ans": 0,
+                        "skill": "新闻五要素：when",
+                        "rat": "新闻导语和第二段给出时间：\"last Friday\" + \"at about 5 a.m.\"。B 是发稿时间；C 因果颠倒（雨下了三天才发生灾害）；D 顺序颠倒。"
+                    },
+                    {
+                        "q": "What made the search difficult?",
+                        "opts": [
+                            "The cold weather.",
+                            "The thick mud.",
+                            "The dark night.",
+                            "The broken roads."
+                        ],
+                        "ans": 1,
+                        "skill": "细节题：关键词定位",
+                        "rat": "原文 \"thick mud made the search extremely difficult\"，直接对应 B。其余选项听起来合理，但原文没提——阅读只认原文，不认想象。"
+                    },
+                    {
+                        "q": "What can we learn about Leo?",
+                        "opts": [
+                            "He is two months old.",
+                            "He lifted rocks for the rescue team.",
+                            "He found all eight villagers.",
+                            "He was trained to find people under ruins."
+                        ],
+                        "ans": 3,
+                        "skill": "细节题：数字陷阱排除",
+                        "rat": "原文 \"Trained to smell people trapped under ruins\" → D。A 的\"两个月\"是被救婴儿的年龄（数字张冠李戴）；B 是机器做的事；C \"还有两人失踪\"，说 all 就错了。"
+                    },
+                    {
+                        "q": "What did Mr Wang mean by \"they cannot smell hope\"?",
+                        "opts": [
+                            "Machines work faster than dogs.",
+                            "Dogs can find survivors that machines cannot.",
+                            "Rescue work needs no machines.",
+                            "Hope has a special smell."
+                        ],
+                        "ans": 1,
+                        "skill": "推断题：理解比喻",
+                        "rat": "\"闻到希望\"是比喻：狗能嗅出被困的幸存者（=希望），机器不能。B 是这句话的合理解读。C 走极端（no machines）；D 按字面理解比喻，都是典型错误选项。"
+                    }
+                ]
+            },
+            "B1-5": {
+                "title": "Do You Speak \"Singlish\"?",
+                "genre": "说明文 · 语言文化",
+                "text": "When English travels around the world, it changes. In Singapore, many people speak \"Singlish\" — a lively mix of English, Chinese and Malay. A Singaporean might say \"Can lah!\" to mean \"Yes, no problem!\"\n\nLanguage experts hold different attitudes towards this. Some worry that Singlish may harm students' standard English, which they need for exams and international business. The government even started a \"Speak Good English\" movement in 2000. Others, however, argue that Singlish is a precious symbol of local identity. \"Standard English connects us to the world,\" says Professor Tan, \"but Singlish connects us to each other.\"\n\nInterestingly, research shows that most young Singaporeans can switch between the two: they use standard English in class and Singlish at the dinner table. Perhaps the real skill of a modern language user is not speaking one perfect English, but knowing which English to use, and when.",
+                "qs": [
+                    {
+                        "q": "What is Singlish?",
+                        "opts": [
+                            "A test of standard English.",
+                            "An ancient language of Malay.",
+                            "A government movement.",
+                            "A mix of several languages."
+                        ],
+                        "ans": 3,
+                        "skill": "细节题：破折号后是解释",
+                        "rat": "首段破折号后直接解释：\"a lively mix of English, Chinese and Malay\"。破折号、括号、that is 后面常常是概念解释，出题率极高。"
+                    },
+                    {
+                        "q": "Why do some experts worry about Singlish?",
+                        "opts": [
+                            "It is too hard to learn.",
+                            "It connects people to the world.",
+                            "It was banned by the government.",
+                            "It may weaken students' standard English."
+                        ],
+                        "ans": 3,
+                        "skill": "细节题：观点对立各找各的",
+                        "rat": "担忧派的理由：\"may harm students' standard English\"，D 是同义改写（weaken = harm）。B 是 Professor Tan 说标准英语的；文中没有\"禁止\"，C 过度引申。"
+                    },
+                    {
+                        "q": "What does Professor Tan think of Singlish?",
+                        "opts": [
+                            "It should be given up soon.",
+                            "It is bad for business.",
+                            "It is better than standard English.",
+                            "It holds people together locally."
+                        ],
+                        "ans": 3,
+                        "skill": "观点题：引语即态度",
+                        "rat": "\"Singlish connects us to each other\" → D（维系本地人之间的情感）。C 走极端——他没有比较优劣，而是说两者作用不同。"
+                    },
+                    {
+                        "q": "What is the author's conclusion about language use?",
+                        "opts": [
+                            "Knowing when to use which English matters most.",
+                            "Everyone should speak perfect English.",
+                            "Switching languages confuses young people.",
+                            "Singlish will replace standard English."
+                        ],
+                        "ans": 0,
+                        "skill": "主旨题：末段 Perhaps 后是作者立场",
+                        "rat": "末句 \"the real skill... is knowing which English to use, and when\" 就是作者结论，A 是同义改写。留意 Perhaps/In fact 等词后面常藏着作者真实观点。"
+                    }
+                ]
+            },
+            "B2-1": {
+                "title": "The Temple That Moved",
+                "genre": "说明文 · 文化遗产",
+                "text": "In the 1960s, Egypt planned to build a huge dam on the Nile River. The dam would bring water and electricity to millions of people — but it would also drown Abu Simbel, a group of stone temples built more than 3,000 years ago.\n\nGiving up the dam was impossible, but so was losing the temples. In 1964, fifty countries joined an unusual rescue led by the United Nations. Engineers cut the temples into over 1,000 huge blocks, each weighing up to 30 tons. Piece by piece, the blocks were lifted 65 metres up the cliff and put back together, exactly as before. The project took four years and cost about 40 million dollars.\n\nToday, visitors standing before the temples can hardly tell they were ever moved. More importantly, the rescue gave birth to a new idea: some treasures belong not to one country, but to the whole world.",
+                "qs": [
+                    {
+                        "q": "Why were the temples in danger?",
+                        "opts": [
+                            "A new dam would put them under water.",
+                            "They were over 3,000 years old.",
+                            "Too many visitors damaged them.",
+                            "The United Nations wanted to move them."
+                        ],
+                        "ans": 0,
+                        "skill": "细节题：原因在 but 后",
+                        "rat": "第一段末句 \"it would also drown Abu Simbel\"——大坝会淹没神庙。B 只是年龄事实不是危险原因；C 无中生有；D 因果颠倒（搬迁是拯救不是威胁）。"
+                    },
+                    {
+                        "q": "How was Abu Simbel saved?",
+                        "opts": [
+                            "The dam plan was given up.",
+                            "A wall was built around it.",
+                            "It was cut apart and rebuilt higher up.",
+                            "It was moved to another country."
+                        ],
+                        "ans": 2,
+                        "skill": "细节题：措施在第二段",
+                        "rat": "第二段：\"cut the temples into over 1,000 huge blocks... lifted 65 metres up the cliff and put back together\"。A 与 \"Giving up the dam was impossible\" 矛盾；B、D 无原文依据。"
+                    },
+                    {
+                        "q": "Which number is correctly matched with its fact?",
+                        "opts": [
+                            "1,000 — years of the temples' history.",
+                            "65 — the cost in million dollars.",
+                            "40 — metres the blocks were lifted.",
+                            "50 — countries that joined the rescue."
+                        ],
+                        "ans": 3,
+                        "skill": "数字题：防张冠李戴",
+                        "rat": "\"fifty countries joined\" → D 正确。神庙历史是 3,000 年（不是1,000，那是石块数）；65 是提升的米数；40 是花费的百万美元数。数字题必须一一对应回原文。"
+                    },
+                    {
+                        "q": "What new idea came from the rescue?",
+                        "opts": [
+                            "Dams should never be built near temples.",
+                            "Old buildings must stay where they are.",
+                            "Some treasures belong to all mankind.",
+                            "Egypt owns the world's best temples."
+                        ],
+                        "ans": 2,
+                        "skill": "主旨题：末句升华",
+                        "rat": "末句 \"some treasures belong not to one country, but to the whole world\" 的同义改写是 C。A、B 走极端；D 原文未提。"
+                    }
+                ]
+            },
+            "B2-2": {
+                "title": "Good News for the Giant Panda",
+                "genre": "新闻 · 野生动物保护",
+                "text": "For many years, the giant panda sat sadly on the world's endangered species list. Now there is good news: its status has been improved from \"endangered\" to \"vulnerable\", which means the risk of dying out is lower than before.\n\nThe change did not happen by luck. Since the 1980s, China has set up 67 panda reserves and connected forests so that pandas can travel safely to find food and partners. Farmers around the reserves were paid to protect bamboo instead of cutting it. Thanks to these measures, the number of wild pandas rose from about 1,100 in the 1980s to more than 1,800 today.\n\nStill, scientists warn against relaxing. Climate change may destroy large areas of bamboo in the coming decades. \"The panda's future depends on its habitat,\" says researcher Li Sheng. \"Protecting it is a race that never really ends.\"",
+                "qs": [
+                    {
+                        "q": "What does the word \"vulnerable\" in Paragraph 1 suggest?",
+                        "opts": [
+                            "Pandas are completely safe now.",
+                            "Pandas are still at risk, but less than before.",
+                            "Pandas have disappeared from the wild.",
+                            "Pandas are more endangered than ever."
+                        ],
+                        "ans": 1,
+                        "skill": "猜词题：看破折号/which后的解释",
+                        "rat": "which 从句直接解释：\"the risk of dying out is lower than before\"——仍有风险但降低了。A 走极端（completely safe 原文没说）；C、D 与原文相反。"
+                    },
+                    {
+                        "q": "How did China help wild pandas find food and partners?",
+                        "opts": [
+                            "By feeding them in zoos.",
+                            "By linking forests together.",
+                            "By paying farmers to plant trees.",
+                            "By moving pandas to new countries."
+                        ],
+                        "ans": 1,
+                        "skill": "细节题：措施逐条核对",
+                        "rat": "原文 \"connected forests so that pandas can travel safely to find food and partners\"，B 是同义改写（link = connect）。C 偷换细节：付钱给农民是为了保护竹子，不是种树。"
+                    },
+                    {
+                        "q": "What does the underlined word \"it\" in the last paragraph refer to?",
+                        "opts": [
+                            "The panda.",
+                            "The bamboo.",
+                            "Climate change.",
+                            "The panda's habitat."
+                        ],
+                        "ans": 3,
+                        "skill": "指代题：找最近的合理名词",
+                        "rat": "\"The panda's future depends on its habitat. Protecting it...\"——往前找最近的名词 habitat，代入验证：\"保护栖息地是一场没有终点的赛跑\"，通顺。指代题就近原则+代入检验。"
+                    },
+                    {
+                        "q": "What is the scientists' attitude towards the panda's future?",
+                        "opts": [
+                            "Fully relaxed.",
+                            "Totally hopeless.",
+                            "Completely uninterested.",
+                            "Carefully hopeful."
+                        ],
+                        "ans": 3,
+                        "skill": "态度题：转折后是真态度",
+                        "rat": "好消息之后有转折 \"Still, scientists warn against relaxing\"——有成绩但不能放松，即\"谨慎乐观\"。A 与 warn 矛盾；B 与前文好消息矛盾。"
+                    }
+                ]
+            },
+            "B2-3": {
+                "title": "Should Phones Be Banned at School?",
+                "genre": "议论文 · 互联网生活",
+                "text": "Last month, a high school in Hangzhou asked students to hand in their phones every morning. The rule quickly started a hot discussion online.\n\nSupporters say the ban helps students focus. One teacher reported that students slept earlier and talked with each other more during breaks. Research also shows that even a silent phone on the desk can pull attention away from study.\n\nHowever, others disagree. Some parents worry that they cannot reach their children in an emergency. A student representative pointed out that phones are also learning tools: \"We use them to look up words and watch teaching videos. The problem is not the phone itself, but how we use it.\"\n\nInterestingly, both sides agree on one thing: schools should teach students to manage screen time, because sooner or later, everyone has to learn to live with technology wisely.",
+                "qs": [
+                    {
+                        "q": "What happened after the school made the new rule?",
+                        "opts": [
+                            "It caused a heated debate.",
+                            "Students refused to obey it.",
+                            "Parents all supported it.",
+                            "Phones were banned across the city."
+                        ],
+                        "ans": 0,
+                        "skill": "细节题：同义改写",
+                        "rat": "\"started a hot discussion online\" = caused a heated debate（同义改写：hot = heated, discussion = debate）。B、C、D 都超出原文范围。"
+                    },
+                    {
+                        "q": "Which is NOT mentioned as a benefit of the ban?",
+                        "opts": [
+                            "Students focus better.",
+                            "Students sleep earlier.",
+                            "Students get higher test scores.",
+                            "Students communicate more face to face."
+                        ],
+                        "ans": 2,
+                        "skill": "NOT题：三对一错",
+                        "rat": "逐项回原文核对：A（helps students focus）✓、B（slept earlier）✓、D（talked with each other more）✓。只有 C\"成绩提高\"原文没提——听起来合理但无依据，正是 NOT 题的答案。"
+                    },
+                    {
+                        "q": "What does the student representative think?",
+                        "opts": [
+                            "How phones are used matters most.",
+                            "Phones should be banned forever.",
+                            "Teaching videos waste time.",
+                            "Emergencies never happen at school."
+                        ],
+                        "ans": 0,
+                        "skill": "观点题：引语即态度",
+                        "rat": "她的原话：\"The problem is not the phone itself, but how we use it.\" → A。观点对立的文章，问谁的观点就只看谁的话，别混淆。"
+                    },
+                    {
+                        "q": "What do both sides agree on?",
+                        "opts": [
+                            "Phones must be handed in every morning.",
+                            "Technology should be avoided.",
+                            "Parents should check students' phones.",
+                            "Schools should teach screen-time management."
+                        ],
+                        "ans": 3,
+                        "skill": "细节题：agree 定位共识",
+                        "rat": "末段 \"both sides agree on one thing: schools should teach students to manage screen time\" → D。末段的共识句也是全文落点。"
+                    }
+                ]
+            },
+            "B2-4": {
+                "title": "The Nail-Free Palace",
+                "genre": "说明文 · 历史建筑",
+                "text": "The Forbidden City in Beijing has stood for 600 years, surviving about 200 earthquakes — yet its wooden halls were built almost without nails. What is the secret?\n\nThe answer lies in dougong, a traditional system of wooden brackets. Carpenters cut pieces of wood so precisely that they lock into each other like a puzzle. When an earthquake shakes the ground, the joints move slightly and take in the energy, then return to their original position. In 2017, engineers built a small copy of an ancient hall and tested it on a shaking table. Even at the strongest level, the model bent but refused to fall.\n\nBegun in 1406, the palace took about one million workers fourteen years to complete. Today, this generous gift from ancient carpenters still protects the palace — proof that the wisdom of the past can be curiously modern.",
+                "qs": [
+                    {
+                        "q": "What is special about the halls of the Forbidden City?",
+                        "opts": [
+                            "They were built with steel.",
+                            "They used almost no nails.",
+                            "They have never been shaken.",
+                            "They were finished in one year."
+                        ],
+                        "ans": 1,
+                        "skill": "细节题：首段抓核心",
+                        "rat": "首段 \"built almost without nails\" → B。C 与\"经历约200次地震\"矛盾；D 与末段\"十四年建成\"矛盾。"
+                    },
+                    {
+                        "q": "The underlined word \"dougong\" refers to ______.",
+                        "opts": [
+                            "a kind of earthquake",
+                            "a group of carpenters",
+                            "a system of wooden brackets",
+                            "a palace in Beijing"
+                        ],
+                        "ans": 2,
+                        "skill": "猜词题：同位语就是定义",
+                        "rat": "\"dougong, a traditional system of wooden brackets\"——逗号后的同位语直接给出定义。专有名词后面跟的解释成分是猜词题的送分点。"
+                    },
+                    {
+                        "q": "How do the wooden joints protect the halls during an earthquake?",
+                        "opts": [
+                            "They become harder than stone.",
+                            "They separate and fall off safely.",
+                            "They move a little and absorb the energy.",
+                            "They are replaced after each earthquake."
+                        ],
+                        "ans": 2,
+                        "skill": "细节题：过程句定位",
+                        "rat": "\"the joints move slightly and take in the energy\" → C（absorb = take in，同义改写）。B 说\"散开脱落\"与\"return to their original position\"相反。"
+                    },
+                    {
+                        "q": "When was the Forbidden City started?",
+                        "opts": [
+                            "In 2017.",
+                            "600 years after the earthquakes.",
+                            "In 1406.",
+                            "Fourteen years ago."
+                        ],
+                        "ans": 2,
+                        "skill": "时间轴题：数字对应事件",
+                        "rat": "\"Begun in 1406\" → C。2017 是工程师做实验的年份；600 年是屹立的时长；14 年是建造耗时。把每个时间词旁的事件标出来，就不会张冠李戴。"
+                    }
+                ]
+            },
+            "B2-5": {
+                "title": "The Landfill Orchestra",
+                "genre": "记叙文 · 音乐励志",
+                "text": "Cateura, a small town in Paraguay, was built on a landfill. Many families there make a living by selling things they find in the rubbish. Musical instruments were a distant dream — a violin costs more than a house in Cateura.\n\nThen Favio Chávez, a local worker who loved music, had a bold idea. With the help of a clever carpenter, he began turning rubbish into instruments: violins from oil cans, guitars from old boxes, flutes from water pipes. In 2012, the \"Recycled Orchestra\" was born.\n\nAt first, some people laughed at the children and their strange instruments. But when the orchestra played its first concert abroad, the laughter turned into tears and applause. The children have now performed in over thirty countries.\n\n\"The world sends us rubbish,\" Chávez likes to say, \"and we send back music.\" For the children of Cateura, that sentence is more than a slogan — it is their future.",
+                "qs": [
+                    {
+                        "q": "Why were instruments a \"distant dream\" in Cateura?",
+                        "opts": [
+                            "People could not afford them.",
+                            "Music was not allowed there.",
+                            "No one wanted to learn music.",
+                            "The town had no teachers."
+                        ],
+                        "ans": 0,
+                        "skill": "推断题：紧跟的解释句",
+                        "rat": "破折号后解释：\"a violin costs more than a house\"——买不起。A 是这句话的合理推断。B、C、D 都无原文依据。"
+                    },
+                    {
+                        "q": "What were the violins made from?",
+                        "opts": [
+                            "Oil cans.",
+                            "Water pipes.",
+                            "Old boxes.",
+                            "House doors."
+                        ],
+                        "ans": 0,
+                        "skill": "细节题：一一对应",
+                        "rat": "\"violins from oil cans, guitars from old boxes, flutes from water pipes\"——小提琴对油桶。选项把三组搭配打乱考验定位，逐一对应即可。"
+                    },
+                    {
+                        "q": "How did people's attitude towards the orchestra change?",
+                        "opts": [
+                            "From crying to laughing.",
+                            "From loving to hating.",
+                            "From laughing to being moved.",
+                            "It never changed."
+                        ],
+                        "ans": 2,
+                        "skill": "心理变化题：转折前后各一半",
+                        "rat": "转折词 But 前是 \"laughed at\"，后是 \"the laughter turned into tears and applause\"——从嘲笑到感动。心理变化题就找转折点两侧的情绪词。"
+                    },
+                    {
+                        "q": "What does Chávez's saying mainly express?",
+                        "opts": [
+                            "Rubbish is worth a lot of money.",
+                            "The town needs more rubbish.",
+                            "Music is easier to make than money.",
+                            "They turn what they are given into something beautiful."
+                        ],
+                        "ans": 3,
+                        "skill": "句意理解题：结合全文主题",
+                        "rat": "\"世界送来垃圾，我们送回音乐\"——把被给予的废弃之物变成美好，正是全文故事的浓缩。A、C 按字面理解；B 荒谬。"
+                    }
+                ]
+            },
+            "B3-1": {
+                "title": "Why We Light Lanterns",
+                "genre": "说明文 · 传统节日",
+                "text": "On the fifteenth day of the first lunar month, the Chinese New Year celebration reaches its final and brightest night: the Lantern Festival.\n\nThe custom of lighting lanterns dates back about 2,000 years to the Han Dynasty, when an emperor ordered lamps to be lit to honour Buddha. Over time, the religious practice grew into a folk celebration for everyone. Lanterns were hung at gates, floated on rivers, and carried by children through the streets.\n\nBut the festival is more than lights. Families gather to eat yuanxiao, round rice balls whose shape stands for reunion and completeness. The evening also offers a game: riddles are written on the lanterns, and whoever solves one wins a small prize. In ancient times, the festival was even a rare night when young women could go out freely — which is why some call it China's original Valentine's Day.",
+                "qs": [
+                    {
+                        "q": "When did the custom of lighting lanterns begin?",
+                        "opts": [
+                            "In the Han Dynasty.",
+                            "About 200 years ago.",
+                            "On the first day of the lunar year.",
+                            "After the invention of riddles."
+                        ],
+                        "ans": 0,
+                        "skill": "细节题：dates back 后是起源",
+                        "rat": "\"dates back about 2,000 years to the Han Dynasty\" → A。B 篡改数字（2,000 → 200）；C 是节日日期不是起源时间。"
+                    },
+                    {
+                        "q": "What does the shape of yuanxiao stand for?",
+                        "opts": [
+                            "Wealth and luck.",
+                            "Reunion and completeness.",
+                            "Long life.",
+                            "The full moon's light."
+                        ],
+                        "ans": 1,
+                        "skill": "细节题：whose 从句藏考点",
+                        "rat": "\"round rice balls whose shape stands for reunion and completeness\" → B。文化说明文里\"某物象征什么\"几乎必考，定位食物名即可。"
+                    },
+                    {
+                        "q": "What can people do with the lanterns besides lighting them?",
+                        "opts": [
+                            "Eat them after the festival.",
+                            "Send them to the emperor.",
+                            "Sell them for prizes.",
+                            "Solve riddles written on them."
+                        ],
+                        "ans": 3,
+                        "skill": "细节题：also/even 后有新信息",
+                        "rat": "\"riddles are written on the lanterns, and whoever solves one wins a small prize\" → D。also、even、besides 这些词后面常接补充考点。"
+                    },
+                    {
+                        "q": "Why do some people call it \"China's original Valentine's Day\"?",
+                        "opts": [
+                            "Couples exchange gifts that night.",
+                            "The festival honours a love story.",
+                            "Young women could go out freely then.",
+                            "Rice balls are shaped like hearts."
+                        ],
+                        "ans": 2,
+                        "skill": "细节题：which is why 找原因",
+                        "rat": "\"a rare night when young women could go out freely — which is why...\"——原因就在破折号前。C 是原文复述；A、B、D 都是想当然。"
+                    }
+                ]
+            },
+            "B3-2": {
+                "title": "The Banker of the Poor",
+                "genre": "人物传记 · 公益",
+                "text": "In 1974, economics professor Muhammad Yunus met a young mother in a Bangladesh village. She wove beautiful bamboo stools but earned only two cents a day, because she had to borrow money from a trader who then bought her stools at his own price.\n\nYunus discovered that 42 villagers together owed less than 27 dollars. He paid it from his own pocket — and could not forget how such a small sum controlled so many lives.\n\nBanks refused to lend to the poor, saying they had nothing to promise in return. So in 1983, Yunus founded Grameen Bank, which gave tiny loans to poor families, mostly women, based on trust alone. Critics predicted the money would never come back. They were wrong: over 95 percent of the loans were repaid, a better record than many normal banks.\n\nBy the time Yunus won the Nobel Peace Prize in 2006, his idea had spread to more than 100 countries. \"Poverty,\" he says, \"is not created by the poor, but by the system around them.\"",
+                "qs": [
+                    {
+                        "q": "Why did the young mother earn so little?",
+                        "opts": [
+                            "The money lender controlled her sales.",
+                            "Her stools were poorly made.",
+                            "She worked only two hours a day.",
+                            "She refused to borrow money."
+                        ],
+                        "ans": 0,
+                        "skill": "细节题：because 后找原因",
+                        "rat": "\"because she had to borrow money from a trader who then bought her stools at his own price\"——被放贷者用低价控制。B 与 beautiful 矛盾；C、D 无依据。"
+                    },
+                    {
+                        "q": "Why does the author mention the \"27 dollars\"?",
+                        "opts": [
+                            "To show how small a debt trapped many people.",
+                            "To show how rich Yunus was.",
+                            "To prove banks were generous.",
+                            "To explain the price of bamboo stools."
+                        ],
+                        "ans": 0,
+                        "skill": "例子作用题：往上找观点",
+                        "rat": "例子服务于它前后的观点：\"how such a small sum controlled so many lives\"——42 人的债务总共不到 27 美元，凸显\"小钱困住许多人\"。例子作用题永远问\"它证明了什么\"。"
+                    },
+                    {
+                        "q": "What was special about Grameen Bank's loans?",
+                        "opts": [
+                            "They were given only to traders.",
+                            "They required high interest.",
+                            "They were based on trust, not promises of property.",
+                            "They were never repaid."
+                        ],
+                        "ans": 2,
+                        "skill": "细节题：同义改写",
+                        "rat": "\"gave tiny loans... based on trust alone\"，且前文说银行拒贷是因为穷人\"nothing to promise in return\"（无抵押）。D 与\"95% 还款率\"相反。"
+                    },
+                    {
+                        "q": "What does Yunus believe about poverty?",
+                        "opts": [
+                            "The poor are lazy by nature.",
+                            "It can never be reduced.",
+                            "Only banks can end it.",
+                            "It results from the system, not the poor themselves."
+                        ],
+                        "ans": 3,
+                        "skill": "观点题：末段引语",
+                        "rat": "末句原话 \"not created by the poor, but by the system around them\" → D。人物传记的核心观点常放在结尾引语里。"
+                    }
+                ]
+            },
+            "B3-3": {
+                "title": "One City, A Hundred Kitchens",
+                "genre": "说明文 · 多元文化",
+                "text": "Walk down Gerrard Street in Toronto and your nose will travel faster than your feet: Indian spices from one door, Chinese roast duck from the next, and Italian coffee across the road.\n\nToronto is one of the most diverse cities on Earth — more than half of its residents were born outside Canada. Food is where this mixture shows first. \"My grandmother's recipes are my homeland,\" says Amira, who runs a small Syrian restaurant. \"When customers enjoy them, I feel my culture is respected.\"\n\nFor local student Jake, the food streets are a classroom. \"I learned more about India from eating with my neighbours than from any textbook,\" he laughs.\n\nOf course, living together is not always easy. Cultures sometimes misunderstand each other. But as city officer Maria Santos puts it, \"Nobody argues at a shared dinner table. Food is the shortest bridge between strangers.\"",
+                "qs": [
+                    {
+                        "q": "What shows Toronto's diversity first, according to the text?",
+                        "opts": [
+                            "Its schools.",
+                            "Its food.",
+                            "Its weather.",
+                            "Its buildings."
+                        ],
+                        "ans": 1,
+                        "skill": "细节题：核心句定位",
+                        "rat": "\"Food is where this mixture shows first\" → B。首段的气味描写也在铺垫\"食物\"这个主线。"
+                    },
+                    {
+                        "q": "How does Amira feel when customers enjoy her dishes?",
+                        "opts": [
+                            "Her culture is being respected.",
+                            "Her cooking needs improvement.",
+                            "She misses her grandmother less.",
+                            "She wants to return to Syria."
+                        ],
+                        "ans": 0,
+                        "skill": "观点题：According to X 只看 X",
+                        "rat": "Amira 的原话：\"I feel my culture is respected\"。多人观点的文章，问谁就定位谁的引语，绝不混用别人的话。"
+                    },
+                    {
+                        "q": "What does Jake mean by calling the food streets \"a classroom\"?",
+                        "opts": [
+                            "He attends cooking classes there.",
+                            "His school is on Gerrard Street.",
+                            "Textbooks are sold in restaurants.",
+                            "Eating with neighbours taught him about other cultures."
+                        ],
+                        "ans": 3,
+                        "skill": "句意理解题：比喻看下文",
+                        "rat": "他接着解释：\"I learned more about India from eating with my neighbours than from any textbook\"——街道像课堂是因为能学到文化。A、B 按字面理解比喻，典型错误。"
+                    },
+                    {
+                        "q": "What is Maria Santos's point about food?",
+                        "opts": [
+                            "It ends all arguments in the city.",
+                            "It connects people from different cultures.",
+                            "It is cheaper than building bridges.",
+                            "It causes misunderstandings."
+                        ],
+                        "ans": 1,
+                        "skill": "句意理解题：比喻→本义",
+                        "rat": "\"Food is the shortest bridge between strangers\"——桥=连接，即食物拉近陌生人/不同文化。A 走极端（end all）；C 按字面理解 bridge。"
+                    }
+                ]
+            },
+            "B3-4": {
+                "title": "Rice That Touched the Stars",
+                "genre": "科普 · 太空探索",
+                "text": "In 2022, Chinese astronauts aboard the Tiangong space station completed something no one had done before: they grew rice from seed to seed entirely in space.\n\nThe experiment lasted 120 days. In microgravity — the near-weightless condition of orbit — water does not flow downwards and roots do not know which way to grow. Yet the rice managed to flower and produce new seeds. Scientists then brought the space seeds back to Earth and planted them, and the seeds grew normally.\n\nWhy does this matter? Future astronauts travelling to Mars will be away from Earth for years. Carrying all their food would take up too much room, so they will need to grow crops on the way. \"Every long journey in history began with solving the food problem,\" one researcher explained. \"Sailing ships carried salted meat; spaceships may carry rice fields.\"",
+                "qs": [
+                    {
+                        "q": "What did the astronauts achieve in 2022?",
+                        "opts": [
+                            "They grew rice from seed to seed in space.",
+                            "They planted rice on Mars.",
+                            "They stayed in space for years.",
+                            "They invented a new kind of seed."
+                        ],
+                        "ans": 0,
+                        "skill": "细节题：首段抓成就",
+                        "rat": "首段 \"grew rice from seed to seed entirely in space\" → A。B 偷换地点（是空间站不是火星）；C 篡改时长（120天）。"
+                    },
+                    {
+                        "q": "The underlined word \"microgravity\" means a condition where ______.",
+                        "opts": [
+                            "water flows faster",
+                            "things hardly have weight",
+                            "plants grow better",
+                            "the air is thinner"
+                        ],
+                        "ans": 1,
+                        "skill": "猜词题：破折号后是定义",
+                        "rat": "\"in microgravity — the near-weightless condition of orbit\"，破折号后直接定义：近乎失重。A 与\"水不往下流\"矛盾。"
+                    },
+                    {
+                        "q": "How did scientists check the space seeds?",
+                        "opts": [
+                            "By eating them.",
+                            "By comparing them with Mars soil.",
+                            "By planting them back on Earth.",
+                            "By keeping them in the station."
+                        ],
+                        "ans": 2,
+                        "skill": "细节题：实验步骤定位",
+                        "rat": "\"brought the space seeds back to Earth and planted them, and the seeds grew normally\" → C。科普文的实验步骤（做了什么→结果如何）是细节题高发区。"
+                    },
+                    {
+                        "q": "Why is growing rice in space important for Mars travel?",
+                        "opts": [
+                            "Rice grows faster in space.",
+                            "Mars has large rice fields.",
+                            "Salted meat is unhealthy.",
+                            "Astronauts cannot carry enough food for years."
+                        ],
+                        "ans": 3,
+                        "skill": "推断题：Why does this matter 段",
+                        "rat": "\"Carrying all their food would take up too much room, so they will need to grow crops on the way\" → D。C 是类比里的细节，不是原因。"
+                    }
+                ]
+            },
+            "B3-5": {
+                "title": "The Lost Wallet Experiment",
+                "genre": "说明文 · 金钱与诚信",
+                "text": "If you found a wallet full of cash, would you return it? Scientists once tested this question for real. In a huge experiment, researchers \"lost\" more than 17,000 wallets in 40 countries, handing each one to a stranger at a bank, museum or post office and saying, \"Someone must have dropped this.\"\n\nBefore the test, most economists made a simple prediction: the more money a wallet held, the less likely people would give it back. The results shocked them. In almost every country, wallets with more money were returned more often, not less. When researchers raised the amount to nearly 100 dollars, the return rate rose even higher.\n\nWhy? Follow-up surveys pointed to two reasons. Keeping a little money may feel like nothing, but keeping a lot forces people to see themselves as thieves — and most people badly want to feel honest. Besides, many said they simply imagined the owner's worry.\n\nMoney, it turns out, tests our character less than it reveals it.",
+                "qs": [
+                    {
+                        "q": "How did researchers carry out the experiment?",
+                        "opts": [
+                            "They handed in \"lost\" wallets to strangers.",
+                            "They asked people questions online.",
+                            "They watched bank workers secretly.",
+                            "They dropped wallets on busy streets."
+                        ],
+                        "ans": 0,
+                        "skill": "细节题：方法句定位",
+                        "rat": "\"handing each one to a stranger at a bank, museum or post office\"——是当面交给他人，不是丢在街上。D 偷换了方式，看清细节。"
+                    },
+                    {
+                        "q": "What did most economists predict before the test?",
+                        "opts": [
+                            "All wallets would come back.",
+                            "Rich countries would keep the wallets.",
+                            "The results would shock the world.",
+                            "More money would mean fewer returns."
+                        ],
+                        "ans": 3,
+                        "skill": "细节题：预测vs结果对比",
+                        "rat": "\"the more money a wallet held, the less likely people would give it back\" → D。这类文章常考\"预测是什么/结果是什么\"两问，别把两者弄反。"
+                    },
+                    {
+                        "q": "Why were wallets with more money returned more often?",
+                        "opts": [
+                            "People feared being caught by police.",
+                            "The money inside was fake.",
+                            "Banks offered rewards for returning them.",
+                            "Keeping a lot would make people feel like thieves."
+                        ],
+                        "ans": 3,
+                        "skill": "推断题：答案有原文依据",
+                        "rat": "\"keeping a lot forces people to see themselves as thieves — and most people badly want to feel honest\" → D。A 听起来合理但原文没提，推理题只认原文。"
+                    },
+                    {
+                        "q": "What does the last sentence suggest about money?",
+                        "opts": [
+                            "Money shows what kind of person you already are.",
+                            "Money makes everyone dishonest.",
+                            "Money is the best test in science.",
+                            "Money worries every wallet owner."
+                        ],
+                        "ans": 0,
+                        "skill": "主旨题：末句双关理解",
+                        "rat": "\"tests our character less than it reveals it\"——金钱与其说考验人品，不如说暴露人品：人本来是什么样，面对钱就表现什么样。A 是同义转述。"
+                    }
+                ]
+            },
+            "S1-1": {
+                "title": "The Girl Who Waited in the Forest",
+                "genre": "人物传记 · 杰出人物",
+                "text": "In 1960, a 26-year-old English woman walked into a forest in Tanzania with little more than a notebook and a pair of binoculars. Her name was Jane Goodall, and she had no university degree at the time — only patience that seemed to have no limit.\n\nFor months, the wild chimpanzees ran away whenever she appeared. Goodall simply sat at a distance, day after day, until the animals accepted her presence. What she then observed changed science forever: a chimpanzee stripping leaves off a stick to fish termites out of a nest. Animals, she proved, could make and use tools — an ability scientists had believed belonged to humans alone.\n\nSome experts attacked her methods; she had given the chimps names instead of numbers, which was considered unscientific. Goodall stood firm, arguing that animals have personalities and emotions.\n\nNow in her nineties, she still travels the world, telling young people: \"What you do makes a difference, and you have to decide what kind of difference you want to make.\"",
+                "qs": [
+                    {
+                        "q": "What helped Goodall succeed in the forest most?",
+                        "opts": [
+                            "Her endless patience.",
+                            "Her university training.",
+                            "Her modern equipment.",
+                            "Her large research team."
+                        ],
+                        "ans": 0,
+                        "skill": "细节题：抓评价性语句",
+                        "rat": "首段点明她当时没有学位，\"only patience that seemed to have no limit\"；第二段\"day after day\"再次呼应。B 与原文相反；C、D 无依据。"
+                    },
+                    {
+                        "q": "Why was her discovery about the stick important?",
+                        "opts": [
+                            "It showed tool use was not just a human ability.",
+                            "It proved chimps eat only termites.",
+                            "It invented a new fishing method.",
+                            "It made sticks valuable to science."
+                        ],
+                        "ans": 0,
+                        "skill": "细节题：破折号后是意义",
+                        "rat": "\"an ability scientists had believed belonged to humans alone\"——过去以为只有人类会用工具，她的观察推翻了这一点。长难句先找主干再看破折号补充。"
+                    },
+                    {
+                        "q": "Why did some experts criticize Goodall?",
+                        "opts": [
+                            "She stayed in the forest too long.",
+                            "She had no notebook.",
+                            "She refused to publish her findings.",
+                            "She gave the chimps names."
+                        ],
+                        "ans": 3,
+                        "skill": "细节题：分号后接原因",
+                        "rat": "\"she had given the chimps names instead of numbers, which was considered unscientific\" → D。A、B、C 均无原文依据。"
+                    },
+                    {
+                        "q": "What quality does Goodall's story best show?",
+                        "opts": [
+                            "Humour and luck.",
+                            "Wealth and power.",
+                            "Patience and independent thinking.",
+                            "Speed and strength."
+                        ],
+                        "ans": 2,
+                        "skill": "品质推断题：用事例反推",
+                        "rat": "几个月的等待=patience；面对批评 stood firm、坚持己见=独立思考。品质题必须有原文事例支撑，逐项验证。"
+                    }
+                ]
+            },
+            "S1-2": {
+                "title": "Will We Live Under the Sea?",
+                "genre": "科普 · 未来展望",
+                "text": "Two thirds of our planet is covered by water, yet humans have built almost nothing beneath it. That may be changing.\n\nOff the coast of Japan, engineers have designed \"Ocean Spiral\", a floating underwater city for 5,000 people. Shaped like a giant ball connected to the seabed by a long tube, the city would get its energy from the temperature difference between deep and shallow water. Food would come from fish farms around the sphere.\n\nSupporters argue that ocean cities could answer two problems at once: rising sea levels and crowded coastal cities. However, the challenges are equally deep. Sunlight disappears quickly underwater, and long stays in closed spaces can harm mental health. The project would also cost an estimated 26 billion dollars — money that critics say could improve life on land for far more people.\n\nWill anyone actually move in? The designers admit their city will not be ready before 2035. Until then, the underwater dream remains exactly that: a dream, but one worth watching.",
+                "qs": [
+                    {
+                        "q": "Where would Ocean Spiral get its energy?",
+                        "opts": [
+                            "From the temperature difference in seawater.",
+                            "From burning fish waste.",
+                            "From underwater volcanoes.",
+                            "From cables connected to Japan."
+                        ],
+                        "ans": 0,
+                        "skill": "细节题：定位能源句",
+                        "rat": "\"get its energy from the temperature difference between deep and shallow water\" → A。其余选项均无原文依据。"
+                    },
+                    {
+                        "q": "What two problems could ocean cities help solve?",
+                        "opts": [
+                            "Cold weather and food shortage.",
+                            "Air pollution and unemployment.",
+                            "Rising seas and crowded coastal cities.",
+                            "Earthquakes and storms."
+                        ],
+                        "ans": 2,
+                        "skill": "细节题：冒号后列举",
+                        "rat": "\"answer two problems at once: rising sea levels and crowded coastal cities\"——冒号后就是列举的两个问题，直接对应 C。"
+                    },
+                    {
+                        "q": "Which is mentioned as a challenge for underwater living?",
+                        "opts": [
+                            "Harm to mental health in closed spaces.",
+                            "Fish attacking the city.",
+                            "Too much sunlight.",
+                            "Cheap building costs."
+                        ],
+                        "ans": 0,
+                        "skill": "细节题：However 后找困难",
+                        "rat": "\"long stays in closed spaces can harm mental health\" → A。C 与\"阳光很快消失\"相反；D 与 260 亿美元造价相反。困难都藏在 However 之后。"
+                    },
+                    {
+                        "q": "What is the author's attitude towards Ocean Spiral?",
+                        "opts": [
+                            "Blindly enthusiastic.",
+                            "Completely against it.",
+                            "Totally uninterested.",
+                            "Interested but cautious."
+                        ],
+                        "ans": 3,
+                        "skill": "态度题：结尾定调",
+                        "rat": "末句 \"a dream, but one worth watching\"——既指出它还只是梦想（谨慎），又认为值得关注（兴趣）。文中同时呈现支持与质疑，也是中立偏谨慎的信号。"
+                    }
+                ]
+            },
+            "S1-3": {
+                "title": "The Wolves That Changed a River",
+                "genre": "说明文 · 国家公园生态",
+                "text": "When wolves were brought back to Yellowstone National Park in 1995, after being absent for seventy years, no one expected them to redesign the landscape itself.\n\nHere is what happened. For decades, huge numbers of deer had eaten young trees down to the ground, leaving riverbanks bare. The returning wolves hunted some deer, but more importantly, they changed the deer's behaviour: the deer began avoiding open valleys where they could be easily caught.\n\nFreed from hungry mouths, trees along the rivers grew back quickly. Birds returned to the new branches. Beavers came back to eat the trees and built dams, which created ponds for fish, ducks and other animals. Even the rivers changed: stronger tree roots held the soil together, so the banks stopped falling apart and the water flowed in cleaner, more stable paths.\n\nScientists call this a \"trophic cascade\" — a chain reaction that starts at the top of the food chain and flows all the way down. Remove one animal, and you may quietly remove a whole world.",
+                "qs": [
+                    {
+                        "q": "What is Paragraph 2 mainly about?",
+                        "opts": [
+                            "How deer learned to hunt.",
+                            "Why wolves left Yellowstone.",
+                            "Why valleys are dangerous for wolves.",
+                            "How wolves changed the deer's behaviour."
+                        ],
+                        "ans": 3,
+                        "skill": "段落大意题：首句+核心",
+                        "rat": "该段核心：\"they changed the deer's behaviour: the deer began avoiding open valleys\"。段落大意题选能覆盖全段的，不选某个细节。"
+                    },
+                    {
+                        "q": "How did beavers help other animals?",
+                        "opts": [
+                            "By hunting the deer.",
+                            "By planting new trees.",
+                            "By building dams that created ponds.",
+                            "By cleaning the river water."
+                        ],
+                        "ans": 2,
+                        "skill": "细节题：因果链定位",
+                        "rat": "\"built dams, which created ponds for fish, ducks and other animals\" → C。生态类文章是一条因果链，标出每一环，题目按环定位。"
+                    },
+                    {
+                        "q": "Why did the riverbanks become more stable?",
+                        "opts": [
+                            "Wolves guarded the banks.",
+                            "Beavers repaired them with mud.",
+                            "Tree roots held the soil together.",
+                            "The deer stopped drinking there."
+                        ],
+                        "ans": 2,
+                        "skill": "细节题：so 前找原因",
+                        "rat": "\"stronger tree roots held the soil together, so the banks stopped falling apart\"——so 前面就是原因。C 是原文复述。"
+                    },
+                    {
+                        "q": "What does \"trophic cascade\" mean in the text?",
+                        "opts": [
+                            "A waterfall inside the park.",
+                            "A disease spreading among deer.",
+                            "A chain reaction through the food chain.",
+                            "A way of counting wolves."
+                        ],
+                        "ans": 2,
+                        "skill": "猜词题：破折号后是定义",
+                        "rat": "\"— a chain reaction that starts at the top of the food chain and flows all the way down\"，破折号后直接给定义。A 按字面把 cascade 理解成瀑布，典型陷阱。"
+                    }
+                ]
+            },
+            "S1-4": {
+                "title": "The Handshake Around the World",
+                "genre": "说明文 · 肢体语言",
+                "text": "A handshake seems like the simplest gesture on Earth, yet crossing a border can change its meaning completely.\n\nIn the United States, a firm, brief handshake signals confidence. In France, people prefer a lighter, quicker touch, and shaking hands twice a day with the same colleague is perfectly normal. In Japan, a handshake is often replaced by a bow — and if a handshake does happen, a gentle one shows respect, not weakness. In some Middle Eastern countries, a soft, longer handshake is polite, but offering the left hand is considered rude. In Thailand, people traditionally skip the handshake altogether: they press their palms together in front of the chest, a graceful greeting called the wai.\n\nTravellers who ignore these differences may send messages they never intend. A grip that means \"I am reliable\" at home can say \"I am aggressive\" abroad; a gentle touch meant as respect may be read as coldness.\n\nThe safest rule, experts suggest, is simple: watch first, then follow the locals.",
+                "qs": [
+                    {
+                        "q": "What does a firm handshake usually mean in the United States?",
+                        "opts": [
+                            "Aggression.",
+                            "Confidence.",
+                            "Coldness.",
+                            "Weakness."
+                        ],
+                        "ans": 1,
+                        "skill": "细节题：国家对号入座",
+                        "rat": "\"In the United States, a firm, brief handshake signals confidence\" → B。多国对比的文章，先给每个国家标记，再按国家定位。"
+                    },
+                    {
+                        "q": "Which of the following is NOT true according to the text?",
+                        "opts": [
+                            "French people may shake hands twice a day.",
+                            "A gentle handshake shows respect in Japan.",
+                            "The left hand is preferred in the Middle East.",
+                            "Thai people traditionally greet with the wai."
+                        ],
+                        "ans": 2,
+                        "skill": "NOT题：三对一错",
+                        "rat": "逐项核对：A ✓、B ✓、D ✓；C 与原文相反——\"offering the left hand is considered rude\"（左手是失礼的）。与原文矛盾的就是 NOT 题答案。"
+                    },
+                    {
+                        "q": "What problem may travellers meet if they ignore these differences?",
+                        "opts": [
+                            "They may be charged extra money.",
+                            "They may forget their own customs.",
+                            "They may refuse all handshakes.",
+                            "They may send unintended messages."
+                        ],
+                        "ans": 3,
+                        "skill": "细节题：同义改写",
+                        "rat": "\"may send messages they never intend\" = 传递并非本意的信号（unintended = never intend）。后文的两个例子（可靠→咄咄逼人）是具体说明。"
+                    },
+                    {
+                        "q": "What do experts advise travellers to do?",
+                        "opts": [
+                            "Always use a firm handshake.",
+                            "Observe local people first, then follow them.",
+                            "Avoid greeting strangers.",
+                            "Learn the wai before travelling."
+                        ],
+                        "ans": 1,
+                        "skill": "建议题：suggest 后定位",
+                        "rat": "末句 \"watch first, then follow the locals\" → B。建议/做法题找 suggest/advise/should 这类标记词。"
+                    }
+                ]
+            },
+            "S1-5": {
+                "title": "Farms That Grow Upwards",
+                "genre": "说明文 · 农业科技",
+                "text": "By 2050, the world will need to feed nearly ten billion people, yet farmland is shrinking. One bold answer does not spread outwards — it climbs upwards.\n\nIn a vertical farm, vegetables grow indoors on shelves stacked ten or more layers high. LED lights replace the sun, and computer systems deliver exactly the right amount of water and nutrition to each plant's roots — no soil needed at all. Because the environment is fully controlled, crops grow all year round, untouched by storms, insects or drought.\n\nThe numbers are striking. A vertical farm can produce up to 350 times more food per square metre than a traditional field, while using about 95 percent less water. Salad grown in a city warehouse may reach a nearby supermarket within hours instead of days.\n\nThere is, however, one heavy cost: electricity. Running thousands of lights around the clock is expensive, and critics argue the technology only makes sense where land is scarce and power is clean. Even so, from Singapore to Dubai, the shelves keep rising.",
+                "qs": [
+                    {
+                        "q": "How do plants get light in a vertical farm?",
+                        "opts": [
+                            "Through glass roofs.",
+                            "From burning fuel.",
+                            "From LED lights.",
+                            "Through underground mirrors."
+                        ],
+                        "ans": 2,
+                        "skill": "细节题：替代关系定位",
+                        "rat": "\"LED lights replace the sun\" → C。replace 表明\"用什么代替什么\"，是细节题的常考关系词。"
+                    },
+                    {
+                        "q": "Why can crops in vertical farms grow all year round?",
+                        "opts": [
+                            "The plants are genetically changed.",
+                            "Workers guard them day and night.",
+                            "The environment is fully controlled.",
+                            "The shelves turn towards the sun."
+                        ],
+                        "ans": 2,
+                        "skill": "细节题：Because 句",
+                        "rat": "\"Because the environment is fully controlled, crops grow all year round\" → C。原因直接写在 Because 引导的句子里。"
+                    },
+                    {
+                        "q": "What is the main problem with vertical farms?",
+                        "opts": [
+                            "They waste too much water.",
+                            "They produce less food than fields.",
+                            "They are far from supermarkets.",
+                            "They use a lot of electricity."
+                        ],
+                        "ans": 3,
+                        "skill": "细节题：however 后找问题",
+                        "rat": "\"There is, however, one heavy cost: electricity\" → D。A、B 与\"省水95%、产量350倍\"相反；C 与\"数小时内到超市\"相反。"
+                    },
+                    {
+                        "q": "Which is the best title for the text?",
+                        "opts": [
+                            "LED Lights: A Brief History",
+                            "Why Farmland Is Shrinking",
+                            "Vertical Farms: Growing Food Skywards",
+                            "How to Save Electricity"
+                        ],
+                        "ans": 2,
+                        "skill": "标题题：不宽不窄",
+                        "rat": "全文围绕\"垂直农场\"的原理、优势与代价展开，C 恰好覆盖。A、D 只是局部细节（太窄），B 只是引入背景。"
+                    }
+                ]
+            },
+            "S2-1": {
+                "title": "The Untidy Dish That Saved Millions",
+                "genre": "科学史 · 科学家",
+                "text": "Great discoveries are supposed to come from careful plans. One of the greatest came from an untidy laboratory.\n\nIn September 1928, Alexander Fleming returned from holiday to his messy London lab and began cleaning old culture dishes of bacteria. On one dish, something odd caught his eye: a spot of blue-green mould was growing, and around it lay a clear ring where the bacteria had been destroyed. Something in the mould was killing them.\n\nFleming named the substance penicillin. He published his finding in 1929, but few paid attention, and producing the medicine in large amounts proved too hard for his small team. The breakthrough waited more than a decade, until scientists at Oxford University developed methods of mass production during World War II. By 1944, penicillin was saving the lives of thousands of wounded soldiers.\n\n\"One sometimes finds what one is not looking for,\" Fleming later said of that famous morning. Chance, as scientists like to add, favours the prepared mind: thousands might have washed that dish; Fleming read it.",
+                "qs": [
+                    {
+                        "q": "What did Fleming notice on the dish?",
+                        "opts": [
+                            "The bacteria had doubled.",
+                            "The dish had been stolen.",
+                            "Blue-green bacteria were growing.",
+                            "A clear ring surrounded the mould."
+                        ],
+                        "ans": 3,
+                        "skill": "细节题：观察句定位",
+                        "rat": "\"around it lay a clear ring where the bacteria had been destroyed\" → D。C 偷换概念：蓝绿色的是霉菌（mould），不是细菌。"
+                    },
+                    {
+                        "q": "Why did penicillin's success wait more than ten years?",
+                        "opts": [
+                            "Mass production was too difficult at first.",
+                            "Fleming kept it secret.",
+                            "Doctors refused to use it.",
+                            "The war stopped all research."
+                        ],
+                        "ans": 0,
+                        "skill": "细节题：but 后找障碍",
+                        "rat": "\"producing the medicine in large amounts proved too hard for his small team\" → A。D 因果颠倒：恰恰是战争推动了牛津团队的量产研究。"
+                    },
+                    {
+                        "q": "Which of the following is a FACT, not an opinion?",
+                        "opts": [
+                            "Great discoveries should come from careful plans.",
+                            "Fleming was the luckiest scientist in history.",
+                            "By 1944, penicillin was saving thousands of soldiers.",
+                            "Untidy labs are better for science."
+                        ],
+                        "ans": 2,
+                        "skill": "事实vs观点题",
+                        "rat": "事实=可验证的陈述：C 有明确时间和可查证内容。A、B、D 都含主观判断词（should/luckiest/better），是观点。"
+                    },
+                    {
+                        "q": "What does \"Chance favours the prepared mind\" mean in the text?",
+                        "opts": [
+                            "Lucky people never need to study.",
+                            "Only tidy scientists make discoveries.",
+                            "Washing dishes brings good luck.",
+                            "Preparation lets you see what others miss."
+                        ],
+                        "ans": 3,
+                        "skill": "句意理解题：结合末句",
+                        "rat": "紧接的解释：\"thousands might have washed that dish; Fleming read it\"——机会人人可能遇到，有准备的头脑才能读懂它。D 是这层意思的概括。"
+                    }
+                ]
+            },
+            "S2-2": {
+                "title": "A Table for Two Cultures",
+                "genre": "记叙文 · 跨文化交流",
+                "text": "When 17-year-old Lin Yue arrived in Chile as an exchange student, she carried a suitcase of gifts and a head full of worries. Her host family greeted her with warm hugs — the first surprise for a girl used to polite handshakes.\n\nThe early weeks were a bumpy road. At dinner, the family chatted loudly, interrupted each other and laughed until the plates shook, while Lin ate in careful silence. Her host mother worried the girl was unhappy; Lin worried she was being rude by saying too little. The misunderstanding might have grown, but one evening, Lin decided to cook. She made dumplings, and as the family folded the little parcels together — most of them bursting open in the pot — the kitchen filled with laughter that needed no translation.\n\nFood opened the door that language could not. By the end of the year, Lin was interrupting cheerfully like a local, and her host mother had learned to make a proper dumpling fold.\n\n\"I went to teach them about China,\" Lin wrote home, \"and ended up learning how many ways there are to be a family.\"",
+                "qs": [
+                    {
+                        "q": "What surprised Lin Yue when she first arrived?",
+                        "opts": [
+                            "The heavy suitcase.",
+                            "The warm hugs.",
+                            "The loud music.",
+                            "The cold weather."
+                        ],
+                        "ans": 1,
+                        "skill": "细节题：the first surprise 定位",
+                        "rat": "\"greeted her with warm hugs — the first surprise\" → B。破折号后直接点明这是第一个意外。"
+                    },
+                    {
+                        "q": "Why did the host mother worry about Lin at first?",
+                        "opts": [
+                            "Lin ate too much at dinner.",
+                            "Lin refused to cook dumplings.",
+                            "Lin seemed unhappy because she was so quiet.",
+                            "Lin criticized the family's manners."
+                        ],
+                        "ans": 2,
+                        "skill": "细节题：双向误会各找各的",
+                        "rat": "\"Her host mother worried the girl was unhappy\"——因为 Lin 安静地吃饭。两边的担心不同（妈妈怕她不开心/Lin 怕自己失礼），别弄混主体。"
+                    },
+                    {
+                        "q": "The underlined phrase \"a bumpy road\" suggests the early weeks were ______.",
+                        "opts": [
+                            "full of car trips",
+                            "difficult and uncomfortable",
+                            "smooth and happy",
+                            "busy with schoolwork"
+                        ],
+                        "ans": 1,
+                        "skill": "猜词题：看下文举例",
+                        "rat": "下文全是尴尬场景（一家人大笑、Lin 沉默、互相担心）——\"颠簸的路\"比喻开头的不顺利。A 按字面理解，典型错误。"
+                    },
+                    {
+                        "q": "What did Lin learn from her year in Chile?",
+                        "opts": [
+                            "Chilean food is better than Chinese food.",
+                            "Language is the only bridge between cultures.",
+                            "Family life can take many different forms.",
+                            "Teaching is easier than learning."
+                        ],
+                        "ans": 2,
+                        "skill": "主旨题：末段引语",
+                        "rat": "结尾她的信：\"learning how many ways there are to be a family\" → C。B 与\"Food opened the door that language could not\"相反。"
+                    }
+                ]
+            },
+            "S2-3": {
+                "title": "Why Do We Eat With Chopsticks?",
+                "genre": "说明文 · 饮食文化",
+                "text": "Every day, more than 1.5 billion people pick up two thin sticks to eat — yet few stop to ask where chopsticks came from.\n\nThe oldest known pair, made of bronze, was found in a Chinese tomb dating back over 3,000 years. But early chopsticks were probably kitchen tools rather than eating tools: cooks used them to reach into boiling pots. Scholars believe they moved to the dinner table around 2,000 years ago, partly thanks to the philosopher Confucius. He taught that knives, which reminded people of killing, had no place at a peaceful meal. Food began to be cut small in the kitchen, and chopsticks fitted the new style perfectly.\n\nThe slim tools then travelled with Chinese culture to Korea, Japan and Vietnam, each country adjusting them slightly — metal in Korea, shorter and pointed in Japan.\n\nMore than a way of eating, chopsticks carry a philosophy: harmony at the table, and a meal designed for sharing rather than cutting apart.",
+                "qs": [
+                    {
+                        "q": "What were early chopsticks probably used for?",
+                        "opts": [
+                            "Fighting at war.",
+                            "Cooking in the kitchen.",
+                            "Writing on bamboo.",
+                            "Measuring food."
+                        ],
+                        "ans": 1,
+                        "skill": "细节题：rather than 辨主次",
+                        "rat": "\"early chopsticks were probably kitchen tools rather than eating tools: cooks used them to reach into boiling pots\" → B。rather than 后面是被否定的一项，别选反。"
+                    },
+                    {
+                        "q": "How did Confucius influence the use of chopsticks?",
+                        "opts": [
+                            "He invented the first bronze pair.",
+                            "He brought chopsticks to Japan.",
+                            "He asked cooks to serve bigger pieces.",
+                            "His teaching helped remove knives from the table."
+                        ],
+                        "ans": 3,
+                        "skill": "细节题：人物贡献定位",
+                        "rat": "\"He taught that knives... had no place at a peaceful meal\"——孔子的思想让刀退出餐桌，食物切小、筷子登场。C 与\"cut small\"相反。"
+                    },
+                    {
+                        "q": "What is different about Japanese chopsticks?",
+                        "opts": [
+                            "They are shorter and pointed.",
+                            "They are made of metal.",
+                            "They are longer than Chinese ones.",
+                            "They are used only in kitchens."
+                        ],
+                        "ans": 0,
+                        "skill": "细节题：国别对应",
+                        "rat": "\"metal in Korea, shorter and pointed in Japan\"——金属的是韩国，短而尖的是日本。两国特征交叉设错，对应要准。"
+                    },
+                    {
+                        "q": "What does the last paragraph mainly tell us?",
+                        "opts": [
+                            "Chopsticks carry cultural meaning beyond eating.",
+                            "Chopsticks are hard to make.",
+                            "Sharing food is unhealthy.",
+                            "Knives are better for big meals."
+                        ],
+                        "ans": 0,
+                        "skill": "段落大意题：首句",
+                        "rat": "末段首句 \"More than a way of eating, chopsticks carry a philosophy\" → A。more than 结构表明\"不止于此\"，后文的和谐、分享是具体内容。"
+                    }
+                ]
+            },
+            "S2-4": {
+                "title": "Seven Days on the Longest Railway",
+                "genre": "游记 · 广袤土地",
+                "text": "The Trans-Siberian Railway is less a train ride than a moving home. Stretching 9,289 kilometres from Moscow to Vladivostok, it is the longest railway line in the world. A non-stop journey takes about seven days and crosses eight time zones — passengers joke that they never know whether it is time for breakfast or dinner.\n\nTravel writer Anna Petrova spent last summer on the train and recorded the changing world outside her window: birch forests that ran on for hours, the endless grasslands of Siberia, and Lake Baikal, the deepest lake on Earth, holding about one fifth of the planet's unfrozen fresh water.\n\nLife on board has its own rhythm. Strangers share tea from the samovar, a hot-water boiler at the end of every carriage, and conversations bloom between people who do not share a language. \"By day three, the train feels like a village,\" Petrova writes. \"By day seven, saying goodbye feels like leaving one.\"",
+                "qs": [
+                    {
+                        "q": "How long is the Trans-Siberian Railway?",
+                        "opts": [
+                            "8,000 kilometres.",
+                            "9,289 kilometres.",
+                            "7,289 kilometres.",
+                            "1,500 kilometres."
+                        ],
+                        "ans": 1,
+                        "skill": "数字题：30秒直取",
+                        "rat": "\"Stretching 9,289 kilometres\" → B。数字题直接定位原文数字，前后读一句确认单位和对象即可，不要恋战。"
+                    },
+                    {
+                        "q": "What is special about Lake Baikal?",
+                        "opts": [
+                            "It is the largest lake on Earth.",
+                            "It freezes all year round.",
+                            "It holds about a fifth of the planet's unfrozen fresh water.",
+                            "It lies at the end of the railway."
+                        ],
+                        "ans": 2,
+                        "skill": "细节题：同位语藏考点",
+                        "rat": "\"the deepest lake on Earth, holding about one fifth of the planet's unfrozen fresh water\" → C。A 偷换形容词：是最深（deepest）不是最大（largest）。"
+                    },
+                    {
+                        "q": "What is a samovar according to the text?",
+                        "opts": [
+                            "A hot-water boiler on the train.",
+                            "A Russian dish.",
+                            "A sleeping carriage.",
+                            "A railway station."
+                        ],
+                        "ans": 0,
+                        "skill": "猜词题：同位语定义",
+                        "rat": "\"the samovar, a hot-water boiler at the end of every carriage\"——逗号后的同位语就是定义。生词不可怕，解释就在旁边。"
+                    },
+                    {
+                        "q": "What does Petrova mean by \"the train feels like a village\"?",
+                        "opts": [
+                            "The train moves as slowly as a village.",
+                            "Passengers grow close like neighbours.",
+                            "The carriages are old and crowded.",
+                            "The train stops at every village."
+                        ],
+                        "ans": 1,
+                        "skill": "句意理解题：比喻→本义",
+                        "rat": "上文\"陌生人分享茶水、跨语言交谈\"，村庄比喻的是人与人熟络如邻里；\"离开像告别村庄\"也呼应不舍。A、D 按字面理解。"
+                    }
+                ]
+            },
+            "S2-5": {
+                "title": "When Someone Faints",
+                "genre": "说明文 · 急救",
+                "text": "Fainting looks frightening, but in most cases it is the brain's brief protest against a shortage of blood — and quick, correct help can make all the difference.\n\nIf someone near you faints, act in order. First, catch the person if you can and help them lie flat on their back; a fall often hurts more than the faint itself. Next, raise their legs about 30 centimetres, which helps blood flow back to the brain. Then loosen tight clothing around the neck and make sure fresh air can reach them — ask onlookers to step back. Most people wake within one minute.\n\nAfter the person wakes, do not let them jump to their feet; keep them lying quietly for ten more minutes and offer small sips of water.\n\nSome situations, however, are true emergencies. Call 120 immediately if the person does not wake within one minute, is pregnant, has chest pain, or fainted during exercise. When in doubt, always make the call — a wasted trip to hospital is better than a missed one.",
+                "qs": [
+                    {
+                        "q": "What should you do FIRST when someone faints?",
+                        "opts": [
+                            "Give them water at once.",
+                            "Raise their arms high.",
+                            "Call their family.",
+                            "Help them lie flat on their back."
+                        ],
+                        "ans": 3,
+                        "skill": "步骤顺序题：找序列词",
+                        "rat": "\"First, catch the person... help them lie flat on their back\" → D。步骤题按 First/Next/Then/After 定位，喝水是醒来之后的步骤。"
+                    },
+                    {
+                        "q": "Why should the legs be raised?",
+                        "opts": [
+                            "To keep the person warm.",
+                            "To prevent another fall.",
+                            "To make breathing slower.",
+                            "To help blood return to the brain."
+                        ],
+                        "ans": 3,
+                        "skill": "细节题：which 从句给原因",
+                        "rat": "\"raise their legs... which helps blood flow back to the brain\" → D。which 从句常常补充\"这样做的作用\"，正是出题点。"
+                    },
+                    {
+                        "q": "What should you do after the person wakes up?",
+                        "opts": [
+                            "Keep them lying for about ten more minutes.",
+                            "Help them stand up quickly.",
+                            "Give them a big meal.",
+                            "Leave them alone to rest."
+                        ],
+                        "ans": 0,
+                        "skill": "细节题：After 段定位",
+                        "rat": "\"do not let them jump to their feet; keep them lying quietly for ten more minutes\" → A。B 与原文的 do not 直接相反。"
+                    },
+                    {
+                        "q": "In which situation should you call 120 at once?",
+                        "opts": [
+                            "The person wakes within a minute.",
+                            "The person fainted during exercise.",
+                            "The person feels a little thirsty.",
+                            "The person wants to go home."
+                        ],
+                        "ans": 1,
+                        "skill": "细节题：紧急清单核对",
+                        "rat": "紧急情况列表：\"does not wake within one minute, is pregnant, has chest pain, or fainted during exercise\" → B。A 恰好是\"正常\"情形。"
+                    }
+                ]
+            },
+            "S3-1": {
+                "title": "The Painting Under the Painting",
+                "genre": "说明文 · 艺术",
+                "text": "In 2008, scientists pointed a special X-ray beam at Vincent van Gogh's Patch of Grass — and found a woman's face staring back from beneath the paint.\n\nThe discovery confirmed what art historians had long suspected. Van Gogh, poor for most of his life, could rarely afford new canvases, so he often painted over his earlier works. Researchers estimate that about one third of his early paintings hide another picture underneath.\n\nTo art lovers, such hidden layers are more than curiosities. They record the artist's changing mind: what he abandoned, what he kept, and how a dark peasant portrait could give way to a field of sunlit grass. \"We are not just seeing a lost painting,\" said one researcher. \"We are watching him decide.\"\n\nThe technique, which does no harm to the artwork, has since been used on paintings by Picasso and Rembrandt, revealing goats, portraits and whole scenes that their creators chose to bury. Museums now face a curious question: when one canvas holds two works of art, which one is the masterpiece?",
+                "qs": [
+                    {
+                        "q": "Why did van Gogh paint over his earlier works?",
+                        "opts": [
+                            "He could rarely afford new canvases.",
+                            "He was ashamed of them.",
+                            "His teacher told him to.",
+                            "He wanted to hide them from thieves."
+                        ],
+                        "ans": 0,
+                        "skill": "细节题：so 前找原因",
+                        "rat": "\"poor for most of his life, could rarely afford new canvases, so he often painted over his earlier works\"——原因在 so 之前：买不起新画布。"
+                    },
+                    {
+                        "q": "How many of van Gogh's early paintings may hide another picture?",
+                        "opts": [
+                            "Almost all of them.",
+                            "About one third.",
+                            "About half.",
+                            "Only Patch of Grass."
+                        ],
+                        "ans": 1,
+                        "skill": "数字题：估算词也要对应",
+                        "rat": "\"about one third of his early paintings hide another picture\" → B。注意 estimate/about 这类估算词，选项换成 half/all 就错了。"
+                    },
+                    {
+                        "q": "What does the researcher mean by \"We are watching him decide\"?",
+                        "opts": [
+                            "The X-ray shows van Gogh's face.",
+                            "The hidden layers reveal the artist's changing choices.",
+                            "Scientists decide which painting is better.",
+                            "Van Gogh is still alive in films."
+                        ],
+                        "ans": 1,
+                        "skill": "句意理解题：往上找解释",
+                        "rat": "上文：\"They record the artist's changing mind: what he abandoned, what he kept\"——隐藏图层让人看到画家的取舍过程。B 是同义转述。"
+                    },
+                    {
+                        "q": "What is the author's attitude towards the X-ray technique?",
+                        "opts": [
+                            "Worried about its damage.",
+                            "Doubtful about its results.",
+                            "Appreciative of its value.",
+                            "Bored by its popularity."
+                        ],
+                        "ans": 2,
+                        "skill": "态度题：形容词是信号",
+                        "rat": "文中评价均为正面：\"does no harm\"、\"more than curiosities\"、revealing 新发现，且结尾以有趣的问题收束——是欣赏与肯定。A 与 does no harm 相反。"
+                    }
+                ]
+            },
+            "S3-2": {
+                "title": "The 20-Minute Medicine",
+                "genre": "说明文 · 健康生活",
+                "text": "What if a single free medicine could lift your mood, sharpen your memory and protect your heart — with no side effects? Doctors say it exists. It is called a walk.\n\nResearchers at Stanford University found that walking, especially outdoors, boosts creative thinking by an average of 60 percent compared with sitting. Another large study followed adults for eleven years and reported that just 20 minutes of brisk walking a day cut the risk of early death by as much as 30 percent.\n\nWhy does something so simple work so well? Walking increases blood flow to the brain, releases chemicals that calm anxiety, and — unlike harder sports — almost never injures anyone. It also breaks the sitting habit, which scientists now compare to smoking in its long-term harm.\n\nExperts offer three tips for turning steps into medicine. Walk briskly enough to breathe faster but still talk. Choose green places when possible, since trees appear to double the calming effect. Above all, make it daily: a walk you actually take beats a workout you keep planning.",
+                "qs": [
+                    {
+                        "q": "What did the Stanford researchers find about walking?",
+                        "opts": [
+                            "It cures heart disease.",
+                            "It works only indoors.",
+                            "It replaces all medicine.",
+                            "It boosts creative thinking."
+                        ],
+                        "ans": 3,
+                        "skill": "细节题：研究对应结论",
+                        "rat": "\"walking... boosts creative thinking by an average of 60 percent\" → D。两个研究结论不同（创造力/早逝风险），问哪个研究就对应哪个结论。"
+                    },
+                    {
+                        "q": "What does the text compare long-term sitting to?",
+                        "opts": [
+                            "Walking slowly.",
+                            "Smoking.",
+                            "Hard sports.",
+                            "Sleeping too much."
+                        ],
+                        "ans": 1,
+                        "skill": "细节题：compare to 定位",
+                        "rat": "\"the sitting habit, which scientists now compare to smoking in its long-term harm\" → B。比较关系（A 被比作 B）是细节题常客。"
+                    },
+                    {
+                        "q": "Which walk best follows the experts' advice?",
+                        "opts": [
+                            "A daily brisk walk in the park.",
+                            "A monthly five-hour hike in the gym.",
+                            "A slow midnight walk while eating.",
+                            "A fast run that leaves you unable to talk."
+                        ],
+                        "ans": 0,
+                        "skill": "建议应用题：逐条匹配",
+                        "rat": "三条建议：快走但能说话、选绿色环境、每天坚持。A 全部满足。B 违反 daily；D 违反\"仍能说话\"的强度标准。"
+                    },
+                    {
+                        "q": "What is the main purpose of the text?",
+                        "opts": [
+                            "To sell walking shoes.",
+                            "To introduce the benefits of walking and how to walk well.",
+                            "To criticize people who sit.",
+                            "To report a new hospital treatment."
+                        ],
+                        "ans": 1,
+                        "skill": "写作目的题：看文体结构",
+                        "rat": "文章先讲益处（两项研究）再给做法（三条建议），是典型的\"介绍+建议\"说明文 → to inform/introduce。A、D 无中生有；C 语气不符。"
+                    }
+                ]
+            },
+            "S3-3": {
+                "title": "A Wall of Trees Across Africa",
+                "genre": "说明文 · 环境保护",
+                "text": "The Sahara, the world's largest hot desert, is growing. Each year it pushes southwards, swallowing farmland and forcing families to leave villages their ancestors farmed for centuries.\n\nAfrica's answer is breathtaking in scale: the Great Green Wall, a belt of trees and restored land planned to stretch 8,000 kilometres across the continent, from Senegal in the west to Djibouti in the east. Launched in 2007 by the African Union, the project aims to restore 100 million hectares of dry land by 2030.\n\nProgress has been real, if uneven. Ethiopia reports billions of seedlings planted; in Senegal, restored land now produces vegetables where nothing grew a decade ago. Yet by 2023, only about 18 percent of the target had been reached, held back by shortage of money and by conflicts in several regions.\n\nSupporters insist the wall is about far more than trees. Restored land means jobs for young people, food for families, and reasons to stay rather than migrate. As one project leader puts it, \"We are not just planting trees. We are planting futures.\"",
+                "qs": [
+                    {
+                        "q": "What problem does the Great Green Wall aim to solve?",
+                        "opts": [
+                            "Floods along the coast.",
+                            "The spreading of the Sahara.",
+                            "Too many trees in the west.",
+                            "Cold weather in Africa."
+                        ],
+                        "ans": 1,
+                        "skill": "细节题：首段是问题段",
+                        "rat": "首段：\"The Sahara... is growing. Each year it pushes southwards\"——绿墙就是对沙漠扩张的回应。问题-措施结构的文章，问题在开头。"
+                    },
+                    {
+                        "q": "How long is the Great Green Wall planned to be?",
+                        "opts": [
+                            "800 kilometres.",
+                            "100 million kilometres.",
+                            "18 kilometres.",
+                            "8,000 kilometres."
+                        ],
+                        "ans": 3,
+                        "skill": "数字题：单位与对象核对",
+                        "rat": "\"planned to stretch 8,000 kilometres\" → D。1 亿是公顷数（restore 100 million hectares），18% 是完成度，数字各有归属。"
+                    },
+                    {
+                        "q": "Why does the author mention Senegal's vegetables?",
+                        "opts": [
+                            "To prove vegetables grow best in deserts.",
+                            "To show the project has made real progress.",
+                            "To criticize Ethiopia's seedlings.",
+                            "To explain why families migrate."
+                        ],
+                        "ans": 1,
+                        "skill": "例子作用题：往上找观点",
+                        "rat": "例子前的观点句：\"Progress has been real, if uneven\"——塞内加尔的菜地是\"进展真实\"的证据。例子作用题答它支撑的观点，不答例子本身。"
+                    },
+                    {
+                        "q": "What does \"We are planting futures\" mean?",
+                        "opts": [
+                            "Trees grow faster in the future.",
+                            "Future generations must plant more.",
+                            "Seeds are stored for the future.",
+                            "The project brings jobs, food and hope beyond trees."
+                        ],
+                        "ans": 3,
+                        "skill": "句意理解题：往上找解释",
+                        "rat": "上文列举：\"jobs for young people, food for families, and reasons to stay\"——种下的不只是树，更是生计与希望。D 概括到位。"
+                    }
+                ]
+            },
+            "S3-4": {
+                "title": "The Boy Who Caught the Wind",
+                "genre": "记叙文 · 逆境与勇气",
+                "text": "In 2001, a terrible drought struck Malawi. Fourteen-year-old William Kamkwamba watched his family's maize field die, and with it, the money for his school fees. He was forced to drop out.\n\nBut William refused to drop out of learning. In a small library nearby, he found a physics book with a picture that seized his imagination: a windmill. Wind, the book said, could be turned into electricity. His village had no electricity — but it had plenty of wind.\n\nUsing a broken bicycle, plastic pipes, and parts collected from a junkyard, William began to build. Neighbours laughed and called him crazy; his mother worried he had lost his mind. Weeks later, a strange tower of rubbish stood beside his house. William climbed up, connected a small bulb — and light flickered on. The laughter died into amazed silence.\n\nThe windmill soon charged mobile phones and pumped water for the whole village. News spread, scholarships followed, and the boy who could not pay school fees eventually studied at an American university. \"I tried, and I made it,\" he told a cheering audience years later. \"Whatever happens, don't give up.\"",
+                "qs": [
+                    {
+                        "q": "Why did William leave school?",
+                        "opts": [
+                            "His family could not pay the fees after the drought.",
+                            "He disliked physics.",
+                            "The school was destroyed.",
+                            "He wanted to build windmills."
+                        ],
+                        "ans": 0,
+                        "skill": "细节题：因果链开头",
+                        "rat": "旱灾→玉米死→没钱交学费→辍学。\"the money for his school fees. He was forced to drop out\" → A。D 时间顺序颠倒。"
+                    },
+                    {
+                        "q": "How did the neighbours first react to William's project?",
+                        "opts": [
+                            "They offered him tools.",
+                            "They reported him to the police.",
+                            "They asked him to teach them.",
+                            "They laughed and thought him crazy."
+                        ],
+                        "ans": 3,
+                        "skill": "心理变化题：转折前的状态",
+                        "rat": "\"Neighbours laughed and called him crazy\" → D。后文灯亮后\"laughter died into amazed silence\"——先嘲笑后惊叹，转折点是灯亮那一刻。"
+                    },
+                    {
+                        "q": "What happened right after William connected the bulb?",
+                        "opts": [
+                            "The tower fell down.",
+                            "The village lost power.",
+                            "The light came on.",
+                            "His mother stopped him."
+                        ],
+                        "ans": 2,
+                        "skill": "细节题：破折号后是结果",
+                        "rat": "\"connected a small bulb — and light flickered on\" → C。记叙文高潮常用破折号引出关键结果。"
+                    },
+                    {
+                        "q": "What does William's story mainly show?",
+                        "opts": [
+                            "Perseverance and learning can turn adversity around.",
+                            "Libraries should be bigger.",
+                            "Droughts can be prevented by windmills.",
+                            "Junkyards are full of treasure."
+                        ],
+                        "ans": 0,
+                        "skill": "主旨题：末段引语升华",
+                        "rat": "辍学仍坚持自学、被嘲笑仍坚持建造，结尾点题 \"don't give up\" → A。B、D 是细节；C 因果错误（风车不能防旱灾）。"
+                    }
+                ]
+            },
+            "S3-5": {
+                "title": "Seventeen Syllables of Silence",
+                "genre": "说明文 · 诗歌",
+                "text": "An old pond—\na frog jumps in:\nthe sound of water.\n\nThis tiny poem by Matsuo Basho is perhaps the most famous haiku ever written. Born in Japan in the 17th century, haiku is among the shortest poetic forms on Earth: traditionally just seventeen syllables, arranged in three lines of five, seven and five.\n\nYet smallness is exactly its power. A haiku does not explain feelings; it presents one sharp image — a frog, a pond, a splash — and trusts the reader to feel the rest. Classic haiku also contains a season word: cherry blossoms suggest spring, snow points to winter. In Basho's poem, the frog itself signals spring, when frogs return to the water.\n\nNotice what surrounds the splash: silence. The old pond is quiet before the jump and quiet after it. That single drop of sound makes the stillness deeper — a trick poets call \"hearing the silence\".\n\nToday, haiku has jumped its own pond. Poets from Brazil to Finland write haiku in their languages, proving that seventeen syllables need no passport.",
+                "qs": [
+                    {
+                        "q": "What is the traditional form of a haiku?",
+                        "opts": [
+                            "Seventeen lines of five words.",
+                            "Three lines of 5, 7 and 5 syllables.",
+                            "Seven lines of three syllables.",
+                            "One line of seventeen words."
+                        ],
+                        "ans": 1,
+                        "skill": "数字题：结构对应",
+                        "rat": "\"seventeen syllables, arranged in three lines of five, seven and five\" → B。数字打乱重组是干扰项惯用手法，对应回原文。"
+                    },
+                    {
+                        "q": "How does a haiku express feelings?",
+                        "opts": [
+                            "By presenting one sharp image.",
+                            "By explaining them in detail.",
+                            "By asking the reader questions.",
+                            "By repeating the same word."
+                        ],
+                        "ans": 0,
+                        "skill": "细节题：not...but 结构",
+                        "rat": "\"does not explain feelings; it presents one sharp image... and trusts the reader to feel the rest\" → A。B 恰是被否定的一半。"
+                    },
+                    {
+                        "q": "What does the frog tell readers in Basho's poem?",
+                        "opts": [
+                            "The pond is dangerous.",
+                            "The season is spring.",
+                            "The water is deep.",
+                            "The poet is lonely."
+                        ],
+                        "ans": 1,
+                        "skill": "细节题：例证回指",
+                        "rat": "\"the frog itself signals spring, when frogs return to the water\" → B。季语（season word）是俳句的规则，青蛙=春天。"
+                    },
+                    {
+                        "q": "What does \"hearing the silence\" mean in the poem?",
+                        "opts": [
+                            "Frogs make no sound in water.",
+                            "The splash makes the quiet feel deeper.",
+                            "Readers should read the poem silently.",
+                            "Old ponds are always noisy."
+                        ],
+                        "ans": 1,
+                        "skill": "修辞理解题：上文找解释",
+                        "rat": "\"That single drop of sound makes the stillness deeper\"——一声水响反而衬托出更深的寂静，这就是\"听见寂静\"。以声衬静，中文诗也有同款（蝉噪林逾静）。"
+                    }
+                ]
+            },
+            "S4-1": {
+                "title": "The Ticket in the Old Coat",
+                "genre": "记叙文 · 回望往事",
+                "text": "Cleaning out my father's closet last winter, I found a train ticket in the pocket of his oldest coat. The date printed on it was March 3rd, 1985 — the day, I suddenly realized, that he had first left his village for the city.\n\nHe had told me the story only once. He was nineteen, carrying a borrowed suitcase and exactly forty yuan. His mother had walked him to the station in the rain but refused to watch the train leave. For the first three years, he unloaded bricks by day and studied bookkeeping by night, mailing home half of everything he earned.\n\nI had always known my father as a careful, quiet accountant who never wasted a coin. Holding that thirty-year-old ticket, I finally understood the young man behind the quietness: how far he had travelled, and how much of the journey he had kept to himself.\n\nI put the ticket back where I found it. Some things belong in their pockets — but I button the coat now, whenever I pass it, the way you might steady an old soldier's shoulder.",
+                "qs": [
+                    {
+                        "q": "What did the writer find in the coat?",
+                        "opts": [
+                            "Forty yuan.",
+                            "A bookkeeping textbook.",
+                            "An old train ticket.",
+                            "A letter from grandmother."
+                        ],
+                        "ans": 2,
+                        "skill": "细节题：首段定位",
+                        "rat": "\"I found a train ticket in the pocket of his oldest coat\" → C。四十元是父亲当年携带的钱，属于回忆内容，不是找到的东西。"
+                    },
+                    {
+                        "q": "What did the father do during his first three years in the city?",
+                        "opts": [
+                            "He drove trains at night.",
+                            "He opened a small shop.",
+                            "He returned home every month.",
+                            "He unloaded bricks and studied at night."
+                        ],
+                        "ans": 3,
+                        "skill": "细节题：时间范围定位",
+                        "rat": "\"For the first three years, he unloaded bricks by day and studied bookkeeping by night\" → D。定位时间短语 the first three years。"
+                    },
+                    {
+                        "q": "Why did the grandmother refuse to watch the train leave?",
+                        "opts": [
+                            "She probably could not bear the sadness.",
+                            "She was angry with her son.",
+                            "The rain was too heavy.",
+                            "She had to work that day."
+                        ],
+                        "ans": 0,
+                        "skill": "推断题：情感合理延伸",
+                        "rat": "雨中送到车站却不看火车开走——不是不爱，而是不忍。A 是最合理的情感推断；B 与\"walked him to the station\"矛盾；C、D 无依据。"
+                    },
+                    {
+                        "q": "Why does the writer button the coat now?",
+                        "opts": [
+                            "To keep the ticket from falling out.",
+                            "To prepare the coat for selling.",
+                            "To show quiet respect for the father's journey.",
+                            "To hide it from the family."
+                        ],
+                        "ans": 2,
+                        "skill": "句意理解题：比喻看喻体",
+                        "rat": "\"the way you might steady an old soldier's shoulder\"——像扶正老兵的肩膀：这是致敬的动作。理解了比喻，就理解了扣扣子的含义。"
+                    }
+                ]
+            },
+            "S4-2": {
+                "title": "The Lady With the Lamp",
+                "genre": "人物传记 · 标志性人物",
+                "text": "When Florence Nightingale told her wealthy English family in the 1840s that she wanted to be a nurse, they were horrified. Nursing then was considered low, dirty work — no job for an educated lady.\n\nShe went anyway. In 1854, during the Crimean War, Nightingale arrived at a military hospital with thirty-eight nurses and found soldiers dying less from wounds than from the hospital itself: dirty water, crowded rooms, rats everywhere. She organized cleaning, fresh food and clean bandages. Within months, the death rate fell from about 42 percent to 2 percent.\n\nAt night, she walked the long dark wards carrying a small lamp, checking on every soldier. The men began calling her \"the Lady with the Lamp\".\n\nYet her greatest weapon was mathematics. Back home, she turned her records into striking charts that even busy politicians could understand at a glance, proving that cleanliness saved lives. Her reports reshaped hospital design across the world.\n\nModern nursing schools, hospital hygiene rules, and the very idea that data can save lives — all trace back to a woman her family once ordered to stay home.",
+                "qs": [
+                    {
+                        "q": "How did Nightingale's family react to her career choice?",
+                        "opts": [
+                            "They proudly supported her.",
+                            "They were shocked and against it.",
+                            "They asked her to study maths first.",
+                            "They sent her to the war."
+                        ],
+                        "ans": 1,
+                        "skill": "细节题：首段态度词",
+                        "rat": "\"they were horrified\"，且末段说家人 \"ordered to stay home\" → B。horrified/ordered 都是态度信号词。"
+                    },
+                    {
+                        "q": "What mainly killed the soldiers before her arrival?",
+                        "opts": [
+                            "Enemy attacks inside wards.",
+                            "Shortage of nurses' lamps.",
+                            "The terrible conditions of the hospital.",
+                            "The long journey home."
+                        ],
+                        "ans": 2,
+                        "skill": "细节题：less from...than from",
+                        "rat": "\"dying less from wounds than from the hospital itself\"——比起伤口，医院本身（脏水、拥挤、老鼠）才是主要死因。这个比较结构是长难句考点。"
+                    },
+                    {
+                        "q": "Why were her charts so powerful?",
+                        "opts": [
+                            "They were painted in bright colours.",
+                            "They showed pictures of the lamp.",
+                            "They let busy politicians understand the facts at a glance.",
+                            "They were written in many languages."
+                        ],
+                        "ans": 2,
+                        "skill": "细节题：that 从句给原因",
+                        "rat": "\"charts that even busy politicians could understand at a glance, proving that cleanliness saved lives\" → C。她用数据说服决策者，这正是\"数学是最大武器\"的含义。"
+                    },
+                    {
+                        "q": "Which words best describe Nightingale?",
+                        "opts": [
+                            "Determined and scientific.",
+                            "Obedient and quiet.",
+                            "Wealthy and relaxed.",
+                            "Famous but careless."
+                        ],
+                        "ans": 0,
+                        "skill": "品质推断题：事例反推",
+                        "rat": "不顾家人反对坚持从医=determined；用数据和图表证明结论=scientific。B 与\"她还是去了\"矛盾。品质词逐一找事例支撑。"
+                    }
+                ]
+            },
+            "S4-3": {
+                "title": "The Night the Guns Fell Silent",
+                "genre": "历史记叙 · 战争与和平",
+                "text": "On Christmas Eve of 1914, the first winter of World War I, something happened along the Western Front that no general had ordered and no textbook had predicted.\n\nBritish soldiers, shivering in their muddy trenches, heard singing float across the darkness. The Germans, only a hundred metres away, were singing Silent Night. The British answered with a carol of their own. When morning came, soldiers on both sides slowly climbed out — unarmed — into the strip of land between the trenches.\n\nEnemies who had been shooting at each other the day before now shook hands, swapped cigarettes and buttons, and showed one another photographs of families back home. In several places, they even played football with empty cans and borrowed balls. Letters written by soldiers that week describe laughter, shared meals, and joint burials for the fallen of both sides.\n\nThe generals were furious. Orders soon came down forbidding any repeat, and the war ground on for four more bloody years.\n\nThe truce changed nothing on the map — and yet it is remembered more than many battles, perhaps because it proved something quietly extraordinary: peace broke out on its own, the moment men were allowed to see each other as men.",
+                "qs": [
+                    {
+                        "q": "How did the truce begin?",
+                        "opts": [
+                            "Generals from both sides signed it.",
+                            "A football match was arranged.",
+                            "Both armies ran out of weapons.",
+                            "It started with Christmas songs across the front."
+                        ],
+                        "ans": 3,
+                        "skill": "细节题：事件起点定位",
+                        "rat": "德军唱《平安夜》，英军以颂歌回应——歌声是起点。A 与\"no general had ordered\"直接矛盾；B 是后来发生的事。"
+                    },
+                    {
+                        "q": "What did soldiers NOT do during the truce?",
+                        "opts": [
+                            "Exchange cigarettes and buttons.",
+                            "Exchange their weapons.",
+                            "Show family photographs.",
+                            "Play football."
+                        ],
+                        "ans": 1,
+                        "skill": "NOT题：三对一错",
+                        "rat": "交换香烟纽扣 ✓、看家人照片 ✓、踢球 ✓，都在原文；交换武器没有——他们是 unarmed（不带武器）爬出战壕的。"
+                    },
+                    {
+                        "q": "How did the generals react to the truce?",
+                        "opts": [
+                            "They joined the football game.",
+                            "They ended the war early.",
+                            "They gave the soldiers medals.",
+                            "They were angry and forbade any repeat."
+                        ],
+                        "ans": 3,
+                        "skill": "细节题：态度词定位",
+                        "rat": "\"The generals were furious. Orders soon came down forbidding any repeat\" → D。B 与\"war ground on for four more years\"相反。"
+                    },
+                    {
+                        "q": "Why is the truce remembered, according to the author?",
+                        "opts": [
+                            "It changed the map of Europe.",
+                            "It showed peace can appear when enemies see each other as human.",
+                            "It was the biggest battle of 1914.",
+                            "It invented modern football."
+                        ],
+                        "ans": 1,
+                        "skill": "写作目的/主旨题：末句",
+                        "rat": "末句：\"peace broke out on its own, the moment men were allowed to see each other as men\" → B。A 与\"changed nothing on the map\"相反。作者写此文正是为了这层反思。"
+                    }
+                ]
+            },
+            "S4-4": {
+                "title": "A Library at the End of the World",
+                "genre": "说明文 · 共享世界",
+                "text": "Halfway between Norway and the North Pole, buried 120 metres inside a frozen mountain, lies a library that holds no books. Its shelves store seeds.\n\nThe Svalbard Global Seed Vault opened in 2008 with a simple mission: keep a backup copy of the world's crops, so that no war, disaster or accident could ever wipe out the plants humanity depends on. Today it protects more than 1.2 million seed samples — rice from Asia, beans from South America, wheat from the Middle East — donated by nearly every country on Earth.\n\nThe location was chosen with care. The Arctic cold keeps the vault naturally frozen even if the power fails, and the mountain stands high enough to stay dry even if all the ice on the planet melted.\n\nThe vault made history in 2015. After war damaged a seed bank in Syria, scientists withdrew their stored samples from Svalbard, regrew the crops elsewhere, and later returned fresh seeds to the vault — proof that the system works.\n\nCountries that disagree about almost everything all keep seeds side by side in the same cold room. As one scientist joked, \"It may be the most peaceful place on Earth.\"",
+                "qs": [
+                    {
+                        "q": "What is the mission of the Seed Vault?",
+                        "opts": [
+                            "To grow crops in the Arctic.",
+                            "To keep a backup of the world's crops.",
+                            "To sell rare seeds to farmers.",
+                            "To study the frozen mountain."
+                        ],
+                        "ans": 1,
+                        "skill": "细节题：mission 冒号后",
+                        "rat": "\"a simple mission: keep a backup copy of the world's crops\" → B。冒号后面就是使命的内容。"
+                    },
+                    {
+                        "q": "Why was the Arctic location chosen?",
+                        "opts": [
+                            "It is close to every country.",
+                            "It has the best soil for seeds.",
+                            "It is easy for tourists to visit.",
+                            "It stays cold and dry even in the worst cases."
+                        ],
+                        "ans": 3,
+                        "skill": "细节题：段落主旨句",
+                        "rat": "\"The Arctic cold keeps the vault naturally frozen even if the power fails, and... stay dry even if all the ice melted\" → D。两个 even if 给出双保险。"
+                    },
+                    {
+                        "q": "What happened in 2015?",
+                        "opts": [
+                            "The vault was damaged by war.",
+                            "Syria donated its first seeds.",
+                            "Stored seeds were withdrawn, regrown and returned.",
+                            "The vault was moved to Syria."
+                        ],
+                        "ans": 2,
+                        "skill": "细节题：时间定位+过程排序",
+                        "rat": "取出→异地重种→送回新种子，三步齐全的是 C。A 偷换对象：被战争损坏的是叙利亚的种子库，不是斯瓦尔巴金库。"
+                    },
+                    {
+                        "q": "What does the scientist's joke suggest about the vault?",
+                        "opts": [
+                            "It is too cold for arguments.",
+                            "Cooperation there rises above political differences.",
+                            "No one is allowed to speak inside.",
+                            "Peaceful countries own more seeds."
+                        ],
+                        "ans": 1,
+                        "skill": "句意理解题：上文是谜底",
+                        "rat": "上句：\"Countries that disagree about almost everything all keep seeds side by side\"——连彼此对立的国家都在这里并肩存种，合作超越了分歧，所以说它\"最和平\"。"
+                    }
+                ]
+            },
+            "S4-5": {
+                "title": "Your Brain on Virtual Reality",
+                "genre": "科普 · 虚拟世界",
+                "text": "Put on a virtual reality headset, step onto a wooden plank between two skyscrapers, and your legs will shake — even though your feet never leave the living-room carpet. Why does the body believe what the mind knows is false?\n\nNeuroscientists explain that the brain builds its sense of \"reality\" mainly from vision and motion. When a VR scene moves exactly as your head turns, ancient alarm systems in the brain accept the scene as real and act accordingly: heart rate climbs, palms sweat.\n\nMedicine has turned this \"believing brain\" into a tool. Patients afraid of flying practise take-offs in virtual cabins; burn victims report far less pain when their minds \"walk\" through a snowy virtual world during treatment. Medical students now rehearse operations in VR, where a mistake costs nothing but pride.\n\nStill, researchers urge caution. If the brain treats virtual experience as real, then violent or frightening content may leave real marks, especially on children, whose sense of reality is still under construction.\n\nThe technology itself is neither medicine nor poison. As one scientist puts it, \"VR is the most powerful storyteller we have ever built. The question is what stories we choose to tell.\"",
+                "qs": [
+                    {
+                        "q": "Why do people's legs shake on the virtual plank?",
+                        "opts": [
+                            "The headset is too heavy.",
+                            "The floor actually shakes.",
+                            "They remember a real accident.",
+                            "The brain accepts the moving scene as real."
+                        ],
+                        "ans": 3,
+                        "skill": "细节题：机制句定位",
+                        "rat": "\"ancient alarm systems in the brain accept the scene as real and act accordingly\" → D。科普文\"为什么\"的答案在机制解释段。"
+                    },
+                    {
+                        "q": "How does VR help burn victims?",
+                        "opts": [
+                            "It heals their skin faster.",
+                            "It lets them sleep during treatment.",
+                            "It reduces the pain they feel.",
+                            "It teaches them to ski."
+                        ],
+                        "ans": 2,
+                        "skill": "细节题：应用一一对应",
+                        "rat": "\"burn victims report far less pain when their minds walk through a snowy virtual world\" → C。三个医疗应用（恐飞/烧伤/手术练习）各对应各的，别串。"
+                    },
+                    {
+                        "q": "Why do researchers worry about children using VR?",
+                        "opts": [
+                            "Children break headsets easily.",
+                            "Children's sense of reality is still developing.",
+                            "VR games are too expensive.",
+                            "Children refuse to exercise."
+                        ],
+                        "ans": 1,
+                        "skill": "细节题：especially 后是重点",
+                        "rat": "\"especially on children, whose sense of reality is still under construction\" → B。especially 引出的对象和 whose 从句给出的原因，都是高频出题点。"
+                    },
+                    {
+                        "q": "What does the scientist mean by the final remark?",
+                        "opts": [
+                            "VR's effect depends on how people use it.",
+                            "VR tells better stories than books.",
+                            "Storytellers should build VR machines.",
+                            "VR should be banned like poison."
+                        ],
+                        "ans": 0,
+                        "skill": "主旨题：末句定全文态度",
+                        "rat": "\"neither medicine nor poison\"+\"what stories we choose to tell\"——技术本身中性，关键在使用者的选择。A 是同义转述；B、C 按字面理解；D 走极端。"
+                    }
+                ]
+            }
         };
 
         const EXAM_TIPS_DB = {
@@ -3846,7 +5741,7 @@ Which option best expresses its meaning?`,
             useEffect(() => { setPicks({}); setGraded(false); }, [unitKey]);
 
             if (!data) {
-                return <div className="text-center p-10 card-lg text-slate-400 font-medium">本单元的阅读训练正在制作中（目前先开放必修一 5 篇，把方法练熟）。</div>;
+                return <div className="text-center p-10 card-lg text-slate-400 font-medium">本单元的阅读训练正在制作中，敬请期待。</div>;
             }
 
             const score = data.qs.reduce((n, q, i) => n + (picks[i] === q.ans ? 1 : 0), 0);

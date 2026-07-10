@@ -955,6 +955,43 @@
             ] },
         };
 
+        // ==========================================
+        // 3.46 阅读理解训练（试点：必修一 5 篇；每篇 4 题，题型=细节/数字/推断/猜词/主旨）
+        //      qs[i].skill 标注该题用的解题诀窍，判卷后展示，让诀窍落地
+        // ==========================================
+        const READING_DB = {
+            'B1-1': { title: 'Fitting In at Senior High', genre: '记叙文 · 成长', text: "When Li Ming started senior high school last September, he felt lost. The campus was three times bigger than his old school, and his new classmates all seemed smarter than him. In the first month, he failed two maths tests and thought about giving up his dream of college.\n\nEverything changed when his English teacher, Ms Chen, asked him to join the school radio station. \"Your voice is a gift,\" she said. At first, Li Ming refused because he was afraid of making mistakes. But Ms Chen told him something he still remembers: \"Confidence doesn't come before success — it comes from small steps.\" He started by reading a two-minute news report every Friday. Slowly, his English improved, and so did his other subjects.\n\nNow, one year later, Li Ming leads the radio station. When new students say they feel nervous, he always smiles and tells them his own story.", qs: [
+                { q: 'How did Li Ming feel when he first entered senior high school?', opts: ['Confident and excited.', 'Lost and stressed.', 'Bored with his classes.', 'Angry with his teacher.'], ans: 1, skill: '细节题：回原文定位', rat: '定位第一段 "he felt lost"、"failed two maths tests and thought about giving up"——他感到迷茫、有压力。A 与原文相反；C、D 原文未提。' },
+                { q: 'Why did Li Ming refuse to join the radio station at first?', opts: ['He disliked reading news.', 'He was too busy with maths.', 'He feared making mistakes.', 'His teacher forced him to study.'], ans: 2, skill: '细节题：because 后找原因', rat: '定位第二段 "he refused because he was afraid of making mistakes"，C 是原文同义改写（fear = be afraid of）。其余选项无原文依据。' },
+                { q: "What does Ms Chen's advice suggest?", opts: ['Success always comes quickly.', 'Confidence grows through small actions.', 'Talent matters more than effort.', 'Students should avoid difficult tasks.'], ans: 1, skill: '推断题：答案是原文的合理延伸', rat: '"Confidence doesn\'t come before success — it comes from small steps" 的合理延伸就是 B：自信从小行动中积累。A、C、D 都与这句话矛盾。' },
+                { q: 'What is the best title for the text?', opts: ['A Famous School Radio Station', 'How to Pass Maths Tests', 'Small Steps, Big Changes', 'A Strict English Teacher'], ans: 2, skill: '主旨题：首尾段+中心句', rat: '全文讲李明通过"每周两分钟"的小步骤走出迷茫、获得成长，C 概括全文。A、B、D 都只是局部细节，范围太窄。' },
+            ] },
+            'B1-2': { title: 'Green Lake Weekend Tours', genre: '应用文 · 广告', text: "Looking for a weekend escape? Join our Green Lake Tours!\n\nTour A: Lakeside Walk (Saturday)\nEnjoy a guided 5-kilometre walk along the lake, visit the 800-year-old Stone Bridge, and taste local snacks at the fishing village. Departure: 8:30 a.m. Price: $25 per person.\n\nTour B: Mountain View (Sunday)\nTake the cable car up Cloud Mountain for a breathtaking view of the whole lake. The tour includes a picnic lunch. Departure: 9:00 a.m. Price: $40 per person, $30 for students with ID cards.\n\nBooking: Book online at least two days in advance. Groups of ten or more get a 20% discount on either tour. Children under six travel free with an adult.\n\nNote: Tour B may be cancelled in bad weather. In that case, visitors can get a full refund or change to Tour A for free.", qs: [
+                { q: 'How much should a student with an ID card pay for Tour B?', opts: ['$40.', '$30.', '$25.', '$20.'], ans: 1, skill: '数字题：直接定位价格', rat: '定位 Tour B 的价格行："$30 for students with ID cards"。别被 $40（成人价）和 $25（Tour A 价格）干扰——数字题一定看清"哪个项目、哪类人"。' },
+                { q: 'What can visitors do on Tour A?', opts: ['Take a cable car.', 'Have a picnic lunch.', 'Visit an ancient bridge.', 'Swim in the lake.'], ans: 2, skill: '细节题：按板块定位', rat: 'Tour A 板块提到 "visit the 800-year-old Stone Bridge"，C 中 ancient 是 800-year-old 的同义改写。A、B 属于 Tour B；D 原文未提。' },
+                { q: 'If Tour B is cancelled because of rain, visitors can ______.', opts: ['get half of their money back', 'only wait for the next Sunday', 'get a full refund or join Tour A free', 'complain to the tour guide'], ans: 2, skill: '细节题：Note/注意事项必出题', rat: '广告类文章的 Note 部分几乎必出题：原文 "get a full refund or change to Tour A for free" 就是 C。A"退一半"篡改了数字，属于偷换细节。' },
+                { q: 'How can a group of twelve save money?', opts: ['By booking on the departure day.', 'By bringing children under six.', 'By showing student ID cards.', 'By using the group discount.'], ans: 3, skill: '细节题：条件匹配', rat: '"Groups of ten or more get a 20% discount"——12 人满足"十人及以上"，用团体折扣。A 与"提前两天预订"矛盾；B、C 与"12人团省钱"无关。' },
+            ] },
+            'B1-3': { title: 'The Slowest Runner', genre: '记叙文 · 体育励志', text: "At the city marathon last year, most eyes were on the fastest runners. Mine were on the slowest one.\n\nHer name was Granny Zhao, aged 68. She had started running only three years before, after a serious illness almost took her life. \"The doctor said walking would help my recovery,\" she told reporters, wiping the sweat from her face. \"So I walked. Then one day, I ran a little. And I never stopped.\"\n\nDuring the race, her legs shook and her speed dropped, but she refused to get on the rescue bus. Young runners passed her, then turned back to run beside her and cheer her on. When she finally crossed the finish line — five hours and forty minutes after the start — the crowd stood up and clapped as if she had won the championship.\n\nIn a way, she had. The prize she won was not a medal, but the belief that it is never too late to start.", qs: [
+                { q: 'Why did Granny Zhao start running?', opts: ['To win a marathon medal.', 'To help her body recover.', 'To become famous in the city.', 'To make young friends.'], ans: 1, skill: '细节题：找原因看引语', rat: '定位她的原话："The doctor said walking would help my recovery"——先走路助康复，后来才开始跑。B 是同义改写。A、C、D 无原文依据。' },
+                { q: 'What happened during the race?', opts: ['She gave up halfway.', 'She took the rescue bus.', 'Young runners encouraged her.', 'She finished first in her group.'], ans: 2, skill: '细节题：动作链定位', rat: '原文 "turned back to run beside her and cheer her on"，C 中 encourage = cheer on（同义改写）。A、B 与 "refused to get on the rescue bus" 相反。' },
+                { q: 'The underlined phrase "In a way, she had" means she had ______.', opts: ['won something more valuable', 'broken the marathon record', 'received a real medal', 'lost the race completely'], ans: 0, skill: '猜词/句意题：看上下文', rat: '往下看下一句："The prize she won was not a medal, but the belief..."——她赢得的是比奖牌更珍贵的东西（信念）。理解代词和省略要看前后句。' },
+                { q: 'What does the story mainly tell us?', opts: ['Marathons are dangerous for old people.', 'Fast runners deserve more attention.', 'It is never too late to begin.', 'Doctors give the best training advice.'], ans: 2, skill: '主旨题：末段点题', rat: '记叙文主旨常在末段升华句："it is never too late to start"，C 是其同义改写。A、B、D 均与文章立场相反或无关。' },
+            ] },
+            'B1-4': { title: 'Dog Hero of the Landslide', genre: '新闻报道 · 灾难救援', text: "XINHUA, Tuesday — A rescue dog named Leo has become a national hero after helping save six people from a landslide in a mountain village last Friday.\n\nHeavy rain had fallen for three days before the disaster happened at about 5 a.m., when most villagers were still asleep. Mud and rocks buried more than twenty houses within minutes. Rescue teams arrived two hours later, but thick mud made the search extremely difficult.\n\nThat was when Leo went to work. Trained to smell people trapped under ruins, the four-year-old dog located six survivors in the first day, including a two-month-old baby sleeping in her mother's arms. \"Every minute matters in a rescue,\" said Leo's trainer, Mr Wang. \"Machines can lift rocks, but they cannot smell hope. Leo can.\"\n\nAll six survivors were taken to hospital and are now in stable condition. The search for two missing villagers continues.", qs: [
+                { q: 'When did the landslide happen?', opts: ['On Tuesday evening.', 'At about 5 a.m. last Friday.', 'Three days before the rain.', 'Two hours after the rescue.'], ans: 1, skill: '新闻五要素：when', rat: '新闻导语和第二段给出时间："last Friday" + "at about 5 a.m."。A 是发稿时间；C 因果颠倒（雨下了三天才发生灾害）；D 顺序颠倒。' },
+                { q: 'What made the search difficult?', opts: ['The cold weather.', 'The thick mud.', 'The dark night.', 'The broken roads.'], ans: 1, skill: '细节题：关键词定位', rat: '原文 "thick mud made the search extremely difficult"，直接对应 B。其余选项听起来合理，但原文没提——阅读只认原文，不认想象。' },
+                { q: 'What can we learn about Leo?', opts: ['He was trained to find people under ruins.', 'He is two months old.', 'He lifted rocks for the rescue team.', 'He found all eight villagers.'], ans: 0, skill: '细节题：数字陷阱排除', rat: '原文 "Trained to smell people trapped under ruins" → A。B 的"两个月"是被救婴儿的年龄（数字张冠李戴）；C 是机器做的事；D "还有两人失踪"，说 all 就错了。' },
+                { q: 'What did Mr Wang mean by "they cannot smell hope"?', opts: ['Machines work faster than dogs.', 'Dogs can find survivors that machines cannot.', 'Rescue work needs no machines.', 'Hope has a special smell.'], ans: 1, skill: '推断题：理解比喻', rat: '"闻到希望"是比喻：狗能嗅出被困的幸存者（=希望），机器不能。B 是这句话的合理解读。C 走极端（no machines）；D 按字面理解比喻，都是典型错误选项。' },
+            ] },
+            'B1-5': { title: 'Do You Speak "Singlish"?', genre: '说明文 · 语言文化', text: "When English travels around the world, it changes. In Singapore, many people speak \"Singlish\" — a lively mix of English, Chinese and Malay. A Singaporean might say \"Can lah!\" to mean \"Yes, no problem!\"\n\nLanguage experts hold different attitudes towards this. Some worry that Singlish may harm students' standard English, which they need for exams and international business. The government even started a \"Speak Good English\" movement in 2000. Others, however, argue that Singlish is a precious symbol of local identity. \"Standard English connects us to the world,\" says Professor Tan, \"but Singlish connects us to each other.\"\n\nInterestingly, research shows that most young Singaporeans can switch between the two: they use standard English in class and Singlish at the dinner table. Perhaps the real skill of a modern language user is not speaking one perfect English, but knowing which English to use, and when.", qs: [
+                { q: 'What is Singlish?', opts: ['A test of standard English.', 'A mix of several languages.', 'An ancient language of Malay.', 'A government movement.'], ans: 1, skill: '细节题：破折号后是解释', rat: '首段破折号后直接解释："a lively mix of English, Chinese and Malay"。破折号、括号、that is 后面常常是概念解释，出题率极高。' },
+                { q: 'Why do some experts worry about Singlish?', opts: ["It may weaken students' standard English.", 'It is too hard to learn.', 'It connects people to the world.', 'It was banned by the government.'], ans: 0, skill: '细节题：观点对立各找各的', rat: '担忧派的理由："may harm students\' standard English"，A 是同义改写（weaken = harm）。C 是 Professor Tan 说标准英语的；文中没有"禁止"，D 过度引申。' },
+                { q: 'What does Professor Tan think of Singlish?', opts: ['It should be given up soon.', 'It is bad for business.', 'It holds people together locally.', 'It is better than standard English.'], ans: 2, skill: '观点题：引语即态度', rat: '"Singlish connects us to each other" → C（维系本地人之间的情感）。D 走极端——他没有比较优劣，而是说两者作用不同。' },
+                { q: "What is the author's conclusion about language use?", opts: ['Everyone should speak perfect English.', 'Switching languages confuses young people.', 'Knowing when to use which English matters most.', 'Singlish will replace standard English.'], ans: 2, skill: '主旨题：末段 Perhaps 后是作者立场', rat: '末句 "the real skill... is knowing which English to use, and when" 就是作者结论，C 是同义改写。留意 Perhaps/In fact 等词后面常藏着作者真实观点。' },
+            ] },
+        };
+
         const EXAM_TIPS_DB = {
             "B1-1": {
                 "examTips": [
@@ -3799,6 +3836,91 @@ Which option best expresses its meaning?`,
         };
 
         // ==========================================
+        // 6.45 阅读理解训练（试点必修一：整篇 + 4 题 + 诀窍落地讲解）
+        // ==========================================
+        const ReadingView = ({ unitKey, record, onFinish }) => {
+            const data = READING_DB[unitKey];
+            const [picks, setPicks] = useState({});
+            const [graded, setGraded] = useState(false);
+
+            useEffect(() => { setPicks({}); setGraded(false); }, [unitKey]);
+
+            if (!data) {
+                return <div className="text-center p-10 card-lg text-slate-400 font-medium">本单元的阅读训练正在制作中（目前先开放必修一 5 篇，把方法练熟）。</div>;
+            }
+
+            const score = data.qs.reduce((n, q, i) => n + (picks[i] === q.ans ? 1 : 0), 0);
+            const allPicked = data.qs.every((_, i) => picks[i] != null);
+            const letters = ['A', 'B', 'C', 'D'];
+
+            const grade = () => { if (graded) return; setGraded(true); onFinish(score); };
+            const redo = () => { setPicks({}); setGraded(false); };
+
+            return (
+                <div className="max-w-3xl mx-auto space-y-5">
+                    <div className="card-lg p-6 md:p-8">
+                        <div className="flex justify-between items-center flex-wrap gap-2 mb-2">
+                            <span className="px-3 py-1 rounded-lg text-[11px] font-bold tracking-wide bg-sky-100 text-sky-700">阅读理解 · {data.genre}</span>
+                            {record && record.attempts > 0 && <span className="text-xs font-bold text-slate-400">最好成绩 {record.best}/4 · 已练 {record.attempts} 次</span>}
+                        </div>
+                        <h2 className="text-xl font-bold tracking-tight mb-1">{data.title}</h2>
+                        <p className="text-[12px] text-slate-400 font-medium mb-5">先扫一遍下面 4 道题的题干圈关键词，再回来带着问题读文章——这是高考阅读的正确打开方式。</p>
+                        <div className="space-y-4">
+                            {data.text.split('\n\n').map((para, i) => (
+                                <p key={i} className="text-[15px] leading-[1.9] text-slate-700 font-medium whitespace-pre-wrap">{para}</p>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="space-y-4">
+                        {data.qs.map((q, qi) => {
+                            const picked = picks[qi];
+                            const isRight = picked === q.ans;
+                            return (
+                                <div key={qi} className="card-lg p-5 md:p-6">
+                                    <p className="font-bold text-[15px] mb-4 leading-relaxed"><span className="text-sky-500 mr-1.5">{qi + 1}.</span>{q.q}</p>
+                                    <div className="space-y-2.5">
+                                        {q.opts.map((opt, oi) => (
+                                            <button key={oi} onClick={() => { if (!graded) setPicks(prev => ({ ...prev, [qi]: oi })); }}
+                                                className={`w-full p-3.5 rounded-xl border-2 text-left text-[14px] font-semibold transition-all flex items-start gap-2.5 ${
+                                                    !graded
+                                                        ? (picked === oi ? 'border-sky-400 bg-sky-50 text-sky-800' : 'border-slate-100 bg-white hover:border-sky-200')
+                                                        : oi === q.ans ? 'option-correct text-emerald-800'
+                                                        : picked === oi ? 'option-wrong text-rose-800'
+                                                        : 'border-slate-50 opacity-40'
+                                                }`}>
+                                                <span className="font-bold shrink-0">{letters[oi]}.</span><span>{opt}</span>
+                                            </button>
+                                        ))}
+                                    </div>
+                                    {graded && (
+                                        <div className={`mt-4 p-4 rounded-xl ${isRight ? 'bg-emerald-50/70 border border-emerald-100' : 'bg-rose-50/70 border border-rose-100'}`}>
+                                            <div className="flex items-center gap-2 mb-1.5">
+                                                <span className={`text-[11px] font-bold uppercase tracking-widest ${isRight ? 'text-emerald-500' : 'text-rose-500'}`}>{isRight ? 'Correct' : `正确答案 ${letters[q.ans]}`}</span>
+                                                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-100 text-sky-700">💡 {q.skill}</span>
+                                            </div>
+                                            <p className="text-[13px] font-medium text-slate-600 leading-relaxed">{q.rat}</p>
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    {!graded ? (
+                        <button onClick={grade} disabled={!allPicked} className="w-full bg-gradient-to-r from-sky-500 to-blue-500 text-white py-4 rounded-2xl font-bold text-[17px] active:scale-95 transition-transform shadow-lg shadow-sky-500/20 disabled:opacity-40">交卷（已选 {Object.keys(picks).length}/4）</button>
+                    ) : (
+                        <div className="card-lg p-6 text-center">
+                            <div className="text-4xl font-bold tracking-tighter mb-1"><span className={score >= 3 ? 'text-emerald-500' : 'text-amber-500'}>{score}</span><span className="text-lg text-slate-300 font-medium"> / 4</span></div>
+                            <p className="text-sm font-medium text-slate-500 mb-5">{score === 4 ? '全对！这篇的解题方法你已经掌握了 🎉' : '把错题的"💡诀窍"标签读一遍，方法比对错更重要'}</p>
+                            <button onClick={redo} className="w-full bg-slate-100 text-slate-700 py-3.5 rounded-2xl font-bold active:bg-slate-200">再做一遍</button>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        // ==========================================
         // 6.5 写作宝典（应用文模板 + 读后续写素材）
         // ==========================================
         const WritingView = ({ playAudio, playingWord }) => {
@@ -3967,6 +4089,16 @@ Which option best expresses its meaning?`,
                 return { ...prev, [userPrefix]: { ...u, grammarFill: next, checkins: stampCheckin(u.checkins, 'grammarFill') } };
             });
             const finishGrammarFill = (score) => setGrammarFillData(prev => {
+                const rec = prev[unitKey] || { attempts: 0, best: 0 };
+                return { ...prev, [unitKey]: { attempts: (rec.attempts || 0) + 1, best: Math.max(rec.best || 0, score), lastAt: new Date().toLocaleString('zh-CN', { hour12: false }) } };
+            });
+            const readingData = userData.reading || {};
+            const setReadingData = (updater) => setAllUsersData(prev => {
+                const u = prev[userPrefix] || {};
+                const next = typeof updater === 'function' ? updater(u.reading || {}) : updater;
+                return { ...prev, [userPrefix]: { ...u, reading: next, checkins: stampCheckin(u.checkins, 'reading') } };
+            });
+            const finishReading = (score) => setReadingData(prev => {
                 const rec = prev[unitKey] || { attempts: 0, best: 0 };
                 return { ...prev, [unitKey]: { attempts: (rec.attempts || 0) + 1, best: Math.max(rec.best || 0, score), lastAt: new Date().toLocaleString('zh-CN', { hour12: false }) } };
             });
@@ -4430,6 +4562,7 @@ Which option best expresses its meaning?`,
                 { id: 'notes', label: '核心笔记', icon: <BookOpen className="w-4 h-4" /> },
                 { id: 'vocab', label: '单词闯关', icon: <Brain className="w-4 h-4" /> },
                 { id: 'grammarfill', label: '语法填空', icon: <Zap className="w-4 h-4" /> },
+                { id: 'reading', label: '阅读理解', icon: <Book className="w-4 h-4" /> },
                 { id: 'gaokao', label: '重点练习', icon: <Award className="w-4 h-4" /> },
                 { id: 'writing', label: '写作宝典', icon: <PenLine className="w-4 h-4" /> },
                 { id: 'cards', label: '互动卡片', icon: <Layers className="w-4 h-4" /> },
@@ -4494,6 +4627,10 @@ Which option best expresses its meaning?`,
 
                 if (tab === 'grammarfill') {
                     return <GrammarFill unitKey={unitKey} record={grammarFillData[unitKey]} onFinish={finishGrammarFill} />;
+                }
+
+                if (tab === 'reading') {
+                    return <ReadingView unitKey={unitKey} record={readingData[unitKey]} onFinish={finishReading} />;
                 }
 
                 if (tab === 'notes') {
@@ -4829,6 +4966,46 @@ Which option best expresses its meaning?`,
                     const totalCorrect = bookUnits.reduce((sum, item) => sum + item.progress.totalCorrect, 0);
                     const overallAccuracy = totalAnswered ? Math.round(totalCorrect / totalAnswered * 100) : 0;
 
+                    // ── 弱点诊断：综合错题/语法填空/练习正确率，找出最薄弱的单元 ──
+                    const gotoUnit = (k, targetTab) => {
+                        const [b, u] = k.split('-');
+                        setActiveBookId(b); setActiveUnit(Number(u)); setTab(targetTab);
+                    };
+                    const weakUnits = Object.keys(UNIT_DB).map(k => {
+                        const mCount = activeMistakes.filter(m => m.unitKey === k).length;
+                        const gf = grammarFillData[k];
+                        const prog = getUnitProgress(k);
+                        const acc = prog.totalAnswered >= 5 ? prog.totalCorrect / prog.totalAnswered : null;
+                        let weakScore = 0;
+                        const reasons = [];
+                        if (mCount > 0) { weakScore += mCount * 2; reasons.push(`${mCount} 道错题待攻克`); }
+                        if (gf && gf.attempts > 0 && (gf.best || 0) <= 6) { weakScore += 7 - gf.best; reasons.push(`语法填空最好 ${gf.best}/10`); }
+                        if (acc !== null && acc < 0.7) { weakScore += Math.round((0.7 - acc) * 20); reasons.push(`练习正确率 ${Math.round(acc * 100)}%`); }
+                        return { key: k, weakScore, reasons, grammarTitles: (UNIT_DB[k].grammar || []).map(g => g.t) };
+                    }).filter(u => u.weakScore > 0).sort((a, b) => b.weakScore - a.weakScore).slice(0, 3);
+
+                    // ── 妈妈督学报告：mama 账号查看糖糖的学习数据 ──
+                    const ttData = currentUser === 'mama' ? (allUsersData['tangtang'] || {}) : null;
+                    const ttReport = ttData ? (() => {
+                        const tc = ttData.checkins || {};
+                        const last7 = Array.from({ length: 7 }, (_, i) => { const d = new Date(); d.setDate(d.getDate() - i); return fmtDate(d); });
+                        const weekDays = last7.filter(ds => tc[ds]).length;
+                        let ttStreak = 0; { const d = new Date(); if (!tc[fmtDate(d)]) d.setDate(d.getDate() - 1); while (tc[fmtDate(d)]) { ttStreak++; d.setDate(d.getDate() - 1); } }
+                        const tp = ttData.progress || {};
+                        let answered = 0, correct = 0;
+                        Object.values(tp).forEach(r => { if (r && typeof r === 'object') { answered += r.totalAnswered || 0; correct += r.totalCorrect || 0; } });
+                        const openMistakes = (ttData.mistakes || []).filter(m => !m.cleared).length;
+                        const now = Date.now();
+                        let ttDue = 0;
+                        Object.keys(UNIT_DB).forEach(uk => (UNIT_DB[uk].words || []).forEach(w => {
+                            if (!w.ex) return;
+                            const rec = (ttData.vocab || {})[vocabKey(uk, w.w)];
+                            if (rec && (rec.seen || 0) > 0 && (rec.due || 0) <= now) ttDue++;
+                        }));
+                        const todayDone = !!tc[todayStr()];
+                        return { weekDays, ttStreak, answered, acc: answered ? Math.round(correct / answered * 100) : null, openMistakes, ttDue, todayDone };
+                    })() : null;
+
                     return (
                         <div className="space-y-6">
                             <div>
@@ -4839,6 +5016,46 @@ Which option best expresses its meaning?`,
                                         <span className="text-[13px] font-bold text-orange-600">{streakDays > 0 ? `连续学习 ${streakDays} 天` : '今天还没打卡，学一组单词就点亮火苗'}{totalCheckinDays > 0 ? ` · 累计 ${totalCheckinDays} 天` : ''}</span>
                                     </div>
                                 </div>
+
+                                {ttReport && (
+                                    <div className="card-lg p-6 mb-6 border-l-4 border-pink-400">
+                                        <h3 className="font-bold text-[15px] mb-1 flex items-center gap-2">👧 糖糖学情报告 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-pink-100 text-pink-600">家长视角</span></h3>
+                                        <p className="text-[12px] text-slate-400 font-medium mb-4">{ttReport.todayDone ? '✅ 糖糖今天已经学习过了' : '⏳ 糖糖今天还没有开始学习'}</p>
+                                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                            <div className="p-3.5 bg-slate-50 rounded-2xl"><div className="text-[11px] text-slate-400 font-semibold mb-1">本周学习</div><div className="text-xl font-bold text-slate-900">{ttReport.weekDays}<span className="text-xs text-slate-400 font-semibold"> / 7 天</span></div></div>
+                                            <div className="p-3.5 bg-slate-50 rounded-2xl"><div className="text-[11px] text-slate-400 font-semibold mb-1">连续学习</div><div className="text-xl font-bold text-slate-900">{ttReport.ttStreak}<span className="text-xs text-slate-400 font-semibold"> 天</span></div></div>
+                                            <div className="p-3.5 bg-slate-50 rounded-2xl"><div className="text-[11px] text-slate-400 font-semibold mb-1">累计答题</div><div className="text-xl font-bold text-slate-900">{ttReport.answered}<span className="text-xs text-slate-400 font-semibold">{ttReport.acc !== null ? ` · 对${ttReport.acc}%` : ''}</span></div></div>
+                                            <div className="p-3.5 bg-slate-50 rounded-2xl"><div className="text-[11px] text-slate-400 font-semibold mb-1">待攻克错题</div><div className="text-xl font-bold text-slate-900">{ttReport.openMistakes}<span className="text-xs text-slate-400 font-semibold"> 道</span></div></div>
+                                            <div className="p-3.5 bg-slate-50 rounded-2xl"><div className="text-[11px] text-slate-400 font-semibold mb-1">到期待复习词</div><div className="text-xl font-bold text-slate-900">{ttReport.ttDue}<span className="text-xs text-slate-400 font-semibold"> 个</span></div></div>
+                                        </div>
+                                        <p className="text-[11px] text-slate-400 mt-3">数据来自糖糖账号（本设备）。提醒比批评有用：今天没学的话，问问她"要不要一起过 10 个单词"。</p>
+                                    </div>
+                                )}
+
+                                {weakUnits.length > 0 && (
+                                    <div className="card-lg p-6 mb-6">
+                                        <h3 className="font-bold text-[15px] mb-1 flex items-center gap-2">🎯 弱点诊断 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-600">哪里漏了补哪里</span></h3>
+                                        <p className="text-[12px] text-slate-400 font-medium mb-4">综合错题、语法填空成绩和练习正确率，最该优先补的单元：</p>
+                                        <div className="space-y-3">
+                                            {weakUnits.map((w, i) => (
+                                                <div key={w.key} className="p-4 bg-rose-50/50 border border-rose-100 rounded-2xl">
+                                                    <div className="flex items-center gap-2 flex-wrap mb-2">
+                                                        <span className="w-5 h-5 rounded-full bg-rose-500 text-white text-[11px] font-bold flex items-center justify-center shrink-0">{i + 1}</span>
+                                                        <span className="font-bold text-slate-800 text-[14px]">{w.key} · {getUnitData(w.key).title}</span>
+                                                    </div>
+                                                    <p className="text-[12px] font-semibold text-rose-600 mb-1.5 ml-7">{w.reasons.join(' · ')}</p>
+                                                    <p className="text-[11px] text-slate-500 mb-3 ml-7">本单元考点：{w.grammarTitles.join('、')}</p>
+                                                    <div className="flex gap-2 ml-7 flex-wrap">
+                                                        <button onClick={() => gotoUnit(w.key, 'notes')} className="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-[12px] font-bold text-slate-600 active:bg-slate-50">重学笔记</button>
+                                                        <button onClick={() => gotoUnit(w.key, 'grammarfill')} className="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-[12px] font-bold text-slate-600 active:bg-slate-50">重做语法填空</button>
+                                                        {activeMistakes.some(m => m.unitKey === w.key) && <button onClick={() => launchMistakeQuiz(shuffle(buildMistakeQuiz(activeMistakes.filter(m => m.unitKey === w.key))))} className="px-3 py-1.5 rounded-lg bg-rose-500 text-white text-[12px] font-bold active:scale-95">练该单元错题</button>}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
                                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                                     <div className="card rounded-[28px] p-5">
                                         <div className="text-xs text-slate-400 font-semibold mb-2">已学习单元</div>

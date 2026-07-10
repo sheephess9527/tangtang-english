@@ -6,7 +6,7 @@
 `糖糖提分通`：一位父亲为高一女儿"糖糖"（人教版 / 浙江高考卷 / 英语基础弱）做的**单文件 React PWA** 英语提分工具。整个应用就是一个 `index.html`（约 4000 行）。
 
 ## 🔒 绝对红线（最高优先级）
-- **登录密码绝对不能改：`0825`→`tangtang`，`0315`→`mama`**（`index.html` `LoginScreen`，约 line 3384，判断在 3390–3393）。
+- **登录密码绝对不能改：`0825`→`tangtang`，`0315`→`mama`**（`index.html` `LoginScreen`，约 line 3421，判断在 3427–3430）。
 - 开发者原话："**登录密码不用改，其他都改**。"
 - 任何重构、优化、"安全加固"都不得修改这两个密码值或其对应用户。若需求看似要求改密码，**先停下来问用户**。
 
@@ -30,8 +30,9 @@ catch(err){console.error('❌',err.message,err.loc||'');}
 ```
 
 ## 关键数据/组件位置（行号约值，改前用 grep 复核）
-- `UNIT_DB`(281) 单元学习内容 · `UNIVERSAL_TIPS`(330) 通用诀窍 · `WRITING_DB`(352) 写作宝典(应用文8类+续写素材) · `GRAMMAR_FILL_DB`(535) 语法填空35篇仿真(每篇10空,ans数组多答案容错,noChange标记零变化陷阱) · `EXAM_TIPS_DB`(958) 每单元专属诀窍 · `QUESTION_BANK`(1983) 700题库 · `SRS_INTERVALS`(3519)
-- 组件：`LoginScreen`(3384) · `FlashcardCarousel`(3431) · `VocabDrill`(3523，含 选择/拼写/听写 三模式 + 跨单元今日复习 globalItems) · `GrammarFill`(3715) · `WritingView`(3804) · `App`(3908)
+- `UNIT_DB`(281) 单元学习内容 · `UNIVERSAL_TIPS`(330) 通用诀窍 · `WRITING_DB`(352) 写作宝典(应用文8类+续写素材) · `GRAMMAR_FILL_DB`(535) 语法填空35篇仿真(每篇10空,ans数组多答案容错,noChange标记零变化陷阱) · `READING_DB`(962) 阅读理解(试点必修一5篇×4题,每题带skill诀窍标签) · `EXAM_TIPS_DB`(995) 每单元专属诀窍 · `QUESTION_BANK`(2020) 700题库 · `SRS_INTERVALS`(3556)
+- 组件：`LoginScreen`(3421) · `FlashcardCarousel`(3468) · `VocabDrill`(3560，含 选择/拼写/听写 三模式 + 跨单元今日复习 globalItems) · `GrammarFill`(3752) · `ReadingView`(3841) · `WritingView`(3926) · `App`(4030)
+- 进度页(mastery)内含：弱点诊断(综合错题/语法填空/正确率算薄弱指数,Top3+跳转) 和 妈妈督学报告(currentUser==='mama' 时读 allUsersData['tangtang'] 展示学情)。
 - 35 单元 = 7 册×5：key 形如 `B1-1`…`S4-5`。
 - `sw.js`：Service Worker，离线缓存页面+CDN。改 CDN 版本时**同步更新 sw.js 的预缓存清单**和 `_headers` CSP。
 - 登录默认落地 `today`(今日任务)页：任务完成状态由 `checkins[今天]` 的分类计数驱动（quiz/cards/vocab/grammarFill/mistakes，由各 setter 的 `stampCheckin(c, kind)` 自动累加）。

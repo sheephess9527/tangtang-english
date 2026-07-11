@@ -47,29 +47,57 @@
         html, body, #root { min-height: 100%; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "HarmonyOS Sans SC", "MiSans", "Noto Sans SC", "Microsoft YaHei UI", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
             -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
             background-color: var(--c-bg);
             background-image:
-                radial-gradient(ellipse 80% 50% at 10% 0%, rgba(99,102,241,0.12), transparent),
-                radial-gradient(ellipse 60% 40% at 90% 0%, rgba(56,189,248,0.10), transparent),
-                radial-gradient(ellipse 50% 50% at 50% 100%, rgba(79,70,229,0.05), transparent);
+                radial-gradient(ellipse 70% 45% at 8% -5%, rgba(99,102,241,0.16), transparent 70%),
+                radial-gradient(ellipse 55% 38% at 95% -2%, rgba(56,189,248,0.13), transparent 70%),
+                radial-gradient(ellipse 45% 35% at 82% 55%, rgba(217,70,239,0.06), transparent 70%),
+                radial-gradient(ellipse 50% 40% at 5% 85%, rgba(16,185,129,0.06), transparent 70%),
+                radial-gradient(ellipse 50% 50% at 50% 105%, rgba(79,70,229,0.07), transparent 70%);
+            background-attachment: fixed;
             color: var(--c-text1);
             touch-action: manipulation;
         }
+        ::selection { background: rgba(99,102,241,0.18); }
 
-        /* card / panel surfaces */
+        /* card / panel surfaces（内顶高光 + 桌面悬停微抬升 = 质感的主要来源） */
         .card {
             background: var(--c-surface);
             border: 1px solid var(--c-border);
             border-radius: var(--r-card);
-            box-shadow: var(--shadow-sm);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), var(--shadow-sm);
         }
         .card-lg {
             background: var(--c-surface-strong);
             border: 1px solid var(--c-border);
             border-radius: 32px;
-            box-shadow: var(--shadow-md);
+            box-shadow: inset 0 1.5px 0 rgba(255,255,255,1), 0 1px 2px rgba(15,23,42,0.04), var(--shadow-md);
+            transition: box-shadow .25s ease, transform .25s ease;
+        }
+        @media (hover: hover) {
+            .card-lg:hover {
+                transform: translateY(-2px);
+                box-shadow: inset 0 1.5px 0 rgba(255,255,255,1), 0 2px 4px rgba(15,23,42,0.04), 0 18px 44px rgba(15,23,42,0.11);
+            }
+        }
+
+        /* 页面切换入场动画（key=tab 触发） */
+        @keyframes pageEnter {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .page-enter { animation: pageEnter .3s cubic-bezier(0.21, 0.68, 0.32, 1) both; }
+        @keyframes floatIn {
+            from { opacity: 0; transform: translateY(16px) scale(0.98); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .float-in { animation: floatIn .45s cubic-bezier(0.21, 0.68, 0.32, 1) both; }
+        @media (prefers-reduced-motion: reduce) {
+            .page-enter, .float-in { animation: none; }
+            .card-lg { transition: none; }
         }
         .glass {
             background: rgba(255,255,255,0.75);
@@ -10840,13 +10868,21 @@ Which option best expresses its meaning?`,
             };
 
             return (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/45 backdrop-blur-xl px-4">
-                    <div className="w-full max-w-md rounded-[32px] bg-white/90 border border-white/70 shadow-[0_20px_60px_rgba(15,23,42,0.18)] p-6 md:p-8">
-                        <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-[22px] flex items-center justify-center mx-auto mb-5 shadow-lg shadow-blue-500/30">
-                            <GraduationCap className="w-8 h-8 md:w-10 md:h-10 text-white" />
+                <div className="fixed inset-0 z-50 flex items-center justify-center px-4 overflow-hidden" style={{ background: 'var(--c-bg)' }}>
+                    {/* 品牌光斑舞台：与应用内背景同一语言 */}
+                    <div className="absolute -top-24 -left-24 w-[420px] h-[420px] rounded-full bg-indigo-400/25 blur-3xl pointer-events-none" />
+                    <div className="absolute -bottom-32 -right-20 w-[460px] h-[460px] rounded-full bg-sky-400/20 blur-3xl pointer-events-none" />
+                    <div className="absolute top-1/3 right-1/4 w-[260px] h-[260px] rounded-full bg-fuchsia-400/12 blur-3xl pointer-events-none" />
+
+                    <div className="float-in relative w-full max-w-md rounded-[36px] bg-white/85 backdrop-blur-2xl border border-white/80 shadow-[inset_0_1.5px_0_rgba(255,255,255,1),0_24px_70px_rgba(79,70,229,0.16)] p-7 md:p-9">
+                        <div className="relative w-20 h-20 mx-auto mb-6">
+                            <div className="absolute inset-0 rounded-[24px] bg-gradient-to-br from-indigo-500 to-blue-500 blur-lg opacity-40 scale-110" />
+                            <div className="relative w-20 h-20 bg-gradient-to-br from-indigo-500 via-blue-500 to-sky-400 rounded-[24px] flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                                <GraduationCap className="w-10 h-10 text-white" />
+                            </div>
                         </div>
-                        <h2 className="text-2xl md:text-3xl font-bold text-center text-slate-900 tracking-tight">欢迎登录</h2>
-                        <p className="text-sm text-slate-500 text-center mt-2 mb-6 leading-relaxed">糖糖提分通：为你打开高考英语150分的大门</p>
+                        <h2 className="text-3xl font-black text-center tracking-tight logo-text">糖糖提分通</h2>
+                        <p className="text-sm text-slate-500 text-center mt-2.5 mb-7 leading-relaxed font-medium">找准诀窍 · 反复练习 · 一步步靠近 150 分</p>
 
                         <form onSubmit={handleLogin} className="space-y-4">
                             <input
@@ -10858,13 +10894,14 @@ Which option best expresses its meaning?`,
                                 }}
                                 placeholder="请输入密码"
                                 autoFocus
-                                className="w-full rounded-2xl bg-slate-50 border border-slate-200 px-4 py-4 text-center text-lg font-semibold tracking-widest text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+                                className="w-full rounded-2xl bg-slate-50/80 border-2 border-slate-200/80 px-4 py-4 text-center text-xl font-bold tracking-[0.4em] text-slate-900 placeholder:tracking-normal placeholder:font-medium placeholder:text-slate-400 transition-all focus:outline-none focus:border-indigo-400 focus:bg-white focus:shadow-[0_0_0_4px_rgba(99,102,241,0.12)]"
                             />
                             {err && <p className="text-rose-500 text-sm text-center font-semibold">{err}</p>}
-                            <button type="submit" className="w-full py-4 btn-brand text-base">
+                            <button type="submit" className="w-full py-4 btn-brand text-[16px] tracking-wide">
                                 进入学习
                             </button>
                         </form>
+                        <p className="text-[11px] text-slate-400 text-center mt-6 font-medium">每天 20 分钟 · 让坚持看得见 🔥</p>
                     </div>
                 </div>
             );
@@ -12299,7 +12336,7 @@ Which option best expresses its meaning?`,
                     const dateLabel = new Date().toLocaleDateString('zh-CN', { month: 'long', day: 'numeric', weekday: 'long' });
                     return (
                         <div className="max-w-2xl mx-auto space-y-5">
-                            <div className={`card-lg p-6 md:p-8 ${allDone ? 'bg-gradient-to-br from-emerald-50 to-teal-50' : ''}`}>
+                            <div className={`card-lg p-6 md:p-8 ${allDone ? 'bg-gradient-to-br from-emerald-50 via-teal-50/80 to-white' : 'bg-gradient-to-br from-indigo-50/80 via-white to-sky-50/60'}`}>
                                 <div className="flex items-start justify-between gap-4 flex-wrap">
                                     <div>
                                         <div className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400 mb-1">{dateLabel}</div>
@@ -13088,7 +13125,7 @@ Which option best expresses its meaning?`,
                                     )}
                                 </div>
 
-                                <main className="pb-28 lg:pb-10">{renderMainContent()}</main>
+                                <main className="pb-28 lg:pb-10"><div key={tab} className="page-enter">{renderMainContent()}</div></main>
                             </section>
                         </div>
                     </div>
@@ -13103,8 +13140,8 @@ Which option best expresses its meaning?`,
                                 { id: 'reading', label: '阅读', icon: <Book className="w-5 h-5" /> },
                                 { id: 'mistakes', label: '错题', icon: <AlertCircle className="w-5 h-5" /> },
                             ].map(item => (
-                                <button key={item.id} onClick={() => setTab(item.id)} className={`flex-1 flex flex-col items-center gap-0.5 pt-2.5 pb-2 transition-colors ${tab === item.id ? 'text-indigo-600' : 'text-slate-400 active:text-slate-600'}`}>
-                                    {item.icon}
+                                <button key={item.id} onClick={() => setTab(item.id)} className={`flex-1 flex flex-col items-center gap-0.5 pt-2 pb-1.5 transition-colors ${tab === item.id ? 'text-indigo-600' : 'text-slate-400 active:text-slate-600'}`}>
+                                    <span className={`px-4 py-1 rounded-full transition-all duration-300 ${tab === item.id ? 'bg-indigo-100/90 shadow-sm shadow-indigo-200/60' : 'bg-transparent'}`}>{item.icon}</span>
                                     <span className={`text-[10px] tracking-wide ${tab === item.id ? 'font-bold' : 'font-semibold'}`}>{item.label}</span>
                                 </button>
                             ))}

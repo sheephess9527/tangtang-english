@@ -45,6 +45,7 @@ catch(err){console.error('❌',err.message,err.loc||'');}
 ## UI 约定
 - 手机端主导航是**底部 5 tab**（今日/单词/语法/阅读/错题，App 根部 fixed nav；完形/七选五走抽屉或桌面横向tab）；其余功能走右上角抽屉（按 学一学/练一练/查漏补缺 分组，navGroups）。桌面端为左侧栏+顶部横向 tab。
 - 色彩语义（新功能配色遵守）：紫=单词 · 靛=语法填空 · 青=完形 · 紫红=七选五 · 天蓝=阅读 · 琥珀=今日复习/到期 · 玫红=错题 · 橙=打卡火苗 · 粉=妈妈督学 · 绿=成功/攻克。
+- 视觉体系：body 极光渐变背景(fixed) · .card/.card-lg 内顶高光+桌面hover微抬升 · .page-enter 切页入场动画(key=tab) · .float-in 登录卡浮入 · prefers-reduced-motion 已适配。改样式优先改 <style> 里的共享类。
 - iOS 适配：viewport-fit=cover + 底部导航 env(safe-area-inset-bottom)；状态栏用 default（勿改回 black-translucent，浅色背景下白字看不清）。
 - 切 tab/切单元自动回页顶（App 里的 useEffect）；切单元保持当前页面（仅测验中跳回笔记）。
 

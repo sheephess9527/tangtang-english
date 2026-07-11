@@ -30,8 +30,8 @@ catch(err){console.error('❌',err.message,err.loc||'');}
 ```
 
 ## 关键数据/组件位置（行号约值，改前用 grep 复核）
-- `UNIT_DB`(282) 单元学习内容 · `UNIVERSAL_TIPS`(331) 通用诀窍 · `WRITING_DB`(353) 写作宝典(应用文8类+续写素材) · `GRAMMAR_FILL_DB`(536) 语法填空35篇仿真(每篇10空,ans数组多答案容错,noChange标记零变化陷阱) · `READING_DB`(963) 阅读理解(全部35单元×4题,答案均衡35:35:35:35,每题带skill诀窍标签) · `EXAM_TIPS_DB`(2891) 每单元专属诀窍 · `QUESTION_BANK`(3916) 700题库 · `SRS_INTERVALS`(5452)
-- 组件：`LoginScreen`(5317) · `FlashcardCarousel`(5364) · `VocabDrill`(5466，默认智能模式按记忆阶梯 VOCAB_LADDER 自动配题型：盒1看词选义→盒2看义选词→盒3例句填空→盒4拼写→盒5听写；可手动切模式；跨单元今日复习 globalItems) · `GrammarFill`(5700) · `ReadingView`(5790) · `WritingView`(5875) · `App`(5979)
+- `UNIT_DB`(282) 单元学习内容 · `UNIVERSAL_TIPS`(331) 通用诀窍 · `WRITING_DB`(353) 写作宝典(应用文8类+续写素材) · `GRAMMAR_FILL_DB`(536) 语法填空35篇仿真(每篇10空,ans数组多答案容错,noChange标记零变化陷阱) · `READING_DB`(963) 阅读理解(35单元×4题,答案均衡) · `CLOZE_DB`(2891) 完形填空(35篇×15空×4选项,答案均衡131:131:131:132,rat不引字母便于重排) · `SEVEN_DB`(~8360) 七选五(35篇×5空+7选项,ans=选项下标,rats讲钩子) · `EXAM_TIPS_DB`(2891) 每单元专属诀窍 · `QUESTION_BANK`(3916) 700题库 · `SRS_INTERVALS`(5452)
+- 组件：`LoginScreen`(5317) · `FlashcardCarousel`(5364) · `VocabDrill`(5466，默认智能模式按记忆阶梯 VOCAB_LADDER 自动配题型：盒1看词选义→盒2看义选词→盒3例句填空→盒4拼写→盒5听写；可手动切模式；跨单元今日复习 globalItems) · `GrammarFill` · `ReadingView` · `ClozeView`(完形,选词实时填入原文) · `SevenView`(七选五,空格+字母双向联动) · `WritingView`(5875) · `App`(5979)
 - 进度页(mastery)内含：弱点诊断(综合错题/语法填空/正确率算薄弱指数,Top3+跳转) 和 妈妈督学报告(currentUser==='mama' 时读 allUsersData['tangtang'] 展示学情)。
 - 35 单元 = 7 册×5：key 形如 `B1-1`…`S4-5`。
 - `sw.js`：Service Worker，离线缓存页面+CDN。改 CDN 版本时**同步更新 sw.js 的预缓存清单**和 `_headers` CSP。
@@ -43,8 +43,8 @@ catch(err){console.error('❌',err.message,err.loc||'');}
 - **`useLocalStorage`(约 line 245) 必须用函数式更新 `setStoredValue(prev=>...)`**。历史 bug：闭包捕获旧值导致同一事件里后一个 setter 覆盖前一个。所有 `setXxxData` 都基于 `setAllUsersData(prev=>...)`，保持此模式。
 
 ## UI 约定
-- 手机端主导航是**底部 5 tab**（今日/单词/语法/阅读/错题，App 根部 fixed nav）；其余功能走右上角抽屉（按 学一学/练一练/查漏补缺 分组，navGroups）。桌面端为左侧栏+顶部横向 tab。
-- 色彩语义（新功能配色遵守）：紫=单词 · 靛=语法填空 · 天蓝=阅读 · 琥珀=今日复习/到期 · 玫红=错题 · 橙=打卡火苗 · 粉=妈妈督学 · 绿=成功/攻克。
+- 手机端主导航是**底部 5 tab**（今日/单词/语法/阅读/错题，App 根部 fixed nav；完形/七选五走抽屉或桌面横向tab）；其余功能走右上角抽屉（按 学一学/练一练/查漏补缺 分组，navGroups）。桌面端为左侧栏+顶部横向 tab。
+- 色彩语义（新功能配色遵守）：紫=单词 · 靛=语法填空 · 青=完形 · 紫红=七选五 · 天蓝=阅读 · 琥珀=今日复习/到期 · 玫红=错题 · 橙=打卡火苗 · 粉=妈妈督学 · 绿=成功/攻克。
 - iOS 适配：viewport-fit=cover + 底部导航 env(safe-area-inset-bottom)；状态栏用 default（勿改回 black-translucent，浅色背景下白字看不清）。
 - 切 tab/切单元自动回页顶（App 里的 useEffect）；切单元保持当前页面（仅测验中跳回笔记）。
 

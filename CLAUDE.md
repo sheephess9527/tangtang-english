@@ -3,10 +3,10 @@
 本文件是 Claude Code 每次会话自动加载的操作指南。完整背景见 `README.md`，本文件只列**必须遵守的规则与工作流**。
 
 ## 项目一句话
-`糖糖提分通`：一位父亲为高一女儿"糖糖"（人教版 / 浙江高考卷 / 英语基础弱）做的**单文件 React PWA** 英语提分工具。整个应用就是一个 `index.html`（约 4000 行）。
+`糖糖提分通`：一位父亲为高一女儿"糖糖"（人教版 / 浙江高考卷 / 英语基础弱）做的**单文件 React PWA** 英语提分工具。整个应用就是一个 `index.html`（约 7400 行）。
 
 ## 🔒 绝对红线（最高优先级）
-- **登录密码绝对不能改：`0825`→`tangtang`，`0315`→`mama`**（`index.html` `LoginScreen`，约 line 3421，判断在 3427–3430）。
+- **登录密码绝对不能改：`0825`→`tangtang`，`0315`→`mama`**（`index.html` `LoginScreen`，约 line 5317，判断在 5323–5326）。
 - 开发者原话："**登录密码不用改，其他都改**。"
 - 任何重构、优化、"安全加固"都不得修改这两个密码值或其对应用户。若需求看似要求改密码，**先停下来问用户**。
 
@@ -30,8 +30,8 @@ catch(err){console.error('❌',err.message,err.loc||'');}
 ```
 
 ## 关键数据/组件位置（行号约值，改前用 grep 复核）
-- `UNIT_DB`(281) 单元学习内容 · `UNIVERSAL_TIPS`(330) 通用诀窍 · `WRITING_DB`(352) 写作宝典(应用文8类+续写素材) · `GRAMMAR_FILL_DB`(535) 语法填空35篇仿真(每篇10空,ans数组多答案容错,noChange标记零变化陷阱) · `READING_DB`(962) 阅读理解(全部35单元×4题,答案均衡35:35:35:35,每题带skill诀窍标签) · `EXAM_TIPS_DB`(995) 每单元专属诀窍 · `QUESTION_BANK`(2020) 700题库 · `SRS_INTERVALS`(3556)
-- 组件：`LoginScreen`(3421) · `FlashcardCarousel`(3468) · `VocabDrill`(3560，默认智能模式按记忆阶梯 VOCAB_LADDER 自动配题型：盒1看词选义→盒2看义选词→盒3例句填空→盒4拼写→盒5听写；可手动切模式；跨单元今日复习 globalItems) · `GrammarFill`(3752) · `ReadingView`(3841) · `WritingView`(3926) · `App`(4030)
+- `UNIT_DB`(282) 单元学习内容 · `UNIVERSAL_TIPS`(331) 通用诀窍 · `WRITING_DB`(353) 写作宝典(应用文8类+续写素材) · `GRAMMAR_FILL_DB`(536) 语法填空35篇仿真(每篇10空,ans数组多答案容错,noChange标记零变化陷阱) · `READING_DB`(963) 阅读理解(全部35单元×4题,答案均衡35:35:35:35,每题带skill诀窍标签) · `EXAM_TIPS_DB`(2891) 每单元专属诀窍 · `QUESTION_BANK`(3916) 700题库 · `SRS_INTERVALS`(5452)
+- 组件：`LoginScreen`(5317) · `FlashcardCarousel`(5364) · `VocabDrill`(5466，默认智能模式按记忆阶梯 VOCAB_LADDER 自动配题型：盒1看词选义→盒2看义选词→盒3例句填空→盒4拼写→盒5听写；可手动切模式；跨单元今日复习 globalItems) · `GrammarFill`(5700) · `ReadingView`(5790) · `WritingView`(5875) · `App`(5979)
 - 进度页(mastery)内含：弱点诊断(综合错题/语法填空/正确率算薄弱指数,Top3+跳转) 和 妈妈督学报告(currentUser==='mama' 时读 allUsersData['tangtang'] 展示学情)。
 - 35 单元 = 7 册×5：key 形如 `B1-1`…`S4-5`。
 - `sw.js`：Service Worker，离线缓存页面+CDN。改 CDN 版本时**同步更新 sw.js 的预缓存清单**和 `_headers` CSP。

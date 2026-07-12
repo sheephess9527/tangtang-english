@@ -11010,6 +11010,17 @@ Which option best expresses its meaning?`,
         ];
         const typeForBox = (box) => VOCAB_LADDER[Math.max(0, Math.min((box || 1) - 1, 4))].qt;
 
+        // 错因分类：答错后学生自己点一下"为什么错"，比系统瞎猜准得多
+        const MISTAKE_CAUSES = [
+            { id: 'word', label: '单词不认识', advice: '先去"单词"页把相关单元的词过一遍（智能模式会自动从最简单的"看词选义"开始），词认识了题自然就会了' },
+            { id: 'colloc', label: '固定搭配不熟', advice: '去"笔记"页看每个词的搭配栏，搭配是靠"见得多"记住的，每天读两遍比死背快' },
+            { id: 'structure', label: '句子结构没看懂', advice: '读长句先找谓语动词，再往前找主语——每天挑 3 个长句练"找主干"，两周就有感觉' },
+            { id: 'grammar', label: '语法规则混淆', advice: '去"笔记"页重看对应语法讲解，再做一篇语法填空验证，规则要在题里用一次才算真懂' },
+            { id: 'distractor', label: '干扰项误判', advice: '做题时先自己想答案再看选项，别让干扰项"先入为主"；两个都像对的，回原句找证据' },
+            { id: 'careless', label: '粗心/审题失误', advice: '审题时圈出 not / except / 主语单复数这类关键词，粗心不是能力问题，是习惯问题，改得掉' },
+        ];
+        const causeOf = (id) => MISTAKE_CAUSES.find(c => c.id === id) || null;
+
         const VocabDrill = ({ unitData, unitKey, vocabData, setVocabData, playAudio, playingWord, globalItems }) => {
             const isGlobal = !!globalItems; // 跨单元"今日复习"模式
             // 全局词表在挂载时冻结：作答会让到期列表实时缩小，若跟随 props 变化会跳过结算画面
@@ -11800,6 +11811,11 @@ Which option best expresses its meaning?`,
                 const next = typeof updater === 'function' ? updater(u.mistakes || []) : updater;
                 return { ...prev, [userPrefix]: { ...u, mistakes: next, checkins: stampCheckin(u.checkins, 'mistakes') } };
             });
+            // 给错题标注错因（不盖打卡章：标注不算一次"学习动作"）
+            const setMistakeCause = (mid, cause) => setAllUsersData(prev => {
+                const u = prev[userPrefix] || {};
+                return { ...prev, [userPrefix]: { ...u, mistakes: (u.mistakes || []).map(m => m.id === mid ? { ...m, cause } : m) } };
+            });
             const setVocabData = (updater) => setAllUsersData(prev => {
                 const u = prev[userPrefix] || {};
                 const next = typeof updater === 'function' ? updater(u.vocab || {}) : updater;
@@ -12032,6 +12048,8 @@ Which option best expresses its meaning?`,
             const [isFinished, setIsFinished] = useState(false);
             const [isReinforcement, setIsReinforcement] = useState(false);
             const [isMistakePractice, setIsMistakePractice] = useState(false);
+            const [wrongStreak, setWrongStreak] = useState(0);       // 本轮练习连续答错数（答对清零）
+            const [lastMistakeId, setLastMistakeId] = useState(null); // 刚产生的错题 id，供错因标注定位
             const [showUniversalTips, setShowUniversalTips] = useState(false);
             const [activeCards, setActiveCards] = useState([]);
 
@@ -12137,6 +12155,8 @@ Which option best expresses its meaning?`,
                 setIsFinished(false);
                 setIsReinforcement(false);
                 setIsMistakePractice(false);
+                setWrongStreak(0);
+                setLastMistakeId(null);
                 setProgressData(prev => {
                     const existing = normalizeProgressRecord(prev[unitKey] ?? masteryData[unitKey]);
                     return {
@@ -12164,6 +12184,8 @@ Which option best expresses its meaning?`,
                 setAnsIdx(null);
                 setIsFinished(false);
                 setIsReinforcement(true);
+                setWrongStreak(0);
+                setLastMistakeId(null);
                 setTab('quiz');
             };
 
@@ -12210,6 +12232,22 @@ Which option best expresses its meaning?`,
                 return { key: k, weakScore, reasons, grammarTitles: (UNIT_DB[k].grammar || []).map(g => g.t) };
             }).filter(u => u.weakScore > 0).sort((a, b) => b.weakScore - a.weakScore).slice(0, 3);
 
+            // ── 基础能力分级：按真实表现给单元定档（补基础/跟教材/冲高考），数据不足不评 ──
+            const unitTier = (k) => {
+                const prog = getUnitProgress(k);
+                const gf = grammarFillData[k];
+                const acc = prog.totalAnswered >= 5 ? prog.totalCorrect / prog.totalAnswered : null;
+                const gfBest = (gf && gf.attempts > 0) ? (gf.best || 0) : null;
+                if (acc === null && gfBest === null) return null; // 还没练够，不贴标签
+                if ((acc !== null && acc < 0.5) || (gfBest !== null && gfBest <= 4)) {
+                    return { id: 'base', label: '补基础', cls: 'bg-rose-100 text-rose-700', tip: '先把核心词认熟、句子主干找对，别急着刷整篇题' };
+                }
+                if ((acc !== null && acc < 0.75) || (gfBest !== null && gfBest <= 7)) {
+                    return { id: 'mid', label: '跟教材', cls: 'bg-amber-100 text-amber-700', tip: '跟住单元词汇和语法，稳步把正确率提到 75% 以上' };
+                }
+                return { id: 'high', label: '冲高考', cls: 'bg-emerald-100 text-emerald-700', tip: '这个单元底子不错，可以挑战完形、七选五和真题' };
+            };
+
             const launchMistakeQuiz = (qs) => {
                 setQuizArr(qs);
                 setQIdx(0);
@@ -12220,6 +12258,8 @@ Which option best expresses its meaning?`,
                 setIsFinished(false);
                 setIsReinforcement(false);
                 setIsMistakePractice(true);
+                setWrongStreak(0);
+                setLastMistakeId(null);
                 setTab('quiz');
             };
 
@@ -12237,12 +12277,14 @@ Which option best expresses its meaning?`,
                 setAnsIdx(idx);
                 const currentQ = quizArr[qIdx];
                 const isCorrect = idx === currentQ.ans;
+                setWrongStreak(s => isCorrect ? 0 : s + 1);
                 if (isCorrect) {
                     setScore(s => s + 1);
                     setSessionCorrect(s => s + 1);
                 } else if (!isReinforcement && !isMistakePractice && tab !== 'cards') {
                     const mistakeCard = {
                         id: Date.now() + Math.random(),
+                        ts: Date.now(),
                         unitKey,
                         q: currentQ.q,
                         wrongOpt: currentQ.opts[idx],
@@ -12254,6 +12296,7 @@ Which option best expresses its meaning?`,
                         cleared: false,
                     };
                     setMistakeBank(prev => [mistakeCard, ...prev]);
+                    setLastMistakeId(mistakeCard.id);
                 }
 
                 // 错题练习模式：按记忆曲线更新错题状态（连对两次 → 攻克）
@@ -12501,7 +12544,7 @@ Which option best expresses its meaning?`,
                                 </button>
                                 <div className="text-center min-w-0">
                                     <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">当前学习单元</div>
-                                    <div className="text-[13px] font-bold text-slate-800 truncate">{currentBookName} · Unit {activeUnit}</div>
+                                    <div className="text-[13px] font-bold text-slate-800 truncate flex items-center justify-center gap-1.5">{currentBookName} · Unit {activeUnit}{(() => { const t = unitTier(unitKey); return t ? <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${t.cls}`}>{t.label}</span> : null; })()}</div>
                                 </div>
                                 <button onClick={() => gotoFlatUnit(flatUnitIndex + 1)} disabled={flatUnitIndex >= SYLLABUS.length * 5 - 1} className="flex items-center gap-1 px-3 py-2 rounded-xl text-[13px] font-bold text-slate-500 bg-slate-100/70 active:bg-slate-200 disabled:opacity-30 transition-colors">
                                     下一单元<ChevronRight className="w-3.5 h-3.5" />
@@ -12766,6 +12809,32 @@ Which option best expresses its meaning?`,
                                                 <div className="text-blue-500 font-bold text-[11px] mb-2 uppercase tracking-widest">Explanation</div>
                                                 <p className="text-slate-700 text-sm font-medium leading-relaxed whitespace-pre-wrap">{quizArr[qIdx]?.rat}</p>
                                             </div>
+                                            {ansIdx !== quizArr[qIdx]?.ans && !isReinforcement && (() => {
+                                                const causeTargetId = quizArr[qIdx]?.mistakeId ?? lastMistakeId;
+                                                if (causeTargetId == null) return null;
+                                                const tagged = mistakeBank.find(m => m.id === causeTargetId)?.cause;
+                                                return (
+                                                    <div className="p-4 bg-rose-50/60 border border-rose-100 rounded-2xl mb-4">
+                                                        <div className="text-[11px] font-bold text-rose-500 mb-2">这道题为什么错？点一下，系统帮你统计弱项（可跳过）</div>
+                                                        <div className="flex flex-wrap gap-2">
+                                                            {MISTAKE_CAUSES.map(c => (
+                                                                <button key={c.id} onClick={() => setMistakeCause(causeTargetId, tagged === c.id ? null : c.id)} className={`px-3 py-1.5 rounded-full text-[12px] font-bold transition-colors ${tagged === c.id ? 'bg-rose-500 text-white' : 'bg-white border border-rose-200 text-rose-600 active:bg-rose-100'}`}>{c.label}</button>
+                                                            ))}
+                                                        </div>
+                                                        {tagged && <p className="text-[11px] text-rose-500/90 leading-relaxed mt-2.5">💡 {causeOf(tagged)?.advice}</p>}
+                                                    </div>
+                                                );
+                                            })()}
+                                            {ansIdx !== quizArr[qIdx]?.ans && !isReinforcement && !isMistakePractice && wrongStreak >= 2 && (
+                                                <div className="p-4 bg-amber-50 border border-amber-100 rounded-2xl mb-4">
+                                                    <div className="text-[12px] font-bold text-amber-700 mb-1">连着错了 {wrongStreak} 题，别硬撑</div>
+                                                    <p className="text-[12px] text-amber-600 mb-3 leading-relaxed">先退一小步把卡住的地方搞懂，再回来做题，比连错更省时间（当前进度已经记下了，不会丢）。</p>
+                                                    <div className="flex gap-2 flex-wrap">
+                                                        {quizArr[qIdx]?.meta && <button onClick={() => startReinforcement(quizArr[qIdx].meta)} className="px-4 py-2 rounded-xl bg-amber-500 text-white text-[12px] font-bold active:scale-95 transition-transform">就这个考点做 2 道小题</button>}
+                                                        <button onClick={() => gotoUnit(unitKey, 'notes')} className="px-4 py-2 rounded-xl bg-white border border-amber-200 text-amber-700 text-[12px] font-bold active:bg-amber-100">回笔记看讲解</button>
+                                                    </div>
+                                                </div>
+                                            )}
                                             <button onClick={nextQuestion} className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-4 rounded-2xl font-bold text-[17px] active:scale-95 transition-transform shadow-lg shadow-blue-500/20">{qIdx === quizArr.length - 1 ? '查看成绩' : '下一题'}</button>
                                         </div>
                                     )}
@@ -12812,9 +12881,10 @@ Which option best expresses its meaning?`,
                                     {activeMistakes.map((m) => (
                                         <div key={m.id} className="card-lg p-6 border-l-4 border-rose-500 relative">
                                             <button onClick={() => setMistakeBank((prev) => prev.filter((x) => x.id !== m.id))} className="absolute top-4 right-4 p-2 text-slate-300 active:text-rose-500"><XCircle className="w-5 h-5" /></button>
-                                            <div className="flex items-center gap-2 mb-3">
+                                            <div className="flex items-center gap-2 mb-3 flex-wrap">
                                                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{m.unitKey}</span>
                                                 {(() => { const s = srsLabel(m); return s ? <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${s.cls}`}>{s.text}</span> : null; })()}
+                                                {m.cause && <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">{causeOf(m.cause)?.label || m.cause}</span>}
                                             </div>
                                             <p className="font-semibold text-[15px] mb-4 leading-relaxed whitespace-pre-wrap">{m.q}</p>
                                             <div className="flex flex-col gap-2 mb-4">
@@ -12914,6 +12984,45 @@ Which option best expresses its meaning?`,
                                     </div>
                                 )}
 
+                                {(() => {
+                                    // ── 本周错因分析：统计最近7天错题的错因分布，给出下周训练建议 ──
+                                    const weekAgo = Date.now() - 7 * SRS_DAY;
+                                    const weekMistakes = mistakeBank.filter(m => (m.ts || Math.floor(m.id) || 0) >= weekAgo);
+                                    const causeCounts = {};
+                                    weekMistakes.forEach(m => { if (m.cause) causeCounts[m.cause] = (causeCounts[m.cause] || 0) + 1; });
+                                    const ranked = Object.entries(causeCounts).sort((a, b) => b[1] - a[1]);
+                                    const taggedTotal = ranked.reduce((s, [, n]) => s + n, 0);
+                                    if (weekMistakes.length === 0) return null;
+                                    const top = ranked[0] ? causeOf(ranked[0][0]) : null;
+                                    return (
+                                        <div className="card-lg p-6 mb-6">
+                                            <h3 className="font-bold text-[15px] mb-1 flex items-center gap-2">🔍 本周错因分析 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-600">知道为什么错，才能补对地方</span></h3>
+                                            <p className="text-[12px] text-slate-400 font-medium mb-4">最近 7 天产生 {weekMistakes.length} 道错题{taggedTotal > 0 ? `，其中 ${taggedTotal} 道标注了错因：` : '。'}</p>
+                                            {taggedTotal === 0 ? (
+                                                <p className="text-[13px] text-slate-500 leading-relaxed">还没有标注错因——下次答错时，在解析下面点一下"为什么错"，一周后这里就能告诉你丢分主要丢在哪。</p>
+                                            ) : (
+                                                <div>
+                                                    <div className="space-y-2 mb-4">
+                                                        {ranked.map(([cid, n]) => (
+                                                            <div key={cid} className="flex items-center gap-3">
+                                                                <span className="text-[12px] font-bold text-slate-600 w-28 shrink-0">{causeOf(cid)?.label || cid}</span>
+                                                                <div className="flex-1 h-2 pbar-track"><div className="h-full bg-purple-400 rounded-full" style={{ width: `${Math.round(n / taggedTotal * 100)}%` }} /></div>
+                                                                <span className="text-[12px] font-bold text-slate-400 w-8 text-right">{n} 道</span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                    {top && (
+                                                        <div className="p-4 bg-purple-50/60 border border-purple-100 rounded-2xl">
+                                                            <p className="text-[13px] font-bold text-purple-700 mb-1">本周丢分最多的原因：{top.label}</p>
+                                                            <p className="text-[12px] text-purple-600/90 leading-relaxed">{top.advice}</p>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
+                                        </div>
+                                    );
+                                })()}
+
                                 {weakUnits.length > 0 && (
                                     <div className="card-lg p-6 mb-6">
                                         <h3 className="font-bold text-[15px] mb-1 flex items-center gap-2">🎯 弱点诊断 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-600">哪里漏了补哪里</span></h3>
@@ -12963,7 +13072,10 @@ Which option best expresses its meaning?`,
                             </div>
 
                             <div className="card-lg p-6">
-                                <h3 className="font-bold text-[15px] mb-5 border-b border-slate-100 pb-3">{SYLLABUS.find((b) => b.id === activeBookId)?.name}</h3>
+                                <div className="mb-5 border-b border-slate-100 pb-3">
+                                    <h3 className="font-bold text-[15px]">{SYLLABUS.find((b) => b.id === activeBookId)?.name}</h3>
+                                    <p className="text-[11px] text-slate-400 font-medium mt-1">单元标签按真实表现自动评定：<span className="text-rose-500 font-bold">补基础</span>（正确率&lt;50% 或语法填空≤4）· <span className="text-amber-500 font-bold">跟教材</span>（50-75%）· <span className="text-emerald-500 font-bold">冲高考</span>（&gt;75%），练得越多评得越准</p>
+                                </div>
                                 <div className="space-y-5">
                                     {bookUnits.map(({ unit, key, progress, cards }) => {
                                         const accuracy = progress.totalAnswered ? Math.round(progress.totalCorrect / progress.totalAnswered * 100) : 0;
@@ -12976,7 +13088,7 @@ Which option best expresses its meaning?`,
                                             <div key={key} className="card rounded-2xl p-4">
                                                 <div className="flex items-start justify-between gap-4 mb-3">
                                                     <div>
-                                                        <div className="font-bold text-slate-800">Unit {unit}</div>
+                                                        <div className="font-bold text-slate-800 flex items-center gap-2">Unit {unit}{(() => { const t = unitTier(key); return t ? <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${t.cls}`} title={t.tip}>{t.label}</span> : null; })()}</div>
                                                         <div className="text-xs text-slate-400 mt-1">{progress.lastPracticedAt || cards.lastStudiedAt || '尚未开始学习'}</div>
                                                     </div>
                                                     <div className="text-right">

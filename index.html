@@ -12132,17 +12132,63 @@ Which option best expresses its meaning?`,
                 }));
             };
 
+            // ── 发音：显式选英文语音 + 规避 Chrome cancel/speak 竞态 + 失败给人话提示 ──
+            const voicesRef = useRef([]);
+            const [audioTip, setAudioTip] = useState(null);
+            useEffect(() => {
+                if (!window.speechSynthesis) return;
+                const load = () => { const v = window.speechSynthesis.getVoices(); if (v && v.length) voicesRef.current = v; };
+                load();
+                window.speechSynthesis.addEventListener && window.speechSynthesis.addEventListener('voiceschanged', load);
+                return () => { window.speechSynthesis.removeEventListener && window.speechSynthesis.removeEventListener('voiceschanged', load); };
+            }, []);
+            useEffect(() => {
+                if (!audioTip) return;
+                const t = setTimeout(() => setAudioTip(null), 6000);
+                return () => clearTimeout(t);
+            }, [audioTip]);
             const playAudio = useCallback((text, e) => {
                 if (e) e.stopPropagation();
-                if (!text || !window.speechSynthesis) return;
-                window.speechSynthesis.cancel();
+                if (!text) return;
+                if (!window.speechSynthesis) {
+                    setAudioTip('这个浏览器不支持语音朗读，建议换 Edge / Chrome / Safari 打开');
+                    return;
+                }
+                const synth = window.speechSynthesis;
                 setPlayingWord(text);
                 const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'en-US';
+                const vs = voicesRef.current.length ? voicesRef.current : (synth.getVoices() || []);
+                const en = vs.find(v => /^en[-_]?US/i.test(v.lang)) || vs.find(v => /^en/i.test(v.lang));
+                if (en) { utterance.voice = en; utterance.lang = en.lang; }
+                else { utterance.lang = 'en-US'; }
                 utterance.rate = 0.85;
+                let started = false;
+                utterance.onstart = () => { started = true; };
                 utterance.onend = () => setPlayingWord(null);
-                utterance.onerror = () => setPlayingWord(null);
-                window.speechSynthesis.speak(utterance);
+                utterance.onerror = () => {
+                    setPlayingWord(null);
+                    setAudioTip('发音失败：这台设备可能没有英文语音包。电脑建议用 Edge 打开，或在系统设置里添加 English 语音；手机检查是否开了静音');
+                };
+                const speakNow = () => {
+                    try { synth.resume(); } catch (_) {} // Chrome 偶发卡在 paused 状态，先恢复
+                    synth.speak(utterance);
+                    setTimeout(() => {
+                        // 部分浏览器静默失败且不触发 onerror：2.5 秒仍未开始就提示
+                        if (!started && !synth.speaking && !synth.pending) {
+                            setPlayingWord(null);
+                            setAudioTip((synth.getVoices() || []).length === 0
+                                ? '这台设备没有可用的语音包：电脑建议用 Edge 打开，或在系统设置里添加 English 语音'
+                                : '发音没有播出来：检查一下浏览器标签页/系统音量是否被静音');
+                        }
+                    }, 2500);
+                };
+                // Chrome 的 cancel() 紧跟 speak() 会吞掉本次朗读：只在确有播放时才 cancel，并等一拍再说
+                if (synth.speaking || synth.pending) {
+                    synth.cancel();
+                    setTimeout(speakNow, 80);
+                } else {
+                    speakNow();
+                }
             }, []);
 
             const startQuiz = (mode = 'full') => {
@@ -13398,6 +13444,11 @@ Which option best expresses its meaning?`,
                                 </div>
 
                                 <main className="pb-28 lg:pb-10"><div key={tab} className="page-enter">{renderMainContent()}</div></main>
+                                {audioTip && (
+                                    <div onClick={() => setAudioTip(null)} className="fixed bottom-24 lg:bottom-8 left-1/2 -translate-x-1/2 z-[70] px-4 py-3 rounded-2xl bg-slate-900/95 text-white text-[12px] font-bold shadow-xl max-w-[90vw] md:max-w-md leading-relaxed cursor-pointer">
+                                        🔇 {audioTip}
+                                    </div>
+                                )}
                             </section>
                         </div>
                     </div>

@@ -11774,6 +11774,11 @@ Which option best expresses its meaning?`,
                 const day = (c && typeof c[t] === 'object') ? c[t] : {}; // 兼容旧版 true 值
                 return { ...(c || {}), [t]: { ...day, [kind]: (day[kind] || 0) + 1 } };
             };
+            // 只盖打卡章、不改学习数据（用于"今日总结"这类无独立数据桶的动作）
+            const stampOnlyCheckin = (kind) => setAllUsersData(prev => {
+                const u = prev[userPrefix] || {};
+                return { ...prev, [userPrefix]: { ...u, checkins: stampCheckin(u.checkins, kind) } };
+            });
 
             const setMasteryData = (updater) => setAllUsersData(prev => {
                 const u = prev[userPrefix] || {};
@@ -11866,6 +11871,21 @@ Which option best expresses its meaning?`,
                     });
                 });
                 return items;
+            }, [vocabData]);
+
+            // ── 明日预计到期词数：供"每日自适应学习路线"展望文案使用 ──────────
+            const tomorrowDueCount = useMemo(() => {
+                const now = Date.now();
+                const tomorrowEnd = now + SRS_DAY;
+                let n = 0;
+                Object.keys(UNIT_DB).forEach(uk => {
+                    (UNIT_DB[uk].words || []).forEach(w => {
+                        if (!w.ex) return;
+                        const rec = vocabData[vocabKey(uk, w.w)];
+                        if (rec && (rec.seen || 0) > 0 && (rec.due || 0) > now && (rec.due || 0) <= tomorrowEnd) n++;
+                    });
+                });
+                return n;
             }, [vocabData]);
 
             // ── 学习数据导出 / 导入（防 localStorage 丢失）──────────
@@ -12172,6 +12192,24 @@ Which option best expresses its meaning?`,
                 launchMistakeQuiz(shuffle(buildMistakeQuiz(dueMistakes)));
             };
 
+            // ── 弱点诊断：综合错题/语法填空/练习正确率，找出最薄弱的单元（今日任务和进度页共用）──
+            const gotoUnit = (k, targetTab) => {
+                const [b, u] = k.split('-');
+                setActiveBookId(b); setActiveUnit(Number(u)); setTab(targetTab);
+            };
+            const weakUnits = Object.keys(UNIT_DB).map(k => {
+                const mCount = activeMistakes.filter(m => m.unitKey === k).length;
+                const gf = grammarFillData[k];
+                const prog = getUnitProgress(k);
+                const acc = prog.totalAnswered >= 5 ? prog.totalCorrect / prog.totalAnswered : null;
+                let weakScore = 0;
+                const reasons = [];
+                if (mCount > 0) { weakScore += mCount * 2; reasons.push(`${mCount} 道错题待攻克`); }
+                if (gf && gf.attempts > 0 && (gf.best || 0) <= 6) { weakScore += 7 - gf.best; reasons.push(`语法填空最好 ${gf.best}/10`); }
+                if (acc !== null && acc < 0.7) { weakScore += Math.round((0.7 - acc) * 20); reasons.push(`练习正确率 ${Math.round(acc * 100)}%`); }
+                return { key: k, weakScore, reasons, grammarTitles: (UNIT_DB[k].grammar || []).map(g => g.t) };
+            }).filter(u => u.weakScore > 0).sort((a, b) => b.weakScore - a.weakScore).slice(0, 3);
+
             const launchMistakeQuiz = (qs) => {
                 setQuizArr(qs);
                 setQIdx(0);
@@ -12324,24 +12362,82 @@ Which option best expresses its meaning?`,
 
             const renderMainContent = () => {
                 if (tab === 'today') {
-                    const tasks = [
-                        { key: 'review', icon: <RotateCcw className="w-5 h-5" />, title: '复习到期单词', desc: dueReviewItems.length > 0 ? `${dueReviewItems.length} 个单词按记忆曲线到期` : '到期单词已清零，棒！', done: dueReviewItems.length === 0, action: () => setTab('review'), btn: '去复习' },
-                        { key: 'vocab', icon: <Brain className="w-5 h-5" />, title: '单词闯关练 10 个', desc: `今天已练 ${Math.min(todayAct.vocab || 0, 10)}/10 个`, done: (todayAct.vocab || 0) >= 10, action: () => setTab('vocab'), btn: '去闯关' },
-                        { key: 'grammarfill', icon: <Zap className="w-5 h-5" />, title: '语法填空做 1 篇', desc: '高考同款整篇仿真，10 空', done: (todayAct.grammarFill || 0) >= 1, action: () => setTab('grammarfill'), btn: '去做题' },
-                        { key: 'cards', icon: <Layers className="w-5 h-5" />, title: '互动卡片过一组', desc: '巩固本单元词汇和考点', done: (todayAct.cards || 0) >= 8, action: () => setTab('cards'), btn: '去刷卡' },
-                        ...(activeMistakes.length > 0 ? [{ key: 'mistakes', icon: <AlertCircle className="w-5 h-5" />, title: '清到期错题', desc: dueMistakes.length > 0 ? `${dueMistakes.length} 道错题到期待回炉` : '今天没有到期的错题', done: dueMistakes.length === 0, action: () => { if (dueMistakes.length > 0) startDueMistakePractice(); else setTab('mistakes'); }, btn: '去回炉' }] : []),
+                    // ── 每日自适应学习路线：到期旧词→新词→薄弱语法点→针对性练习→1分钟总结 ──
+                    const reviewItems = dueReviewItems.slice(0, 5);
+                    const unitWords = (UNIT_DB[unitKey]?.words || []).filter(w => w.ex);
+                    const newWordItems = unitWords.filter(w => !vocabData[vocabKey(unitKey, w.w)]).slice(0, 5);
+                    const weakTarget = weakUnits[0] || null;
+                    const grammarUnitKey = weakTarget ? weakTarget.key : unitKey;
+                    const weakGrammar = (UNIT_DB[grammarUnitKey]?.grammar || [])[0] || null;
+                    const practiceIsMistakes = dueMistakes.length > 0;
+                    const colorMap = { amber: 'bg-amber-50 text-amber-600', purple: 'bg-purple-50 text-purple-600', indigo: 'bg-indigo-50 text-indigo-500', rose: 'bg-rose-50 text-rose-600' };
+
+                    const plan = [
+                        {
+                            key: 'plan-review', color: 'amber', icon: <RotateCcw className="w-5 h-5" />,
+                            title: reviewItems.length > 0 ? `复习 ${reviewItems.length} 个到期旧词` : '到期旧词已清零',
+                            desc: reviewItems.length > 0 ? reviewItems.map(w => w.w).join(' · ') : '按记忆曲线暂无到期词，先往下学新内容',
+                            why: '这些词你之前学过，今天正好是记忆曲线安排"该复习"的日子——现在花1分钟过一遍，比忘了再重学省十倍时间。',
+                            need: dueReviewItems.length > 5 ? `到期词共 ${dueReviewItems.length} 个，今天先集中攻克最要紧的 5 个，别贪多` : (reviewItems.length > 0 ? '把词义和例句在脑子里过一遍，答对会自动排进更长的复习间隔' : '继续保持，到期词随时清零'),
+                            impact: reviewItems.length > 0 ? '每答对一个，这个词的复习间隔会自动拉长（最长 15 天不用再见它），说明它已经记牢了' : '词库健康，今天可以把时间留给新内容',
+                            tomorrow: tomorrowDueCount > 0 ? `明天预计有 ${tomorrowDueCount} 个词到期，系统会自动排进"今日复习"` : '明天大概率没有到期词，可以专心学新单元',
+                            done: dueReviewItems.length === 0, action: () => setTab('review'), btn: '去复习',
+                        },
+                        {
+                            key: 'plan-newwords', color: 'purple', icon: <Brain className="w-5 h-5" />,
+                            title: newWordItems.length > 0 ? `学 ${newWordItems.length} 个新词` : '本单元新词已学完',
+                            desc: newWordItems.length > 0 ? newWordItems.map(w => w.w).join(' · ') : '去闯关模式巩固已学词，或切换下一单元',
+                            why: `跟着 ${currentBookName} Unit ${activeUnit} 的进度往前走，每天学 5 个新词，一周就能吃透一个单元的核心词汇。`,
+                            need: newWordItems.length > 0 ? '先看词义和例句，选对1次会进入下一记忆阶段；选错也没关系，系统会安排重来' : '新词已清空，可以巩固复习或推进到下一单元',
+                            impact: newWordItems.length > 0 ? `学完这 ${newWordItems.length} 个词，本单元词库会新增 ${newWordItems.length} 条记忆记录，正式进入记忆阶梯` : '本单元词汇已全部起步，进度领先',
+                            tomorrow: '答对的词第1天后会安排第一次复习，帮你巩固刚学的印象',
+                            done: (todayAct.vocab || 0) >= 5, action: () => setTab('vocab'), btn: '去闯关',
+                        },
+                        {
+                            key: 'plan-grammar', color: 'indigo', icon: <Lightbulb className="w-5 h-5" />,
+                            title: weakGrammar ? `补语法点：${weakGrammar.t}` : '语法基础状态良好',
+                            desc: weakTarget ? `${grammarUnitKey} · ${getUnitData(grammarUnitKey).title}（${weakTarget.reasons.join(' · ')}）` : `${grammarUnitKey} · ${getUnitData(grammarUnitKey).title}`,
+                            why: weakTarget ? `这个单元最近${weakTarget.reasons.join('、')}，说明这个语法点还没吃透，今天优先补它，比继续往前学更划算。` : '目前没有明显薄弱单元，巩固当前单元的语法点即可。',
+                            need: weakGrammar ? `重点看：${weakGrammar.r}` : '继续保持当前节奏',
+                            impact: '看完笔记再去做对应的语法填空，理解 + 练习结合，记得更牢',
+                            tomorrow: '明天系统会重新诊断薄弱单元，今天补上了的话，明天大概率会换一个新的薄弱点',
+                            done: (todayAct.grammarFill || 0) >= 1, action: () => gotoUnit(grammarUnitKey, 'notes'), btn: '去学',
+                        },
+                        {
+                            key: 'plan-practice', color: 'rose', icon: <Target className="w-5 h-5" />,
+                            title: practiceIsMistakes ? `回炉 ${dueMistakes.length} 道到期错题` : '做 1 组针对性练习',
+                            desc: practiceIsMistakes ? '错题记忆曲线到期，连续答对 2 次就能归档"已攻克"' : `${grammarUnitKey} · 语法填空整篇仿真`,
+                            why: practiceIsMistakes ? '错题比新题更值得优先练——它精确暴露了你还没搞懂的地方，到期不复习很快又会忘。' : '刚补完语法点，趁热用一整篇语法填空巩固，比只看笔记记得牢。',
+                            need: practiceIsMistakes ? '每道题看清"当时为什么错"，别只记答案' : '把这个语法点在文章里再认一遍，找到规律',
+                            impact: practiceIsMistakes ? `做完这组，最多有 ${dueMistakes.length} 道错题会往"已攻克"更近一步` : '语法填空最佳成绩有机会被刷新',
+                            tomorrow: practiceIsMistakes ? '答对的错题会进入 7 天复习档，连续答对 2 次就会归档为"已攻克"' : '明天会根据今天的成绩重新判断这个单元是否还薄弱',
+                            done: practiceIsMistakes ? dueMistakes.length === 0 : (todayAct.grammarFill || 0) >= 1,
+                            action: () => practiceIsMistakes ? startDueMistakePractice() : gotoUnit(grammarUnitKey, 'grammarfill'),
+                            btn: practiceIsMistakes ? '去回炉' : '去做题',
+                        },
                     ];
-                    const doneCount = tasks.filter(t => t.done).length;
-                    const allDone = doneCount === tasks.length;
+
+                    const summaryDone = (todayAct.summary || 0) >= 1;
+                    const doneCount = plan.filter(t => t.done).length + (summaryDone ? 1 : 0);
+                    const totalCount = plan.length + 1;
+                    const allDone = doneCount === totalCount;
                     const dateLabel = new Date().toLocaleDateString('zh-CN', { month: 'long', day: 'numeric', weekday: 'long' });
+                    const summaryBits = [];
+                    if ((todayAct.vocab || 0) > 0) summaryBits.push(`记了 ${todayAct.vocab} 个词`);
+                    if ((todayAct.grammarFill || 0) > 0) summaryBits.push(`做完 ${todayAct.grammarFill} 篇语法填空`);
+                    if ((todayAct.mistakes || 0) > 0) summaryBits.push(`处理了 ${todayAct.mistakes} 道错题`);
+                    const summaryMsg = summaryBits.length === 0
+                        ? '今天还没开始学习，从复习到期词或学 5 个新词开始吧。'
+                        : `今天你${summaryBits.join('、')}，` + (streakDays >= 3 ? `已经连续学习 ${streakDays} 天，坚持就是最大的进步。` : '保持这个节奏，进步会越来越明显。');
+
                     return (
                         <div className="max-w-2xl mx-auto space-y-5">
                             <div className={`card-lg p-6 md:p-8 ${allDone ? 'bg-gradient-to-br from-emerald-50 via-teal-50/80 to-white' : 'bg-gradient-to-br from-indigo-50/80 via-white to-sky-50/60'}`}>
                                 <div className="flex items-start justify-between gap-4 flex-wrap">
                                     <div>
                                         <div className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400 mb-1">{dateLabel}</div>
-                                        <h2 className="text-2xl font-bold tracking-tight">{currentUser === 'tangtang' ? '糖糖，' : ''}{allDone ? '今日任务全部完成！🎉' : '今天的学习清单'}</h2>
-                                        <p className="text-sm text-slate-500 font-medium mt-1">{allDone ? '坚持就是最了不起的天赋，明天见！' : '每天 20 分钟，按清单走就好'}</p>
+                                        <h2 className="text-2xl font-bold tracking-tight">{currentUser === 'tangtang' ? '糖糖，' : ''}{allDone ? '今日学习路线全部完成！🎉' : '今天的自适应学习路线'}</h2>
+                                        <p className="text-sm text-slate-500 font-medium mt-1">{allDone ? '坚持就是最了不起的天赋，明天见！' : '系统按你的薄弱点自动排好了，大约 20-30 分钟走完'}</p>
                                     </div>
                                     <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-orange-50 border border-orange-100 shrink-0">
                                         <Flame className="w-4 h-4 text-orange-500" />
@@ -12349,23 +12445,55 @@ Which option best expresses its meaning?`,
                                     </div>
                                 </div>
                                 <div className="mt-5">
-                                    <div className="flex justify-between text-xs font-bold text-slate-400 mb-1.5"><span>完成进度</span><span>{doneCount} / {tasks.length}</span></div>
-                                    <div className="w-full h-2.5 pbar-track"><div className="h-full pbar-fill transition-all" style={{ width: `${Math.round(doneCount / tasks.length * 100)}%` }} /></div>
+                                    <div className="flex justify-between text-xs font-bold text-slate-400 mb-1.5"><span>完成进度</span><span>{doneCount} / {totalCount}</span></div>
+                                    <div className="w-full h-2.5 pbar-track"><div className="h-full pbar-fill transition-all" style={{ width: `${Math.round(doneCount / totalCount * 100)}%` }} /></div>
                                 </div>
                             </div>
                             <div className="space-y-3">
-                                {tasks.map(t => (
-                                    <div key={t.key} className={`card-lg p-5 flex items-center gap-4 ${t.done ? 'opacity-70' : ''}`}>
-                                        <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 ${t.done ? 'bg-emerald-100 text-emerald-600' : 'bg-indigo-50 text-indigo-500'}`}>
-                                            {t.done ? <CheckCircle2 className="w-5 h-5" /> : t.icon}
+                                {plan.map((t, i) => (
+                                    <div key={t.key} className={`card-lg p-5 ${t.done ? 'opacity-70' : ''}`}>
+                                        <div className="flex items-center gap-4">
+                                            <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 ${t.done ? 'bg-emerald-100 text-emerald-600' : colorMap[t.color]}`}>
+                                                {t.done ? <CheckCircle2 className="w-5 h-5" /> : t.icon}
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <div className={`font-bold text-[15px] ${t.done ? 'text-slate-400 line-through' : 'text-slate-900'}`}>{i + 1}. {t.title}</div>
+                                                <div className="text-[12px] text-slate-400 font-medium mt-0.5 truncate">{t.desc}</div>
+                                            </div>
+                                            {!t.done && <button onClick={t.action} className="px-4 py-2.5 rounded-xl bg-indigo-500 text-white text-[13px] font-bold active:scale-95 transition-transform shrink-0">{t.btn}</button>}
                                         </div>
-                                        <div className="flex-1 min-w-0">
-                                            <div className={`font-bold text-[15px] ${t.done ? 'text-slate-400 line-through' : 'text-slate-900'}`}>{t.title}</div>
-                                            <div className="text-[12px] text-slate-400 font-medium mt-0.5">{t.desc}</div>
-                                        </div>
-                                        {!t.done && <button onClick={t.action} className="px-4 py-2.5 rounded-xl bg-indigo-500 text-white text-[13px] font-bold active:scale-95 transition-transform shrink-0">{t.btn}</button>}
+                                        <details className="mt-3 group">
+                                            <summary className="text-[11px] font-bold text-slate-400 cursor-pointer select-none list-none flex items-center gap-1">
+                                                <ChevronDown className="w-3 h-3 transition-transform group-open:rotate-180" />为什么安排这个 · 明天会怎样
+                                            </summary>
+                                            <div className="mt-2 pl-4 space-y-1.5 text-[12px] text-slate-500 leading-relaxed border-l-2 border-slate-100">
+                                                <p><span className="font-bold text-slate-600">为什么：</span>{t.why}</p>
+                                                <p><span className="font-bold text-slate-600">今天最需要：</span>{t.need}</p>
+                                                <p><span className="font-bold text-slate-600">完成后：</span>{t.impact}</p>
+                                                <p><span className="font-bold text-slate-600">明天：</span>{t.tomorrow}</p>
+                                            </div>
+                                        </details>
                                     </div>
                                 ))}
+                                <div className={`card-lg p-5 ${summaryDone ? 'opacity-70' : ''}`}>
+                                    <div className="flex items-center gap-4">
+                                        <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 ${summaryDone ? 'bg-emerald-100 text-emerald-600' : 'bg-emerald-50 text-emerald-500'}`}>
+                                            <Award className="w-5 h-5" />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <div className={`font-bold text-[15px] ${summaryDone ? 'text-slate-400 line-through' : 'text-slate-900'}`}>5. 用 1 分钟看看今天学了什么</div>
+                                            <div className="text-[12px] text-slate-400 font-medium mt-0.5">今日总结 · 明日预告</div>
+                                        </div>
+                                        {!summaryDone && <button onClick={() => stampOnlyCheckin('summary')} className="px-4 py-2.5 rounded-xl bg-emerald-500 text-white text-[13px] font-bold active:scale-95 transition-transform shrink-0">完成总结</button>}
+                                    </div>
+                                    <div className="mt-4 grid grid-cols-2 gap-2 text-[12px]">
+                                        <div className="p-3 bg-slate-50 rounded-xl"><div className="text-slate-400 font-semibold">今日已学</div><div className="font-bold text-slate-800 mt-0.5">{todayAct.vocab || 0} 个词 · {todayAct.grammarFill || 0} 篇语法填空</div></div>
+                                        <div className="p-3 bg-slate-50 rounded-xl"><div className="text-slate-400 font-semibold">连续打卡</div><div className="font-bold text-slate-800 mt-0.5">{streakDays} 天</div></div>
+                                        <div className="p-3 bg-slate-50 rounded-xl"><div className="text-slate-400 font-semibold">错题库</div><div className="font-bold text-slate-800 mt-0.5">待攻克 {activeMistakes.length} 道 · 到期 {dueMistakes.length} 道</div></div>
+                                        <div className="p-3 bg-slate-50 rounded-xl"><div className="text-slate-400 font-semibold">明天预告</div><div className="font-bold text-slate-800 mt-0.5">{tomorrowDueCount} 个词到期复习</div></div>
+                                    </div>
+                                    <p className="text-[12px] text-slate-500 leading-relaxed mt-3">{summaryMsg}</p>
+                                </div>
                             </div>
                             <div className="card-lg px-4 py-3 flex items-center justify-between gap-2">
                                 <button onClick={() => gotoFlatUnit(flatUnitIndex - 1)} disabled={flatUnitIndex <= 0} className="flex items-center gap-1 px-3 py-2 rounded-xl text-[13px] font-bold text-slate-500 bg-slate-100/70 active:bg-slate-200 disabled:opacity-30 transition-colors">
@@ -12737,24 +12865,6 @@ Which option best expresses its meaning?`,
                     const totalAnswered = bookUnits.reduce((sum, item) => sum + item.progress.totalAnswered, 0);
                     const totalCorrect = bookUnits.reduce((sum, item) => sum + item.progress.totalCorrect, 0);
                     const overallAccuracy = totalAnswered ? Math.round(totalCorrect / totalAnswered * 100) : 0;
-
-                    // ── 弱点诊断：综合错题/语法填空/练习正确率，找出最薄弱的单元 ──
-                    const gotoUnit = (k, targetTab) => {
-                        const [b, u] = k.split('-');
-                        setActiveBookId(b); setActiveUnit(Number(u)); setTab(targetTab);
-                    };
-                    const weakUnits = Object.keys(UNIT_DB).map(k => {
-                        const mCount = activeMistakes.filter(m => m.unitKey === k).length;
-                        const gf = grammarFillData[k];
-                        const prog = getUnitProgress(k);
-                        const acc = prog.totalAnswered >= 5 ? prog.totalCorrect / prog.totalAnswered : null;
-                        let weakScore = 0;
-                        const reasons = [];
-                        if (mCount > 0) { weakScore += mCount * 2; reasons.push(`${mCount} 道错题待攻克`); }
-                        if (gf && gf.attempts > 0 && (gf.best || 0) <= 6) { weakScore += 7 - gf.best; reasons.push(`语法填空最好 ${gf.best}/10`); }
-                        if (acc !== null && acc < 0.7) { weakScore += Math.round((0.7 - acc) * 20); reasons.push(`练习正确率 ${Math.round(acc * 100)}%`); }
-                        return { key: k, weakScore, reasons, grammarTitles: (UNIT_DB[k].grammar || []).map(g => g.t) };
-                    }).filter(u => u.weakScore > 0).sort((a, b) => b.weakScore - a.weakScore).slice(0, 3);
 
                     // ── 妈妈督学报告：mama 账号查看糖糖的学习数据 ──
                     const ttData = currentUser === 'mama' ? (allUsersData['tangtang'] || {}) : null;

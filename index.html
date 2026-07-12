@@ -10862,6 +10862,8 @@ Which option best expresses its meaning?`,
                     onLogin('tangtang');
                 } else if (pwd === '0315') {
                     onLogin('mama');
+                } else if (pwd === '9999') {
+                    onLogin('baba');
                 } else {
                     setErr('密码不正确，请重新输入');
                 }
@@ -13174,7 +13176,7 @@ Which option best expresses its meaning?`,
                                     <div>
                                         <h1 className="font-bold tracking-tight text-lg logo-text">糖糖提分通</h1>
                                         <p className="text-xs text-slate-500">英语提分学习平台</p>
-                        {currentUser && <p className="text-xs font-semibold text-blue-500 mt-0.5">{currentUser === 'tangtang' ? '👧 糖糖' : '👩 妈妈'} 的学习空间</p>}
+                        {currentUser && <p className="text-xs font-semibold text-blue-500 mt-0.5">{currentUser === 'tangtang' ? '👧 糖糖' : currentUser === 'mama' ? '👩 妈妈' : '👨 爸爸'} 的学习空间</p>}
                                     </div>
                                 </div>
 
@@ -13247,7 +13249,7 @@ Which option best expresses its meaning?`,
                                             </div>
                                             <div className="min-w-0">
                                                 <div className="font-bold text-slate-900 truncate">糖糖提分通</div>
-                                                <div className="text-xs text-slate-500 truncate">{currentBookName} · Unit {activeUnit}{currentUser ? ` · ${currentUser === 'tangtang' ? '糖糖' : '妈妈'}` : ''}</div>
+                                                <div className="text-xs text-slate-500 truncate">{currentBookName} · Unit {activeUnit}{currentUser ? ` · ${currentUser === 'tangtang' ? '糖糖' : currentUser === 'mama' ? '妈妈' : '爸爸'}` : ''}</div>
                                             </div>
                                         </div>
                                         <button onClick={() => setSidebarOpen(true)} className="w-10 h-10 rounded-xl bg-slate-100/80 border border-slate-200 flex items-center justify-center">

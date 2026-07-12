@@ -12825,16 +12825,24 @@ Which option best expresses its meaning?`,
                                                     </div>
                                                 );
                                             })()}
-                                            {ansIdx !== quizArr[qIdx]?.ans && !isReinforcement && !isMistakePractice && wrongStreak >= 2 && (
-                                                <div className="p-4 bg-amber-50 border border-amber-100 rounded-2xl mb-4">
-                                                    <div className="text-[12px] font-bold text-amber-700 mb-1">连着错了 {wrongStreak} 题，别硬撑</div>
-                                                    <p className="text-[12px] text-amber-600 mb-3 leading-relaxed">先退一小步把卡住的地方搞懂，再回来做题，比连错更省时间（当前进度已经记下了，不会丢）。</p>
-                                                    <div className="flex gap-2 flex-wrap">
-                                                        {quizArr[qIdx]?.meta && <button onClick={() => startReinforcement(quizArr[qIdx].meta)} className="px-4 py-2 rounded-xl bg-amber-500 text-white text-[12px] font-bold active:scale-95 transition-transform">就这个考点做 2 道小题</button>}
-                                                        <button onClick={() => gotoUnit(unitKey, 'notes')} className="px-4 py-2 rounded-xl bg-white border border-amber-200 text-amber-700 text-[12px] font-bold active:bg-amber-100">回笔记看讲解</button>
+                                            {ansIdx !== quizArr[qIdx]?.ans && !isReinforcement && !isMistakePractice && wrongStreak >= 2 && (() => {
+                                                // 题库精选题没有 meta：从题干/选项里匹配本单元单词，合成一个词汇强化目标兜底
+                                                const reinfMeta = quizArr[qIdx]?.meta || (() => {
+                                                    const qtext = ((quizArr[qIdx]?.q || '') + ' ' + (quizArr[qIdx]?.opts || []).join(' ')).toLowerCase();
+                                                    const hit = (dbData.words || []).find(w => w.w && w.w.length >= 3 && qtext.includes(w.w.toLowerCase()));
+                                                    return hit ? { type: 'word', data: hit } : null;
+                                                })();
+                                                return (
+                                                    <div className="p-4 bg-amber-50 border border-amber-100 rounded-2xl mb-4">
+                                                        <div className="text-[12px] font-bold text-amber-700 mb-1">连着错了 {wrongStreak} 题，别硬撑</div>
+                                                        <p className="text-[12px] text-amber-600 mb-3 leading-relaxed">先退一小步把卡住的地方搞懂，再回来做题，比连错更省时间（当前进度已经记下了，不会丢）。</p>
+                                                        <div className="flex gap-2 flex-wrap">
+                                                            {reinfMeta && <button onClick={() => startReinforcement(reinfMeta)} className="px-4 py-2 rounded-xl bg-amber-500 text-white text-[12px] font-bold active:scale-95 transition-transform">就这个考点做 2 道小题</button>}
+                                                            <button onClick={() => gotoUnit(unitKey, 'notes')} className="px-4 py-2 rounded-xl bg-white border border-amber-200 text-amber-700 text-[12px] font-bold active:bg-amber-100">回笔记看讲解</button>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            )}
+                                                );
+                                            })()}
                                             <button onClick={nextQuestion} className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-4 rounded-2xl font-bold text-[17px] active:scale-95 transition-transform shadow-lg shadow-blue-500/20">{qIdx === quizArr.length - 1 ? '查看成绩' : '下一题'}</button>
                                         </div>
                                     )}

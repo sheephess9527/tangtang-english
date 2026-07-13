@@ -11643,10 +11643,54 @@ Which option best expresses its meaning?`,
         // ==========================================
         // 6.5 写作宝典（应用文模板 + 读后续写素材）
         // ==========================================
-        const WritingView = ({ playAudio, playingWord }) => {
+        // 写作四步训练：中文要点→短语→整句→高分句→拼段落（每套走完一遍=真写了一篇的骨架）
+        const WRITING_TRAIN_DB = [
+            {
+                topic: '邀请信 · 邀请外教参加英语角',
+                steps: [
+                    { q: '第一步 · 要点转短语：「诚挚邀请您参加我们的英语角」用哪个短语最地道？', opts: ['sincerely invite you to join our English Corner', 'ask you come to our English Corner', 'hope you coming to our English Corner', 'invite you attending our English Corner'], ans: 0, rat: 'invite sb to do sth 是固定搭配；"ask you come"缺 to；coming/attending 的形式都不对。' },
+                    { q: '第二步 · 短语扩成句子：哪句语法完全正确？', opts: ['We would like to sincerely invite you to join our English Corner this Friday afternoon.', 'We would like to sincerely invite you join our English Corner this Friday afternoon.', 'We are sincerely invite you to join our English Corner this Friday afternoon.', 'We would like to sincerely inviting you to join our English Corner this Friday afternoon.'], ans: 0, rat: 'would like to do + invite sb to do，两处不定式都不能丢；be 动词后不能直接跟动词原形。' },
+                    { q: '第三步 · 普通句升级：把 "I think you can help us a lot." 升级成高分句，选哪个？', opts: ['With your rich teaching experience, you are definitely the perfect person to guide us.', 'I think you can help us very much a lot.', 'You can help us, I think so, really.', 'I think you are able to can help us.'], ans: 0, rat: '高分句思路：with 短语开头（介词短语作状语）+ 具体理由（teaching experience）替代空洞的 help。其他选项都有语法或啰嗦问题。' },
+                    { type: 'assemble', q: '第四步 · 把四句按顺序拼成完整段落（依次点击）：', parts: ['Dear Mr. Smith, I am Li Hua, chairman of the Student Union.', 'We would like to sincerely invite you to join our English Corner this Friday afternoon.', 'With your rich teaching experience, you are definitely the perfect person to guide us.', 'We would appreciate it if you could come. Looking forward to your reply.'], rat: '应用文骨架：自我介绍 → 说明来意（邀请）→ 给出理由 → 表达期待。顺序一乱，条理分就没了。' },
+                ],
+            },
+            {
+                topic: '建议信 · 劝朋友少刷手机',
+                steps: [
+                    { q: '第一步 · 要点转短语：「建议你合理安排用手机的时间」怎么说？', opts: ['suggest arranging your phone time reasonably', 'suggest to arrange your phone time', 'advise you arranging your phone time', 'suggest that arrange your phone time'], ans: 0, rat: 'suggest doing sth，后面接动名词，不能接 to do；advise 要说 advise sb to do。' },
+                    { q: '第二步 · 短语扩成句子：哪句语法完全正确？', opts: ['I strongly suggest arranging a fixed time for your phone every day.', 'I strongly suggest to arrange a fixed time for your phone every day.', 'I strongly suggest arrange a fixed time for your phone every day.', 'I am strongly suggest arranging a fixed time for your phone every day.'], ans: 0, rat: 'suggest + doing 再次巩固；"am suggest"是 be 动词和实义动词连用的典型错误。' },
+                    { q: '第三步 · 普通句升级：把 "Reading books is good for you." 升级成高分句，选哪个？', opts: ['Instead of scrolling your phone, why not pick up a book, which will benefit you a lot?', 'Reading books is very very good for you.', 'Books are good. You should read.', 'Reading books is good for you and good for you.'], ans: 0, rat: '高分组合：instead of 对比 + why not 委婉建议 + which 非限制性定语从句。三个加分点一句拿下。' },
+                    { type: 'assemble', q: '第四步 · 把四句按顺序拼成完整段落（依次点击）：', parts: ["I'm sorry to hear that you have trouble putting down your phone.", 'I strongly suggest arranging a fixed time for your phone every day.', 'Instead of scrolling your phone, why not pick up a book, which will benefit you a lot?', 'I believe you will get rid of the bad habit soon. Best wishes.'], rat: '建议信骨架：表达关心 → 给出建议一 → 给出建议二（升级句）→ 鼓励收尾。' },
+                ],
+            },
+            {
+                topic: '通知 · 英语演讲比赛',
+                steps: [
+                    { q: '第一步 · 要点转短语：「报名参加比赛」怎么说？', opts: ['sign up for the contest', 'sign up the contest', 'join in for the contest', 'apply the contest'], ans: 0, rat: 'sign up for sth 固定搭配；apply 要说 apply for。' },
+                    { q: '第二步 · 短语扩成句子：哪句语法完全正确？', opts: ['Those who want to take part are supposed to sign up for the contest before Wednesday.', 'Those who wants to take part are supposed to sign up for the contest before Wednesday.', 'Those who want to take part is supposed to sign up the contest before Wednesday.', 'Those who want to take part are supposed to signing up for the contest before Wednesday.'], ans: 0, rat: 'Those who + 复数动词（want/are）；be supposed to do 接动词原形。主谓一致是通知类写作最容易丢的分。' },
+                    { q: '第三步 · 普通句升级：把 "Everyone can come." 升级成高分句，选哪个？', opts: ['All students are welcome to attend, and active participation will be greatly appreciated.', 'Everyone can come, everyone!', 'All the people can come to here.', 'Everyone is able to can come.'], ans: 0, rat: '通知的收尾金句：be welcome to do + 被动句 will be appreciated，礼貌又正式，比 can come 高一个档位。' },
+                    { type: 'assemble', q: '第四步 · 把四句按顺序拼成完整通知（依次点击）：', parts: ['An English speech contest will be held in the lecture hall at 2 p.m. next Friday.', 'The topic is "Youth and Dreams", and each speaker will be given five minutes.', 'Those who want to take part are supposed to sign up for the contest before Wednesday.', 'All students are welcome to attend, and active participation will be greatly appreciated.'], rat: '通知骨架：时间地点事件 → 具体安排 → 报名方式 → 欢迎参加。信息一条不漏，顺序不乱。' },
+                ],
+            },
+        ];
+
+        const WritingView = ({ playAudio, playingWord, onTrainDone }) => {
             const [sec, setSec] = useState('letters');
             const [openType, setOpenType] = useState(null);
+            const [tSet, setTSet] = useState(0);
+            const [tStep, setTStep] = useState(0);
+            const [tSel, setTSel] = useState(null);
+            const [asm, setAsm] = useState([]);        // 已点击的句子下标（乱序数组中的位置）
+            const [asmParts, setAsmParts] = useState(null); // 乱序后的 {p, i} 数组
+            const [tDone, setTDone] = useState(false);
+            const trainSet = WRITING_TRAIN_DB[tSet];
+            const trainStepData = trainSet.steps[tStep];
+            useEffect(() => { setTStep(0); setTSel(null); setAsm([]); setAsmParts(null); setTDone(false); }, [tSet]);
+            useEffect(() => {
+                if (trainStepData?.type === 'assemble' && !asmParts) setAsmParts(shuffle(trainStepData.parts.map((p, i) => ({ p, i }))));
+            }, [tStep, trainStepData, asmParts]);
             const secTabs = [
+                { id: 'train', label: '四步训练' },
                 { id: 'letters', label: '应用文模板' },
                 { id: 'xuxie', label: '读后续写' },
                 { id: 'principles', label: '写作心法' },
@@ -11664,6 +11708,73 @@ Which option best expresses its meaning?`,
                             <button key={t.id} onClick={() => setSec(t.id)} className={`px-4 py-2 rounded-full text-[13px] font-bold transition-all ${sec === t.id ? 'bg-indigo-500 text-white shadow-md shadow-indigo-500/25' : 'bg-white text-slate-500 border border-slate-200 hover:bg-slate-50'}`}>{t.label}</button>
                         ))}
                     </div>
+
+                    {sec === 'train' && (
+                        <div className="card-lg p-6">
+                            <div className="flex items-center justify-between flex-wrap gap-2 mb-1">
+                                <h3 className="font-bold text-[15px]">✏️ 四步写作训练</h3>
+                                <div className="flex gap-1.5">
+                                    {WRITING_TRAIN_DB.map((s, i) => (
+                                        <button key={i} onClick={() => setTSet(i)} className={`px-2.5 py-1 rounded-full text-[11px] font-bold ${i === tSet ? 'bg-indigo-500 text-white' : 'bg-slate-100 text-slate-500'}`}>第 {i + 1} 套</button>
+                                    ))}
+                                </div>
+                            </div>
+                            <p className="text-[12px] text-slate-400 font-medium mb-4">{trainSet.topic} · 要点转短语 → 扩成句子 → 升级成高分句 → 拼成段落，走完就是一篇文章的骨架。</p>
+                            {!tDone && trainStepData && !trainStepData.type && (
+                                <div>
+                                    <p className="text-[14px] font-semibold leading-relaxed mb-4">{trainStepData.q}</p>
+                                    <div className="space-y-2.5">
+                                        {trainStepData.opts.map((opt, i) => (
+                                            <button key={i} onClick={() => tSel === null && setTSel(i)} className={`w-full p-3.5 rounded-2xl border-2 text-left text-[13px] font-semibold transition-all ${tSel === null ? 'border-slate-100 bg-white active:bg-slate-50' : i === trainStepData.ans ? 'option-correct text-emerald-800' : tSel === i ? 'option-wrong text-rose-800' : 'border-slate-50 opacity-40'}`}>{opt}</button>
+                                        ))}
+                                    </div>
+                                    {tSel !== null && (
+                                        <div className="mt-4">
+                                            <p className="text-[12px] text-slate-500 bg-slate-50 p-3.5 rounded-xl mb-3 leading-relaxed">{trainStepData.rat}</p>
+                                            <button onClick={() => { setTStep(s => s + 1); setTSel(null); }} className="w-full py-3.5 bg-indigo-500 text-white rounded-2xl font-bold active:scale-95 transition-transform">下一步</button>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                            {!tDone && trainStepData && trainStepData.type === 'assemble' && asmParts && (
+                                <div>
+                                    <p className="text-[14px] font-semibold leading-relaxed mb-3">{trainStepData.q}</p>
+                                    {asm.length > 0 && (
+                                        <div className="p-3.5 bg-indigo-50/60 border border-indigo-100 rounded-2xl mb-3 space-y-1.5">
+                                            {asm.map((pos, n) => <p key={n} className="text-[12px] font-semibold text-slate-700">{n + 1}. {asmParts[pos].p}</p>)}
+                                        </div>
+                                    )}
+                                    <div className="space-y-2.5 mb-3">
+                                        {asmParts.map((item, pos) => (
+                                            <button key={pos} disabled={asm.includes(pos)} onClick={() => setAsm(prev => [...prev, pos])} className={`w-full p-3.5 rounded-2xl border-2 text-left text-[13px] font-semibold transition-all ${asm.includes(pos) ? 'border-slate-50 opacity-30' : 'border-slate-100 bg-white active:bg-indigo-50'}`}>{item.p}</button>
+                                        ))}
+                                    </div>
+                                    {asm.length === asmParts.length && (() => {
+                                        const right = asm.every((pos, n) => asmParts[pos].i === n);
+                                        return (
+                                            <div>
+                                                <p className={`text-[13px] font-bold mb-2 ${right ? 'text-emerald-600' : 'text-rose-500'}`}>{right ? '🎉 顺序完全正确！' : '顺序还不对，看看正确段落找差距：'}</p>
+                                                {!right && <div className="p-3.5 bg-emerald-50 border border-emerald-100 rounded-2xl mb-2 space-y-1.5">{trainStepData.parts.map((p, n) => <p key={n} className="text-[12px] font-semibold text-slate-700">{n + 1}. {p}</p>)}</div>}
+                                                <p className="text-[12px] text-slate-500 bg-slate-50 p-3.5 rounded-xl mb-3 leading-relaxed">{trainStepData.rat}</p>
+                                                <div className="flex gap-2">
+                                                    {!right && <button onClick={() => { setAsm([]); setAsmParts(shuffle(trainStepData.parts.map((p, i) => ({ p, i })))); }} className="flex-1 py-3.5 bg-slate-100 text-slate-600 rounded-2xl font-bold active:bg-slate-200">重新排</button>}
+                                                    <button onClick={() => { setTDone(true); onTrainDone && onTrainDone(); }} className="flex-1 py-3.5 bg-indigo-500 text-white rounded-2xl font-bold active:scale-95 transition-transform">完成本套</button>
+                                                </div>
+                                            </div>
+                                        );
+                                    })()}
+                                </div>
+                            )}
+                            {tDone && (
+                                <div className="text-center py-4">
+                                    <p className="text-lg font-bold text-emerald-600 mb-1">🎉 「{trainSet.topic}」四步走完！</p>
+                                    <p className="text-[12px] text-slate-400 mb-4">短语、句子、高分句、段落结构各过了一遍，这就是一篇应用文的完整骨架。</p>
+                                    {tSet < WRITING_TRAIN_DB.length - 1 && <button onClick={() => setTSet(s => s + 1)} className="w-full py-3.5 bg-indigo-500 text-white rounded-2xl font-bold active:scale-95 transition-transform">练下一套：{WRITING_TRAIN_DB[tSet + 1].topic}</button>}
+                                    {tSet >= WRITING_TRAIN_DB.length - 1 && <p className="text-[13px] font-bold text-indigo-600">三套全部完成！去"应用文模板"看看完整范文，加深印象。</p>}
+                                </div>
+                            )}
+                        </div>
+                    )}
 
                     {sec === 'principles' && (
                         <div className="space-y-4">
@@ -11747,6 +11858,241 @@ Which option best expresses its meaning?`,
         // ==========================================
         // 7. 主应用程序
         // ==========================================
+        // ==========================================
+        // 词块工坊：单词四层递进（含义→搭配→例句→自己造句）
+        // ==========================================
+        const ChunkWorkshop = ({ unitData, unitKey, playAudio, playingWord, mySentences, addMySentence, removeMySentence }) => {
+            const words = useMemo(() => (unitData.words || []).filter(w => w.ex), [unitData]);
+            const [wIdx, setWIdx] = useState(0);
+            const [step, setStep] = useState(0);
+            const [sel, setSel] = useState(null);
+            const [sent, setSent] = useState('');
+            const [sentErr, setSentErr] = useState('');
+            const [saved, setSaved] = useState(false);
+            useEffect(() => { setWIdx(0); }, [unitKey]);
+            useEffect(() => { setStep(0); setSel(null); setSent(''); setSentErr(''); setSaved(false); }, [wIdx, unitKey]);
+            const cur = words[wIdx];
+            const others = useMemo(() => cur ? words.filter(w => w.w !== cur.w) : [], [cur, words]);
+            const stepData = useMemo(() => {
+                if (!cur) return null;
+                const mk = (correct, pool, fillers) => {
+                    const ds = shuffle(pool.filter(x => x && x !== correct)).slice(0, 3);
+                    for (let i = 0; ds.length < 3; i++) ds.push(fillers[i] || `与 ${cur.w} 无关的干扰项`);
+                    const opts = shuffle([correct, ...ds]);
+                    return { opts, ans: opts.indexOf(correct) };
+                };
+                const s1 = mk(cur.m || cur.w, others.map(w => w.m), ['一种交通工具', '感到无聊的', '在远处的']);
+                const s2 = mk(cur.d || cur.w, others.map(w => w.d), [`${cur.w} off blindly`, `make a ${cur.w} of doing`, `be ${cur.w}ed at sth（错误形式）`]);
+                let blanked = null;
+                const re = new RegExp(cur.w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+                if (cur.ex && re.test(cur.ex)) blanked = cur.ex.replace(re, '______');
+                const s3 = mk(cur.w, others.map(w => w.w), ['thing', 'nice', 'make']);
+                return { s1, s2, s3, blanked };
+            }, [cur, others, unitKey]);
+            if (!cur || !stepData) return <div className="text-center p-10 card-lg text-slate-400 font-medium">本单元暂无可练的词块。</div>;
+
+            const doneSet = new Set(mySentences.filter(s => s.unitKey === unitKey).map(s => s.w));
+            const layers = [
+                { name: '① 含义', q: `"${cur.w}" 是什么意思？`, data: stepData.s1 },
+                { name: '② 搭配', q: `下面哪个是 "${cur.w}" 的正确搭配 / 用法？`, data: stepData.s2 },
+                { name: '③ 例句', q: stepData.blanked ? `选词填进例句：${stepData.blanked}` : `根据中文意思选词：${cur.exCn || cur.m}`, data: stepData.s3 },
+            ];
+            const checkSentence = () => {
+                const t = sent.trim();
+                const stem = cur.w.slice(0, Math.min(cur.w.length, 5)).toLowerCase();
+                if (t.split(/\s+/).length < 4) { setSentErr('句子太短啦，至少写 4 个单词，把"谁+做什么"说完整'); return; }
+                if (!t.toLowerCase().includes(stem)) { setSentErr(`句子里要用上 "${cur.w}"（变形也可以）`); return; }
+                setSentErr('');
+                addMySentence({ w: cur.w, unitKey, s: t, at: Date.now() });
+                setSaved(true);
+            };
+            return (
+                <div className="max-w-2xl mx-auto space-y-5">
+                    <div className="card-lg p-6">
+                        <div className="flex items-center justify-between flex-wrap gap-2 mb-1">
+                            <h2 className="text-xl font-bold tracking-tight">词块工坊</h2>
+                            <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-purple-100 text-purple-700">四层递进：含义 → 搭配 → 例句 → 自己造句</span>
+                        </div>
+                        <p className="text-[12px] text-slate-400 font-medium mb-4">高中提分靠"词块+句型"，不靠单词数量。每个词过四层，最后一层写出自己的句子才算真正掌握。</p>
+                        <div className="flex gap-1.5 flex-wrap mb-5">
+                            {words.map((w, i) => (
+                                <button key={w.w} onClick={() => setWIdx(i)} className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition-colors ${i === wIdx ? 'bg-purple-500 text-white' : doneSet.has(w.w) ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>{doneSet.has(w.w) ? '✓ ' : ''}{w.w}</button>
+                            ))}
+                        </div>
+                        <div className="flex items-center gap-3 mb-4">
+                            <p className="text-3xl font-black tracking-tight cursor-pointer inline-flex items-center gap-2" onClick={(e) => playAudio(cur.w, e)}>
+                                {cur.w}
+                                <Volume2 className={`w-5 h-5 ${playingWord === cur.w ? 'text-purple-500' : 'text-slate-300'}`} />
+                            </p>
+                            <div className="flex gap-1">
+                                {[0, 1, 2, 3].map(i => <span key={i} className={`w-2 h-2 rounded-full ${i < step ? 'bg-purple-500' : i === step ? 'bg-purple-300' : 'bg-slate-200'}`} />)}
+                            </div>
+                        </div>
+                        {step < 3 && (
+                            <div>
+                                <div className="text-[12px] font-bold text-purple-500 mb-2">{layers[step].name} 层</div>
+                                <p className="text-[15px] font-semibold leading-relaxed mb-4 whitespace-pre-wrap">{layers[step].q}</p>
+                                <div className="space-y-2.5">
+                                    {layers[step].data.opts.map((opt, i) => (
+                                        <button key={i} onClick={() => sel === null && setSel(i)} className={`w-full p-3.5 rounded-2xl border-2 text-left text-[14px] font-semibold transition-all ${sel === null ? 'border-slate-100 bg-white active:bg-slate-50' : i === layers[step].data.ans ? 'option-correct text-emerald-800' : sel === i ? 'option-wrong text-rose-800' : 'border-slate-50 opacity-40'}`}>{opt}</button>
+                                    ))}
+                                </div>
+                                {sel !== null && (
+                                    <div className="mt-4">
+                                        {step === 0 && cur.d && <p className="text-[12px] text-slate-500 bg-slate-50 p-3 rounded-xl mb-3">搭配预告：{cur.d}</p>}
+                                        {step === 2 && cur.ex && <p className="text-[12px] text-slate-500 bg-slate-50 p-3 rounded-xl mb-3 cursor-pointer" onClick={(e) => playAudio(cur.ex, e)}>🔊 完整例句：{cur.ex}{cur.exCn ? `（${cur.exCn}）` : ''}</p>}
+                                        <button onClick={() => { setStep(s => s + 1); setSel(null); }} className="w-full py-3.5 bg-purple-500 text-white rounded-2xl font-bold active:scale-95 transition-transform">{sel === layers[step].data.ans ? '答对了，' : '记住正确答案，'}进入下一层</button>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                        {step === 3 && !saved && (
+                            <div>
+                                <div className="text-[12px] font-bold text-purple-500 mb-2">④ 造句层 · 最关键的一步</div>
+                                <p className="text-[14px] font-semibold mb-2">模仿例句，用 "{cur.w}" 写一句自己的话：</p>
+                                {cur.ex && <p className="text-[12px] text-slate-400 mb-3 cursor-pointer" onClick={(e) => playAudio(cur.ex, e)}>🔊 参考：{cur.ex}</p>}
+                                <textarea value={sent} onChange={e => setSent(e.target.value)} rows={3} placeholder={`比如写写你自己的生活：I ... ${cur.w} ...`} className="w-full p-4 rounded-2xl border-2 border-slate-200 focus:border-purple-400 text-[14px] font-medium resize-none" />
+                                {sentErr && <p className="text-[12px] font-bold text-rose-500 mt-2">{sentErr}</p>}
+                                <button onClick={checkSentence} className="w-full mt-3 py-3.5 bg-purple-500 text-white rounded-2xl font-bold active:scale-95 transition-transform">检查并存入我的好句本</button>
+                            </div>
+                        )}
+                        {step === 3 && saved && (
+                            <div className="text-center py-4">
+                                <p className="text-lg font-bold text-emerald-600 mb-1">🎉 "{cur.w}" 四层全部通关！</p>
+                                <p className="text-[12px] text-slate-400 mb-4">你的句子已经存进好句本，写过一次的词很难再忘。</p>
+                                {wIdx < words.length - 1 && <button onClick={() => setWIdx(i => i + 1)} className="w-full py-3.5 bg-purple-500 text-white rounded-2xl font-bold active:scale-95 transition-transform">下一个词：{words[wIdx + 1].w}</button>}
+                                {wIdx >= words.length - 1 && <p className="text-[13px] font-bold text-purple-600">本单元词块全部练完，可以去"单词闯关"巩固！</p>}
+                            </div>
+                        )}
+                    </div>
+                    {mySentences.length > 0 && (
+                        <div className="card-lg p-6">
+                            <h3 className="font-bold text-[15px] mb-1">✍️ 我的好句本（{mySentences.length} 句）</h3>
+                            <p className="text-[12px] text-slate-400 font-medium mb-4">自己写出来的句子最不容易忘，考前翻一遍效果拔群。</p>
+                            <div className="space-y-2.5">
+                                {mySentences.slice(0, 30).map(s => (
+                                    <div key={s.at} className="p-3.5 bg-purple-50/50 border border-purple-100 rounded-2xl relative">
+                                        <button onClick={() => removeMySentence(s.at)} className="absolute top-2.5 right-2.5 p-1 text-slate-300 active:text-rose-500"><XCircle className="w-4 h-4" /></button>
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">{s.w}</span>
+                                            <span className="text-[10px] font-bold text-slate-400">{s.unitKey}</span>
+                                        </div>
+                                        <p className="text-[13px] font-semibold text-slate-700 leading-relaxed pr-6 cursor-pointer" onClick={(e) => playAudio(s.s, e)}>{s.s}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        // ==========================================
+        // 听力训练：句子精听闭环（变速 → 听主旨 → 抓细节 → 逐句对照）
+        // ==========================================
+        const ListeningView = ({ unitData, unitKey, record, onFinish, speakText }) => {
+            const items = useMemo(() => (unitData.sentences || []).filter(s => s.e && s.z).slice(0, 5), [unitData]);
+            const [idx, setIdx] = useState(0);
+            const [phase, setPhase] = useState('listen');
+            const [rate, setRate] = useState(1.0);
+            const [gistSel, setGistSel] = useState(null);
+            const [inputs, setInputs] = useState(['', '']);
+            const [checked, setChecked] = useState(false);
+            const [score, setScore] = useState(0);
+            const [finished, setFinished] = useState(false);
+            useEffect(() => { setIdx(0); setPhase('listen'); setGistSel(null); setInputs(['', '']); setChecked(false); setScore(0); setFinished(false); }, [unitKey]);
+            const cur = items[idx];
+            const quiz = useMemo(() => {
+                if (!cur) return null;
+                const otherZ = items.filter((s, i) => i !== idx).map(s => s.z);
+                const fillers = ['讲的是一次难忘的旅行经历。', '介绍了一位科学家的重要成就。', '抱怨了最近糟糕的天气。'];
+                const ds = shuffle([...otherZ, ...fillers]).slice(0, 2);
+                const opts = shuffle([cur.z, ...ds]);
+                const tokens = [...new Set(cur.e.replace(/[^a-zA-Z' ]/g, ' ').split(/\s+/).filter(t => t.length >= 4).map(t => t.toLowerCase()))];
+                const keys = shuffle(tokens).slice(0, Math.min(2, tokens.length));
+                let masked = cur.e;
+                keys.forEach((k, i) => { masked = masked.replace(new RegExp(`\\b${k}\\b`, 'i'), `【${i + 1}】______`); });
+                return { opts, ans: opts.indexOf(cur.z), keys, masked };
+            }, [cur, idx, unitKey]);
+            if (!cur || !quiz) return <div className="text-center p-10 card-lg text-slate-400 font-medium">本单元暂无听力材料。</div>;
+            const maxScore = items.length * 2;
+            const finishRound = () => {
+                setFinished(true);
+                onFinish(Math.round(score / maxScore * 10));
+            };
+            const speeds = [[0.8, '慢速 0.8×'], [1.0, '常速 1.0×'], [1.2, '快速 1.2×']];
+            return (
+                <div className="max-w-2xl mx-auto space-y-5">
+                    <div className="card-lg p-6">
+                        <div className="flex items-center justify-between flex-wrap gap-2 mb-1">
+                            <h2 className="text-xl font-bold tracking-tight">句子精听</h2>
+                            <span className="text-[11px] font-bold text-slate-400">{finished ? '本轮完成' : `第 ${idx + 1} / ${items.length} 句`}{record?.best != null ? ` · 最好 ${record.best}/10` : ''}</span>
+                        </div>
+                        <p className="text-[12px] text-slate-400 font-medium mb-5">基础薄弱先练"听清一个句子"：第一遍抓大意，第二遍抠细节，最后逐词对照。</p>
+                        {!finished && (
+                            <div>
+                                <div className="flex items-center justify-center gap-2 mb-4">
+                                    {speeds.map(([r, label]) => (
+                                        <button key={r} onClick={() => setRate(r)} className={`px-3 py-1.5 rounded-full text-[12px] font-bold transition-colors ${rate === r ? 'bg-teal-500 text-white' : 'bg-slate-100 text-slate-500'}`}>{label}</button>
+                                    ))}
+                                </div>
+                                <button onClick={() => speakText(cur.e, rate)} className="w-24 h-24 rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 text-white flex items-center justify-center mx-auto shadow-lg shadow-teal-400/30 active:scale-95 transition-transform mb-2">
+                                    <Volume2 className="w-10 h-10" />
+                                </button>
+                                <p className="text-center text-[11px] text-slate-400 font-medium mb-5">点喇叭播放，可反复听</p>
+                                {phase === 'listen' && (
+                                    <button onClick={() => setPhase('gist')} className="w-full py-3.5 bg-teal-500 text-white rounded-2xl font-bold active:scale-95 transition-transform">听好了，答"大意"题</button>
+                                )}
+                                {phase === 'gist' && (
+                                    <div>
+                                        <p className="text-[14px] font-bold mb-3">第一遍 · 这句话的大意是？</p>
+                                        <div className="space-y-2.5 mb-4">
+                                            {quiz.opts.map((opt, i) => (
+                                                <button key={i} onClick={() => { if (gistSel === null) { setGistSel(i); if (i === quiz.ans) setScore(s => s + 1); } }} className={`w-full p-3.5 rounded-2xl border-2 text-left text-[13px] font-semibold transition-all ${gistSel === null ? 'border-slate-100 bg-white active:bg-slate-50' : i === quiz.ans ? 'option-correct text-emerald-800' : gistSel === i ? 'option-wrong text-rose-800' : 'border-slate-50 opacity-40'}`}>{opt}</button>
+                                            ))}
+                                        </div>
+                                        {gistSel !== null && <button onClick={() => setPhase('detail')} className="w-full py-3.5 bg-teal-500 text-white rounded-2xl font-bold active:scale-95 transition-transform">第二遍 · 抠细节词</button>}
+                                    </div>
+                                )}
+                                {phase === 'detail' && (
+                                    <div>
+                                        <p className="text-[14px] font-bold mb-2">第二遍 · 把听到的词填进空里：</p>
+                                        <p className="text-[14px] font-semibold text-slate-700 bg-slate-50 p-4 rounded-xl mb-3 leading-relaxed">{quiz.masked}</p>
+                                        {quiz.keys.map((k, i) => (
+                                            <div key={i} className="flex items-center gap-2 mb-2">
+                                                <span className="text-[12px] font-bold text-slate-400 w-8">【{i + 1}】</span>
+                                                <input value={inputs[i] || ''} onChange={e => setInputs(prev => { const n = [...prev]; n[i] = e.target.value; return n; })} disabled={checked} placeholder="听到什么写什么" className={`flex-1 p-3 rounded-xl border-2 text-[14px] font-semibold ${checked ? ((inputs[i] || '').trim().toLowerCase() === k ? 'border-emerald-300 bg-emerald-50' : 'border-rose-300 bg-rose-50') : 'border-slate-200 focus:border-teal-400'}`} />
+                                                {checked && <span className="text-[12px] font-bold text-slate-500">{k}</span>}
+                                            </div>
+                                        ))}
+                                        {!checked && <button onClick={() => { setChecked(true); quiz.keys.forEach((k, i) => { if ((inputs[i] || '').trim().toLowerCase() === k) setScore(s => s + 0.5); }); }} className="w-full mt-2 py-3.5 bg-teal-500 text-white rounded-2xl font-bold active:scale-95 transition-transform">核对</button>}
+                                        {checked && <button onClick={() => setPhase('reveal')} className="w-full mt-2 py-3.5 bg-teal-500 text-white rounded-2xl font-bold active:scale-95 transition-transform">逐句对照</button>}
+                                    </div>
+                                )}
+                                {phase === 'reveal' && (
+                                    <div>
+                                        <p className="text-[12px] font-bold text-teal-600 mb-2">听后对照 · 点句子可再听</p>
+                                        <div className="p-4 bg-teal-50 border border-teal-100 rounded-2xl mb-4 cursor-pointer" onClick={() => speakText(cur.e, rate)}>
+                                            <p className="text-[15px] font-bold text-slate-800 leading-relaxed mb-1">🔊 {cur.e}</p>
+                                            <p className="text-[13px] text-slate-500">{cur.z}</p>
+                                        </div>
+                                        <button onClick={() => { if (idx < items.length - 1) { setIdx(i => i + 1); setPhase('listen'); setGistSel(null); setInputs(['', '']); setChecked(false); } else { finishRound(); } }} className="w-full py-3.5 bg-teal-500 text-white rounded-2xl font-bold active:scale-95 transition-transform">{idx < items.length - 1 ? '下一句' : '看本轮成绩'}</button>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                        {finished && (
+                            <div className="text-center py-4">
+                                <p className="text-5xl font-bold text-teal-500 mb-2">{Math.round(score / maxScore * 10)}<span className="text-lg text-slate-300">/10</span></p>
+                                <p className="text-[13px] text-slate-500 font-medium mb-5">{score / maxScore >= 0.7 ? '耳朵越来越灵了！可以试试调快语速再来一轮。' : '听不清很正常，换慢速 0.8× 再来一轮，进步会很明显。'}</p>
+                                <button onClick={() => { setIdx(0); setPhase('listen'); setGistSel(null); setInputs(['', '']); setChecked(false); setScore(0); setFinished(false); }} className="w-full py-3.5 bg-teal-500 text-white rounded-2xl font-bold active:scale-95 transition-transform">再练一轮</button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
         const App = () => {
             const [isLoggedIn, setIsLoggedIn] = useState(false);
             const [currentUser, setCurrentUser] = useState('');  // 'tangtang' | 'mama'
@@ -11864,6 +12210,26 @@ Which option best expresses its meaning?`,
             const finishSeven = (score) => setSevenData(prev => {
                 const rec = prev[unitKey] || { attempts: 0, best: 0 };
                 return { ...prev, [unitKey]: { attempts: (rec.attempts || 0) + 1, best: Math.max(rec.best || 0, score), lastAt: new Date().toLocaleString('zh-CN', { hour12: false }) } };
+            });
+            const listeningData = userData.listening || {};
+            const setListeningData = (updater) => setAllUsersData(prev => {
+                const u = prev[userPrefix] || {};
+                const next = typeof updater === 'function' ? updater(u.listening || {}) : updater;
+                return { ...prev, [userPrefix]: { ...u, listening: next, checkins: stampCheckin(u.checkins, 'listening') } };
+            });
+            const finishListening = (score) => setListeningData(prev => {
+                const rec = prev[unitKey] || { attempts: 0, best: 0 };
+                return { ...prev, [unitKey]: { attempts: (rec.attempts || 0) + 1, best: Math.max(rec.best || 0, score), lastAt: new Date().toLocaleString('zh-CN', { hour12: false }) } };
+            });
+            // 词块工坊的"我的好句本"：造句成功记一次 chunks 打卡
+            const mySentences = userData.mySentences || [];
+            const addMySentence = (entry) => setAllUsersData(prev => {
+                const u = prev[userPrefix] || {};
+                return { ...prev, [userPrefix]: { ...u, mySentences: [entry, ...(u.mySentences || [])], checkins: stampCheckin(u.checkins, 'chunks') } };
+            });
+            const removeMySentence = (at) => setAllUsersData(prev => {
+                const u = prev[userPrefix] || {};
+                return { ...prev, [userPrefix]: { ...u, mySentences: (u.mySentences || []).filter(x => x.at !== at) } };
             });
 
             // ── 连续学习天数 & 今日活动量 ──────────
@@ -12147,8 +12513,7 @@ Which option best expresses its meaning?`,
                 const t = setTimeout(() => setAudioTip(null), 6000);
                 return () => clearTimeout(t);
             }, [audioTip]);
-            const playAudio = useCallback((text, e) => {
-                if (e) e.stopPropagation();
+            const speakText = useCallback((text, rate = 0.85) => {
                 if (!text) return;
                 if (!window.speechSynthesis) {
                     setAudioTip('这个浏览器不支持语音朗读，建议换 Edge / Chrome / Safari 打开');
@@ -12161,7 +12526,7 @@ Which option best expresses its meaning?`,
                 const en = vs.find(v => /^en[-_]?US/i.test(v.lang)) || vs.find(v => /^en/i.test(v.lang));
                 if (en) { utterance.voice = en; utterance.lang = en.lang; }
                 else { utterance.lang = 'en-US'; }
-                utterance.rate = 0.85;
+                utterance.rate = rate;
                 let started = false;
                 utterance.onstart = () => { started = true; };
                 utterance.onend = () => setPlayingWord(null);
@@ -12190,6 +12555,10 @@ Which option best expresses its meaning?`,
                     speakNow();
                 }
             }, []);
+            const playAudio = useCallback((text, e) => {
+                if (e) e.stopPropagation();
+                speakText(text, 0.85);
+            }, [speakText]);
 
             const startQuiz = (mode = 'full') => {
                 const isGaokao = mode === 'gaokao';
@@ -12403,7 +12772,7 @@ Which option best expresses its meaning?`,
                         if (m.id !== currentQ.mistakeId) return m;
                         if (isCorrect) {
                             const box = (m.srsBox || 1) + 1;
-                            if (box >= 3) return { ...m, srsBox: box, cleared: true, srsDue: null };
+                            if (box >= 3) return { ...m, srsBox: box, cleared: true, srsDue: null, clearedAt: Date.now() };
                             return { ...m, srsBox: box, srsDue: Date.now() + 7 * SRS_DAY, cleared: false };
                         }
                         return { ...m, srsBox: 1, srsDue: Date.now() + 3 * SRS_DAY, cleared: false };
@@ -12477,7 +12846,9 @@ Which option best expresses its meaning?`,
             const navItems = [
                 { id: 'today', label: '今日任务', icon: <CheckCircle2 className="w-4 h-4" /> },
                 { id: 'notes', label: '核心笔记', icon: <BookOpen className="w-4 h-4" /> },
+                { id: 'chunks', label: '词块工坊', icon: <GraduationCap className="w-4 h-4" /> },
                 { id: 'vocab', label: '单词闯关', icon: <Brain className="w-4 h-4" /> },
+                { id: 'listening', label: '句子精听', icon: <Volume2 className="w-4 h-4" /> },
                 { id: 'grammarfill', label: '语法填空', icon: <Zap className="w-4 h-4" /> },
                 { id: 'cloze', label: '完形填空', icon: <FileText className="w-4 h-4" /> },
                 { id: 'seven', label: '七选五', icon: <ListChecks className="w-4 h-4" /> },
@@ -12491,8 +12862,8 @@ Which option best expresses its meaning?`,
             // 侧栏/抽屉里按学习行为分组展示，结构一眼可读
             const navGroups = [
                 { title: null, ids: ['today'] },
-                { title: '学一学', ids: ['notes', 'cards', 'writing'] },
-                { title: '练一练', ids: ['vocab', 'grammarfill', 'cloze', 'seven', 'reading', 'gaokao'] },
+                { title: '学一学', ids: ['notes', 'chunks', 'cards', 'writing'] },
+                { title: '练一练', ids: ['vocab', 'listening', 'grammarfill', 'cloze', 'seven', 'reading', 'gaokao'] },
                 { title: '查漏补缺', ids: ['mistakes', 'mastery'] },
             ];
 
@@ -12636,6 +13007,32 @@ Which option best expresses its meaning?`,
                                     <p className="text-[12px] text-slate-500 leading-relaxed mt-3">{summaryMsg}</p>
                                 </div>
                             </div>
+                            {(() => {
+                                // ── 看得见的成长：不比正确率，比"这周比上周多会了什么" ──
+                                const weekAgoTs = Date.now() - 7 * SRS_DAY;
+                                const learnedWords = Object.values(vocabData).filter(r => r && (r.seen || 0) > 0).length;
+                                const masteredWords = Object.values(vocabData).filter(r => r && (r.box || 0) >= 4).length;
+                                const weekCleared = clearedMistakes.filter(m => (m.clearedAt || 0) >= weekAgoTs).length;
+                                const last7keys = Array.from({ length: 7 }, (_, i) => { const d = new Date(); d.setDate(d.getDate() - i); return fmtDate(d); });
+                                const weekDays = last7keys.filter(ds => checkins[ds]).length;
+                                let tierUp = 0; Object.keys(UNIT_DB).forEach(k => { const t = unitTier(k); if (t && t.id !== 'base') tierUp++; });
+                                const nextGoal = Math.max(25, Math.ceil((masteredWords + 1) / 25) * 25);
+                                const growthMsg = masteredWords > 0
+                                    ? `已经有 ${masteredWords} 个词进入"牢固"阶段（拼写/听写关），距离 ${nextGoal} 个的小目标还差 ${nextGoal - masteredWords} 个。`
+                                    : (learnedWords > 0 ? `已经学过 ${learnedWords} 个词，坚持复习，它们很快会进入"牢固"阶段。` : '从今天的 5 个新词开始，成长面板会记录你会的每一个词。');
+                                return (
+                                    <div className="card-lg p-6">
+                                        <h3 className="font-bold text-[15px] mb-1 flex items-center gap-2">🌱 看得见的成长 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-600">只和昨天的自己比</span></h3>
+                                        <p className="text-[12px] text-slate-400 font-medium mb-4">{growthMsg}</p>
+                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 text-center">
+                                            <div className="p-3 bg-emerald-50/60 rounded-2xl"><div className="text-[11px] text-slate-400 font-semibold">学过的词</div><div className="text-xl font-bold text-emerald-600">{learnedWords}</div><div className="text-[10px] text-slate-400">牢固 {masteredWords} 个</div></div>
+                                            <div className="p-3 bg-rose-50/60 rounded-2xl"><div className="text-[11px] text-slate-400 font-semibold">攻克旧错题</div><div className="text-xl font-bold text-rose-500">{clearedMistakes.length}</div><div className="text-[10px] text-slate-400">本周 +{weekCleared}</div></div>
+                                            <div className="p-3 bg-amber-50/60 rounded-2xl"><div className="text-[11px] text-slate-400 font-semibold">本周学习</div><div className="text-xl font-bold text-amber-500">{weekDays}<span className="text-xs text-slate-300">/7天</span></div><div className="text-[10px] text-slate-400">连续 {streakDays} 天</div></div>
+                                            <div className="p-3 bg-indigo-50/60 rounded-2xl"><div className="text-[11px] text-slate-400 font-semibold">达标单元</div><div className="text-xl font-bold text-indigo-500">{tierUp}</div><div className="text-[10px] text-slate-400">跟教材及以上</div></div>
+                                        </div>
+                                    </div>
+                                );
+                            })()}
                             <div className="card-lg px-4 py-3 flex items-center justify-between gap-2">
                                 <button onClick={() => gotoFlatUnit(flatUnitIndex - 1)} disabled={flatUnitIndex <= 0} className="flex items-center gap-1 px-3 py-2 rounded-xl text-[13px] font-bold text-slate-500 bg-slate-100/70 active:bg-slate-200 disabled:opacity-30 transition-colors">
                                     <ChevronRight className="w-3.5 h-3.5 rotate-180" />上一单元
@@ -12864,7 +13261,15 @@ Which option best expresses its meaning?`,
                 }
 
                 if (tab === 'writing') {
-                    return <WritingView playAudio={playAudio} playingWord={playingWord} />;
+                    return <WritingView playAudio={playAudio} playingWord={playingWord} onTrainDone={() => stampOnlyCheckin('writingTrain')} />;
+                }
+
+                if (tab === 'chunks') {
+                    return <ChunkWorkshop unitData={dbData} unitKey={unitKey} playAudio={playAudio} playingWord={playingWord} mySentences={mySentences} addMySentence={addMySentence} removeMySentence={removeMySentence} />;
+                }
+
+                if (tab === 'listening') {
+                    return <ListeningView unitData={dbData} unitKey={unitKey} record={listeningData[unitKey]} onFinish={finishListening} speakText={speakText} />;
                 }
 
                 if (tab === 'cards') {

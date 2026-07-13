@@ -12773,6 +12773,55 @@ Which option best expresses its meaning?`,
                 return r && r.passed && r.reviewDue && r.reviewDue <= Date.now();
             });
 
+            // ── 错题知识点汇总文本：供复制到微信/文档，或导出 TXT 打印 ──
+            const buildMistakeReport = () => {
+                const groups = {};
+                activeMistakes.forEach(m => {
+                    const p = mistakePointOf(m);
+                    if (!groups[p.key]) groups[p.key] = { point: p, ms: [] };
+                    groups[p.key].ms.push(m);
+                });
+                const kindName = { word: '词汇', grammar: '语法', sentence: '句型', writing: '写作', unit: '综合' };
+                const lines = [];
+                lines.push(`糖糖错题知识点汇总 · ${todayStr()}`);
+                lines.push(`待攻克 ${activeMistakes.length} 道 · 已攻克 ${clearedMistakes.length} 道`);
+                lines.push('');
+                Object.values(groups).sort((a, b) => b.ms.length - a.ms.length).forEach(({ point, ms }, gi) => {
+                    lines.push(`${gi + 1}.【${kindName[point.kind] || '综合'}】${point.label}${point.sub ? `（${point.sub}）` : ''} —— ${ms.length} 道错题 · ${point.unitKey}`);
+                    ms.forEach((m, i) => {
+                        lines.push(`   ${i + 1}) ${(m.q || '').replace(/\s*\n\s*/g, ' ')}`);
+                        lines.push(`      错选：${m.wrongOpt} ｜ 正确：${m.correctOpt}${m.cause ? ` ｜ 错因：${causeOf(m.cause)?.label || m.cause}` : ''}`);
+                    });
+                    lines.push('');
+                });
+                return lines.join('\n');
+            };
+            const copyMistakeReport = async () => {
+                const text = buildMistakeReport();
+                try {
+                    await navigator.clipboard.writeText(text);
+                    alert('已复制到剪贴板，可以直接粘贴到微信或文档里');
+                } catch (_) {
+                    const ta = document.createElement('textarea');
+                    ta.value = text;
+                    document.body.appendChild(ta);
+                    ta.select();
+                    try { document.execCommand('copy'); alert('已复制到剪贴板'); } catch (e2) { alert('复制失败，请改用"导出TXT"'); }
+                    document.body.removeChild(ta);
+                }
+            };
+            const exportMistakeReport = () => {
+                const blob = new Blob(['﻿' + buildMistakeReport()], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `糖糖错题知识点-${todayStr().replace(/-/g, '')}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            };
+
             const launchMistakeQuiz = (qs) => {
                 setQuizArr(qs);
                 setQIdx(0);
@@ -13628,7 +13677,11 @@ Which option best expresses its meaning?`,
                                         return (
                                             <div className="card-lg p-6">
                                                 <h3 className="font-bold text-[15px] mb-1 flex items-center gap-2">📚 知识点归集 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-600">同一个坑不摔两次</span></h3>
-                                                <p className="text-[12px] text-slate-400 font-medium mb-4">错题按知识点归好类了：先"学一学"搞懂，再"练类似题"用新题验证学会没有（不是原题重做）。</p>
+                                                <p className="text-[12px] text-slate-400 font-medium mb-3">错题按知识点归好类了：先"学一学"搞懂，再"练类似题"用新题验证学会没有（不是原题重做）。</p>
+                                                <div className="flex gap-2 mb-4">
+                                                    <button onClick={copyMistakeReport} className="px-3.5 py-2 rounded-xl bg-slate-100 text-slate-600 text-[12px] font-bold active:bg-slate-200 transition-colors">📋 复制汇总</button>
+                                                    <button onClick={exportMistakeReport} className="px-3.5 py-2 rounded-xl bg-slate-100 text-slate-600 text-[12px] font-bold active:bg-slate-200 transition-colors">⬇️ 导出 TXT</button>
+                                                </div>
                                                 <div className="space-y-2.5">
                                                     {list.map(({ point, ms }) => (
                                                         <div key={point.key} className="p-3.5 bg-slate-50/80 border border-slate-100 rounded-2xl flex items-center gap-3 flex-wrap">

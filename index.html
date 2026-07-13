@@ -12221,6 +12221,13 @@ Which option best expresses its meaning?`,
                 const rec = prev[unitKey] || { attempts: 0, best: 0 };
                 return { ...prev, [unitKey]: { attempts: (rec.attempts || 0) + 1, best: Math.max(rec.best || 0, score), lastAt: new Date().toLocaleString('zh-CN', { hour12: false }) } };
             });
+            // 单元通关认证 + 温故排程：{ attempts, best, passed, passedAt, reviewStage, reviewDue }
+            const unitCertData = userData.unitCert || {};
+            const setUnitCertData = (updater) => setAllUsersData(prev => {
+                const u = prev[userPrefix] || {};
+                const next = typeof updater === 'function' ? updater(u.unitCert || {}) : updater;
+                return { ...prev, [userPrefix]: { ...u, unitCert: next, checkins: stampCheckin(u.checkins, 'unitCert') } };
+            });
             // 词块工坊的"我的好句本"：造句成功记一次 chunks 打卡
             const mySentences = userData.mySentences || [];
             const addMySentence = (entry) => setAllUsersData(prev => {
@@ -12421,6 +12428,9 @@ Which option best expresses its meaning?`,
             const [wrongStreak, setWrongStreak] = useState(0);       // 本轮练习连续答错数（答对清零）
             const [lastMistakeId, setLastMistakeId] = useState(null); // 刚产生的错题 id，供错因标注定位
             const [showWarmup, setShowWarmup] = useState(false);     // 做题前的"考点速览"卡（把笔记塞进做题流程）
+            const [isPassExam, setIsPassExam] = useState(false);     // 单元通关测模式（80% 点亮通关徽章）
+            const [unitReviewPending, setUnitReviewPending] = useState(null); // 温故小测进行中的单元 key
+            const [dossier, setDossier] = useState(null);            // 单词档案弹窗 {word, unitKey}
             const [nextReady, setNextReady] = useState(true);        // 答错后"下一题"延迟2秒，逼一眼解析
             useEffect(() => {
                 if (ansIdx === null) { setNextReady(true); return; }
@@ -12584,6 +12594,8 @@ Which option best expresses its meaning?`,
                 setIsFinished(false);
                 setIsReinforcement(false);
                 setIsMistakePractice(false);
+                setIsPassExam(false);
+                setUnitReviewPending(null);
                 setWrongStreak(0);
                 setLastMistakeId(null);
                 setShowWarmup(true);
@@ -12614,6 +12626,8 @@ Which option best expresses its meaning?`,
                 setAnsIdx(null);
                 setIsFinished(false);
                 setIsReinforcement(true);
+                setIsPassExam(false);
+                setUnitReviewPending(null);
                 setWrongStreak(0);
                 setLastMistakeId(null);
                 setShowWarmup(false);
@@ -12679,6 +12693,86 @@ Which option best expresses its meaning?`,
                 return { id: 'high', label: '冲高考', cls: 'bg-emerald-100 text-emerald-700', tip: '这个单元底子不错，可以挑战完形、七选五和真题' };
             };
 
+            // ── 单元掌握度：词汇牢固40% + 语法填空25% + 测验正确率20% + 错题清零15% ──
+            const unitMasteryPercent = (k) => {
+                const ws = (UNIT_DB[k]?.words || []).filter(w => w.ex);
+                const solid = ws.filter(w => (vocabData[vocabKey(k, w.w)]?.box || 0) >= 4).length;
+                const wordRate = ws.length ? solid / ws.length : 0;
+                const gf = grammarFillData[k];
+                const gfRate = (gf && gf.attempts > 0) ? (gf.best || 0) / 10 : 0;
+                const prog = getUnitProgress(k);
+                const accRate = prog.totalAnswered >= 5 ? prog.totalCorrect / prog.totalAnswered : 0;
+                const um = mistakeBank.filter(m => m.unitKey === k);
+                const clearRate = um.length ? um.filter(m => m.cleared).length / um.length : 1;
+                return Math.round((wordRate * 0.4 + gfRate * 0.25 + accRate * 0.2 + clearRate * 0.15) * 100);
+            };
+            // ── 重点盯防词：出过错题 或 学过但记忆盒子还在低位 的词，按风险排序取前5 ──
+            const keyWatchWords = (k) => {
+                const um = activeMistakes.filter(m => m.unitKey === k);
+                return (UNIT_DB[k]?.words || []).filter(w => w.ex).map(w => {
+                    const rec = vocabData[vocabKey(k, w.w)];
+                    const mCount = um.filter(m => `${m.q} ${m.correctOpt || ''}`.toLowerCase().includes(w.w.toLowerCase())).length;
+                    const lowBox = rec && (rec.seen || 0) > 0 && (rec.box || 1) <= 2;
+                    return { w, risk: mCount * 2 + (lowBox ? 1 : 0) };
+                }).filter(x => x.risk > 0).sort((a, b) => b.risk - a.risk).slice(0, 5).map(x => x.w);
+            };
+
+            // ── 单元通关测：5词+4语法+3句型混合12题，≥80% 点亮通关徽章并排入温故计划 ──
+            const startPassExam = (k) => {
+                const [b, u] = k.split('-');
+                setActiveBookId(b); setActiveUnit(Number(u));
+                const ud = getUnitData(k);
+                const { words, all } = getWordPool(ud);
+                const gpool = getGrammarPool(ud);
+                const spool = getSentencePool(ud);
+                let qs = [];
+                pickN(words, 5).forEach((w, i) => qs.push([buildThemeMeaningQ, buildContextWordQ, buildCollocationQ][i % 3](ud, w, all)));
+                pickN(gpool, 2).forEach(g => { qs.push(buildGrammarInContextQ(ud, g, gpool)); qs.push(buildGrammarErrorQ(ud, g, gpool)); });
+                pickN(spool, 3).forEach(s => qs.push(buildSentenceInferenceQ(ud, s)));
+                const seenQ = new Set();
+                qs = qs.filter(Boolean).filter(q => { if (seenQ.has(q.q)) return false; seenQ.add(q.q); return true; });
+                const bank = QUESTION_BANK[k] || [];
+                for (let i = 0; qs.length < 12 && i < bank.length; i++) {
+                    if (seenQ.has(bank[i].q)) continue;
+                    seenQ.add(bank[i].q);
+                    qs.push({ q: bank[i].q, opts: bank[i].opts, ans: bank[i].ans, rat: bank[i].rat, source: 'AI生成', meta: null });
+                }
+                if (qs.length === 0) return alert('本单元内容不足，暂无法通关测');
+                setQuizArr(shuffle(qs).slice(0, 12));
+                setQIdx(0); setScore(0); setSessionCorrect(0); setSessionAnswered(0);
+                setAnsIdx(null); setIsFinished(false);
+                setIsReinforcement(false); setIsMistakePractice(false); setIsPassExam(true);
+                setWrongStreak(0); setLastMistakeId(null); setShowWarmup(false); setUnitReviewPending(null);
+                setTab('quiz');
+            };
+
+            // ── 单元温故小测：通关后第3/7/15天抽查（低盒子词3题+语法2题），完成即推进档期 ──
+            const startUnitReview = (k) => {
+                const ud = getUnitData(k);
+                const { words, all } = getWordPool(ud);
+                const gpool = getGrammarPool(ud);
+                const lowWords = words.map(w => ({ w, box: vocabData[vocabKey(k, w.w)]?.box || 0 })).sort((a, b) => a.box - b.box).slice(0, 3).map(x => x.w);
+                let qs = lowWords.map(w => buildThemeMeaningQ(ud, w, all));
+                pickN(gpool, 2).forEach(g => qs.push(buildGrammarInContextQ(ud, g, gpool)));
+                const seenQ = new Set();
+                qs = qs.filter(Boolean).filter(q => { if (seenQ.has(q.q)) return false; seenQ.add(q.q); return true; });
+                if (qs.length === 0) return;
+                const [b, u] = k.split('-');
+                setActiveBookId(b); setActiveUnit(Number(u));
+                setQuizArr(shuffle(qs));
+                setQIdx(0); setScore(0); setSessionCorrect(0); setSessionAnswered(0);
+                setAnsIdx(null); setIsFinished(false);
+                setIsReinforcement(true); setIsMistakePractice(false); setIsPassExam(false);
+                setWrongStreak(0); setLastMistakeId(null); setShowWarmup(false);
+                setUnitReviewPending(k);
+                setTab('quiz');
+            };
+            // 温故到期单元列表（今日路线用）
+            const dueUnitReviews = Object.keys(unitCertData).filter(k => {
+                const r = unitCertData[k];
+                return r && r.passed && r.reviewDue && r.reviewDue <= Date.now();
+            });
+
             const launchMistakeQuiz = (qs) => {
                 setQuizArr(qs);
                 setQIdx(0);
@@ -12689,6 +12783,8 @@ Which option best expresses its meaning?`,
                 setIsFinished(false);
                 setIsReinforcement(false);
                 setIsMistakePractice(true);
+                setIsPassExam(false);
+                setUnitReviewPending(null);
                 setWrongStreak(0);
                 setLastMistakeId(null);
                 setShowWarmup(false);
@@ -12747,6 +12843,8 @@ Which option best expresses its meaning?`,
                 setIsFinished(false);
                 setIsReinforcement(true);
                 setIsMistakePractice(false);
+                setIsPassExam(false);
+                setUnitReviewPending(null);
                 setWrongStreak(0);
                 setLastMistakeId(null);
                 setShowWarmup(false);
@@ -12799,7 +12897,7 @@ Which option best expresses its meaning?`,
                     }));
                 }
 
-                if (!isReinforcement && !isMistakePractice && !currentQ._retry && (tab === 'quiz' || tab === 'gaokaoquiz')) {
+                if (!isReinforcement && !isMistakePractice && !isPassExam && !currentQ._retry && (tab === 'quiz' || tab === 'gaokaoquiz')) {
                     setSessionAnswered(s => s + 1);
                     setProgressData(prev => {
                         const existing = normalizeProgressRecord(prev[unitKey] ?? masteryData[unitKey]);
@@ -12828,7 +12926,39 @@ Which option best expresses its meaning?`,
                     setAnsIdx(null);
                 } else {
                     setIsFinished(true);
-                    if (!isReinforcement && !isMistakePractice && (tab === 'quiz' || tab === 'gaokaoquiz')) {
+                    // 通关测结算：≥80% 点亮徽章并排入 3 天后的第一次温故
+                    if (isPassExam) {
+                        const baseCount = quizArr.filter(q => !q._retry).length || quizArr.length;
+                        const pct = Math.round((sessionCorrect / Math.max(1, baseCount)) * 100);
+                        setUnitCertData(prev => {
+                            const r = prev[unitKey] || {};
+                            const nowPassed = pct >= 80;
+                            return {
+                                ...prev,
+                                [unitKey]: {
+                                    ...r,
+                                    attempts: (r.attempts || 0) + 1,
+                                    best: Math.max(r.best || 0, pct),
+                                    passed: r.passed || nowPassed,
+                                    passedAt: r.passed ? r.passedAt : (nowPassed ? Date.now() : r.passedAt),
+                                    reviewStage: r.passed ? r.reviewStage : (nowPassed ? 0 : r.reviewStage),
+                                    reviewDue: r.passed ? r.reviewDue : (nowPassed ? Date.now() + 3 * SRS_DAY : r.reviewDue),
+                                }
+                            };
+                        });
+                    }
+                    // 温故小测完成：推进档期 3天→7天→15天→毕业
+                    if (isReinforcement && unitReviewPending) {
+                        const k = unitReviewPending;
+                        setUnitCertData(prev => {
+                            const r = prev[k] || {};
+                            const stage = (r.reviewStage || 0) + 1;
+                            const nextDays = stage === 1 ? 7 : stage === 2 ? 15 : null;
+                            return { ...prev, [k]: { ...r, reviewStage: stage, reviewDue: nextDays ? Date.now() + nextDays * SRS_DAY : null, lastReviewAt: Date.now() } };
+                        });
+                        // 保留 unitReviewPending 用于结算页标题显示；其他练习入口会重置它
+                    }
+                    if (!isReinforcement && !isMistakePractice && !isPassExam && (tab === 'quiz' || tab === 'gaokaoquiz')) {
                         const baseCount = quizArr.filter(q => !q._retry).length || quizArr.length;
                         const finalCorrect = sessionCorrect;
                         const finalScore = Math.round((finalCorrect / Math.max(1, baseCount)) * 100);
@@ -12903,9 +13033,19 @@ Which option best expresses its meaning?`,
                     const grammarUnitKey = weakTarget ? weakTarget.key : unitKey;
                     const weakGrammar = (UNIT_DB[grammarUnitKey]?.grammar || [])[0] || null;
                     const practiceIsMistakes = dueMistakes.length > 0;
-                    const colorMap = { amber: 'bg-amber-50 text-amber-600', purple: 'bg-purple-50 text-purple-600', indigo: 'bg-indigo-50 text-indigo-500', rose: 'bg-rose-50 text-rose-600' };
+                    const colorMap = { amber: 'bg-amber-50 text-amber-600', purple: 'bg-purple-50 text-purple-600', indigo: 'bg-indigo-50 text-indigo-500', rose: 'bg-rose-50 text-rose-600', cyan: 'bg-cyan-50 text-cyan-600' };
 
                     const plan = [
+                        ...(dueUnitReviews.length > 0 ? [{
+                            key: 'plan-unitreview', color: 'cyan', icon: <RotateCcw className="w-5 h-5" />,
+                            title: `温故 ${dueUnitReviews[0]} 单元（5 分钟抽查）`,
+                            desc: `到期待温故：${dueUnitReviews.join(' · ')}`,
+                            why: '这个单元你已经通关了，但通关不等于永久记住——按 3/7/15 天回头抽查一次，才能把它焊死在长期记忆里。',
+                            need: '5 道抽查题：3 个记得最浅的词 + 2 个语法点，几分钟就完',
+                            impact: '完成后这个单元进入下一个温故档期（3天→7天→15天→毕业）',
+                            tomorrow: dueUnitReviews.length > 1 ? `还有 ${dueUnitReviews.length - 1} 个单元排队待温故` : '温故队列清空，专心学新内容',
+                            done: false, action: () => startUnitReview(dueUnitReviews[0]), btn: '去抽查',
+                        }] : []),
                         {
                             key: 'plan-review', color: 'amber', icon: <RotateCcw className="w-5 h-5" />,
                             title: reviewItems.length > 0 ? `复习 ${reviewItems.length} 个到期旧词` : '到期旧词已清零',
@@ -13014,7 +13154,7 @@ Which option best expresses its meaning?`,
                                             <Award className="w-5 h-5" />
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <div className={`font-bold text-[15px] ${summaryDone ? 'text-slate-400 line-through' : 'text-slate-900'}`}>5. 用 1 分钟看看今天学了什么</div>
+                                            <div className={`font-bold text-[15px] ${summaryDone ? 'text-slate-400 line-through' : 'text-slate-900'}`}>{plan.length + 1}. 用 1 分钟看看今天学了什么</div>
                                             <div className="text-[12px] text-slate-400 font-medium mt-0.5">今日总结 · 明日预告</div>
                                         </div>
                                         {!summaryDone && <button onClick={() => stampOnlyCheckin('summary')} className="px-4 py-2.5 rounded-xl bg-emerald-500 text-white text-[13px] font-bold active:scale-95 transition-transform shrink-0">完成总结</button>}
@@ -13138,7 +13278,10 @@ Which option best expresses its meaning?`,
                                                     </div>
                                                 )}
                                             </div>
-                                            <Volume2 className={`w-5 h-5 flex-shrink-0 mt-1 ${playingWord === w.w ? 'text-blue-500' : 'text-slate-300'} group-hover:text-blue-400 transition-colors`} />
+                                            <div className="flex flex-col items-end gap-2 shrink-0 mt-1">
+                                                <Volume2 className={`w-5 h-5 ${playingWord === w.w ? 'text-blue-500' : 'text-slate-300'} group-hover:text-blue-400 transition-colors`} />
+                                                {w.ex && <button onClick={(e) => { e.stopPropagation(); setDossier({ word: w, unitKey }); }} className="text-[10px] font-bold px-2 py-1 rounded-lg bg-white border border-slate-200 text-slate-500 active:bg-slate-100">档案</button>}
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
@@ -13333,7 +13476,7 @@ Which option best expresses its meaning?`,
                             {!isFinished ? (
                                 <div className="card-lg p-6 md:p-8">
                                     <div className="flex justify-between items-center mb-6">
-                                        <span className={`px-3 py-1 rounded-lg text-[11px] font-bold tracking-wide ${isMistakePractice ? 'bg-rose-100 text-rose-700' : isReinforcement ? 'bg-amber-100 text-amber-700' : tab === 'gaokaoquiz' ? 'bg-indigo-100 text-indigo-700' : 'bg-slate-100 text-slate-600'}`}>{isMistakePractice ? '错题练习' : isReinforcement ? '强化练习' : tab === 'gaokaoquiz' ? '重点练习' : '单元测验'}</span>
+                                        <span className={`px-3 py-1 rounded-lg text-[11px] font-bold tracking-wide ${isPassExam ? 'bg-emerald-100 text-emerald-700' : isMistakePractice ? 'bg-rose-100 text-rose-700' : unitReviewPending ? 'bg-cyan-100 text-cyan-700' : isReinforcement ? 'bg-amber-100 text-amber-700' : tab === 'gaokaoquiz' ? 'bg-indigo-100 text-indigo-700' : 'bg-slate-100 text-slate-600'}`}>{isPassExam ? `🏅 ${unitKey} 通关测 · 80%达标` : isMistakePractice ? '错题练习' : unitReviewPending ? `♻️ ${unitReviewPending} 温故抽查` : isReinforcement ? '强化练习' : tab === 'gaokaoquiz' ? '重点练习' : '单元测验'}</span>
                                         <span className="text-xs font-bold text-slate-400">{qIdx + 1} / {quizArr.length}</span>
                                     </div>
 
@@ -13422,16 +13565,33 @@ Which option best expresses its meaning?`,
                                     <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-500/30">
                                         <CheckCircle2 className="w-10 h-10 text-white" />
                                     </div>
-                                    <h2 className="text-2xl font-bold mb-2 tracking-tight">{isMistakePractice ? '错题练习完成' : isReinforcement ? '强化练习完成' : tab === 'gaokaoquiz' ? '真题完成' : '测验完成'}</h2>
-                                    <div className="text-6xl font-bold text-blue-500 mb-8 tracking-tighter">{Math.round((score / quizArr.length) * 100)}<span className="text-xl text-slate-300 ml-1 font-medium">%</span></div>
+                                    <h2 className="text-2xl font-bold mb-2 tracking-tight">{isPassExam ? '单元通关测完成' : isMistakePractice ? '错题练习完成' : unitReviewPending === null && isReinforcement ? '强化练习完成' : isReinforcement ? '温故抽查完成' : tab === 'gaokaoquiz' ? '真题完成' : '测验完成'}</h2>
+                                    {(() => { const bc = quizArr.filter(q => !q._retry).length || quizArr.length; return (
+                                    <div className="text-6xl font-bold text-blue-500 mb-8 tracking-tighter">{Math.round((score / Math.max(1, bc)) * 100)}<span className="text-xl text-slate-300 ml-1 font-medium">%</span></div>
+                                    ); })()}
+                                    {isPassExam && (() => {
+                                        const bc = quizArr.filter(q => !q._retry).length || quizArr.length;
+                                        const pct = Math.round((score / Math.max(1, bc)) * 100);
+                                        return (
+                                            <div className="mb-3">
+                                                {pct >= 80
+                                                    ? <p className="text-[15px] font-bold text-emerald-600 mb-4">🏅 {unitKey} 单元通关！徽章已点亮，3 天后安排第一次温故。</p>
+                                                    : <p className="text-[15px] font-bold text-amber-600 mb-4">差一点！通关线是 80%——先把错题弄懂，再冲一次。</p>}
+                                                <div className="flex flex-col gap-3">
+                                                    <button onClick={() => startPassExam(unitKey)} className="w-full bg-emerald-500 text-white py-4 rounded-2xl font-bold active:scale-95 transition-transform">{pct >= 80 ? '再刷一次分' : '再冲一次'}</button>
+                                                    <button onClick={() => { setIsPassExam(false); setTab('mastery'); }} className="w-full bg-slate-100 text-slate-700 py-4 rounded-2xl font-bold active:bg-slate-200">回进度页看掌握清单</button>
+                                                </div>
+                                            </div>
+                                        );
+                                    })()}
                                     {isMistakePractice && (
                                         <div className="flex flex-col gap-3 mb-3">
                                             <button onClick={startMistakePractice} className="w-full bg-rose-500 text-white py-4 rounded-2xl font-bold active:scale-95 transition-transform">再练一遍（重新洗牌）</button>
                                             <button onClick={() => { setIsMistakePractice(false); setTab('mistakes'); }} className="w-full bg-slate-100 text-slate-700 py-4 rounded-2xl font-bold active:bg-slate-200">返回错题库</button>
                                         </div>
                                     )}
-                                    {!isMistakePractice && (tab === 'quiz' || tab === 'gaokaoquiz') && !isReinforcement && <button onClick={() => setTab('mistakes')} className="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold mb-3 active:scale-95 transition-transform">查看错题</button>}
-                                    {!isMistakePractice && <button onClick={() => startQuiz(tab === 'gaokaoquiz' ? 'gaokao' : 'full')} className="w-full bg-slate-100 text-slate-700 py-4 rounded-2xl font-bold active:bg-slate-200">重新开始</button>}
+                                    {!isMistakePractice && !isPassExam && (tab === 'quiz' || tab === 'gaokaoquiz') && !isReinforcement && <button onClick={() => setTab('mistakes')} className="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold mb-3 active:scale-95 transition-transform">查看错题</button>}
+                                    {!isMistakePractice && !isPassExam && <button onClick={() => startQuiz(tab === 'gaokaoquiz' ? 'gaokao' : 'full')} className="w-full bg-slate-100 text-slate-700 py-4 rounded-2xl font-bold active:bg-slate-200">重新开始</button>}
                                 </div>
                             )}
                         </div>
@@ -13735,7 +13895,7 @@ Which option best expresses its meaning?`,
                                             <div key={key} className="card rounded-2xl p-4">
                                                 <div className="flex items-start justify-between gap-4 mb-3">
                                                     <div>
-                                                        <div className="font-bold text-slate-800 flex items-center gap-2">Unit {unit}{(() => { const t = unitTier(key); return t ? <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${t.cls}`} title={t.tip}>{t.label}</span> : null; })()}</div>
+                                                        <div className="font-bold text-slate-800 flex items-center gap-2 flex-wrap">Unit {unit}{(() => { const t = unitTier(key); return t ? <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${t.cls}`} title={t.tip}>{t.label}</span> : null; })()}{unitCertData[key]?.passed && <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">🏅 已通关</span>}</div>
                                                         <div className="text-xs text-slate-400 mt-1">{progress.lastPracticedAt || cards.lastStudiedAt || '尚未开始学习'}</div>
                                                     </div>
                                                     <div className="text-right">
@@ -13789,6 +13949,60 @@ Which option best expresses its meaning?`,
                                                         <div className="text-xs text-emerald-700">已掌握 {cardMastered} 张，未清零 {cards.wrongIds?.length || 0} 张</div>
                                                     </div>
                                                 </div>
+
+                                                {(() => {
+                                                    // ── 单元掌握清单：词/语法点/句型逐项打勾 + 掌握度 + 通关测入口 ──
+                                                    const mp = unitMasteryPercent(key);
+                                                    const cert = unitCertData[key] || {};
+                                                    const uws = (UNIT_DB[key]?.words || []).filter(w => w.ex);
+                                                    const watch = keyWatchWords(key);
+                                                    const boxCls = (b) => b >= 4 ? 'bg-emerald-100 text-emerald-700' : b >= 3 ? 'bg-blue-100 text-blue-700' : b >= 1 ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-400';
+                                                    const gf = grammarFillData[key];
+                                                    const gpoints = (UNIT_DB[key]?.grammar || []).map(g => {
+                                                        const hasMistake = activeMistakes.some(m => m.unitKey === key && m.meta?.type === 'grammar' && m.meta.data?.t === g.t);
+                                                        const practiced = (gf && gf.attempts > 0) || getUnitProgress(key).totalAnswered > 0;
+                                                        const solid = practiced && !hasMistake && (gf?.best || 0) >= 8;
+                                                        return { t: g.t, state: hasMistake ? ['有错题', 'bg-rose-100 text-rose-600'] : solid ? ['已掌握', 'bg-emerald-100 text-emerald-700'] : practiced ? ['练过', 'bg-amber-100 text-amber-700'] : ['没练过', 'bg-slate-100 text-slate-400'] };
+                                                    });
+                                                    const unitSentences = mySentences.filter(s => s.unitKey === key).length;
+                                                    return (
+                                                        <details className="mt-3 group">
+                                                            <summary className="cursor-pointer select-none list-none flex items-center justify-between gap-2 p-3 bg-slate-50 rounded-xl">
+                                                                <span className="text-[12px] font-bold text-slate-600 flex items-center gap-1.5"><ChevronDown className="w-3.5 h-3.5 transition-transform group-open:rotate-180" />📋 掌握清单 · 掌握度 {mp}%</span>
+                                                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${cert.passed ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-500'}`}>{cert.passed ? `通关 ${cert.best}%` : cert.attempts ? `最好 ${cert.best}%` : '未通关'}</span>
+                                                            </summary>
+                                                            <div className="mt-3 space-y-3 px-1">
+                                                                {watch.length > 0 && (
+                                                                    <div>
+                                                                        <div className="text-[11px] font-bold text-rose-500 mb-1.5">🎯 重点盯防词（出过错/记得浅）：</div>
+                                                                        <div className="flex gap-1.5 flex-wrap">
+                                                                            {watch.map(w => <button key={w.w} onClick={() => setDossier({ word: w, unitKey: key })} className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-rose-100 text-rose-600 active:scale-95">{w.w}</button>)}
+                                                                        </div>
+                                                                    </div>
+                                                                )}
+                                                                <div>
+                                                                    <div className="text-[11px] font-bold text-slate-500 mb-1.5">重点词（点开看档案 · 绿=牢固 蓝=巩固中 黄=刚起步 灰=没学）：</div>
+                                                                    <div className="flex gap-1.5 flex-wrap">
+                                                                        {uws.map(w => { const b = vocabData[vocabKey(key, w.w)]?.box || 0; return <button key={w.w} onClick={() => setDossier({ word: w, unitKey: key })} className={`px-2.5 py-1 rounded-full text-[11px] font-bold active:scale-95 ${boxCls(b)}`}>{w.w}</button>; })}
+                                                                    </div>
+                                                                </div>
+                                                                <div>
+                                                                    <div className="text-[11px] font-bold text-slate-500 mb-1.5">语法点：</div>
+                                                                    <div className="space-y-1.5">
+                                                                        {gpoints.map(g => (
+                                                                            <div key={g.t} className="flex items-center justify-between gap-2 text-[12px]">
+                                                                                <span className="font-semibold text-slate-700 truncate">{g.t}</span>
+                                                                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${g.state[1]}`}>{g.state[0]}</span>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+                                                                <div className="text-[11px] text-slate-400 font-medium">句型积累：精听练过 {listeningData[key]?.attempts || 0} 轮 · 本单元造句 {unitSentences} 句</div>
+                                                                <button onClick={() => startPassExam(key)} className="w-full py-3 bg-emerald-500 text-white rounded-xl font-bold text-[13px] active:scale-95 transition-transform">{cert.passed ? '🏅 已通关 · 再刷一次分' : '🏁 挑战单元通关测（12题 · 80%达标）'}</button>
+                                                            </div>
+                                                        </details>
+                                                    );
+                                                })()}
                                             </div>
                                         );
                                     })}
@@ -14000,6 +14214,43 @@ Which option best expresses its meaning?`,
                                         🔇 {audioTip}
                                     </div>
                                 )}
+                                {dossier && (() => {
+                                    // ── 一词一档：这个词的记忆等级、错题史、搭配例句、她自己的造句 ──
+                                    const { word: dw, unitKey: dk } = dossier;
+                                    const rec = vocabData[vocabKey(dk, dw.w)];
+                                    const box = rec?.box || 0;
+                                    const ladder = box > 0 ? VOCAB_LADDER[Math.min(box, 5) - 1] : null;
+                                    const relMistakes = mistakeBank.filter(m => m.unitKey === dk && `${m.q} ${m.correctOpt || ''}`.toLowerCase().includes(dw.w.toLowerCase()));
+                                    const mySents = mySentences.filter(s => s.w === dw.w);
+                                    return (
+                                        <div className="fixed inset-0 z-[80] flex items-end md:items-center justify-center bg-slate-900/40 p-0 md:p-6" onClick={() => setDossier(null)}>
+                                            <div className="bg-white w-full md:max-w-md rounded-t-[28px] md:rounded-[28px] p-6 max-h-[85vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+                                                <div className="flex items-start justify-between gap-3 mb-3">
+                                                    <div>
+                                                        <p className="text-2xl font-black tracking-tight cursor-pointer inline-flex items-center gap-2" onClick={(e) => playAudio(dw.w, e)}>{dw.w} <Volume2 className="w-4 h-4 text-slate-300" /></p>
+                                                        <p className="text-[13px] font-semibold text-slate-500 mt-0.5">{dw.m}</p>
+                                                    </div>
+                                                    <button onClick={() => setDossier(null)} className="p-2 text-slate-300 active:text-slate-500 shrink-0"><X className="w-5 h-5" /></button>
+                                                </div>
+                                                <div className="flex items-center gap-2 mb-4 flex-wrap">
+                                                    <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full ${box >= 4 ? 'bg-emerald-100 text-emerald-700' : box >= 1 ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-400'}`}>
+                                                        {box > 0 ? `记忆盒 ${box}/5 · ${ladder.label}关` : '还没开始练'}
+                                                    </span>
+                                                    {rec && (rec.seen || 0) > 0 && <span className="text-[11px] font-bold text-slate-400">练过 {rec.seen} 次</span>}
+                                                    {relMistakes.length > 0 && <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-rose-100 text-rose-600">错过 {relMistakes.length} 题</span>}
+                                                </div>
+                                                {dw.d && <div className="p-3.5 bg-purple-50/60 rounded-2xl mb-2.5"><div className="text-[10px] font-bold text-purple-500 mb-1">搭配 / 用法</div><p className="text-[13px] font-semibold text-slate-700">{dw.d}</p></div>}
+                                                {dw.ex && <div className="p-3.5 bg-slate-50 rounded-2xl mb-2.5 cursor-pointer" onClick={(e) => playAudio(dw.ex, e)}><div className="text-[10px] font-bold text-slate-400 mb-1">🔊 例句</div><p className="text-[13px] font-semibold text-slate-700">{dw.ex}</p>{dw.exCn && <p className="text-[12px] text-slate-400 mt-0.5">{dw.exCn}</p>}</div>}
+                                                {mySents.length > 0 && <div className="p-3.5 bg-emerald-50/60 rounded-2xl mb-2.5"><div className="text-[10px] font-bold text-emerald-600 mb-1">✍️ 我写的句子</div>{mySents.map(s => <p key={s.at} className="text-[13px] font-semibold text-slate-700">{s.s}</p>)}</div>}
+                                                {relMistakes.slice(0, 2).map(m => <div key={m.id} className="p-3.5 bg-rose-50/60 rounded-2xl mb-2.5"><div className="text-[10px] font-bold text-rose-500 mb-1">相关错题</div><p className="text-[12px] font-medium text-slate-600 leading-relaxed">{m.q.length > 80 ? m.q.slice(0, 80) + '…' : m.q}</p></div>)}
+                                                <div className="flex gap-2 mt-4">
+                                                    <button onClick={() => { setDossier(null); startSimilarPractice({ kind: 'word', key: `词汇::${dw.w}`, label: dw.w, unitKey: dk, data: dw }, []); }} className="flex-1 py-3.5 bg-purple-500 text-white rounded-2xl font-bold text-[13px] active:scale-95 transition-transform">单练这个词</button>
+                                                    <button onClick={() => { setDossier(null); gotoUnit(dk, 'chunks'); }} className="flex-1 py-3.5 bg-slate-100 text-slate-600 rounded-2xl font-bold text-[13px] active:bg-slate-200">去词块工坊</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })()}
                             </section>
                         </div>
                     </div>

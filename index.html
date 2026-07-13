@@ -12420,6 +12420,16 @@ Which option best expresses its meaning?`,
             const [isMistakePractice, setIsMistakePractice] = useState(false);
             const [wrongStreak, setWrongStreak] = useState(0);       // 本轮练习连续答错数（答对清零）
             const [lastMistakeId, setLastMistakeId] = useState(null); // 刚产生的错题 id，供错因标注定位
+            const [showWarmup, setShowWarmup] = useState(false);     // 做题前的"考点速览"卡（把笔记塞进做题流程）
+            const [nextReady, setNextReady] = useState(true);        // 答错后"下一题"延迟2秒，逼一眼解析
+            useEffect(() => {
+                if (ansIdx === null) { setNextReady(true); return; }
+                const wrong = quizArr[qIdx] && ansIdx !== quizArr[qIdx].ans;
+                if (!wrong) { setNextReady(true); return; }
+                setNextReady(false);
+                const t = setTimeout(() => setNextReady(true), 2000);
+                return () => clearTimeout(t);
+            }, [ansIdx, qIdx]);
             const [showUniversalTips, setShowUniversalTips] = useState(false);
             const [activeCards, setActiveCards] = useState([]);
 
@@ -12576,6 +12586,7 @@ Which option best expresses its meaning?`,
                 setIsMistakePractice(false);
                 setWrongStreak(0);
                 setLastMistakeId(null);
+                setShowWarmup(true);
                 setProgressData(prev => {
                     const existing = normalizeProgressRecord(prev[unitKey] ?? masteryData[unitKey]);
                     return {
@@ -12605,6 +12616,7 @@ Which option best expresses its meaning?`,
                 setIsReinforcement(true);
                 setWrongStreak(0);
                 setLastMistakeId(null);
+                setShowWarmup(false);
                 setTab('quiz');
             };
 
@@ -12679,6 +12691,7 @@ Which option best expresses its meaning?`,
                 setIsMistakePractice(true);
                 setWrongStreak(0);
                 setLastMistakeId(null);
+                setShowWarmup(false);
                 setTab('quiz');
             };
 
@@ -12736,6 +12749,7 @@ Which option best expresses its meaning?`,
                 setIsMistakePractice(false);
                 setWrongStreak(0);
                 setLastMistakeId(null);
+                setShowWarmup(false);
                 setTab('quiz');
             };
 
@@ -12745,10 +12759,16 @@ Which option best expresses its meaning?`,
                 const currentQ = quizArr[qIdx];
                 const isCorrect = idx === currentQ.ans;
                 setWrongStreak(s => isCorrect ? 0 : s + 1);
+                // 答错当轮复现：错题追加到本轮队尾再考一遍（最多复现2次；复现题不计分不入错题本）
+                if (!isCorrect && !isReinforcement && !isMistakePractice && (tab === 'quiz' || tab === 'gaokaoquiz') && (currentQ._retry || 0) < 2) {
+                    setQuizArr(prev => [...prev, { ...currentQ, _retry: (currentQ._retry || 0) + 1 }]);
+                }
                 if (isCorrect) {
-                    setScore(s => s + 1);
-                    setSessionCorrect(s => s + 1);
-                } else if (!isReinforcement && !isMistakePractice && tab !== 'cards') {
+                    if (!currentQ._retry) {
+                        setScore(s => s + 1);
+                        setSessionCorrect(s => s + 1);
+                    }
+                } else if (!isReinforcement && !isMistakePractice && !currentQ._retry && tab !== 'cards') {
                     const mistakeCard = {
                         id: Date.now() + Math.random(),
                         ts: Date.now(),
@@ -12779,7 +12799,7 @@ Which option best expresses its meaning?`,
                     }));
                 }
 
-                if (!isReinforcement && !isMistakePractice && (tab === 'quiz' || tab === 'gaokaoquiz')) {
+                if (!isReinforcement && !isMistakePractice && !currentQ._retry && (tab === 'quiz' || tab === 'gaokaoquiz')) {
                     setSessionAnswered(s => s + 1);
                     setProgressData(prev => {
                         const existing = normalizeProgressRecord(prev[unitKey] ?? masteryData[unitKey]);
@@ -12809,8 +12829,9 @@ Which option best expresses its meaning?`,
                 } else {
                     setIsFinished(true);
                     if (!isReinforcement && !isMistakePractice && (tab === 'quiz' || tab === 'gaokaoquiz')) {
+                        const baseCount = quizArr.filter(q => !q._retry).length || quizArr.length;
                         const finalCorrect = sessionCorrect;
-                        const finalScore = Math.round((finalCorrect / Math.max(1, quizArr.length)) * 100);
+                        const finalScore = Math.round((finalCorrect / Math.max(1, baseCount)) * 100);
                         setMasteryData(prev => {
                             const existing = typeof prev[unitKey] === 'number' ? prev[unitKey] : (prev[unitKey]?.bestScore || 0);
                             return { ...prev, [unitKey]: Math.max(existing, finalScore) };
@@ -12825,14 +12846,14 @@ Which option best expresses its meaning?`,
                                     started: true,
                                     attempts: existing.attempts + 1,
                                     completed: true,
-                                    totalQuestions: existing.totalQuestions + quizArr.length,
+                                    totalQuestions: existing.totalQuestions + baseCount,
                                     bestScore: Math.max(existing.bestScore, finalScore),
                                     lastScore: finalScore,
                                     fullAttempts: existing.fullAttempts + (isFocusMode ? 0 : 1),
                                     focusAttempts: existing.focusAttempts + (isFocusMode ? 1 : 0),
                                     completedQuizCount: existing.completedQuizCount + 1,
-                                    currentSessionAnswered: quizArr.length,
-                                    currentSessionTotal: quizArr.length,
+                                    currentSessionAnswered: baseCount,
+                                    currentSessionTotal: baseCount,
                                     currentSessionMode: isFocusMode ? '重点练习' : '单元练习',
                                     lastMode: isFocusMode ? '重点练习' : '单元练习',
                                     lastPracticedAt: new Date().toLocaleString('zh-CN', { hour12: false })
@@ -13279,6 +13300,34 @@ Which option best expresses its meaning?`,
                 }
 
                 if (tab === 'quiz' || tab === 'gaokaoquiz') {
+                    if (showWarmup && !isFinished) {
+                        // ── 考前10秒速览：她不去看笔记，就把笔记最要紧的3条塞进做题流程 ──
+                        const warmTips = [
+                            ...(UNIT_DB[unitKey]?.grammar || []).slice(0, 2).map(g => ({ t: g.t, r: g.r })),
+                            ...((EXAM_TIPS_DB[unitKey]?.examTips || []).slice(0, 1).map(x => ({ t: x.t, r: x.r }))),
+                        ];
+                        if (warmTips.length === 0) warmTips.push({ t: '先想后选', r: '先自己想答案，再看选项，干扰项就骗不到你' });
+                        return (
+                            <div className="max-w-xl mx-auto">
+                                <div className="card-lg p-6 md:p-8">
+                                    <div className="text-center mb-5">
+                                        <div className="text-4xl mb-2">📌</div>
+                                        <h3 className="text-xl font-bold tracking-tight">考前偷看 10 秒</h3>
+                                        <p className="text-[12px] text-slate-400 font-medium mt-1">本单元最可能考的就这几条，带着它们进考场</p>
+                                    </div>
+                                    <div className="space-y-3 mb-6">
+                                        {warmTips.map((t, i) => (
+                                            <div key={i} className="p-4 bg-indigo-50/60 border border-indigo-100 rounded-2xl">
+                                                <p className="text-[13px] font-bold text-indigo-700 mb-1">{i + 1}. {t.t}</p>
+                                                <p className="text-[12px] text-slate-500 leading-relaxed">{t.r}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <button onClick={() => setShowWarmup(false)} className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-4 rounded-2xl font-bold text-[16px] active:scale-95 transition-transform shadow-lg shadow-blue-500/20">记住了，开始做题</button>
+                                </div>
+                            </div>
+                        );
+                    }
                     return (
                         <div className="max-w-xl mx-auto">
                             {!isFinished ? (
@@ -13288,9 +13337,10 @@ Which option best expresses its meaning?`,
                                         <span className="text-xs font-bold text-slate-400">{qIdx + 1} / {quizArr.length}</span>
                                     </div>
 
-                                    {quizArr[qIdx]?.source && (
+                                    {(quizArr[qIdx]?.source || quizArr[qIdx]?._retry) && (
                                         <div className="flex gap-2 mb-3">
-                                            <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-violet-100 text-violet-700 tracking-wide">AI生成</span>
+                                            {quizArr[qIdx]?._retry && <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-rose-100 text-rose-700 tracking-wide">🔁 刚才错的题 · 赢回来</span>}
+                                            {quizArr[qIdx]?.source && <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-violet-100 text-violet-700 tracking-wide">AI生成</span>}
                                             {quizArr[qIdx]?.needsReview && <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-100 text-amber-700 tracking-wide">需复核</span>}
                                         </div>
                                     )}
@@ -13308,10 +13358,27 @@ Which option best expresses its meaning?`,
 
                                     {ansIdx !== null && (
                                         <div className="mt-8">
-                                            <div className="p-5 bg-slate-50 rounded-2xl mb-6">
-                                                <div className="text-blue-500 font-bold text-[11px] mb-2 uppercase tracking-widest">Explanation</div>
-                                                <p className="text-slate-700 text-sm font-medium leading-relaxed whitespace-pre-wrap">{quizArr[qIdx]?.rat}</p>
-                                            </div>
+                                            {(() => {
+                                                // 解析瘦身：抽第一句做"一句话记住"，长解析折叠，降低阅读门槛
+                                                const rawRat = (quizArr[qIdx]?.rat || '').replace(/^\[解析\]\s*/, '');
+                                                const cut = rawRat.indexOf('。');
+                                                const brief = cut > 0 && cut < rawRat.length - 1 ? rawRat.slice(0, cut + 1) : rawRat;
+                                                const rest = cut > 0 && cut < rawRat.length - 1 ? rawRat.slice(cut + 1).trim() : '';
+                                                return (
+                                                    <div className="p-5 bg-slate-50 rounded-2xl mb-4">
+                                                        <p className="text-slate-800 text-[15px] font-bold leading-relaxed">💡 一句话记住：{brief}</p>
+                                                        {rest && (
+                                                            <details className="mt-2 group">
+                                                                <summary className="text-[11px] font-bold text-blue-500 cursor-pointer select-none list-none flex items-center gap-1"><ChevronDown className="w-3 h-3 transition-transform group-open:rotate-180" />展开详细讲解</summary>
+                                                                <p className="text-slate-600 text-sm font-medium leading-relaxed whitespace-pre-wrap mt-2">{rest}</p>
+                                                            </details>
+                                                        )}
+                                                    </div>
+                                                );
+                                            })()}
+                                            {ansIdx !== quizArr[qIdx]?.ans && !isReinforcement && !isMistakePractice && (tab === 'quiz' || tab === 'gaokaoquiz') && (quizArr[qIdx]?._retry || 0) < 2 && (
+                                                <p className="text-[12px] font-bold text-rose-500 mb-4 text-center">🔁 这题过一会儿会再考一遍——看好上面那句话，等下赢回来</p>
+                                            )}
                                             {ansIdx !== quizArr[qIdx]?.ans && !isReinforcement && (() => {
                                                 const causeTargetId = quizArr[qIdx]?.mistakeId ?? lastMistakeId;
                                                 if (causeTargetId == null) return null;
@@ -13346,7 +13413,7 @@ Which option best expresses its meaning?`,
                                                     </div>
                                                 );
                                             })()}
-                                            <button onClick={nextQuestion} className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-4 rounded-2xl font-bold text-[17px] active:scale-95 transition-transform shadow-lg shadow-blue-500/20">{qIdx === quizArr.length - 1 ? '查看成绩' : '下一题'}</button>
+                                            <button onClick={nextQuestion} disabled={!nextReady} className={`w-full py-4 rounded-2xl font-bold text-[17px] transition-transform ${nextReady ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white active:scale-95 shadow-lg shadow-blue-500/20' : 'bg-slate-200 text-slate-400'}`}>{nextReady ? (qIdx === quizArr.length - 1 ? '查看成绩' : '下一题') : '👀 先扫一眼上面的解析…'}</button>
                                         </div>
                                     )}
                                 </div>

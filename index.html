@@ -12322,6 +12322,54 @@ Which option best expresses its meaning?`,
                 launchMistakeQuiz(buildMistakeQuiz([m]));
             };
 
+            // ── 错题知识点归集：给每道错题推导知识点（meta 优先，题库题从题干匹配单元词兜底）──
+            const mistakePointOf = (m) => {
+                const meta = m.meta;
+                if (meta && meta.type === 'word' && meta.data?.w) return { kind: 'word', key: `词汇::${meta.data.w}`, label: meta.data.w, sub: meta.data.m || '', unitKey: m.unitKey, data: meta.data };
+                if (meta && meta.type === 'grammar' && meta.data?.t) return { kind: 'grammar', key: `语法::${meta.data.t}`, label: meta.data.t, sub: '语法点', unitKey: m.unitKey, data: meta.data };
+                if (meta && meta.type === 'sentence' && meta.data?.e) return { kind: 'sentence', key: `句型::${meta.data.e}`, label: (meta.data.z || meta.data.e).slice(0, 26), sub: '句型理解', unitKey: m.unitKey, data: meta.data };
+                if (meta && meta.type === 'writing') return { kind: 'writing', key: `写作::${m.unitKey}`, label: '写作表达策略', sub: '', unitKey: m.unitKey, data: meta.data };
+                const ud = getUnitData(m.unitKey);
+                const qtext = `${m.q || ''} ${m.correctOpt || ''} ${m.wrongOpt || ''}`.toLowerCase();
+                const hit = (ud.words || []).find(w => w.w && w.w.length >= 3 && qtext.includes(w.w.toLowerCase()));
+                if (hit) return { kind: 'word', key: `词汇::${hit.w}`, label: hit.w, sub: hit.m || '', unitKey: m.unitKey, data: hit };
+                return { kind: 'unit', key: `单元::${m.unitKey}`, label: `${m.unitKey} 综合`, sub: ud.title || '', unitKey: m.unitKey, data: null };
+            };
+
+            // ── 练类似题：按知识点用题目生成器出一小组"新题"（不是原题重做）──
+            const startSimilarPractice = (point, groupMistakes) => {
+                const ud = getUnitData(point.unitKey);
+                const { all } = getWordPool(ud);
+                const gpool = getGrammarPool(ud);
+                let qs = [];
+                if (point.kind === 'word' && point.data) {
+                    qs = [buildThemeMeaningQ(ud, point.data, all), buildContextWordQ(ud, point.data, all), buildCollocationQ(ud, point.data, all), ...buildReinforcementQs({ type: 'word', data: point.data })];
+                } else if (point.kind === 'grammar' && point.data) {
+                    qs = [buildGrammarInContextQ(ud, point.data, gpool), buildGrammarErrorQ(ud, point.data, gpool), ...buildReinforcementQs({ type: 'grammar', data: point.data })];
+                } else if (point.kind === 'sentence' && point.data) {
+                    qs = [buildSentenceInferenceQ(ud, point.data), ...buildReinforcementQs({ type: 'sentence', data: point.data })];
+                } else if (point.kind === 'writing' && point.data) {
+                    qs = buildReinforcementQs({ type: 'writing', data: point.data });
+                }
+                const seenQ = new Set();
+                qs = qs.filter(Boolean).filter(q => { if (seenQ.has(q.q)) return false; seenQ.add(q.q); return true; });
+                if (qs.length === 0) {
+                    // 综合类/生成失败：退回重练这组错题原题
+                    if (groupMistakes && groupMistakes.length) launchMistakeQuiz(shuffle(buildMistakeQuiz(groupMistakes)));
+                    return;
+                }
+                setQuizArr(shuffle(qs).slice(0, 4));
+                setQIdx(0);
+                setScore(0);
+                setAnsIdx(null);
+                setIsFinished(false);
+                setIsReinforcement(true);
+                setIsMistakePractice(false);
+                setWrongStreak(0);
+                setLastMistakeId(null);
+                setTab('quiz');
+            };
+
             const handleAnswer = (idx) => {
                 if (ansIdx !== null) return;
                 setAnsIdx(idx);
@@ -12936,6 +12984,37 @@ Which option best expresses its meaning?`,
                                     {dueMistakes.length > 0 && (
                                         <button onClick={startDueMistakePractice} className="w-full py-4 bg-gradient-to-r from-amber-400 to-orange-400 text-white rounded-2xl font-bold active:scale-95 transition-transform flex items-center justify-center gap-2 shadow-lg shadow-amber-400/25"><Zap className="w-4 h-4" />练到期错题（{dueMistakes.length} 题）</button>
                                     )}
+                                    {activeMistakes.length > 0 && (() => {
+                                        const groups = {};
+                                        activeMistakes.forEach(m => {
+                                            const p = mistakePointOf(m);
+                                            if (!groups[p.key]) groups[p.key] = { point: p, ms: [] };
+                                            groups[p.key].ms.push(m);
+                                        });
+                                        const list = Object.values(groups).sort((a, b) => b.ms.length - a.ms.length).slice(0, 8);
+                                        const kindBadge = { word: ['词汇', 'bg-purple-100 text-purple-700'], grammar: ['语法', 'bg-indigo-100 text-indigo-700'], sentence: ['句型', 'bg-sky-100 text-sky-700'], writing: ['写作', 'bg-emerald-100 text-emerald-700'], unit: ['综合', 'bg-slate-200 text-slate-600'] };
+                                        return (
+                                            <div className="card-lg p-6">
+                                                <h3 className="font-bold text-[15px] mb-1 flex items-center gap-2">📚 知识点归集 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-600">同一个坑不摔两次</span></h3>
+                                                <p className="text-[12px] text-slate-400 font-medium mb-4">错题按知识点归好类了：先"学一学"搞懂，再"练类似题"用新题验证学会没有（不是原题重做）。</p>
+                                                <div className="space-y-2.5">
+                                                    {list.map(({ point, ms }) => (
+                                                        <div key={point.key} className="p-3.5 bg-slate-50/80 border border-slate-100 rounded-2xl flex items-center gap-3 flex-wrap">
+                                                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${kindBadge[point.kind][1]}`}>{kindBadge[point.kind][0]}</span>
+                                                            <div className="flex-1 min-w-0">
+                                                                <div className="font-bold text-[13px] text-slate-800 truncate">{point.label}<span className="text-slate-400 font-semibold"> · {ms.length} 道错题</span></div>
+                                                                {point.sub && <div className="text-[11px] text-slate-400 truncate">{point.sub}</div>}
+                                                            </div>
+                                                            <div className="flex gap-2 shrink-0">
+                                                                <button onClick={() => gotoUnit(point.unitKey, 'notes')} className="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-[12px] font-bold text-slate-600 active:bg-slate-100">学一学</button>
+                                                                <button onClick={() => startSimilarPractice(point, ms)} className="px-3 py-1.5 rounded-lg bg-indigo-500 text-white text-[12px] font-bold active:scale-95 transition-transform">{point.kind === 'unit' ? '重练这组' : '练类似题'}</button>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        );
+                                    })()}
                                     {activeMistakes.map((m) => (
                                         <div key={m.id} className="card-lg p-6 border-l-4 border-rose-500 relative">
                                             <button onClick={() => setMistakeBank((prev) => prev.filter((x) => x.id !== m.id))} className="absolute top-4 right-4 p-2 text-slate-300 active:text-rose-500"><XCircle className="w-5 h-5" /></button>

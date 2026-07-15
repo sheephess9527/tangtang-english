@@ -12788,9 +12788,26 @@ Which option best expresses its meaning?`,
                 lines.push('');
                 Object.values(groups).sort((a, b) => b.ms.length - a.ms.length).forEach(({ point, ms }, gi) => {
                     lines.push(`${gi + 1}.【${kindName[point.kind] || '综合'}】${point.label}${point.sub ? `（${point.sub}）` : ''} —— ${ms.length} 道错题 · ${point.unitKey}`);
+                    // 知识点讲解：先学后练，导出的单子拿来就能复习
+                    if (point.kind === 'word' && point.data) {
+                        lines.push(`   ◆ 知识点：${point.data.w} = ${point.data.m || ''}`);
+                        if (point.data.d) lines.push(`     搭配/用法：${point.data.d}`);
+                        if (point.data.ex) lines.push(`     例句：${point.data.ex}${point.data.exCn ? `（${point.data.exCn}）` : ''}`);
+                    } else if (point.kind === 'grammar' && point.data) {
+                        lines.push(`   ◆ 知识点：${point.data.t}`);
+                        if (point.data.r) lines.push(`     规则：${point.data.r}`);
+                        if (point.data.p) lines.push(`     避坑：${point.data.p}`);
+                    } else if (point.kind === 'sentence' && point.data) {
+                        lines.push(`   ◆ 句型：${point.data.e}`);
+                        if (point.data.z) lines.push(`     中文：${point.data.z}`);
+                    } else if (point.kind === 'unit') {
+                        const ud = getUnitData(point.unitKey);
+                        lines.push(`   ◆ 单元：${ud.title || point.unitKey}${(ud.grammar || []).length ? `，本单元考点：${ud.grammar.map(g => g.t).join('、')}` : ''}`);
+                    }
                     ms.forEach((m, i) => {
                         lines.push(`   ${i + 1}) ${(m.q || '').replace(/\s*\n\s*/g, ' ')}`);
                         lines.push(`      错选：${m.wrongOpt} ｜ 正确：${m.correctOpt}${m.cause ? ` ｜ 错因：${causeOf(m.cause)?.label || m.cause}` : ''}`);
+                        if (m.rat) lines.push(`      解析：${m.rat.replace(/^\[解析\]\s*/, '').replace(/\s*\n\s*/g, ' ')}`);
                     });
                     lines.push('');
                 });

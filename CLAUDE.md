@@ -41,7 +41,7 @@ catch(err){console.error('❌',err.message,err.loc||'');}
 - 掌握体系：`unitTier`(补基础/跟教材/冲高考评级) · `unitMasteryPercent`(词汇40%+语法填空25%+正确率20%+错题清零15%) · `keyWatchWords` 盯防词 · `startPassExam` 单元通关测(12题80%达标，存 unitCert 桶) · `startUnitReview` 温故抽查(通关后3/7/15天，dueUnitReviews 驱动今日路线置顶卡) · 单词档案弹窗 `dossier`。
 - 错题体系：SRS(`srsBox/srsDue/cleared/clearedAt`，新错3天回炉/回炉答对进7天档/回炉答错次日再来+当轮复现/连对两次攻克) · **同题不重复建卡**（再错重置现有卡，含已攻克的复活）· 复现题 `_retry` 不写 SRS · 错因 `cause` 字段 · `mistakePointOf` 知识点归集 · `startSimilarPractice` 练类似题 · `buildMistakeReport/copyMistakeReport/exportMistakeReport` 汇总复制/导出TXT · 进度页"本周错因分析"。
 - 今日任务页 = 自适应路线（温故卡→到期词→新词→薄弱语法点→针对性练习→总结）+ 成长面板；完成态由 `checkins[今天]` 分类计数驱动（kind：quiz/cards/vocab/grammarFill/mistakes/reading/cloze/seven/chunks/listening/writingTrain/summary/unitCert，`stampCheckin` 累加；只打卡不动数据用 `stampOnlyCheckin`）。
-- 发音：`speakText(text, rate)` 是唯一入口（显式选 en 语音、规避 Chrome cancel/speak 竞态、失败弹 audioTip 提示条），`playAudio` 是 0.85 速薄封装。**不要**回退成"cancel 后立即 speak"的写法。
+- 发音：`speakText(text, rate)` 是唯一入口（**优先 localService 本地语音**——Chrome 的 Google 网络语音在国内静默无声，Mac 上尤其常见；规避 cancel/speak 竞态；失败弹 audioTip 提示条），`playAudio` 是 0.85 速薄封装。**不要**回退成"cancel 后立即 speak"或"不分本地/网络随便挑语音"的写法。
 - 35 单元 = 7 册×5：key 形如 `B1-1`…`S4-5`。`sw.js` 离线缓存页面+CDN，改 CDN 版本时**同步更新 sw.js 预缓存清单**和 `_headers` CSP。
 
 ## 状态/存储坑

@@ -12906,8 +12906,8 @@ Which option best expresses its meaning?`,
                 const currentQ = quizArr[qIdx];
                 const isCorrect = idx === currentQ.ans;
                 setWrongStreak(s => isCorrect ? 0 : s + 1);
-                // 答错当轮复现：错题追加到本轮队尾再考一遍（最多复现2次；复现题不计分不入错题本）
-                if (!isCorrect && !isReinforcement && !isMistakePractice && (tab === 'quiz' || tab === 'gaokaoquiz') && (currentQ._retry || 0) < 2) {
+                // 答错当轮复现：错题追加到本轮队尾再考一遍（含错题回炉；最多复现2次；复现题不计分不入错题本不改SRS）
+                if (!isCorrect && !isReinforcement && (tab === 'quiz' || tab === 'gaokaoquiz') && (currentQ._retry || 0) < 2) {
                     setQuizArr(prev => [...prev, { ...currentQ, _retry: (currentQ._retry || 0) + 1 }]);
                 }
                 if (isCorrect) {
@@ -12916,25 +12916,33 @@ Which option best expresses its meaning?`,
                         setSessionCorrect(s => s + 1);
                     }
                 } else if (!isReinforcement && !isMistakePractice && !currentQ._retry && tab !== 'cards') {
-                    const mistakeCard = {
-                        id: Date.now() + Math.random(),
-                        ts: Date.now(),
-                        unitKey,
-                        q: currentQ.q,
-                        wrongOpt: currentQ.opts[idx],
-                        correctOpt: currentQ.opts[currentQ.ans],
-                        rat: currentQ.rat,
-                        meta: currentQ.meta,
-                        srsBox: 1,
-                        srsDue: Date.now() + 3 * SRS_DAY, // 3 天后回炉
-                        cleared: false,
-                    };
-                    setMistakeBank(prev => [mistakeCard, ...prev]);
-                    setLastMistakeId(mistakeCard.id);
+                    // 同一道题已有错题卡（含已攻克的）：重置回炉状态，不建重复卡
+                    const dup = mistakeBank.find(m => m.q === currentQ.q);
+                    if (dup) {
+                        setMistakeBank(prev => prev.map(m => m.id === dup.id ? { ...m, srsBox: 1, srsDue: Date.now() + 3 * SRS_DAY, cleared: false, wrongOpt: currentQ.opts[idx] } : m));
+                        setLastMistakeId(dup.id);
+                    } else {
+                        const mistakeCard = {
+                            id: Date.now() + Math.random(),
+                            ts: Date.now(),
+                            unitKey,
+                            q: currentQ.q,
+                            wrongOpt: currentQ.opts[idx],
+                            correctOpt: currentQ.opts[currentQ.ans],
+                            rat: currentQ.rat,
+                            meta: currentQ.meta,
+                            srsBox: 1,
+                            srsDue: Date.now() + 3 * SRS_DAY, // 3 天后回炉
+                            cleared: false,
+                        };
+                        setMistakeBank(prev => [mistakeCard, ...prev]);
+                        setLastMistakeId(mistakeCard.id);
+                    }
                 }
 
-                // 错题练习模式：按记忆曲线更新错题状态（连对两次 → 攻克）
-                if (isMistakePractice && currentQ.mistakeId != null) {
+                // 错题练习模式：按记忆曲线更新错题状态（连对两次 → 攻克）。
+                // 当轮复现题不写 SRS——以本轮第一次作答为准，刚看过答案的复现答对不算"记住了"。
+                if (isMistakePractice && currentQ.mistakeId != null && !currentQ._retry) {
                     setMistakeBank(prev => prev.map(m => {
                         if (m.id !== currentQ.mistakeId) return m;
                         if (isCorrect) {
@@ -12942,7 +12950,8 @@ Which option best expresses its meaning?`,
                             if (box >= 3) return { ...m, srsBox: box, cleared: true, srsDue: null, clearedAt: Date.now() };
                             return { ...m, srsBox: box, srsDue: Date.now() + 7 * SRS_DAY, cleared: false };
                         }
-                        return { ...m, srsBox: 1, srsDue: Date.now() + 3 * SRS_DAY, cleared: false };
+                        // 回炉答错：明天再来，而不是推到3天后"蒙混过关"
+                        return { ...m, srsBox: 1, srsDue: Date.now() + 1 * SRS_DAY, cleared: false };
                     }));
                 }
 
@@ -13568,7 +13577,7 @@ Which option best expresses its meaning?`,
                                                     </div>
                                                 );
                                             })()}
-                                            {ansIdx !== quizArr[qIdx]?.ans && !isReinforcement && !isMistakePractice && (tab === 'quiz' || tab === 'gaokaoquiz') && (quizArr[qIdx]?._retry || 0) < 2 && (
+                                            {ansIdx !== quizArr[qIdx]?.ans && !isReinforcement && (tab === 'quiz' || tab === 'gaokaoquiz') && (quizArr[qIdx]?._retry || 0) < 2 && (
                                                 <p className="text-[12px] font-bold text-rose-500 mb-4 text-center">🔁 这题过一会儿会再考一遍——看好上面那句话，等下赢回来</p>
                                             )}
                                             {ansIdx !== quizArr[qIdx]?.ans && !isReinforcement && (() => {
@@ -13657,7 +13666,7 @@ Which option best expresses its meaning?`,
                     return (
                         <div>
                             <h2 className="text-2xl font-bold tracking-tight mb-2">错题库</h2>
-                            <p className="text-[13px] text-slate-400 font-medium mb-6">错题按记忆曲线回炉：做错 3 天后到期，答对进入 7 天档，连对两次算攻克。</p>
+                            <p className="text-[13px] text-slate-400 font-medium mb-6">错题按记忆曲线回炉：新错题 3 天后到期；回炉答对进 7 天档，连对两次算攻克；回炉答错当场重考一遍，明天再来。</p>
                             {mistakeBank.length === 0 ? (
                                 <div className="text-center p-10 card-lg text-slate-400 font-medium">还没有错题，继续保持。</div>
                             ) : (

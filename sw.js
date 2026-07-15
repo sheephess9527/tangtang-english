@@ -44,6 +44,9 @@ self.addEventListener('fetch', (event) => {
     if (req.method !== 'GET') return;
     const url = new URL(req.url);
 
+    // 在线发音（有道）不走 SW：音频常带 Range 请求，缓存整包响应会让 Safari 播不出来
+    if (url.hostname === 'dict.youdao.com') return;
+
     if (url.origin !== self.location.origin) {
         // CDN 资源：缓存优先（URL 带版本号，内容不变），未命中再走网络并回填
         event.respondWith(

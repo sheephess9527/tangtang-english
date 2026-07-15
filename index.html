@@ -12533,10 +12533,28 @@ Which option best expresses its meaning?`,
                 const t = setTimeout(() => setAudioTip(null), 6000);
                 return () => clearTimeout(t);
             }, [audioTip]);
+            // ── 在线发音兜底：系统语音合成不可用时切有道词典发音（国内可达，不依赖本机语音包）──
+            const fallbackAudioRef = useRef(null);
+            const preferFallbackRef = useRef(false); // 本设备语音合成失败过一次后，本次会话直接走在线发音（免得每次干等）
+            const playFallbackAudio = useCallback((text, rate = 1) => {
+                preferFallbackRef.current = true;
+                try {
+                    const a = fallbackAudioRef.current || (fallbackAudioRef.current = new Audio());
+                    a.pause();
+                    a.src = 'https://dict.youdao.com/dictvoice?type=2&audio=' + encodeURIComponent(text);
+                    a.defaultPlaybackRate = rate;
+                    a.playbackRate = rate;
+                    a.onended = () => setPlayingWord(null);
+                    a.onerror = () => { setPlayingWord(null); setAudioTip('本地语音不可用，在线发音也没连上：检查网络后再点一次'); };
+                    const p = a.play();
+                    if (p && p.catch) p.catch(() => { setPlayingWord(null); setAudioTip('浏览器拦住了这次播放，再点一次就有声音了'); });
+                } catch (_) { setPlayingWord(null); }
+            }, []);
             const speakText = useCallback((text, rate = 0.85) => {
                 if (!text) return;
-                if (!window.speechSynthesis) {
-                    setAudioTip('这个浏览器不支持语音朗读，建议换 Edge / Chrome / Safari 打开');
+                if (preferFallbackRef.current || !window.speechSynthesis) {
+                    setPlayingWord(text);
+                    playFallbackAudio(text, rate);
                     return;
                 }
                 const synth = window.speechSynthesis;
@@ -12547,9 +12565,12 @@ Which option best expresses its meaning?`,
                 let started = false;
                 utterance.onstart = () => { started = true; };
                 utterance.onend = () => setPlayingWord(null);
-                utterance.onerror = () => {
-                    setPlayingWord(null);
-                    setAudioTip('发音失败：这台设备可能没有英文语音包。电脑建议用 Edge 打开，或在系统设置里添加 English 语音；手机检查是否开了静音');
+                utterance.onerror = (ev) => {
+                    const code = (ev && ev.error) || '';
+                    // 连点两个词时旧朗读被 cancel 会触发 canceled/interrupted，不是故障，忽略
+                    if (code === 'canceled' || code === 'interrupted') return;
+                    // 真失败（Safari 的 not-allowed / synthesis-failed 等）：切在线发音兜底
+                    playFallbackAudio(text, rate);
                 };
                 const speakNow = () => {
                     // 开口前才挑语音（列表异步加载完也能用上）。
@@ -12565,12 +12586,9 @@ Which option best expresses its meaning?`,
                     try { synth.resume(); } catch (_) {} // Chrome 偶发卡在 paused 状态，先恢复
                     synth.speak(utterance);
                     setTimeout(() => {
-                        // 部分浏览器静默失败且不触发 onerror：2.5 秒仍未开始就提示
+                        // 部分浏览器静默失败且不触发 onerror：2.5 秒仍未开始就切在线发音兜底
                         if (!started && !synth.speaking && !synth.pending) {
-                            setPlayingWord(null);
-                            setAudioTip((synth.getVoices() || []).length === 0
-                                ? '这台设备没有可用的语音包：电脑建议用 Edge 打开，或在系统设置里添加 English 语音'
-                                : '发音没有播出来：检查一下浏览器标签页/系统音量是否被静音');
+                            playFallbackAudio(text, rate);
                         }
                     }, 2500);
                 };
@@ -12581,7 +12599,7 @@ Which option best expresses its meaning?`,
                 } else {
                     speakNow();
                 }
-            }, []);
+            }, [playFallbackAudio]);
             const playAudio = useCallback((text, e) => {
                 if (e) e.stopPropagation();
                 speakText(text, 0.85);

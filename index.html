@@ -10850,6 +10850,97 @@ Which option best expresses its meaning?`,
 
 
         // ==========================================
+        // 5.5 错题考点识别 + 举一反三生成（读解析定考点，比只匹配题干词精准得多）
+        // ==========================================
+        // 语法术语强词表：解析里出现其一即为强语法信号（不含 ed/ing 等短串，避免普通单词误触发）
+        const STRONG_GRAMMAR_TERMS = ['介词', '时态', '定语', '从句', '非谓', '谓语', '分词', '被动', '语态', '主谓', '一致', '冠词', '连词', '副词', '形容', '名词', '代词', '情态', '虚拟', '倒装', '比较', '最高级', '不定式', '动名词', '主语', '宾语', '表语', '完成时', '过去式', '现在时', '将来'];
+        // 把语法点标题/标签拆成可比对的关键词：英文≥3字母整词，中文按滑窗二字词；-ed/-ing 作为带连字符的字面量保留
+        const pointTokens = (s) => {
+            const t = new Set();
+            const src = s || '';
+            (src.match(/-(?:ed|ing)\b/gi) || []).forEach(x => t.add(x.toLowerCase()));
+            src.split(/[^A-Za-z一-龥]+/).forEach(seg => {
+                if (!seg) return;
+                if (/^[A-Za-z]+$/.test(seg)) { if (seg.length >= 4) t.add(seg.toLowerCase()); return; }
+                for (let i = 0; i + 2 <= seg.length; i++) t.add(seg.slice(i, i + 2));
+            });
+            return [...t];
+        };
+        // 通用语法模式：读解析的措辞直接判考点（题库题解析措辞有规律，比匹配题干词精准）
+        const GRAMMAR_RULES = [
+            { re: /令人|感到.{0,6}的|人用|物用|-ed.{0,20}-ing|-ing.{0,20}-ed|现在分词|过去分词|分词作/, label: '-ed / -ing 分词与情感形容词', tokens: ['-ed', '-ing', '分词', '令人', '感到', '人用', '物用'] },
+            { re: /定语从句|先行词|关系代词|关系副词/, label: '定语从句', tokens: ['定语', '从句', '先行', '关系'] },
+            { re: /主谓一致|谓语用单数|谓语用复数|单复数.{0,6}一致/, label: '主谓一致', tokens: ['主谓', '一致', '单数', '复数'] },
+            { re: /被动语态|被动|be\s+done/, label: '被动语态', tokens: ['被动', '语态'] },
+            { re: /现在完成|过去完成|一般过去|一般现在|将来时|进行时|时态/, label: '动词时态', tokens: ['时态', '完成', '过去', '将来', '进行'] },
+            { re: /不定式|动名词|非谓语|to\s+do\s+作/, label: '非谓语动词', tokens: ['不定', '动名', '非谓', '谓语'] },
+            { re: /名词性从句|宾语从句|主语从句|表语从句|同位语/, label: '名词性从句', tokens: ['从句', '宾语', '主语', '表语', '同位'] },
+            { re: /情态动词|虚拟语气/, label: '情态动词与虚拟语气', tokens: ['情态', '虚拟'] },
+            { re: /比较级|最高级|倍数表达/, label: '比较等级', tokens: ['比较', '最高'] },
+            { re: /冠词/, label: '冠词', tokens: ['冠词'] },
+            { re: /介词/, label: '介词', tokens: ['介词'] },
+            { re: /副词修饰|形容词修饰|词性辨析|词性/, label: '词性与修饰', tokens: ['副词', '形容', '词性', '修饰'] },
+        ];
+        // 关键词命中打分：强术语/长英文词 +2，普通二字词 +1；≥2 分才认定为该语法点
+        const scoreTokens = (tokens, hay) => {
+            let score = 0;
+            tokens.forEach(tok => {
+                if (!hay.includes(tok)) return;
+                score += (STRONG_GRAMMAR_TERMS.includes(tok) || /^[a-z]{4,}$/.test(tok)) ? 2 : 1;
+            });
+            return score;
+        };
+        // 找出本单元语法填空里与该考点同类的空（举一反三的真题来源）
+        const matchFillIdxs = (unitKey, tokens) => {
+            const gf = GRAMMAR_FILL_DB[unitKey];
+            if (!gf || !tokens || !tokens.length) return [];
+            const idxs = [];
+            gf.blanks.forEach((b, i) => {
+                if (b.tag && scoreTokens(tokens, b.tag.toLowerCase()) >= 2) idxs.push(i);
+            });
+            return idxs;
+        };
+        // 从整篇语法填空里抠出含第 n 空的那句话，其余空用答案填好（不用 lookbehind，兼容老 Safari）
+        const grammarFillSentence = (gf, n) => {
+            if (!gf || !gf.text) return null;
+            let t = gf.text;
+            gf.blanks.forEach((b, i) => {
+                if (i + 1 === n) return;
+                t = t.split(`{${i + 1}}`).join((b.ans && b.ans[0]) || b.hint || '');
+            });
+            const parts = t.match(/[^.!?。]*[.!?。]?/g) || [t];
+            const hit = parts.find(p => p.includes(`{${n}}`));
+            return hit ? hit.trim().replace(`{${n}}`, '______') : null;
+        };
+        // 用语法填空的空位造一道单句应用题：同考点、真语境、没见过
+        const buildGrammarAppQ = (unitKey, blankIdx) => {
+            const gf = GRAMMAR_FILL_DB[unitKey];
+            if (!gf) return null;
+            const b = gf.blanks[blankIdx];
+            if (!b || !b.ans || !b.ans.length) return null;
+            const sentence = grammarFillSentence(gf, blankIdx + 1);
+            if (!sentence) return null;
+            const correct = b.ans[0];
+            const base = (b.hint || '').trim();
+            const cands = [];
+            if (base) {
+                const forms = [base, base + 's', base + 'ed', base + 'ing', 'to ' + base, base + 'ly'];
+                if (/e$/.test(base)) { forms.push(base.slice(0, -1) + 'ing'); forms.push(base + 'd'); }
+                forms.forEach(f => { if (f && f !== correct && !(b.ans || []).includes(f) && !cands.includes(f)) cands.push(f); });
+            }
+            const opts = shuffle([correct, ...shuffle(cands).slice(0, 3)]);
+            if (opts.length < 2) return null;
+            return {
+                type: '举一反三 - 语法应用',
+                q: `[举一反三] 用 "${base || correct}" 的适当形式完成句子：\n${sentence}`,
+                opts,
+                ans: opts.indexOf(correct),
+                rat: `[解析] 考点：${b.tag || '语法变形'}。这里应填 ${correct}。`,
+                meta: null,
+            };
+        };
+
+        // ==========================================
         // 6. 纯净登录组件
         // ==========================================
         const LoginScreen = ({ onLogin }) => {
@@ -12810,7 +12901,7 @@ Which option best expresses its meaning?`,
                     if (!groups[p.key]) groups[p.key] = { point: p, ms: [] };
                     groups[p.key].ms.push(m);
                 });
-                const kindName = { word: '词汇', grammar: '语法', sentence: '句型', writing: '写作', unit: '综合' };
+                const kindName = { word: '词义', colloc: '固定搭配', grammar: '语法', sentence: '句型', writing: '写作', unit: '待归类' };
                 const lines = [];
                 lines.push(`糖糖错题知识点汇总 · ${todayStr()}`);
                 lines.push(`待攻克 ${activeMistakes.length} 道 · 已攻克 ${clearedMistakes.length} 道`);
@@ -12818,14 +12909,15 @@ Which option best expresses its meaning?`,
                 Object.values(groups).sort((a, b) => b.ms.length - a.ms.length).forEach(({ point, ms }, gi) => {
                     lines.push(`${gi + 1}.【${kindName[point.kind] || '综合'}】${point.label}${point.sub ? `（${point.sub}）` : ''} —— ${ms.length} 道错题 · ${point.unitKey}`);
                     // 知识点讲解：先学后练，导出的单子拿来就能复习
-                    if (point.kind === 'word' && point.data) {
+                    if ((point.kind === 'word' || point.kind === 'colloc') && point.data) {
                         lines.push(`   ◆ 知识点：${point.data.w} = ${point.data.m || ''}`);
                         if (point.data.d) lines.push(`     搭配/用法：${point.data.d}`);
                         if (point.data.ex) lines.push(`     例句：${point.data.ex}${point.data.exCn ? `（${point.data.exCn}）` : ''}`);
-                    } else if (point.kind === 'grammar' && point.data) {
-                        lines.push(`   ◆ 知识点：${point.data.t}`);
-                        if (point.data.r) lines.push(`     规则：${point.data.r}`);
-                        if (point.data.p) lines.push(`     避坑：${point.data.p}`);
+                    } else if (point.kind === 'grammar') {
+                        lines.push(`   ◆ 考点：${point.label}`);
+                        if (point.data && point.data.r) lines.push(`     规则：${point.data.r}`);
+                        if (point.data && point.data.p) lines.push(`     避坑：${point.data.p}`);
+                        if (!point.data && point.sub) lines.push(`     说明：${point.sub}`);
                     } else if (point.kind === 'sentence' && point.data) {
                         lines.push(`   ◆ 句型：${point.data.e}`);
                         if (point.data.z) lines.push(`     中文：${point.data.z}`);
@@ -12895,24 +12987,17 @@ Which option best expresses its meaning?`,
                 launchMistakeQuiz(buildMistakeQuiz([m]));
             };
 
-            // ── 防背答案验证：用刚练过的错题的知识点现场生成"变式新题"，答对变式才算真懂 ──
+            // ── 防背答案验证：用刚练过的错题的考点现场生成"变式新题"，答对变式才算真懂 ──
             const startVariantCheck = (mids) => {
                 const ms = mistakeBank.filter(m => mids.includes(m.id));
                 const pts = [];
                 const seenP = new Set();
                 ms.forEach(m => {
                     const p = mistakePointOf(m);
-                    if (p.data && !seenP.has(p.key)) { seenP.add(p.key); pts.push(p); }
+                    if (p.kind !== 'unit' && !seenP.has(p.key)) { seenP.add(p.key); pts.push(p); }
                 });
                 let qs = [];
-                pts.slice(0, 4).forEach(p => {
-                    const ud = getUnitData(p.unitKey);
-                    const { all } = getWordPool(ud);
-                    const gpool = getGrammarPool(ud);
-                    if (p.kind === 'word') { qs.push(buildContextWordQ(ud, p.data, all)); qs.push(buildCollocationQ(ud, p.data, all)); }
-                    else if (p.kind === 'grammar') { qs.push(buildGrammarInContextQ(ud, p.data, gpool)); }
-                    else if (p.kind === 'sentence') { qs.push(buildSentenceInferenceQ(ud, p.data)); }
-                });
+                pts.slice(0, 4).forEach(p => { qs = qs.concat(pointVariantQs(p).slice(0, 2)); });
                 const seenQ = new Set();
                 qs = qs.filter(Boolean).filter(q => { if (seenQ.has(q.q)) return false; seenQ.add(q.q); return true; });
                 if (qs.length === 0) return alert('这组错题暂时生成不了变式题，可以在知识点归集里逐个"练类似题"');
@@ -12931,39 +13016,80 @@ Which option best expresses its meaning?`,
                 setTab('quiz');
             };
 
-            // ── 错题知识点归集：给每道错题推导知识点（meta 优先，题库题从题干匹配单元词兜底）──
+            // ── 错题考点识别：搭配 → 语法点（读解析比对关键词）→ 词汇 → 待归类 ──
             const mistakePointOf = (m) => {
                 const meta = m.meta;
-                if (meta && meta.type === 'word' && meta.data?.w) return { kind: 'word', key: `词汇::${meta.data.w}`, label: meta.data.w, sub: meta.data.m || '', unitKey: m.unitKey, data: meta.data };
-                if (meta && meta.type === 'grammar' && meta.data?.t) return { kind: 'grammar', key: `语法::${meta.data.t}`, label: meta.data.t, sub: '语法点', unitKey: m.unitKey, data: meta.data };
+                if (meta && meta.type === 'word' && meta.data?.w) return { kind: 'word', key: `词义::${meta.data.w}`, label: meta.data.w, sub: meta.data.m || '', unitKey: m.unitKey, data: meta.data };
+                if (meta && meta.type === 'grammar' && meta.data?.t) return { kind: 'grammar', key: `语法::${meta.data.t}`, label: meta.data.t, sub: meta.data.r || '语法点', unitKey: m.unitKey, data: meta.data, fillIdxs: matchFillIdxs(m.unitKey, pointTokens(meta.data.t)) };
                 if (meta && meta.type === 'sentence' && meta.data?.e) return { kind: 'sentence', key: `句型::${meta.data.e}`, label: (meta.data.z || meta.data.e).slice(0, 26), sub: '句型理解', unitKey: m.unitKey, data: meta.data };
                 if (meta && meta.type === 'writing') return { kind: 'writing', key: `写作::${m.unitKey}`, label: '写作表达策略', sub: '', unitKey: m.unitKey, data: meta.data };
                 const ud = getUnitData(m.unitKey);
-                const qtext = `${m.q || ''} ${m.correctOpt || ''} ${m.wrongOpt || ''}`.toLowerCase();
-                const hit = (ud.words || []).find(w => w.w && w.w.length >= 3 && qtext.includes(w.w.toLowerCase()));
-                if (hit) return { kind: 'word', key: `词汇::${hit.w}`, label: hit.w, sub: hit.m || '', unitKey: m.unitKey, data: hit };
-                return { kind: 'unit', key: `单元::${m.unitKey}`, label: `${m.unitKey} 综合`, sub: ud.title || '', unitKey: m.unitKey, data: null };
+                const ratLow = (m.rat || '').toLowerCase();
+                const ansLow = `${m.correctOpt || ''} ${m.wrongOpt || ''}`.toLowerCase();
+                const qLow = (m.q || '').toLowerCase();
+                const words = (ud.words || []).filter(w => w.w && w.w.length >= 3);
+                const findWordIn = (hay) => words.find(w => hay.includes(w.w.toLowerCase()));
+                // ① 固定搭配：解析明说"搭配"且能定位到具体词
+                if (/搭配/.test(m.rat || '')) {
+                    const w = findWordIn(ratLow) || findWordIn(ansLow) || findWordIn(qLow);
+                    if (w) return { kind: 'colloc', key: `搭配::${w.w}`, label: `${w.w} 的搭配`, sub: w.d || w.m || '', unitKey: m.unitKey, data: w };
+                }
+                // ② 语法点：单元语法标题 & 语法填空 tag 的关键词，与解析文本比对打分
+                let best = null;
+                (ud.grammar || []).forEach(g => {
+                    const toks = pointTokens(g.t);
+                    const score = scoreTokens(toks, ratLow);
+                    if (score >= 2 && (!best || score > best.score)) best = { label: g.t, sub: g.r || '', data: g, toks, score };
+                });
+                const gfDb = GRAMMAR_FILL_DB[m.unitKey];
+                if (gfDb) gfDb.blanks.forEach((b) => {
+                    if (!b.tag) return;
+                    const toks = pointTokens(b.tag);
+                    const score = scoreTokens(toks, ratLow);
+                    if (score >= 2 && (!best || score > best.score)) best = { label: b.tag, sub: '语法填空同款考点', data: null, toks, score };
+                });
+                // ②b 单元考点匹配不上时，用通用语法模式识别解析措辞兜底
+                if (!best) {
+                    const rule = GRAMMAR_RULES.find(r => r.re.test(m.rat || ''));
+                    if (rule) best = { label: rule.label, sub: '', data: null, toks: rule.tokens, score: 2 };
+                }
+                if (best) return { kind: 'grammar', key: `语法::${best.label}`, label: best.label, sub: best.sub, unitKey: m.unitKey, data: best.data, fillIdxs: matchFillIdxs(m.unitKey, best.toks) };
+                // ③ 词汇：选项里出现的单元词最可信，其次解析，最后题干
+                const w = findWordIn(ansLow) || findWordIn(ratLow) || findWordIn(qLow);
+                if (w) return { kind: 'word', key: `词义::${w.w}`, label: w.w, sub: w.m || '', unitKey: m.unitKey, data: w };
+                return { kind: 'unit', key: `待归类::${m.unitKey}`, label: `${m.unitKey} 待归类`, sub: ud.title || '', unitKey: m.unitKey, data: null };
             };
 
-            // ── 练类似题：按知识点用题目生成器出一小组"新题"（不是原题重做）──
-            const startSimilarPractice = (point, groupMistakes) => {
+            // ── 举一反三题组：同一考点的"没见过的新题"（语法优先用语法填空真句改造）──
+            const pointVariantQs = (point) => {
                 const ud = getUnitData(point.unitKey);
                 const { all } = getWordPool(ud);
                 const gpool = getGrammarPool(ud);
                 let qs = [];
-                if (point.kind === 'word' && point.data) {
-                    qs = [buildThemeMeaningQ(ud, point.data, all), buildContextWordQ(ud, point.data, all), buildCollocationQ(ud, point.data, all), ...buildReinforcementQs({ type: 'word', data: point.data })];
-                } else if (point.kind === 'grammar' && point.data) {
-                    qs = [buildGrammarInContextQ(ud, point.data, gpool), buildGrammarErrorQ(ud, point.data, gpool), ...buildReinforcementQs({ type: 'grammar', data: point.data })];
+                if ((point.kind === 'word' || point.kind === 'colloc') && point.data) {
+                    if (point.kind === 'colloc') qs.push(buildCollocationQ(ud, point.data, all));
+                    qs.push(buildContextWordQ(ud, point.data, all));
+                    qs.push(buildThemeMeaningQ(ud, point.data, all));
+                    if (point.kind === 'word') qs.push(buildCollocationQ(ud, point.data, all));
+                    qs = qs.concat(buildReinforcementQs({ type: 'word', data: point.data }));
+                } else if (point.kind === 'grammar') {
+                    (point.fillIdxs || []).slice(0, 3).forEach(i => qs.push(buildGrammarAppQ(point.unitKey, i)));
+                    if (point.data) { qs.push(buildGrammarInContextQ(ud, point.data, gpool)); qs.push(buildGrammarErrorQ(ud, point.data, gpool)); }
                 } else if (point.kind === 'sentence' && point.data) {
-                    qs = [buildSentenceInferenceQ(ud, point.data), ...buildReinforcementQs({ type: 'sentence', data: point.data })];
+                    qs.push(buildSentenceInferenceQ(ud, point.data));
+                    qs = qs.concat(buildReinforcementQs({ type: 'sentence', data: point.data }));
                 } else if (point.kind === 'writing' && point.data) {
                     qs = buildReinforcementQs({ type: 'writing', data: point.data });
                 }
                 const seenQ = new Set();
-                qs = qs.filter(Boolean).filter(q => { if (seenQ.has(q.q)) return false; seenQ.add(q.q); return true; });
+                return qs.filter(Boolean).filter(q => { if (seenQ.has(q.q)) return false; seenQ.add(q.q); return true; });
+            };
+
+            // ── 练类似题：按考点出一小组"新题"（不是原题重做）──
+            const startSimilarPractice = (point, groupMistakes) => {
+                const qs = pointVariantQs(point);
                 if (qs.length === 0) {
-                    // 综合类/生成失败：退回重练这组错题原题
+                    // 待归类/生成失败：退回重练这组错题原题
                     if (groupMistakes && groupMistakes.length) launchMistakeQuiz(shuffle(buildMistakeQuiz(groupMistakes)));
                     return;
                 }
@@ -13787,7 +13913,7 @@ Which option best expresses its meaning?`,
                                             groups[p.key].ms.push(m);
                                         });
                                         const list = Object.values(groups).sort((a, b) => b.ms.length - a.ms.length).slice(0, 8);
-                                        const kindBadge = { word: ['词汇', 'bg-purple-100 text-purple-700'], grammar: ['语法', 'bg-indigo-100 text-indigo-700'], sentence: ['句型', 'bg-sky-100 text-sky-700'], writing: ['写作', 'bg-emerald-100 text-emerald-700'], unit: ['综合', 'bg-slate-200 text-slate-600'] };
+                                        const kindBadge = { word: ['词义', 'bg-purple-100 text-purple-700'], colloc: ['搭配', 'bg-fuchsia-100 text-fuchsia-700'], grammar: ['语法', 'bg-indigo-100 text-indigo-700'], sentence: ['句型', 'bg-sky-100 text-sky-700'], writing: ['写作', 'bg-emerald-100 text-emerald-700'], unit: ['待归类', 'bg-slate-200 text-slate-600'] };
                                         return (
                                             <div className="card-lg p-6">
                                                 <h3 className="font-bold text-[15px] mb-1 flex items-center gap-2">📚 知识点归集 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-600">同一个坑不摔两次</span></h3>

@@ -11765,6 +11765,171 @@ Which option best expresses its meaning?`,
             },
         ];
 
+        // 读后续写四步训练：读懂原文 → 抓伏笔 → 定走向 → 升格句 → 谋篇成段 → 对照范文（25分题的骨架）
+        const XUXIE_TRAIN_DB = [
+            {
+                title: '给妈妈的生日惊喜',
+                context: 'Emma 想给辛苦工作的妈妈一个难忘的生日惊喜。她攒了几周零花钱，还偷偷拉上爸爸一起布置。生日当天，她起个大早烤蛋糕、挂气球，紧张地等妈妈下班回家。',
+                clues: ['攒了几周的零花钱', '爸爸是同谋', '蛋糕和气球', '妈妈下班很疲惫'],
+                p1: 'Para 1: Hearing her mother\'s key in the door, Emma quickly hid behind the sofa.',
+                p2: 'Para 2: Tears welling up in her eyes, Mother pulled Emma into a warm hug.',
+                steps: [
+                    { stage: '① 读懂原文', q: '这个故事的主线是什么？', opts: ['Emma 想给辛苦的妈妈准备一个难忘的生日惊喜', 'Emma 和妈妈因为零花钱吵了一架', 'Emma 忘记了妈妈的生日很自责', 'Emma 想让妈妈给自己买生日礼物'], ans: 0, rat: '续写第一步永远是读懂主线和人物关系。这里是"女儿精心为母亲筹备惊喜"，续写必须顺着这条情感线走。' },
+                    { stage: '② 抓伏笔', q: '原文特意写了"攒了几周零花钱""爸爸偷偷帮忙"，续写时该怎么处理这些细节？', opts: ['让它们在续写里落地：钱变成礼物/蛋糕，爸爸参与揭晓惊喜', '它们只是背景，续写不用再提', '续写另起炉灶，写一个全新的人物', '只写 Emma 一个人，忽略爸爸'], ans: 0, rat: '改卷老师专门看"协同性"——原文特意提到的物品、人物就是伏笔，续写用上了才得高分。这是续写最容易被忽略的采分点。' },
+                    { stage: '③ 定走向', q: '第一段首句是"Emma 躲到沙发后面"，这一段最合理的情节是？', opts: ['妈妈进门 → Emma 跳出来喊惊喜 → 展现布置好的场景和心意', '直接跳到第二天早上发生的事', '回忆妈妈平时工作有多辛苦（原文已交代）', '写 Emma 后悔不该花这么多钱'], ans: 0, rat: '首句给"躲起来"，情节必须顺势推进到"揭晓惊喜"。跳时间、写回忆、写后悔都和首句脱节——续写扣分的重灾区就是"接不上首句"。' },
+                    { stage: '④ 升格句', q: '"妈妈很惊讶很感动"怎么写成高分句？', opts: ['Her mother froze in the doorway, her tired eyes slowly filling with surprise.', 'Her mother was very very surprised and happy.', 'Her mother felt surprised, happy, moved and excited at the same time.', 'Her mother saw the cake and was happy.'], ans: 0, rat: '高分句靠"动作/神态"演出情绪，不靠形容词直接说。froze（定住）+ eyes filling（眼含惊喜）把"惊讶感动"演了出来。堆四个形容词反而显得空。' },
+                    { type: 'assemble', stage: '⑤ 谋篇成段', q: '把第一段的四句按逻辑排成一段（依次点击）：', parts: ['The moment the door opened, she jumped out and shouted, "Happy birthday, Mom!"', 'The living room lit up with colorful balloons and a glowing cake that her father had secretly helped her carry in.', 'Her mother froze in the doorway, her tired eyes slowly filling with surprise.', '"I saved my pocket money for weeks to make this day special for you," Emma said softly.'], rat: '揭晓的逻辑：跳出来喊 → 展现布置的场景 → 妈妈的反应 → Emma 说出心意（零花钱伏笔落地）。动作和情绪交替，画面就活了。' },
+                ],
+                model: {
+                    p1: 'Hearing her mother\'s key in the door, Emma quickly hid behind the sofa. The moment the door opened, she jumped out and shouted, "Happy birthday, Mom!" The living room lit up with colorful balloons and a glowing cake that her father had secretly helped her carry in. Her mother froze in the doorway, her tired eyes slowly filling with surprise. "I saved my pocket money for weeks to make this day special for you," Emma said softly.',
+                    p2: 'Tears welling up in her eyes, Mother pulled Emma into a warm hug. "This is the best gift I have ever received," she whispered, her voice trembling with joy. At that moment, Emma understood that the greatest present was not the cake or the balloons, but the love they shared. From then on, she promised herself to bring more warmth to the woman who had given her everything.',
+                    note: '范文全程"动作+情绪交替"推进（froze / eyes filling、tears welling / whispered），把零花钱、爸爸、蛋糕三个伏笔全部用上，结尾升华到"爱与感恩"的主题——这正是续写 25 分的满分骨架。',
+                },
+            },
+            {
+                title: '迷路的少年',
+                context: '学校组织登山，Jack 为了拍照悄悄脱离了队伍。大雾突然涌起，他的手机没有信号，天渐渐黑下来，气温骤降，他越来越害怕。就在这时，他想起了出发前老师给每个学生发的哨子。',
+                clues: ['老师发的哨子', '越来越浓的大雾', '骤降的气温', '手机没信号'],
+                p1: 'Para 1: Remembering the whistle in his pocket, Jack blew it as hard as he could.',
+                p2: 'Para 2: A bright light suddenly cut through the fog, and a park ranger appeared.',
+                steps: [
+                    { stage: '① 读懂原文', q: '这个故事此刻的核心困境是什么？', opts: ['Jack 脱队拍照，大雾天黑后迷路、手机没信号，陷入危险', 'Jack 和同学吵架后独自离队', 'Jack 讨厌登山想提前回家', 'Jack 在山上遇到了野生动物'], ans: 0, rat: '读懂困境才能写好脱困。核心是"脱队 + 大雾 + 天黑 + 失联"，续写要沿着"如何自救脱险"展开。' },
+                    { stage: '② 抓伏笔', q: '原文结尾特意提到"老师出发前发的哨子"，这是什么信号？', opts: ['这是救命伏笔，续写必须用哨子求救', '只是随口一提，可有可无', '哨子会在续写里弄丢', '应该改用手机求救（可原文说没信号）'], ans: 0, rat: '原文在关键时刻点出哨子，就是给你的"救命道具"。而且首句已经是"吹哨子"，伏笔和首句双重锁定了走向——用哨子求救。' },
+                    { stage: '③ 定走向', q: '第一段首句是"Jack 吹响了哨子"，这一段最合理的情节是？', opts: ['在寒冷和恐惧中反复吹哨、坚持等待，直到听见回应', '一吹哨子马上就有人出现（缺少铺垫）', 'Jack 决定不等了，自己摸黑下山（与首句矛盾）', '回忆 Jack 为什么喜欢登山（偏题）'], ans: 0, rat: '首句定了"吹哨求救"，就要把"求救—坚持—有回应"的过程写出张力。马上获救太突兀，自己下山与首句矛盾，回忆则跑题。' },
+                    { stage: '④ 升格句', q: '"他很害怕但没有放弃"怎么写成高分句？', opts: ['His hands were shaking with cold, yet he forced himself to blow the whistle again and again.', 'He was afraid but he did not give up.', 'He was very afraid, scared, frightened but strong.', 'He was cold and afraid and he blew the whistle.'], ans: 0, rat: '用"手冻得发抖(动作) + 却强迫自己一次次吹哨(动作)"演出"害怕但坚持"，比直白陈述或堆砌形容词有画面感得多。yet 的转折也加分。' },
+                    { type: 'assemble', stage: '⑤ 谋篇成段', q: '把第一段的四句按逻辑排成一段（依次点击）：', parts: ['The sharp sound pierced the thick fog again and again, but only silence answered.', 'His hands were shaking with cold, yet he refused to give up.', 'He pressed his back against a rock, blew the whistle once more, and waited, straining his ears for any reply.', 'Just as hope began to fade, a faint voice echoed from the distance.'], rat: '脱困的张力：哨声反复却无回应 → 又冷又不放弃 → 再吹一次紧张等待 → 希望将灭时传来回声。一步步逼近高潮，最后一句正好接上第二段"救援出现"。' },
+                ],
+                model: {
+                    p1: 'Remembering the whistle in his pocket, Jack blew it as hard as he could. The sharp sound pierced the thick fog again and again, but only silence answered. His hands were shaking with cold, yet he refused to give up. He pressed his back against a rock, blew the whistle once more, and waited, straining his ears for any reply. Just as hope began to fade, a faint voice echoed from the distance.',
+                    p2: 'A bright light suddenly cut through the fog, and a park ranger appeared. "You did the right thing by staying put and using your whistle," the ranger said, wrapping a warm blanket around Jack\'s shoulders. Following the ranger\'s steady footsteps, Jack finally rejoined his worried classmates and teacher. That night, he learned that staying calm and never losing hope could turn even the scariest moment into a story of courage.',
+                    note: '范文让"哨子"这个伏笔贯穿整个求救过程，动作与情绪交替推进制造紧张感，结尾把经历升华为"冷静与勇气"——续写结尾一定要落到一个正向主题上。',
+                },
+            },
+        ];
+
+        const XuxieTrainer = ({ onDone, playAudio, playingWord }) => {
+            const [setIdx, setSetIdx] = useState(0);
+            const [step, setStep] = useState(0);
+            const [sel, setSel] = useState(null);
+            const [asm, setAsm] = useState([]);
+            const [asmParts, setAsmParts] = useState(null);
+            const [done, setDone] = useState(false);
+            const s = XUXIE_TRAIN_DB[setIdx];
+            const cur = s.steps[step];
+            useEffect(() => { setStep(0); setSel(null); setAsm([]); setAsmParts(null); setDone(false); }, [setIdx]);
+            useEffect(() => { setSel(null); setAsm([]); setAsmParts(null); }, [step]);
+            useEffect(() => { if (cur && cur.type === 'assemble' && !asmParts) setAsmParts(shuffle(cur.parts.map((p, i) => ({ p, i })))); }, [step, cur, asmParts]);
+            const total = s.steps.length;
+            return (
+                <div className="card-lg p-6">
+                    <div className="flex items-center justify-between flex-wrap gap-2 mb-1">
+                        <h3 className="font-bold text-[15px]">📖 读后续写训练 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-600">25 分大题</span></h3>
+                        <div className="flex gap-1.5">
+                            {XUXIE_TRAIN_DB.map((x, i) => (
+                                <button key={i} onClick={() => setSetIdx(i)} className={`px-2.5 py-1 rounded-full text-[11px] font-bold ${i === setIdx ? 'bg-indigo-500 text-white' : 'bg-slate-100 text-slate-500'}`}>第 {i + 1} 篇</button>
+                            ))}
+                        </div>
+                    </div>
+                    <p className="text-[12px] text-slate-400 font-medium mb-4">《{s.title}》· 读懂原文 → 抓伏笔 → 定走向 → 句子升格 → 谋篇成段 → 对照范文。续写不靠背模板，靠"接得上、有画面、升主题"。</p>
+
+                    {/* 原文情节卡：全程可参考 */}
+                    <div className="p-4 bg-slate-50 rounded-2xl mb-4">
+                        <div className="text-[11px] font-bold text-slate-500 mb-1">原文梗概</div>
+                        <p className="text-[13px] text-slate-600 leading-relaxed mb-2">{s.context}</p>
+                        <div className="flex gap-1.5 flex-wrap mb-2">
+                            {s.clues.map((c, i) => <span key={i} className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">🔑 {c}</span>)}
+                        </div>
+                        <p className="text-[12px] font-semibold text-slate-700 leading-relaxed">{s.p1}</p>
+                        <p className="text-[12px] font-semibold text-slate-700 leading-relaxed">{s.p2}</p>
+                    </div>
+
+                    {!done && step < total && (
+                        <div className="flex gap-1 mb-4">
+                            {s.steps.map((_, i) => <span key={i} className={`flex-1 h-1.5 rounded-full ${i < step ? 'bg-indigo-500' : i === step ? 'bg-indigo-300' : 'bg-slate-200'}`} />)}
+                        </div>
+                    )}
+
+                    {/* 选择题步骤 */}
+                    {!done && cur && !cur.type && (
+                        <div>
+                            <div className="text-[12px] font-bold text-indigo-500 mb-2">{cur.stage}</div>
+                            <p className="text-[14px] font-semibold leading-relaxed mb-4">{cur.q}</p>
+                            <div className="space-y-2.5">
+                                {cur.opts.map((opt, i) => (
+                                    <button key={i} onClick={() => sel === null && setSel(i)} className={`w-full p-3.5 rounded-2xl border-2 text-left text-[13px] font-semibold transition-all ${sel === null ? 'border-slate-100 bg-white active:bg-slate-50' : i === cur.ans ? 'option-correct text-emerald-800' : sel === i ? 'option-wrong text-rose-800' : 'border-slate-50 opacity-40'}`}>{opt}</button>
+                                ))}
+                            </div>
+                            {sel !== null && (
+                                <div className="mt-4">
+                                    <p className="text-[12px] text-slate-500 bg-slate-50 p-3.5 rounded-xl mb-3 leading-relaxed">{cur.rat}</p>
+                                    <button onClick={() => setStep(st => st + 1)} className="w-full py-3.5 bg-indigo-500 text-white rounded-2xl font-bold active:scale-95 transition-transform">下一步</button>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* 拼段步骤 */}
+                    {!done && cur && cur.type === 'assemble' && asmParts && (
+                        <div>
+                            <div className="text-[12px] font-bold text-indigo-500 mb-2">{cur.stage}</div>
+                            <p className="text-[14px] font-semibold leading-relaxed mb-3">{cur.q}</p>
+                            {asm.length > 0 && (
+                                <div className="p-3.5 bg-indigo-50/60 border border-indigo-100 rounded-2xl mb-3 space-y-1.5">
+                                    {asm.map((pos, n) => <p key={n} className="text-[12px] font-semibold text-slate-700">{n + 1}. {asmParts[pos].p}</p>)}
+                                </div>
+                            )}
+                            <div className="space-y-2.5 mb-3">
+                                {asmParts.map((item, pos) => (
+                                    <button key={pos} disabled={asm.includes(pos)} onClick={() => setAsm(prev => [...prev, pos])} className={`w-full p-3.5 rounded-2xl border-2 text-left text-[13px] font-semibold transition-all ${asm.includes(pos) ? 'border-slate-50 opacity-30' : 'border-slate-100 bg-white active:bg-indigo-50'}`}>{item.p}</button>
+                                ))}
+                            </div>
+                            {asm.length === asmParts.length && (() => {
+                                const right = asm.every((pos, n) => asmParts[pos].i === n);
+                                return (
+                                    <div>
+                                        <p className={`text-[13px] font-bold mb-2 ${right ? 'text-emerald-600' : 'text-rose-500'}`}>{right ? '🎉 顺序完全正确！' : '顺序还不对，看看正确顺序找差距：'}</p>
+                                        {!right && <div className="p-3.5 bg-emerald-50 border border-emerald-100 rounded-2xl mb-2 space-y-1.5">{cur.parts.map((p, n) => <p key={n} className="text-[12px] font-semibold text-slate-700">{n + 1}. {p}</p>)}</div>}
+                                        <p className="text-[12px] text-slate-500 bg-slate-50 p-3.5 rounded-xl mb-3 leading-relaxed">{cur.rat}</p>
+                                        <div className="flex gap-2">
+                                            {!right && <button onClick={() => { setAsm([]); setAsmParts(shuffle(cur.parts.map((p, i) => ({ p, i })))); }} className="flex-1 py-3.5 bg-slate-100 text-slate-600 rounded-2xl font-bold active:bg-slate-200">重新排</button>}
+                                            <button onClick={() => setStep(st => st + 1)} className="flex-1 py-3.5 bg-indigo-500 text-white rounded-2xl font-bold active:scale-95 transition-transform">看范文</button>
+                                        </div>
+                                    </div>
+                                );
+                            })()}
+                        </div>
+                    )}
+
+                    {/* 对照范文 */}
+                    {!done && step >= total && (
+                        <div>
+                            <div className="text-[12px] font-bold text-emerald-600 mb-2">⑥ 对照范文 · 逐句体会（点句子可听发音）</div>
+                            <div className="p-4 bg-emerald-50/60 border border-emerald-100 rounded-2xl mb-2 cursor-pointer" onClick={(e) => playAudio(s.model.p1, e)}>
+                                <div className="text-[10px] font-bold text-emerald-600 mb-1">🔊 Para 1</div>
+                                <p className="text-[13px] font-semibold text-slate-700 leading-relaxed">{s.model.p1}</p>
+                            </div>
+                            <div className="p-4 bg-emerald-50/60 border border-emerald-100 rounded-2xl mb-3 cursor-pointer" onClick={(e) => playAudio(s.model.p2, e)}>
+                                <div className="text-[10px] font-bold text-emerald-600 mb-1">🔊 Para 2</div>
+                                <p className="text-[13px] font-semibold text-slate-700 leading-relaxed">{s.model.p2}</p>
+                            </div>
+                            <p className="text-[12px] text-slate-500 bg-slate-50 p-3.5 rounded-xl mb-3 leading-relaxed">💡 {s.model.note}</p>
+                            <button onClick={() => { setDone(true); onDone && onDone(); }} className="w-full py-3.5 bg-emerald-500 text-white rounded-2xl font-bold active:scale-95 transition-transform">完成这篇训练</button>
+                        </div>
+                    )}
+
+                    {done && (
+                        <div className="text-center py-4">
+                            <p className="text-lg font-bold text-emerald-600 mb-1">🎉 《{s.title}》续写训练完成！</p>
+                            <p className="text-[12px] text-slate-400 mb-4">读懂、伏笔、走向、升格、成段、范文各过了一遍。续写就是"接得上情节 + 动作情绪交替 + 结尾升主题"。</p>
+                            {setIdx < XUXIE_TRAIN_DB.length - 1
+                                ? <button onClick={() => setSetIdx(i => i + 1)} className="w-full py-3.5 bg-indigo-500 text-white rounded-2xl font-bold active:scale-95 transition-transform">练下一篇：《{XUXIE_TRAIN_DB[setIdx + 1].title}》</button>
+                                : <p className="text-[13px] font-bold text-indigo-600">全部练完！去"续写素材"背一背情绪/动作/环境的高分短语。</p>}
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
         const WritingView = ({ playAudio, playingWord, onTrainDone }) => {
             const [sec, setSec] = useState('letters');
             const [openType, setOpenType] = useState(null);
@@ -11781,9 +11946,10 @@ Which option best expresses its meaning?`,
                 if (trainStepData?.type === 'assemble' && !asmParts) setAsmParts(shuffle(trainStepData.parts.map((p, i) => ({ p, i }))));
             }, [tStep, trainStepData, asmParts]);
             const secTabs = [
-                { id: 'train', label: '四步训练' },
+                { id: 'xuxietrain', label: '续写训练' },
+                { id: 'train', label: '应用文训练' },
                 { id: 'letters', label: '应用文模板' },
-                { id: 'xuxie', label: '读后续写' },
+                { id: 'xuxie', label: '续写素材' },
                 { id: 'principles', label: '写作心法' },
             ];
             const Sentence = ({ e, c }) => (
@@ -11799,6 +11965,10 @@ Which option best expresses its meaning?`,
                             <button key={t.id} onClick={() => setSec(t.id)} className={`px-4 py-2 rounded-full text-[13px] font-bold transition-all ${sec === t.id ? 'bg-indigo-500 text-white shadow-md shadow-indigo-500/25' : 'bg-white text-slate-500 border border-slate-200 hover:bg-slate-50'}`}>{t.label}</button>
                         ))}
                     </div>
+
+                    {sec === 'xuxietrain' && (
+                        <XuxieTrainer onDone={onTrainDone} playAudio={playAudio} playingWord={playingWord} />
+                    )}
 
                     {sec === 'train' && (
                         <div className="card-lg p-6">

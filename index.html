@@ -11930,6 +11930,220 @@ Which option best expresses its meaning?`,
             );
         };
 
+
+        // === UPGRADE: foundation / sentence / listen / mock / mom ===
+        const FOUNDATION_DB = [{"id": "tense-basic", "title": "时态地基：现在/过去/将来", "why": "语法填空动词空靠它", "tip": "先问现在/过去/将来", "tags": [], "steps": [{"stage": "① 一眼认", "q": "昨天去图书馆？", "opts": ["I go...yesterday.", "I went to the library yesterday.", "I will go...yesterday.", "I am go..."], "ans": 1, "rat": "yesterday→went"}, {"stage": "② 情境选", "q": "Every morning she __ English？", "opts": ["read", "reads", "reading", "is read"], "ans": 1, "rat": "习惯→reads"}, {"stage": "③ 填空用", "type": "fill", "q": "They __ (go) next week (已计划)", "ans": ["are going"], "hint": "进行时表将来", "rat": "进行时表将来"}, {"stage": "④ 避坑", "q": "持续到现在哪个错？", "opts": ["has lived 3 years", "lived 3 years and still lives", "finished yesterday", "will start"], "ans": 1, "rat": "该用完成时"}]}, {"id": "word-class", "title": "词性地基", "why": "给词变形第一步", "tip": "名→形；动→副", "tags": [], "steps": [{"stage": "① 一眼认", "q": "a __ student (care)？", "opts": ["care", "careful", "carefully", "carefulness"], "ans": 1, "rat": "形容词"}, {"stage": "② 情境选", "q": "sings __ (beautiful)？", "opts": ["beautiful", "beauty", "beautifully", "beautify"], "ans": 2, "rat": "副词"}, {"stage": "③ 填空用", "type": "fill", "q": "The __ (important) of English", "ans": ["importance"], "hint": "the+名词", "rat": "the+名词"}, {"stage": "④ 避坑", "q": "令人困惑的问题？", "opts": ["confused problem", "confusing problem", "confuse problem", "confusion problem"], "ans": 1, "rat": "-ing修饰物"}]}, {"id": "clause-basic", "title": "三大从句入门", "why": "长句多卡从句", "tip": "定语修饰名词", "tags": [], "steps": [{"stage": "① 一眼认", "q": "girl who won 是？", "opts": ["主语从句", "定语从句", "状语从句", "表语从句"], "ans": 1, "rat": "修饰girl"}, {"stage": "② 情境选", "q": "believe __ he said is true？", "opts": ["that", "what", "which", "who"], "ans": 1, "rat": "缺宾语用what"}, {"stage": "③ 填空用", "type": "fill", "q": "book __ I bought", "ans": ["which"], "hint": "that/which", "rat": "that/which"}, {"stage": "④ 避坑", "q": "介词后能否that？", "opts": ["可以", "只能which/whom", "只能what", "只能where"], "ans": 1, "rat": "介词后禁that"}]}, {"id": "nonfinite", "title": "非谓语入门", "why": "填空重灾区", "tip": "主动doing被动done目的to do", "tags": [], "steps": [{"stage": "① 一眼认", "q": "__ from hill, city looks (see,被看)？", "opts": ["Seeing", "Seen", "To see", "See"], "ans": 1, "rat": "Seen"}, {"stage": "② 情境选", "q": "without __ goodbye？", "opts": ["say", "to say", "saying", "said"], "ans": 2, "rat": "介词+doing"}, {"stage": "③ 填空用", "type": "fill", "q": "look forward to __ (hear)", "ans": ["hearing"], "hint": "to是介词", "rat": "to是介词"}, {"stage": "④ 避坑", "q": "Moved by music, __？", "opts": ["tears came", "she started to cry", "music beautiful", "crying started"], "ans": 1, "rat": "逻辑主语一致"}]}, {"id": "passive", "title": "被动语态", "why": "说明文高频", "tip": "be+done", "tags": [], "steps": [{"stage": "① 一眼认", "q": "window __ yesterday (break)？", "opts": ["broke", "was broken", "is broken", "has broken"], "ans": 1, "rat": "was broken"}, {"stage": "② 情境选", "q": "apps __ since last year？", "opts": ["are developed", "were developed", "have been developed", "had developed"], "ans": 2, "rat": "完成被动"}, {"stage": "③ 填空用", "type": "fill", "q": "must __ (finish)", "ans": ["be finished"], "hint": "情态+be+done", "rat": "情态+be+done"}, {"stage": "④ 避坑", "q": "哪个错？", "opts": ["was written", "is belonged to me", "was seen", "is being repaired"], "ans": 1, "rat": "belong无被动"}]}, {"id": "modal", "title": "情态动词", "why": "送分项", "tip": "后接原形", "tags": [], "steps": [{"stage": "① 一眼认", "q": "should __ diet？", "opts": ["keeping", "to keep", "keep", "kept"], "ans": 2, "rat": "原形"}, {"stage": "② 情境选", "q": "wet ground, __ rained？", "opts": ["must have", "must", "should", "can"], "ans": 0, "rat": "must have done"}, {"stage": "③ 填空用", "type": "fill", "q": "You __ (not) smoke", "ans": ["must not"], "hint": "禁止", "rat": "禁止"}, {"stage": "④ 避坑", "q": "正确？", "opts": ["can sings", "can sing", "can to sing", "cans sing"], "ans": 1, "rat": "原形"}]}, {"id": "collocation", "title": "高频搭配", "why": "完形写作", "tip": "整块记", "tags": [], "steps": [{"stage": "① 一眼认", "q": "responsible __？", "opts": ["to", "for", "of", "with"], "ans": 1, "rat": "for"}, {"stage": "② 情境选", "q": "take __ to protect？", "opts": ["measure", "measures", "measuring", "a measure"], "ans": 1, "rat": "measures"}, {"stage": "③ 填空用", "type": "fill", "q": "forward to __ (meet)", "ans": ["meeting"], "hint": "介词to", "rat": "介词to"}, {"stage": "④ 避坑", "q": "apply 物/校？", "opts": ["for/to", "to/for", "for/for", "to/to"], "ans": 0, "rat": "for物to机构"}]}, {"id": "compare", "title": "比较级最高级", "why": "描述高频", "tip": "than/the", "tags": [], "steps": [{"stage": "① 一眼认", "q": "more __ (interesting)？", "opts": ["interestinger", "more interesting", "most interesting", "the more"], "ans": 1, "rat": "more+adj"}, {"stage": "② 情境选", "q": "__ in class？", "opts": ["taller", "the taller", "the tallest", "most tall"], "ans": 2, "rat": "the tallest"}, {"stage": "③ 填空用", "type": "fill", "q": "runs __ (fast) than", "ans": ["faster"], "hint": "比较级", "rat": "比较级"}, {"stage": "④ 避坑", "q": "哪个错？", "opts": ["more and more", "the more the better", "more better", "much better"], "ans": 2, "rat": "no more better"}]}, {"id": "article-prep", "title": "冠词介词", "why": "纯空格", "tip": "a/an/the", "tags": [], "steps": [{"stage": "① 一眼认", "q": "__ useful book？", "opts": ["a", "an", "the", "零"], "ans": 0, "rat": "a useful"}, {"stage": "② 情境选", "q": "good __ English？", "opts": ["in", "at", "for", "on"], "ans": 1, "rat": "at"}, {"stage": "③ 填空用", "type": "fill", "q": "play __ piano", "ans": ["the"], "hint": "乐器the", "rat": "乐器the"}, {"stage": "④ 避坑", "q": "solution __ problem？", "opts": ["of", "to", "for", "with"], "ans": 1, "rat": "to"}]}, {"id": "sentence-trunk", "title": "找主干", "why": "读句急救", "tip": "先主谓", "tags": [], "steps": [{"stage": "① 一眼认", "q": "girl who sits likes music 主干？", "opts": ["girl sits", "girl likes music", "who sits likes", "window likes"], "ans": 1, "rat": "划定语"}, {"stage": "② 情境选", "q": "Moved..., students clapped 主语？", "opts": ["Moved", "speech", "students", "clapped"], "ans": 2, "rat": "students"}, {"stage": "③ 填空用", "type": "fill", "q": "Books that... can open new worlds 主干", "ans": ["Books can open new worlds"], "hint": "划that", "rat": "划that"}, {"stage": "④ 避坑", "q": "读不懂第一步？", "opts": ["全查词", "先找主干", "倒着读", "跳过"], "ans": 1, "rat": "主干优先"}]}];
+        const SENTENCE_BREAK_DB = [{"id": "B1-1-1", "unitKey": "B1-1", "e": "Starting high school is a big challenge for every teenager.", "z": "上高中对每个青少年都是一大挑战。", "trunk": "Starting high school is a big challenge", "chunks": [{"text": "Starting high school", "role": "块1"}, {"text": "is", "role": "块2"}, {"text": "a big challenge", "role": "块3"}, {"text": "for every teenager", "role": "块4"}], "steps": [{"stage": "① 找主干", "q": "主干最接近？", "opts": ["Starting high school is a big challenge", "Starting high school", "Starting high school...", "无法判断"], "ans": 0, "rat": "动名词作主语"}, {"stage": "② 切块", "type": "assemble", "q": "按语序点选：", "parts": ["Starting high school", "is", "a big challenge", "for every teenager"], "rat": "先主干再修饰"}, {"stage": "③ 标注", "q": "开局块「Starting high school」作用？", "opts": ["核心成分", "可有可无", "纯语气", "标点"], "ans": 0, "rat": "开头块通常关键"}, {"stage": "④ 意思", "q": "最佳理解", "opts": ["上高中对每个青少年都是一大挑战。", "意思相反", "只对一半", "无关"], "ans": 0, "rat": "上高中对每个青少年都是一大挑战。"}]}, {"id": "B1-2-1", "unitKey": "B1-2", "e": "We booked our accommodation in advance to get a better price.", "z": "我们提前订住宿以便更优惠。", "trunk": "We booked our accommodation", "chunks": [{"text": "We", "role": "块1"}, {"text": "booked", "role": "块2"}, {"text": "our accommodation", "role": "块3"}, {"text": "in advance", "role": "块4"}, {"text": "to get a better price", "role": "块5"}], "steps": [{"stage": "① 找主干", "q": "主干最接近？", "opts": ["We booked our accommodation", "We", "We booked our accomm...", "无法判断"], "ans": 0, "rat": "主谓宾+目的"}, {"stage": "② 切块", "type": "assemble", "q": "按语序点选：", "parts": ["We", "booked", "our accommodation", "in advance", "to get a better price"], "rat": "先主干再修饰"}, {"stage": "③ 标注", "q": "开局块「We」作用？", "opts": ["核心成分", "可有可无", "纯语气", "标点"], "ans": 0, "rat": "开头块通常关键"}, {"stage": "④ 意思", "q": "最佳理解", "opts": ["我们提前订住宿以便更优惠。", "意思相反", "只对一半", "无关"], "ans": 0, "rat": "我们提前订住宿以便更优惠。"}]}, {"id": "B1-3-1", "unitKey": "B1-3", "e": "Her determination to win the race pushed her through the pain.", "z": "她赢的决心帮她挺过疼痛。", "trunk": "Her determination pushed her", "chunks": [{"text": "Her determination", "role": "块1"}, {"text": "to win the race", "role": "块2"}, {"text": "pushed", "role": "块3"}, {"text": "her", "role": "块4"}, {"text": "through the pain", "role": "块5"}], "steps": [{"stage": "① 找主干", "q": "主干最接近？", "opts": ["Her determination pushed her", "Her determination", "Her determination to...", "无法判断"], "ans": 0, "rat": "to do修饰名词主语"}, {"stage": "② 切块", "type": "assemble", "q": "按语序点选：", "parts": ["Her determination", "to win the race", "pushed", "her", "through the pain"], "rat": "先主干再修饰"}, {"stage": "③ 标注", "q": "开局块「Her determination」作用？", "opts": ["核心成分", "可有可无", "纯语气", "标点"], "ans": 0, "rat": "开头块通常关键"}, {"stage": "④ 意思", "q": "最佳理解", "opts": ["她赢的决心帮她挺过疼痛。", "意思相反", "只对一半", "无关"], "ans": 0, "rat": "她赢的决心帮她挺过疼痛。"}]}, {"id": "B1-4-1", "unitKey": "B1-4", "e": "The girl who saved the little boy was very brave.", "z": "救出小男孩的女孩很勇敢。", "trunk": "The girl was very brave", "chunks": [{"text": "The girl", "role": "块1"}, {"text": "who saved the little boy", "role": "块2"}, {"text": "was", "role": "块3"}, {"text": "very brave", "role": "块4"}], "steps": [{"stage": "① 找主干", "q": "主干最接近？", "opts": ["The girl was very brave", "The girl", "The girl who saved t...", "无法判断"], "ans": 0, "rat": "划掉定语从句"}, {"stage": "② 切块", "type": "assemble", "q": "按语序点选：", "parts": ["The girl", "who saved the little boy", "was", "very brave"], "rat": "先主干再修饰"}, {"stage": "③ 标注", "q": "开局块「The girl」作用？", "opts": ["核心成分", "可有可无", "纯语气", "标点"], "ans": 0, "rat": "开头块通常关键"}, {"stage": "④ 意思", "q": "最佳理解", "opts": ["救出小男孩的女孩很勇敢。", "意思相反", "只对一半", "无关"], "ans": 0, "rat": "救出小男孩的女孩很勇敢。"}]}, {"id": "B1-5-1", "unitKey": "B1-5", "e": "Language is a bridge connecting different cultures.", "z": "语言是连接不同文化的桥梁。", "trunk": "Language is a bridge", "chunks": [{"text": "Language", "role": "块1"}, {"text": "is", "role": "块2"}, {"text": "a bridge", "role": "块3"}, {"text": "connecting different cultures", "role": "块4"}], "steps": [{"stage": "① 找主干", "q": "主干最接近？", "opts": ["Language is a bridge", "Language", "Language is a bridge...", "无法判断"], "ans": 0, "rat": "主系表+-ing定语"}, {"stage": "② 切块", "type": "assemble", "q": "按语序点选：", "parts": ["Language", "is", "a bridge", "connecting different cultures"], "rat": "先主干再修饰"}, {"stage": "③ 标注", "q": "开局块「Language」作用？", "opts": ["核心成分", "可有可无", "纯语气", "标点"], "ans": 0, "rat": "开头块通常关键"}, {"stage": "④ 意思", "q": "最佳理解", "opts": ["语言是连接不同文化的桥梁。", "意思相反", "只对一半", "无关"], "ans": 0, "rat": "语言是连接不同文化的桥梁。"}]}, {"id": "B2-1-1", "unitKey": "B2-1", "e": "Finding a balance between development and protection is challenging.", "z": "找到发展与保护的平衡很有挑战。", "trunk": "Finding a balance is challenging", "chunks": [{"text": "Finding a balance", "role": "块1"}, {"text": "between development and protection", "role": "块2"}, {"text": "is", "role": "块3"}, {"text": "challenging", "role": "块4"}], "steps": [{"stage": "① 找主干", "q": "主干最接近？", "opts": ["Finding a balance is challenging", "Finding a balance", "Finding a balance be...", "无法判断"], "ans": 0, "rat": "动名词主语"}, {"stage": "② 切块", "type": "assemble", "q": "按语序点选：", "parts": ["Finding a balance", "between development and protection", "is", "challenging"], "rat": "先主干再修饰"}, {"stage": "③ 标注", "q": "开局块「Finding a balance」作用？", "opts": ["核心成分", "可有可无", "纯语气", "标点"], "ans": 0, "rat": "开头块通常关键"}, {"stage": "④ 意思", "q": "最佳理解", "opts": ["找到发展与保护的平衡很有挑战。", "意思相反", "只对一半", "无关"], "ans": 0, "rat": "找到发展与保护的平衡很有挑战。"}]}, {"id": "B2-2-1", "unitKey": "B2-2", "e": "The most effective way to protect wildlife is to protect its habitat.", "z": "保护动物最有效的是保护栖息地。", "trunk": "The most effective way is to protect its habitat", "chunks": [{"text": "The most effective way", "role": "块1"}, {"text": "to protect wildlife", "role": "块2"}, {"text": "is", "role": "块3"}, {"text": "to protect its habitat", "role": "块4"}], "steps": [{"stage": "① 找主干", "q": "主干最接近？", "opts": ["The most effective way is to protect its habitat", "The most effective way", "The most effective w...", "无法判断"], "ans": 0, "rat": "way to do is to do"}, {"stage": "② 切块", "type": "assemble", "q": "按语序点选：", "parts": ["The most effective way", "to protect wildlife", "is", "to protect its habitat"], "rat": "先主干再修饰"}, {"stage": "③ 标注", "q": "开局块「The most effective way」作用？", "opts": ["核心成分", "可有可无", "纯语气", "标点"], "ans": 0, "rat": "开头块通常关键"}, {"stage": "④ 意思", "q": "最佳理解", "opts": ["保护动物最有效的是保护栖息地。", "意思相反", "只对一半", "无关"], "ans": 0, "rat": "保护动物最有效的是保护栖息地。"}]}, {"id": "B2-3-1", "unitKey": "B2-3", "e": "One of the greatest benefits of the internet is free access to information.", "z": "互联网最大好处之一是免费获取信息。", "trunk": "One of the greatest benefits is free access", "chunks": [{"text": "One of the greatest benefits", "role": "块1"}, {"text": "of the internet", "role": "块2"}, {"text": "is", "role": "块3"}, {"text": "free access to information", "role": "块4"}], "steps": [{"stage": "① 找主干", "q": "主干最接近？", "opts": ["One of the greatest benefits is free access", "One of the greatest benefits", "One of the greatest ...", "无法判断"], "ans": 0, "rat": "one of+access to"}, {"stage": "② 切块", "type": "assemble", "q": "按语序点选：", "parts": ["One of the greatest benefits", "of the internet", "is", "free access to information"], "rat": "先主干再修饰"}, {"stage": "③ 标注", "q": "开局块「One of the greatest benefits」作用？", "opts": ["核心成分", "可有可无", "纯语气", "标点"], "ans": 0, "rat": "开头块通常关键"}, {"stage": "④ 意思", "q": "最佳理解", "opts": ["互联网最大好处之一是免费获取信息。", "意思相反", "只对一半", "无关"], "ans": 0, "rat": "互联网最大好处之一是免费获取信息。"}]}, {"id": "B2-4-1", "unitKey": "B2-4", "e": "These paintings belong to the royal collection and cannot be sold.", "z": "这些画属于皇家收藏不得出售。", "trunk": "These paintings belong to the royal collection", "chunks": [{"text": "These paintings", "role": "块1"}, {"text": "belong to", "role": "块2"}, {"text": "the royal collection", "role": "块3"}, {"text": "and cannot be sold", "role": "块4"}], "steps": [{"stage": "① 找主干", "q": "主干最接近？", "opts": ["These paintings belong to the royal collection", "These paintings", "These paintings belo...", "无法判断"], "ans": 0, "rat": "belong to无被动"}, {"stage": "② 切块", "type": "assemble", "q": "按语序点选：", "parts": ["These paintings", "belong to", "the royal collection", "and cannot be sold"], "rat": "先主干再修饰"}, {"stage": "③ 标注", "q": "开局块「These paintings」作用？", "opts": ["核心成分", "可有可无", "纯语气", "标点"], "ans": 0, "rat": "开头块通常关键"}, {"stage": "④ 意思", "q": "最佳理解", "opts": ["这些画属于皇家收藏不得出售。", "意思相反", "只对一半", "无关"], "ans": 0, "rat": "这些画属于皇家收藏不得出售。"}]}, {"id": "B2-5-1", "unitKey": "B2-5", "e": "Moved by the music, the audience started to cry.", "z": "被音乐打动观众开始哭了。", "trunk": "the audience started to cry", "chunks": [{"text": "Moved by the music", "role": "块1"}, {"text": "the audience", "role": "块2"}, {"text": "started", "role": "块3"}, {"text": "to cry", "role": "块4"}], "steps": [{"stage": "① 找主干", "q": "主干最接近？", "opts": ["the audience started to cry", "Moved by the music", "Moved by the music, ...", "无法判断"], "ans": 0, "rat": "逻辑主语一致"}, {"stage": "② 切块", "type": "assemble", "q": "按语序点选：", "parts": ["Moved by the music", "the audience", "started", "to cry"], "rat": "先主干再修饰"}, {"stage": "③ 标注", "q": "开局块「Moved by the music」作用？", "opts": ["核心成分", "可有可无", "纯语气", "标点"], "ans": 0, "rat": "开头块通常关键"}, {"stage": "④ 意思", "q": "最佳理解", "opts": ["被音乐打动观众开始哭了。", "意思相反", "只对一半", "无关"], "ans": 0, "rat": "被音乐打动观众开始哭了。"}]}, {"id": "B3-1-1", "unitKey": "B3-1", "e": "I believe what he said is true.", "z": "我相信他说的是真的。", "trunk": "I believe what he said is true", "chunks": [{"text": "I", "role": "块1"}, {"text": "believe", "role": "块2"}, {"text": "what he said", "role": "块3"}, {"text": "is true", "role": "块4"}], "steps": [{"stage": "① 找主干", "q": "主干最接近？", "opts": ["I believe what he said is true", "I", "I believe what he sa...", "无法判断"], "ans": 0, "rat": "what充当成分"}, {"stage": "② 切块", "type": "assemble", "q": "按语序点选：", "parts": ["I", "believe", "what he said", "is true"], "rat": "先主干再修饰"}, {"stage": "③ 标注", "q": "开局块「I」作用？", "opts": ["核心成分", "可有可无", "纯语气", "标点"], "ans": 0, "rat": "开头块通常关键"}, {"stage": "④ 意思", "q": "最佳理解", "opts": ["我相信他说的是真的。", "意思相反", "只对一半", "无关"], "ans": 0, "rat": "我相信他说的是真的。"}]}, {"id": "B3-2-1", "unitKey": "B3-2", "e": "I find it difficult to learn English well.", "z": "我发现学好英语很难。", "trunk": "I find it difficult", "chunks": [{"text": "I", "role": "块1"}, {"text": "find", "role": "块2"}, {"text": "it", "role": "块3"}, {"text": "difficult", "role": "块4"}, {"text": "to learn English well", "role": "块5"}], "steps": [{"stage": "① 找主干", "q": "主干最接近？", "opts": ["I find it difficult", "I", "I find it difficult ...", "无法判断"], "ans": 0, "rat": "find it adj to do"}, {"stage": "② 切块", "type": "assemble", "q": "按语序点选：", "parts": ["I", "find", "it", "difficult", "to learn English well"], "rat": "先主干再修饰"}, {"stage": "③ 标注", "q": "开局块「I」作用？", "opts": ["核心成分", "可有可无", "纯语气", "标点"], "ans": 0, "rat": "开头块通常关键"}, {"stage": "④ 意思", "q": "最佳理解", "opts": ["我发现学好英语很难。", "意思相反", "只对一半", "无关"], "ans": 0, "rat": "我发现学好英语很难。"}]}, {"id": "B3-3-1", "unitKey": "B3-3", "e": "When asked, he said nothing.", "z": "被问及时他什么也没说。", "trunk": "he said nothing", "chunks": [{"text": "When asked", "role": "块1"}, {"text": "he", "role": "块2"}, {"text": "said", "role": "块3"}, {"text": "nothing", "role": "块4"}], "steps": [{"stage": "① 找主干", "q": "主干最接近？", "opts": ["he said nothing", "When asked", "When asked, he said ...", "无法判断"], "ans": 0, "rat": "状语从句省略"}, {"stage": "② 切块", "type": "assemble", "q": "按语序点选：", "parts": ["When asked", "he", "said", "nothing"], "rat": "先主干再修饰"}, {"stage": "③ 标注", "q": "开局块「When asked」作用？", "opts": ["核心成分", "可有可无", "纯语气", "标点"], "ans": 0, "rat": "开头块通常关键"}, {"stage": "④ 意思", "q": "最佳理解", "opts": ["被问及时他什么也没说。", "意思相反", "只对一半", "无关"], "ans": 0, "rat": "被问及时他什么也没说。"}]}, {"id": "B3-4-1", "unitKey": "B3-4", "e": "It must have rained last night.", "z": "昨晚一定下雨了。", "trunk": "It must have rained", "chunks": [{"text": "It", "role": "块1"}, {"text": "must have rained", "role": "块2"}, {"text": "last night", "role": "块3"}], "steps": [{"stage": "① 找主干", "q": "主干最接近？", "opts": ["It must have rained", "It", "It must have rained ...", "无法判断"], "ans": 0, "rat": "must have done"}, {"stage": "② 切块", "type": "assemble", "q": "按语序点选：", "parts": ["It", "must have rained", "last night"], "rat": "先主干再修饰"}, {"stage": "③ 标注", "q": "开局块「It」作用？", "opts": ["核心成分", "可有可无", "纯语气", "标点"], "ans": 0, "rat": "开头块通常关键"}, {"stage": "④ 意思", "q": "最佳理解", "opts": ["昨晚一定下雨了。", "意思相反", "只对一半", "无关"], "ans": 0, "rat": "昨晚一定下雨了。"}]}, {"id": "B3-5-1", "unitKey": "B3-5", "e": "Without your help, I would have failed.", "z": "没有你帮助我就失败了。", "trunk": "I would have failed", "chunks": [{"text": "Without your help", "role": "块1"}, {"text": "I", "role": "块2"}, {"text": "would have failed", "role": "块3"}], "steps": [{"stage": "① 找主干", "q": "主干最接近？", "opts": ["I would have failed", "Without your help", "Without your help, I...", "无法判断"], "ans": 0, "rat": "含蓄虚拟"}, {"stage": "② 切块", "type": "assemble", "q": "按语序点选：", "parts": ["Without your help", "I", "would have failed"], "rat": "先主干再修饰"}, {"stage": "③ 标注", "q": "开局块「Without your help」作用？", "opts": ["核心成分", "可有可无", "纯语气", "标点"], "ans": 0, "rat": "开头块通常关键"}, {"stage": "④ 意思", "q": "最佳理解", "opts": ["没有你帮助我就失败了。", "意思相反", "只对一半", "无关"], "ans": 0, "rat": "没有你帮助我就失败了。"}]}];
+        const LISTEN_PASSAGE_DB = [{"id": "LP-01", "type": "dialogue", "title": "校园借笔记", "unitKey": "B1-1", "lines": [{"sp": "M", "e": "Could I borrow your notes? I missed the class."}, {"sp": "W", "e": "Sure. Meet me in the library at 4."}], "qs": [{"q": "为何借笔记？", "opts": ["缺课", "考试", "打工", "旅游"], "ans": 0, "rat": "missed class"}, {"q": "约在哪？", "opts": ["教室", "图书馆", "食堂", "操场"], "ans": 1, "rat": "library"}]}, {"id": "LP-02", "type": "dialogue", "title": "订酒店", "unitKey": "B1-2", "lines": [{"sp": "W", "e": "A double room for two nights, please."}, {"sp": "M", "e": "Breakfast is free from 7 to 9 a.m."}], "qs": [{"q": "几晚？", "opts": ["1", "2", "3", "7"], "ans": 1, "rat": "two nights"}, {"q": "早餐几点起？", "opts": ["6", "7", "8", "9"], "ans": 1, "rat": "from 7"}]}, {"id": "LP-03", "type": "dialogue", "title": "跑步社团", "unitKey": "B1-3", "lines": [{"sp": "M", "e": "Join the running club? Beginners are welcome."}, {"sp": "W", "e": "I am slow, but I will sign up tomorrow."}], "qs": [{"q": "顾虑？", "opts": ["太慢", "太贵", "太远", "太晚"], "ans": 0, "rat": "slow"}, {"q": "决定？", "opts": ["放弃", "明天报名", "下周", "只看"], "ans": 1, "rat": "sign up"}]}, {"id": "LP-04", "type": "passage", "title": "文化遗产", "unitKey": "B2-1", "lines": [{"sp": "N", "e": "Cultural heritage tells us who we are. Visit museums and support local artists."}], "qs": [{"q": "主旨？", "opts": ["盖楼", "遗产意义与保护", "省钱", "体育"], "ans": 1, "rat": "heritage"}, {"q": "怎么帮？", "opts": ["拆楼", "博物馆与艺人", "禁止建设", "上网"], "ans": 1, "rat": "museums"}]}, {"id": "LP-05", "type": "passage", "title": "野生动物", "unitKey": "B2-2", "lines": [{"sp": "N", "e": "Animals lose homes when forests are cut down. Protect habitat first."}], "qs": [{"q": "原因？", "opts": ["拍照", "砍伐", "搬家", "动物园"], "ans": 1, "rat": "cut down"}, {"q": "最有效？", "opts": ["皮草", "保护栖息地", "修路", "不管"], "ans": 1, "rat": "habitat"}]}, {"id": "LP-06", "type": "dialogue", "title": "假新闻", "unitKey": "B2-3", "lines": [{"sp": "W", "e": "Is this online story true?"}, {"sp": "M", "e": "Check the source on trusted websites."}], "qs": [{"q": "建议？", "opts": ["转发", "核对来源", "关机", "全信"], "ans": 1, "rat": "Check source"}, {"q": "看什么站？", "opts": ["任意", "可信网站", "游戏", "标题"], "ans": 1, "rat": "trusted"}]}, {"id": "LP-07", "type": "passage", "title": "节日", "unitKey": "B3-1", "lines": [{"sp": "N", "e": "Festivals help families gather and understand culture. Many still go home."}], "qs": [{"q": "意义？", "opts": ["只放假", "团聚与文化", "出国", "取消"], "ans": 1, "rat": "gather"}, {"q": "住得远？", "opts": ["不回", "尽量回家", "换习俗", "只红包"], "ans": 1, "rat": "go home"}]}, {"id": "LP-08", "type": "dialogue", "title": "太空", "unitKey": "B3-4", "lines": [{"sp": "M", "e": "What do you want to be?"}, {"sp": "W", "e": "I want to work on space exploration. I study physics harder."}], "qs": [{"q": "志向？", "opts": ["歌手", "太空探索", "开店", "厨师"], "ans": 1, "rat": "space"}, {"q": "学什么？", "opts": ["历史", "物理", "美术", "体育"], "ans": 1, "rat": "physics"}]}];
+        const MOCK_EXAM_DB = [{"id": "zj-mini-1", "title": "浙江卷节奏 · 半卷体验", "totalSec": 2400, "tip": "考试模式交卷前不显示解析。40分钟。", "sections": [{"type": "reading", "unitKey": "B1-2", "label": "阅读理解", "hintMin": 8}, {"type": "seven", "unitKey": "B1-3", "label": "七选五", "hintMin": 7}, {"type": "cloze", "unitKey": "B1-1", "label": "完形填空", "hintMin": 12}, {"type": "grammarFill", "unitKey": "B1-4", "label": "语法填空", "hintMin": 10}]}];
+        const MOM_TASK_TEMPLATES = [{"type": "foundation", "label": "地基补洞", "kind": "foundation"}, {"type": "sentenceBreak", "label": "长难句", "kind": "sentenceBreak"}, {"type": "vocab", "label": "单词闯关", "kind": "vocab"}, {"type": "grammarfill", "label": "语法填空", "kind": "grammarFill"}, {"type": "mistakes", "label": "错题回炉", "kind": "mistakes"}, {"type": "listenPassage", "label": "真听力", "kind": "listenPassage"}, {"type": "mockExam", "label": "限时模考", "kind": "mockExam"}, {"type": "listening", "label": "句子精听", "kind": "listening"}, {"type": "reading", "label": "阅读", "kind": "reading"}];
+﻿        const StepTrainer = ({ title, badge, badgeCls, intro, items, getKey, renderHeader, onFinishTopic, playAudio }) => {
+            const [idx, setIdx] = useState(0);
+            const [step, setStep] = useState(0);
+            const [sel, setSel] = useState(null);
+            const [fill, setFill] = useState('');
+            const [fillOk, setFillOk] = useState(null);
+            const [asm, setAsm] = useState([]);
+            const [asmParts, setAsmParts] = useState(null);
+            const [done, setDone] = useState(false);
+            const item = items[idx];
+            const cur = item && item.steps[step];
+            useEffect(() => { setStep(0); setSel(null); setFill(''); setFillOk(null); setAsm([]); setAsmParts(null); setDone(false); }, [idx]);
+            useEffect(() => { setSel(null); setFill(''); setFillOk(null); setAsm([]); setAsmParts(null); }, [step]);
+            useEffect(() => { if (cur && cur.type === 'assemble' && !asmParts) setAsmParts(shuffle(cur.parts.map((p, i) => ({ p, i })))); }, [step, cur, asmParts]);
+            if (!item) return <div className="card-lg p-6 text-slate-500">暂无内容</div>;
+            const total = item.steps.length;
+            const checkFill = () => { const okList = (cur.ans || []).map(a => String(a).trim().toLowerCase()); setFillOk(okList.some(a => a === fill.trim().toLowerCase())); };
+            return (
+                <div className="max-w-2xl mx-auto space-y-4">
+                    <div className="card-lg p-6">
+                        <div className="flex items-center justify-between flex-wrap gap-2 mb-1">
+                            <h3 className="font-bold text-[15px]">{title} <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${badgeCls}`}>{badge}</span></h3>
+                            <div className="flex gap-1 flex-wrap">{items.map((x, i) => (<button key={getKey(x, i)} onClick={() => setIdx(i)} className={`px-2 py-1 rounded-full text-[10px] font-bold ${i === idx ? 'bg-indigo-500 text-white' : 'bg-slate-100 text-slate-500'}`}>{i + 1}</button>))}</div>
+                        </div>
+                        <p className="text-[12px] text-slate-400 font-medium mb-3">{intro}</p>
+                        {renderHeader && renderHeader(item, playAudio)}
+                        {!done && step < total && <div className="flex gap-1 mb-4">{item.steps.map((_, i) => <span key={i} className={`flex-1 h-1.5 rounded-full ${i < step ? 'bg-indigo-500' : i === step ? 'bg-indigo-300' : 'bg-slate-200'}`} />)}</div>}
+                        {!done && cur && !cur.type && (<div>
+                            <div className="text-[12px] font-bold text-indigo-500 mb-2">{cur.stage}</div>
+                            <p className="text-[14px] font-semibold leading-relaxed mb-4">{cur.q}</p>
+                            <div className="space-y-2.5">{cur.opts.map((opt, i) => (<button key={i} onClick={() => sel === null && setSel(i)} className={`w-full p-3.5 rounded-2xl border-2 text-left text-[13px] font-semibold ${sel === null ? 'border-slate-100 bg-white' : i === cur.ans ? 'option-correct text-emerald-800' : sel === i ? 'option-wrong text-rose-800' : 'opacity-40'}`}>{opt}</button>))}</div>
+                            {sel !== null && <div className="mt-4"><p className="text-[12px] text-slate-500 bg-slate-50 p-3.5 rounded-xl mb-3">{cur.rat}</p><button onClick={() => setStep(st => st + 1)} className="w-full py-3.5 bg-indigo-500 text-white rounded-2xl font-bold">下一步</button></div>}
+                        </div>)}
+                        {!done && cur && cur.type === 'fill' && (<div>
+                            <div className="text-[12px] font-bold text-indigo-500 mb-2">{cur.stage}</div>
+                            <p className="text-[14px] font-semibold mb-2">{cur.q}</p>
+                            {cur.hint && <p className="text-[11px] text-amber-600 font-bold mb-3">💡 {cur.hint}</p>}
+                            <input value={fill} onChange={e => { setFill(e.target.value); setFillOk(null); }} className="w-full px-4 py-3 rounded-2xl border-2 border-slate-100 text-[14px] font-semibold mb-3" placeholder="输入答案" />
+                            {fillOk === null ? <button onClick={checkFill} className="w-full py-3.5 bg-indigo-500 text-white rounded-2xl font-bold">核对</button> : (<div>
+                                <p className={`text-[13px] font-bold mb-2 ${fillOk ? 'text-emerald-600' : 'text-rose-500'}`}>{fillOk ? '✅ 正确' : `参考：${(cur.ans||[]).join(' / ')}`}</p>
+                                <p className="text-[12px] text-slate-500 bg-slate-50 p-3.5 rounded-xl mb-3">{cur.rat}</p>
+                                <button onClick={() => setStep(st => st + 1)} className="w-full py-3.5 bg-indigo-500 text-white rounded-2xl font-bold">下一步</button>
+                            </div>)}
+                        </div>)}
+                        {!done && cur && cur.type === 'assemble' && asmParts && (<div>
+                            <div className="text-[12px] font-bold text-indigo-500 mb-2">{cur.stage}</div>
+                            <p className="text-[14px] font-semibold mb-3">{cur.q}</p>
+                            {asm.length > 0 && <div className="p-3.5 bg-indigo-50/60 border border-indigo-100 rounded-2xl mb-3 space-y-1.5">{asm.map((pos, n) => <p key={n} className="text-[12px] font-semibold">{n+1}. {asmParts[pos].p}</p>)}</div>}
+                            <div className="space-y-2.5 mb-3">{asmParts.map((part, pos) => (<button key={pos} disabled={asm.includes(pos)} onClick={() => setAsm(prev => [...prev, pos])} className={`w-full p-3.5 rounded-2xl border-2 text-left text-[13px] font-semibold ${asm.includes(pos) ? 'opacity-30' : 'border-slate-100 bg-white'}`}>{part.p}</button>))}</div>
+                            {asm.length === asmParts.length && (() => { const right = asm.every((pos, n) => asmParts[pos].i === n); return (<div>
+                                <p className={`text-[13px] font-bold mb-2 ${right ? 'text-emerald-600' : 'text-rose-500'}`}>{right ? '🎉 顺序正确' : '顺序不对，对照：'}</p>
+                                {!right && <div className="p-3.5 bg-emerald-50 rounded-2xl mb-2 space-y-1.5">{cur.parts.map((pt, n) => <p key={n} className="text-[12px] font-semibold">{n+1}. {pt}</p>)}</div>}
+                                <p className="text-[12px] text-slate-500 bg-slate-50 p-3.5 rounded-xl mb-3">{cur.rat}</p>
+                                <div className="flex gap-2">{!right && <button onClick={() => { setAsm([]); setAsmParts(shuffle(cur.parts.map((pt, i) => ({ p: pt, i })))); }} className="flex-1 py-3.5 bg-slate-100 rounded-2xl font-bold">重排</button>}<button onClick={() => setStep(st => st + 1)} className="flex-1 py-3.5 bg-indigo-500 text-white rounded-2xl font-bold">下一步</button></div>
+                            </div>); })()}
+                        </div>)}
+                        {!done && step >= total && (<div className="text-center py-2"><p className="text-lg font-bold text-emerald-600 mb-2">🎉 完成！</p><button onClick={() => { setDone(true); onFinishTopic && onFinishTopic(item); }} className="w-full py-3.5 bg-emerald-500 text-white rounded-2xl font-bold">记入今日打卡</button></div>)}
+                        {done && (<div className="text-center py-4"><p className="font-bold text-emerald-600 mb-3">已打卡</p>{idx < items.length - 1 ? <button onClick={() => setIdx(i => i + 1)} className="w-full py-3.5 bg-indigo-500 text-white rounded-2xl font-bold">下一组</button> : <p className="text-[13px] text-indigo-600 font-bold">本组练完啦</p>}</div>)}
+                    </div>
+                </div>
+            );
+        };
+        const FoundationTrainer = ({ onDone, initialId }) => {
+            const startIdx = Math.max(0, FOUNDATION_DB.findIndex(x => x.id === initialId));
+            const ordered = startIdx > 0 ? [...FOUNDATION_DB.slice(startIdx), ...FOUNDATION_DB.slice(0, startIdx)] : FOUNDATION_DB;
+            return <StepTrainer title="🧱 地基补洞" badge="初中→高一" badgeCls="bg-rose-100 text-rose-600" intro="基础不牢先退一步。每专题约8分钟，可跳过。" items={ordered} getKey={x => x.id}
+                renderHeader={item => <div className="p-3.5 bg-rose-50/70 rounded-2xl mb-4"><div className="font-bold text-[14px]">{item.title}</div><p className="text-[12px] text-slate-500 mt-1">为什么：{item.why}</p><p className="text-[11px] text-rose-600 font-bold mt-1">💡 {item.tip}</p></div>}
+                onFinishTopic={item => onDone && onDone(item.id)} />;
+        };
+        const SentenceBreakTrainer = ({ onDone, unitKey, playAudio }) => {
+            const preferred = SENTENCE_BREAK_DB.filter(s => s.unitKey === unitKey);
+            const items = preferred.length ? [...preferred, ...SENTENCE_BREAK_DB.filter(s => s.unitKey !== unitKey)] : SENTENCE_BREAK_DB;
+            return <StepTrainer title="🔗 长难句拆解" badge="必修一～三" badgeCls="bg-cyan-100 text-cyan-700" intro="先找主干再看枝叶。覆盖高中必修三册。" items={items} getKey={x => x.id} playAudio={playAudio}
+                renderHeader={(item, pa) => <div className="p-3.5 bg-cyan-50/70 rounded-2xl mb-4"><div className="text-[10px] font-bold text-cyan-700 mb-1">{item.unitKey} · 点句子可听</div><p className="text-[14px] font-bold cursor-pointer" onClick={e => pa && pa(item.e, e)}>{item.e}</p><p className="text-[12px] text-slate-500 mt-1">{item.z}</p><p className="text-[11px] font-bold text-slate-600 mt-2">主干：{item.trunk}</p></div>}
+                onFinishTopic={item => onDone && onDone(item.id)} />;
+        };
+
+﻿        const PassageListeningView = ({ onFinish, speakText }) => {
+            const [idx, setIdx] = useState(0);
+            const [phase, setPhase] = useState('play');
+            const [qIdx, setQIdx] = useState(0);
+            const [sel, setSel] = useState(null);
+            const [score, setScore] = useState(0);
+            const item = LISTEN_PASSAGE_DB[idx];
+            useEffect(() => { setPhase('play'); setQIdx(0); setSel(null); setScore(0); }, [idx]);
+            const playAll = () => {
+                let i = 0;
+                const run = () => {
+                    if (i >= item.lines.length) return;
+                    const line = item.lines[i];
+                    const prefix = line.sp === 'M' ? 'Man: ' : line.sp === 'W' ? 'Woman: ' : '';
+                    speakText(prefix + line.e, 0.9);
+                    i += 1;
+                    setTimeout(run, Math.min(7000, 1000 + line.e.length * 50));
+                };
+                run();
+            };
+            const curQ = item.qs[qIdx];
+            return (
+                <div className="max-w-xl mx-auto card-lg p-6">
+                    <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
+                        <h3 className="font-bold text-[15px]">🎧 对话/短文听力 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-100 text-teal-700">TTS</span></h3>
+                        <div className="flex gap-1 flex-wrap">{LISTEN_PASSAGE_DB.map((x,i)=><button key={x.id} onClick={()=>setIdx(i)} className={`px-2 py-1 rounded-full text-[10px] font-bold ${i===idx?'bg-teal-500 text-white':'bg-slate-100 text-slate-500'}`}>{i+1}</button>)}</div>
+                    </div>
+                    <p className="text-[12px] text-slate-400 mb-3">{item.title} · {item.type==='dialogue'?'对话':'短文'}</p>
+                    {phase==='play' && <div>
+                        <button onClick={playAll} className="w-full py-3.5 bg-teal-500 text-white rounded-2xl font-bold mb-3">▶ 整段播放</button>
+                        <div className="space-y-2 mb-4">{item.lines.map((ln,i)=><button key={i} onClick={()=>speakText((ln.sp==='M'?'Man: ':ln.sp==='W'?'Woman: ':'')+ln.e,0.9)} className="w-full text-left p-3 rounded-xl border border-slate-100 text-[12px] font-semibold"><span className="text-teal-600 font-bold mr-2">{ln.sp==='M'?'男':ln.sp==='W'?'女':'旁白'}</span>点此重听</button>)}</div>
+                        <button onClick={()=>setPhase('quiz')} className="w-full py-3.5 bg-indigo-500 text-white rounded-2xl font-bold">开始答题</button>
+                    </div>}
+                    {phase==='quiz' && curQ && <div>
+                        <div className="text-[11px] font-bold text-slate-400 mb-2">第 {qIdx+1}/{item.qs.length} 题</div>
+                        <p className="text-[14px] font-semibold mb-4">{curQ.q}</p>
+                        <div className="space-y-2.5">{curQ.opts.map((opt,i)=><button key={i} onClick={()=>{ if(sel!==null)return; setSel(i); if(i===curQ.ans) setScore(s=>s+1); }} className={`w-full p-3.5 rounded-2xl border-2 text-left text-[13px] font-semibold ${sel===null?'border-slate-100':i===curQ.ans?'option-correct':sel===i?'option-wrong':'opacity-40'}`}>{opt}</button>)}</div>
+                        {sel!==null && <div className="mt-4"><p className="text-[12px] text-slate-500 bg-slate-50 p-3 rounded-xl mb-3">{curQ.rat}</p>
+                        <button onClick={()=>{ if(qIdx+1<item.qs.length){ setQIdx(qIdx+1); setSel(null);} else { setPhase('done'); onFinish&&onFinish(item.id, Math.round((score/Math.max(1,item.qs.length))*10)); } }} className="w-full py-3.5 bg-indigo-500 text-white rounded-2xl font-bold">{qIdx+1<item.qs.length?'下一题':'完成'}</button></div>}
+                    </div>}
+                    {phase==='done' && <div className="text-center py-4">
+                        <p className="text-lg font-bold text-emerald-600 mb-2">完成！约 {Math.round((score/Math.max(1,item.qs.length))*10)}/10 分</p>
+                        <div className="text-left p-4 bg-slate-50 rounded-2xl mb-3 space-y-2">{item.lines.map((ln,i)=><p key={i} className="text-[12px]"><b>{ln.sp==='M'?'男：':ln.sp==='W'?'女：':''}</b>{ln.e}</p>)}</div>
+                        {idx<LISTEN_PASSAGE_DB.length-1 ? <button onClick={()=>setIdx(i=>i+1)} className="w-full py-3.5 bg-teal-500 text-white rounded-2xl font-bold">下一篇</button> : <p className="text-[13px] font-bold text-teal-600">先练到这里</p>}
+                    </div>}
+                </div>
+            );
+        };
+        const MockExamView = ({ onFinish }) => {
+            const exam = MOCK_EXAM_DB[0];
+            const [started, setStarted] = useState(false);
+            const [secI, setSecI] = useState(0);
+            const [deadline, setDeadline] = useState(null);
+            const [now, setNow] = useState(Date.now());
+            const [answers, setAnswers] = useState({});
+            const [finished, setFinished] = useState(false);
+            const [result, setResult] = useState(null);
+            useEffect(() => { if (!started || finished || !deadline) return; const t = setInterval(() => setNow(Date.now()), 500); return () => clearInterval(t); }, [started, finished, deadline]);
+            useEffect(() => { if (started && deadline && Date.now() >= deadline && !finished) grade(); }, [now]);
+            const left = deadline ? Math.max(0, Math.floor((deadline - now) / 1000)) : exam.totalSec;
+            const mm = String(Math.floor(left / 60)).padStart(2, '0');
+            const ss = String(left % 60).padStart(2, '0');
+            const sec = exam.sections[secI];
+            const getSectionQs = (s) => {
+                if (s.type === 'reading') { const d = READING_DB[s.unitKey]; if (!d) return []; return d.qs.map((q, i) => ({ id: i, kind: 'mcq', q: q.q, opts: q.opts, ans: q.ans, passage: d.text, title: d.title })); }
+                if (s.type === 'seven') { const d = SEVEN_DB[s.unitKey]; if (!d) return []; return d.ans.map((a, i) => ({ id: i, kind: 'seven', q: `第 ${i+1} 空`, opts: d.options, ans: a, passage: d.text })); }
+                if (s.type === 'cloze') { const d = CLOZE_DB[s.unitKey]; if (!d) return []; return (d.qs||[]).map((b, i) => ({ id: i, kind: 'mcq', q: `完形第 ${i+1} 空`, opts: b.opts, ans: b.ans, passage: d.text })); }
+                if (s.type === 'grammarFill') { const d = GRAMMAR_FILL_DB[s.unitKey]; if (!d) return []; return (d.blanks||[]).map((b, i) => ({ id: i, kind: 'fill', q: `语法填空第 ${i+1} 空${b.hint?`（${b.hint}）`:''}`, ansList: b.ans, passage: d.text })); }
+                return [];
+            };
+            const grade = () => {
+                if (finished) return;
+                let total = 0, correct = 0;
+                const sectionScores = exam.sections.map((s, si) => {
+                    const qs = getSectionQs(s); let c = 0;
+                    qs.forEach((q, qi) => {
+                        total += 1; const a = answers[`${si}-${qi}`]; let ok = false;
+                        if (q.kind === 'fill') { const v = String(a||'').trim().toLowerCase(); ok = (q.ansList||[]).some(x => String(x).trim().toLowerCase() === v); }
+                        else ok = Number(a) === Number(q.ans);
+                        if (ok) { c++; correct++; }
+                    });
+                    return { label: s.label, correct: c, total: qs.length };
+                });
+                const usedSec = Math.min(exam.totalSec, Math.max(0, exam.totalSec - Math.floor((deadline - Date.now()) / 1000)));
+                const res = { score10: total ? Math.round(correct / total * 10) : 0, correct, total, sectionScores, usedSec };
+                setResult(res); setFinished(true); onFinish && onFinish(exam.id, res);
+            };
+            if (!started) return (
+                <div className="max-w-xl mx-auto card-lg p-6">
+                    <h3 className="font-bold text-[16px] mb-1">⏱️ {exam.title}</h3>
+                    <p className="text-[12px] text-slate-500 mb-4">{exam.tip}</p>
+                    <ul className="space-y-2 mb-5">{exam.sections.map((s,i)=><li key={i} className="p-3 bg-slate-50 rounded-xl text-[13px] font-semibold">{i+1}. {s.label}（约{s.hintMin}分钟）· {s.unitKey}</li>)}</ul>
+                    <button onClick={() => { setStarted(true); setDeadline(Date.now() + exam.totalSec * 1000); }} className="w-full py-3.5 bg-indigo-500 text-white rounded-2xl font-bold">开始计时</button>
+                </div>
+            );
+            if (finished && result) return (
+                <div className="max-w-xl mx-auto card-lg p-6">
+                    <h3 className="font-bold text-[16px] text-emerald-600 mb-2">交卷 · {result.score10}/10</h3>
+                    <p className="text-[12px] text-slate-500 mb-4">对 {result.correct}/{result.total} · 用时约 {Math.floor(result.usedSec/60)} 分</p>
+                    <div className="space-y-2 mb-4">{result.sectionScores.map((s,i)=><div key={i} className="flex justify-between p-3 bg-slate-50 rounded-xl text-[13px] font-semibold"><span>{s.label}</span><span>{s.correct}/{s.total}</span></div>)}</div>
+                    <button onClick={() => { setStarted(false); setFinished(false); setResult(null); setAnswers({}); setSecI(0); }} className="w-full py-3.5 bg-indigo-500 text-white rounded-2xl font-bold">再练节奏</button>
+                </div>
+            );
+            const qs = getSectionQs(sec);
+            return (
+                <div className="max-w-xl mx-auto space-y-4">
+                    <div className="card-lg p-4 flex items-center justify-between sticky top-2 z-10 bg-white/95">
+                        <div className="text-[12px] font-bold">{sec.label}</div>
+                        <div className={`text-[15px] font-bold tabular-nums ${left < 120 ? 'text-rose-500' : 'text-indigo-600'}`}>⏳ {mm}:{ss}</div>
+                        <button onClick={() => { if (confirm('确认交卷？')) grade(); }} className="text-[12px] font-bold px-3 py-1.5 rounded-full bg-rose-50 text-rose-600">交卷</button>
+                    </div>
+                    <div className="flex gap-1.5 flex-wrap">{exam.sections.map((s,i)=><button key={i} onClick={()=>setSecI(i)} className={`px-2.5 py-1 rounded-full text-[11px] font-bold ${i===secI?'bg-indigo-500 text-white':'bg-slate-100 text-slate-500'}`}>{s.label}</button>)}</div>
+                    {qs[0] && qs[0].passage && <div className="card-lg p-4 max-h-48 overflow-y-auto"><div className="text-[10px] font-bold text-slate-400 mb-1">材料</div><p className="text-[12px] whitespace-pre-wrap">{qs[0].title ? (qs[0].title + '\n\n') : ''}{qs[0].passage}</p></div>}
+                    <div className="space-y-3">{qs.map((q,qi)=>{ const key=`${secI}-${qi}`; const val=answers[key]; return (
+                        <div key={key} className="card-lg p-4">
+                            <p className="text-[13px] font-semibold mb-2">{qi+1}. {q.q}</p>
+                            {q.kind==='fill' ? <input value={val||''} onChange={e=>setAnswers(prev=>({...prev,[key]:e.target.value}))} className="w-full px-3 py-2 rounded-xl border border-slate-200 text-[13px]" placeholder="填空" /> :
+                            <div className="space-y-1.5">{(q.opts||[]).map((opt,oi)=><button key={oi} onClick={()=>setAnswers(prev=>({...prev,[key]:oi}))} className={`w-full text-left p-2.5 rounded-xl border text-[12px] font-semibold ${val===oi?'border-indigo-400 bg-indigo-50':'border-slate-100'}`}>{String.fromCharCode(65+oi)}. {opt}</button>)}</div>}
+                        </div>
+                    );})}</div>
+                    <div className="flex gap-2">
+                        <button disabled={secI===0} onClick={()=>setSecI(i=>i-1)} className="flex-1 py-3 rounded-2xl bg-slate-100 font-bold disabled:opacity-30">上一科</button>
+                        {secI < exam.sections.length-1 ? <button onClick={()=>setSecI(i=>i+1)} className="flex-1 py-3 rounded-2xl bg-indigo-500 text-white font-bold">下一科</button> :
+                        <button onClick={()=>{ if(confirm('确认交卷？')) grade(); }} className="flex-1 py-3 rounded-2xl bg-emerald-500 text-white font-bold">交卷</button>}
+                    </div>
+                </div>
+            );
+        };
+
+
         const WritingView = ({ playAudio, playingWord, onTrainDone }) => {
             const [sec, setSec] = useState('letters');
             const [openType, setOpenType] = useState(null);
@@ -12482,6 +12696,61 @@ Which option best expresses its meaning?`,
                 const rec = prev[unitKey] || { attempts: 0, best: 0 };
                 return { ...prev, [unitKey]: { attempts: (rec.attempts || 0) + 1, best: Math.max(rec.best || 0, score), lastAt: new Date().toLocaleString('zh-CN', { hour12: false }) } };
             });
+            const foundationData = userData.foundation || {};
+            const sentenceBreakData = userData.sentenceBreak || {};
+            const listenPassageData = userData.listenPassage || {};
+            const mockExamData = userData.mockExam || {};
+            const momTasksAll = (allUsersData._shared && allUsersData._shared.momTasks) || {};
+            const todayMomTasks = momTasksAll[todayStr()] || [];
+            const setMomTasksForDate = (dateStr, tasks) => setAllUsersData(prev => {
+                const shared = prev._shared || {};
+                return { ...prev, _shared: { ...shared, momTasks: { ...(shared.momTasks || {}), [dateStr]: tasks } } };
+            });
+            const markMomTasksDoneByKind = (kind) => {
+                const ds = todayStr();
+                setAllUsersData(prev => {
+                    const shared = prev._shared || {};
+                    const list = [...((shared.momTasks || {})[ds] || [])];
+                    let changed = false;
+                    const next = list.map(task => {
+                        if (task.status === 'done') return task;
+                        const tpl = MOM_TASK_TEMPLATES.find(x => x.type === task.type);
+                        if (tpl && tpl.kind === kind) { changed = true; return { ...task, status: 'done', doneAt: Date.now() }; }
+                        return task;
+                    });
+                    if (!changed) return prev;
+                    return { ...prev, _shared: { ...shared, momTasks: { ...(shared.momTasks || {}), [ds]: next } } };
+                });
+            };
+            const finishFoundation = (topicId) => setAllUsersData(prev => {
+                const u = prev[userPrefix] || {};
+                const fd = u.foundation || {};
+                const rec = fd[topicId] || { attempts: 0, best: 0 };
+                const foundation = { ...fd, [topicId]: { attempts: (rec.attempts || 0) + 1, best: Math.max(rec.best || 0, 10), lastAt: new Date().toLocaleString('zh-CN', { hour12: false }) } };
+                return { ...prev, [userPrefix]: { ...u, foundation, checkins: stampCheckin(u.checkins, 'foundation') } };
+            });
+            const finishSentenceBreak = (sid) => setAllUsersData(prev => {
+                const u = prev[userPrefix] || {};
+                const fd = u.sentenceBreak || {};
+                const rec = fd[sid] || { attempts: 0, best: 0 };
+                const sentenceBreak = { ...fd, [sid]: { attempts: (rec.attempts || 0) + 1, best: Math.max(rec.best || 0, 10), lastAt: new Date().toLocaleString('zh-CN', { hour12: false }) } };
+                return { ...prev, [userPrefix]: { ...u, sentenceBreak, checkins: stampCheckin(u.checkins, 'sentenceBreak') } };
+            });
+            const finishListenPassage = (pid, score) => setAllUsersData(prev => {
+                const u = prev[userPrefix] || {};
+                const fd = u.listenPassage || {};
+                const rec = fd[pid] || { attempts: 0, best: 0 };
+                const listenPassage = { ...fd, [pid]: { attempts: (rec.attempts || 0) + 1, best: Math.max(rec.best || 0, score), lastAt: new Date().toLocaleString('zh-CN', { hour12: false }) } };
+                return { ...prev, [userPrefix]: { ...u, listenPassage, checkins: stampCheckin(u.checkins, 'listenPassage') } };
+            });
+            const finishMockExam = (eid, res) => setAllUsersData(prev => {
+                const u = prev[userPrefix] || {};
+                const fd = u.mockExam || {};
+                const rec = fd[eid] || { attempts: 0, best: 0 };
+                const mockExam = { ...fd, [eid]: { attempts: (rec.attempts || 0) + 1, best: Math.max(rec.best || 0, res.score10 || 0), last: res, lastAt: new Date().toLocaleString('zh-CN', { hour12: false }) } };
+                return { ...prev, [userPrefix]: { ...u, mockExam, checkins: stampCheckin(u.checkins, 'mockExam') } };
+            });
+
             // 单元通关认证 + 温故排程：{ attempts, best, passed, passedAt, reviewStage, reviewDue }
             const unitCertData = userData.unitCert || {};
             const setUnitCertData = (updater) => setAllUsersData(prev => {
@@ -12983,6 +13252,30 @@ Which option best expresses its meaning?`,
                 return { id: 'high', label: '冲高考', cls: 'bg-emerald-100 text-emerald-700', tip: '这个单元底子不错，可以挑战完形、七选五和真题' };
             };
 
+            const needFoundation = (() => {
+                const t0 = unitTier(unitKey);
+                if (t0 && t0.id === 'base') return true;
+                if (weakUnits[0] && unitTier(weakUnits[0].key) && unitTier(weakUnits[0].key).id === 'base') return true;
+                const gf = grammarFillData[unitKey];
+                if (gf && gf.attempts > 0 && (gf.best || 0) <= 4) return true;
+                const recent = activeMistakes.slice(0, 20);
+                const baseCauses = recent.filter(m => ['word', 'structure', 'grammar'].includes(m.cause)).length;
+                return recent.length >= 3 && baseCauses >= Math.ceil(recent.length * 0.5);
+            })();
+            const pickFoundationTopic = (() => {
+                const done = foundationData || {};
+                const undone = FOUNDATION_DB.find(x => !done[x.id]);
+                return (undone || FOUNDATION_DB[0]).id;
+            })();
+            const needSentenceBreak = (() => {
+                if (needFoundation) return false;
+                const rd = readingData[unitKey];
+                if (rd && rd.attempts > 0 && (rd.best || 0) <= 2) return true;
+                const t0 = unitTier(unitKey);
+                if (t0 && t0.id === 'mid') return true;
+                return activeMistakes.some(m => /从句|主干|长难|结构|非谓语|定语/.test(`${m.rat || ''}${m.q || ''}`));
+            })();
+
             // ── 单元掌握度：词汇牢固40% + 语法填空25% + 测验正确率20% + 错题清零15% ──
             const unitMasteryPercent = (k) => {
                 const ws = (UNIT_DB[k]?.words || []).filter(w => w.ex);
@@ -13444,14 +13737,18 @@ Which option best expresses its meaning?`,
                 { id: 'gaokao', label: '重点练习', icon: <Award className="w-4 h-4" /> },
                 { id: 'writing', label: '写作宝典', icon: <PenLine className="w-4 h-4" /> },
                 { id: 'cards', label: '互动卡片', icon: <Layers className="w-4 h-4" /> },
+                { id: 'foundation', label: '地基补洞', icon: <Lightbulb className="w-4 h-4" /> },
+                { id: 'sentence', label: '长难句', icon: <Target className="w-4 h-4" /> },
+                { id: 'listenPassage', label: '真听力', icon: <Volume2 className="w-4 h-4" /> },
+                { id: 'mockExam', label: '限时模考', icon: <Award className="w-4 h-4" /> },
                 { id: 'mistakes', label: '错题库', icon: <AlertCircle className="w-4 h-4" /> },
                 { id: 'mastery', label: '进度', icon: <BarChart3 className="w-4 h-4" /> },
             ];
             // 侧栏/抽屉里按学习行为分组展示，结构一眼可读
             const navGroups = [
                 { title: null, ids: ['today'] },
-                { title: '学一学', ids: ['notes', 'chunks', 'cards', 'writing'] },
-                { title: '练一练', ids: ['vocab', 'listening', 'grammarfill', 'cloze', 'seven', 'reading', 'gaokao'] },
+                { title: '学一学', ids: ['notes', 'chunks', 'foundation', 'sentence', 'cards', 'writing'] },
+                { title: '练一练', ids: ['vocab', 'listening', 'listenPassage', 'grammarfill', 'cloze', 'seven', 'reading', 'mockExam', 'gaokao'] },
                 { title: '查漏补缺', ids: ['mistakes', 'mastery'] },
             ];
 
@@ -13472,7 +13769,39 @@ Which option best expresses its meaning?`,
                     const practiceIsMistakes = dueMistakes.length > 0;
                     const colorMap = { amber: 'bg-amber-50 text-amber-600', purple: 'bg-purple-50 text-purple-600', indigo: 'bg-indigo-50 text-indigo-500', rose: 'bg-rose-50 text-rose-600', cyan: 'bg-cyan-50 text-cyan-600' };
 
+                    const momPlanItems = (todayMomTasks || []).map((task, ti) => {
+                        const done = task.status === 'done';
+                        const go = () => {
+                            const map = { foundation: 'foundation', sentenceBreak: 'sentence', vocab: 'vocab', grammarfill: 'grammarfill', listenPassage: 'listenPassage', mockExam: 'mockExam', listening: 'listening', reading: 'reading' };
+                            if (task.type === 'mistakes') startDueMistakePractice();
+                            else setTab(map[task.type] || 'today');
+                        };
+                        return {
+                            key: 'plan-mom-' + (task.id || ti), color: 'rose', icon: <PenLine className="w-5 h-5" />,
+                            title: `妈妈布置：${task.label || task.type}`,
+                            desc: task.note || '完成后会在妈妈学情报告显示',
+                            why: '妈妈今天特意排的任务，优先完成。', need: '点按钮进入对应练习。', impact: '完成后妈妈能看到。', tomorrow: '妈妈可能据此调整明天安排。',
+                            done, action: go, btn: done ? '已完成' : '去做',
+                        };
+                    });
                     const plan = [
+                        ...momPlanItems,
+                        ...(needFoundation ? [{
+                            key: 'plan-foundation', color: 'rose', icon: <Lightbulb className="w-5 h-5" />,
+                            title: '地基补洞（约 8 分钟，可跳过）',
+                            desc: `推荐：${(FOUNDATION_DB.find(x => x.id === pickFoundationTopic) || FOUNDATION_DB[0]).title}`,
+                            why: '基础还不稳时，先补时态/词性/从句比硬刷高考题划算。',
+                            need: '做一个微专题四步训练。', impact: '语法填空和阅读会一起轻松。', tomorrow: '基础上去后会少推地基。',
+                            done: (todayAct.foundation || 0) >= 1, action: () => setTab('foundation'), btn: '去补洞',
+                        }] : []),
+                        ...(!needFoundation && needSentenceBreak ? [{
+                            key: 'plan-sentence', color: 'cyan', icon: <Target className="w-5 h-5" />,
+                            title: '长难句拆解 1 句（约 8 分钟）',
+                            desc: `${unitKey} · 找主干 → 切块 → 功能 → 意思`,
+                            why: '读不懂往往不是单词全不认识，而是主干没抓住。',
+                            need: '完成一句四步拆解。', impact: '阅读完形七选五都受益。', tomorrow: '继续按单元给难句。',
+                            done: (todayAct.sentenceBreak || 0) >= 1, action: () => setTab('sentence'), btn: '去拆句',
+                        }] : []),
                         ...(dueUnitReviews.length > 0 ? [{
                             key: 'plan-unitreview', color: 'cyan', icon: <RotateCcw className="w-5 h-5" />,
                             title: `温故 ${dueUnitReviews[0]} 单元（5 分钟抽查）`,
@@ -13547,7 +13876,7 @@ Which option best expresses its meaning?`,
                                     <div>
                                         <div className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400 mb-1">{dateLabel}</div>
                                         <h2 className="text-2xl font-bold tracking-tight">{currentUser === 'tangtang' ? '糖糖，' : ''}{allDone ? '今日学习路线全部完成！🎉' : '今天的自适应学习路线'}</h2>
-                                        <p className="text-sm text-slate-500 font-medium mt-1">{allDone ? '坚持就是最了不起的天赋，明天见！' : '系统按你的薄弱点自动排好了，大约 20-30 分钟走完'}</p>
+                                        <p className="text-sm text-slate-500 font-medium mt-1">{allDone ? '坚持就是最了不起的天赋，明天见！' : '系统按你的薄弱点自动排好了，大约 30-40 分钟走完（地基/长难句可跳过）'}</p>
                                     </div>
                                     <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-orange-50 border border-orange-100 shrink-0">
                                         <Flame className="w-4 h-4 text-orange-500" />
@@ -13871,6 +14200,18 @@ Which option best expresses its meaning?`,
 
                 if (tab === 'listening') {
                     return <ListeningView unitData={dbData} unitKey={unitKey} record={listeningData[unitKey]} onFinish={finishListening} speakText={speakText} />;
+                }
+                if (tab === 'foundation') {
+                    return <FoundationTrainer initialId={pickFoundationTopic} onDone={(id) => { finishFoundation(id); markMomTasksDoneByKind('foundation'); }} />;
+                }
+                if (tab === 'sentence') {
+                    return <SentenceBreakTrainer unitKey={unitKey} playAudio={playAudio} onDone={(id) => { finishSentenceBreak(id); markMomTasksDoneByKind('sentenceBreak'); }} />;
+                }
+                if (tab === 'listenPassage') {
+                    return <PassageListeningView speakText={speakText} onFinish={(id, score) => { finishListenPassage(id, score); markMomTasksDoneByKind('listenPassage'); }} />;
+                }
+                if (tab === 'mockExam') {
+                    return <MockExamView onFinish={(id, res) => { finishMockExam(id, res); markMomTasksDoneByKind('mockExam'); }} />;
                 }
 
                 if (tab === 'cards') {
@@ -14282,6 +14623,28 @@ Which option best expresses its meaning?`,
                                             <div className="p-3.5 bg-slate-50 rounded-2xl"><div className="text-[11px] text-slate-400 font-semibold mb-1">到期待复习词</div><div className="text-xl font-bold text-slate-900">{ttReport.ttDue}<span className="text-xs text-slate-400 font-semibold"> 个</span></div></div>
                                         </div>
                                         <p className="text-[11px] text-slate-400 mt-3">数据来自糖糖账号（本设备）。提醒比批评有用：今天没学的话，问问她"要不要一起过 10 个单词"。</p>
+                                        <div className="mt-5 pt-4 border-t border-pink-100">
+                                            <h4 className="font-bold text-[14px] text-slate-800 mb-1">📋 给糖糖布置今日任务</h4>
+                                            <p className="text-[11px] text-slate-400 mb-3">点选模板加入今天清单；糖糖「今日任务」会优先看到。同设备生效。</p>
+                                            <div className="flex flex-wrap gap-2 mb-3">
+                                                {MOM_TASK_TEMPLATES.map(tpl => (
+                                                    <button key={tpl.type} onClick={() => {
+                                                        const ds = todayStr();
+                                                        const list = [...(todayMomTasks || [])];
+                                                        list.push({ id: 'm' + Date.now(), type: tpl.type, label: tpl.label, note: '', status: 'pending' });
+                                                        setMomTasksForDate(ds, list);
+                                                    }} className="px-3 py-1.5 rounded-full text-[11px] font-bold bg-pink-50 text-pink-700 border border-pink-100">{tpl.label}</button>
+                                                ))}
+                                            </div>
+                                            {(todayMomTasks || []).length === 0 ? <p className="text-[12px] text-slate-400">今天还没布置任务。</p> : (
+                                                <ul className="space-y-2">{todayMomTasks.map((task, i) => (
+                                                    <li key={task.id || i} className="flex items-center justify-between gap-2 p-2.5 bg-white rounded-xl border border-pink-50 text-[12px]">
+                                                        <span className={`font-semibold ${task.status === 'done' ? 'text-emerald-600 line-through' : 'text-slate-700'}`}>{task.status === 'done' ? '✓ ' : '○ '}{task.label}</span>
+                                                        <button onClick={() => setMomTasksForDate(todayStr(), todayMomTasks.filter((_, j) => j !== i))} className="text-slate-400 font-bold text-[11px]">删除</button>
+                                                    </li>
+                                                ))}</ul>
+                                            )}
+                                        </div>
                                     </div>
                                 )}
 

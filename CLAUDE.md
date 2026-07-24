@@ -14,13 +14,14 @@
 ## 功能全景（当前网站做了什么，按用户动线）
 - **登录（4 账号，数据各自隔离）**：`0825`糖糖（主用户）· `0315`妈妈（督学报告）· `9999`爸爸（独立试用）· `0000`管理员（全账户总览）。
 - **今日任务（落地页 = 每日自适应学习路线）**：登录默认页。按糖糖的真实数据自动排 5-6 步：①温故到期单元 ②复习到期旧词 ③学新词 ④补薄弱语法点 ⑤针对性练习（错题优先）⑥1 分钟总结。每步可展开看"为什么安排/今天最需要/完成后/明天会怎样"。底部「看得见的成长」面板（学过词/牢固词/攻克错题/连续天数/达标单元）。
+- **地基补洞 / 长难句 / 真听力 / 限时模考（升级）**：`FOUNDATION_DB` 10 专题（初中→高一）· `SENTENCE_BREAK_DB` 必修一～三每单元 1 句 · `LISTEN_PASSAGE_DB` 8 篇对话/短文 TTS · `MOCK_EXAM_DB` 40 分钟半卷；今日路线按 `needFoundation`/`needSentenceBreak` 软插入；妈妈在进度页布置任务写入 `_shared.momTasks`。
 - **学一学**：核心笔记（单元词汇 w/m/d/ex + 语法 + 例句，单词行有"档案"入口）· 词块工坊（一个词四层：含义→搭配→例句→自己造句，存"我的好句本"）· 互动卡片 · 写作宝典（含**续写训练**+应用文训练两个四步训练器、应用文模板、续写素材、写作心法）。
 - **练一练**：单词闯关（记忆阶梯智能配题型）· 句子精听（变速+听主旨+抓细节+逐句对照）· 语法填空 35 篇 · 完形 35 篇 · 七选五 35 篇 · 阅读 35 单元 · 重点练习（=单元综合测验，含预热卡/当轮复现/错因标注/连错退阶/一句话解析）。
 - **查漏补缺**：错题库 2.0（记忆曲线回炉 + 知识点归集 + 遮答案自测 + 举一反三变式题 + 筛选置顶 + 汇总导出）· 进度页（单元掌握清单/掌握度%/通关测徽章/基础分级/弱点诊断/本周错因分析/督学报告/管理员总览）。
 - **掌握闭环**：单元通关测（80% 点亮徽章）→ 通关后 3/7/15 天温故抽查 → 今日路线自动置顶提醒。
 - **发音**：任意英文可点读，三层兜底（系统本地语音 → 有道在线发音 → 提示条）。
 - **数据备份**：抽屉里可导出/导入全部学习数据 JSON（localStorage 只在本设备，换机会丢）。
-- **浙江卷题型覆盖**：语法填空 ✓ 完形 ✓ 七选五 ✓ 阅读 ✓ 句子听力 ✓ 应用文 ✓ 读后续写 ✓ ；**尚缺**：真·对话/短文听力、限时模考、长难句拆解专项（后两者是已识别但未做的提分点）。
+- **浙江卷题型覆盖**：语法填空 ✓ 完形 ✓ 七选五 ✓ 阅读 ✓ 句子听力 ✓ 对话/短文听力 ✓ 应用文 ✓ 读后续写 ✓ 长难句拆解 ✓ 地基补洞 ✓ 限时半卷模考 ✓ ；妈妈可布置今日任务（同设备）。
 
 ## 🔒 绝对红线（最高优先级）
 - **登录密码绝对不能改：`0825`→`tangtang`，`0315`→`mama`**（`index.html` `LoginScreen`，约 line 10855）。
@@ -64,7 +65,7 @@ catch(err){console.error('❌',err.message,err.loc||'');}
 - 35 单元 = 7 册×5：key 形如 `B1-1`…`S4-5`。`sw.js` 离线缓存页面+CDN，改 CDN 版本时**同步更新 sw.js 预缓存清单**和 `_headers` CSP。
 
 ## 状态/存储坑
-- 单一 localStorage key `tt_all_users_v2`；按用户分桶 `{progress,cardLoop,mistakes,vocab,mastery,checkins,grammarFill,reading,cloze,seven,listening,mySentences,unitCert}`。
+- 单一 localStorage key `tt_all_users_v2`；按用户分桶 `{progress,cardLoop,mistakes,vocab,mastery,checkins,grammarFill,reading,cloze,seven,listening,mySentences,unitCert,foundation,sentenceBreak,listenPassage,mockExam} + 顶层 `_shared.momTasks``。
 - **`useLocalStorage`(约 line 280) 必须用函数式更新 `setStoredValue(prev=>...)`**。历史 bug：闭包捕获旧值导致同一事件里后一个 setter 覆盖前一个。所有 `setXxxData` 都基于 `setAllUsersData(prev=>...)`，保持此模式。
 - 数据只在本设备浏览器里：妈妈/管理员报告只能看同设备数据；换机/清缓存会丢，导出备份功能在抽屉里。
 
@@ -99,6 +100,7 @@ catch(err){console.error('❌',err.message,err.loc||'');}
 ## 更新日志（最新在上；每次改动后必须在此追加一条）
 > 格式：`提交简述 —— 做了什么 / 为什么`。这是给下一个 AI 的记忆，别省。
 
+- **系统升级五件套（地基/长难句/真听力/半卷模考/妈妈布置）** —— 为高一基础弱、每日30–40分钟设计：`FOUNDATION_DB`+`FoundationTrainer`、`SENTENCE_BREAK_DB`(B1–B3)+`SentenceBreakTrainer`、`LISTEN_PASSAGE_DB`+`PassageListeningView`、`MOCK_EXAM_DB` 40分钟半卷+`MockExamView`、妈妈布置闭环(`_shared.momTasks`)；今日路线条件插入且与地基/长难句互斥；可跳过不锁功能。
 - **读后续写四步训练**（883e7bf）—— 新增 `XuxieTrainer`+`XUXIE_TRAIN_DB`（2 篇），把 25 分大题从"看素材"变成六步可练（读懂→伏笔→走向→升格→成段→范文）/ 补上浙江卷占分最大却唯一没训练的题型。
 - **错题考点识别精准化 + 真题式举一反三**（be0e679）—— `mistakePointOf` 改为"读解析定考点"的四级级联、新增固定搭配类；`buildGrammarAppQ` 用语法填空真句改造成单句应用题 / 用户嫌错题"太弱智"，要求分类精准、举一反三是真新题。
 - **错题本 2.0**（ac1aea7）—— 遮答案自测、变式题防背答案、`lapses` 顽固置顶、回炉预告条、删除加确认 / 原错题库是"错误陈列馆"不是复习工具。

@@ -13,7 +13,7 @@
 
 ## 功能全景（当前网站做了什么，按用户动线）
 - **登录（4 账号，数据各自隔离）**：`0825`糖糖（主用户）· `0315`妈妈（督学报告）· `9999`爸爸（独立试用）· `0000`管理员（全账户总览）。
-- **今日任务（落地页 = 每日自适应学习路线）**：登录默认页。按糖糖的真实数据自动排 5-6 步：①温故到期单元 ②复习到期旧词 ③学新词 ④补薄弱语法点 ⑤针对性练习（错题优先）⑥1 分钟总结。每步可展开看"为什么安排/今天最需要/完成后/明天会怎样"。底部「看得见的成长」面板（学过词/牢固词/攻克错题/连续天数/达标单元）。
+- **今日任务（落地页 = 每日自适应学习路线）**：登录默认页。按糖糖的真实数据自动排 6-7 步：①温故到期单元 ②复习到期旧词 ③学新词 ④补薄弱语法点 ⑤针对性练习（错题优先）⑥**今日题型轮换**（周一完形/周二七选五/周三阅读/周四精听/周五续写训练/周六词块/周日卡片）⑦1 分钟总结。每步可展开看"为什么安排/今天最需要/完成后/明天会怎样"。底部「看得见的成长」面板（学过词/牢固词/攻克错题/连续天数/达标单元）+「本周板块覆盖」7 格打勾。
 - **学一学**：核心笔记（单元词汇 w/m/d/ex + 语法 + 例句，单词行有"档案"入口）· 词块工坊（一个词四层：含义→搭配→例句→自己造句，存"我的好句本"）· 互动卡片 · 写作宝典（含**续写训练**+应用文训练两个四步训练器、应用文模板、续写素材、写作心法）。
 - **练一练**：单词闯关（记忆阶梯智能配题型）· 句子精听（变速+听主旨+抓细节+逐句对照）· 语法填空 35 篇 · 完形 35 篇 · 七选五 35 篇 · 阅读 35 单元 · 重点练习（=单元综合测验，含预热卡/当轮复现/错因标注/连错退阶/一句话解析）。
 - **查漏补缺**：错题库 2.0（记忆曲线回炉 + 知识点归集 + 遮答案自测 + 举一反三变式题 + 筛选置顶 + 汇总导出）· 进度页（单元掌握清单/掌握度%/通关测徽章/基础分级/弱点诊断/本周错因分析/督学报告/管理员总览）。
@@ -59,7 +59,8 @@ catch(err){console.error('❌',err.message,err.loc||'');}
 - 错题体系：SRS(`srsBox/srsDue/cleared/clearedAt`，新错3天回炉/回炉答对进7天档/回炉答错次日再来+当轮复现/连对两次攻克) · **同题不重复建卡**（再错重置现有卡+`lapses`+1，含已攻克的复活）· 复现题 `_retry` 不写 SRS · 错因 `cause` 字段 · `buildMistakeReport/copyMistakeReport/exportMistakeReport` 汇总复制/导出TXT · 进度页"本周错因分析"。
 - 错题考点识别 `mistakePointOf`（精准级联，勿退回只匹配题干词）：meta 直读 → ①解析含"搭配"且定位到词=搭配类 → ②单元语法标题/语法填空tag 关键词与解析打分（`pointTokens` 中文滑窗二字+英文≥4字母+字面 -ed/-ing，`scoreTokens` 强术语+2 阈值2）→ ②b `GRAMMAR_RULES` 通用措辞模式兜底 → ③选项>解析>题干顺序匹配单元词=词义类 → ④待归类。举一反三 `pointVariantQs`：语法类优先用 `buildGrammarAppQ` 把语法填空同考点的空抠成单句应用题（`matchFillIdxs`/`grammarFillSentence`，不用 lookbehind 兼容老 Safari）；`startSimilarPractice`/`startVariantCheck` 共用。
 - 错题库 UI 约定：卡片默认折叠+**遮答案自测**（先想再翻，主动回忆是错题本的核心价值，勿改回答案直接外露）· 到期在前、`lapses` 多的置顶（🔥错N次徽章）· 单元/错因筛选 chips · 预告条(今天/明天/7天/攻克率) · 删除有 confirm。
-- 今日任务页 = 自适应路线（温故卡→到期词→新词→薄弱语法点→针对性练习→总结）+ 成长面板；完成态由 `checkins[今天]` 分类计数驱动（kind：quiz/cards/vocab/grammarFill/mistakes/reading/cloze/seven/chunks/listening/writingTrain/summary/unitCert，`stampCheckin` 累加；只打卡不动数据用 `stampOnlyCheckin`）。
+- **今日题型轮换 `WEEK_ROTATION`**（模块级常量，紧跟 `MISTAKE_CAUSES`）：7 条按 `day`(0=周日) 排的板块，字段 `tab/kind/need/label/emoji/why/todo/gain`，可选 `sec` 用于深链写作宝典子页。`rotationOfToday()` 取当天那条；完成态 = `todayAct[kind] >= need`。**设计意图：糖糖只跟今日路线走，抽屉里的模块她不会主动点开——轮换是让已建成模块真正到达她的唯一通道，别把这一步从路线里去掉。** 深链用 `writingInitSec` state → `WritingView` 的 `initialSec` prop，离开 writing tab 时自动清空（否则会一直被顶到续写训练）。
+- 今日任务页 = 自适应路线（温故卡→到期词→新词→薄弱语法点→针对性练习→今日题型轮换→总结）+ 成长面板（含本周板块覆盖 7 格）；完成态由 `checkins[今天]` 分类计数驱动（kind：quiz/cards/vocab/grammarFill/mistakes/reading/cloze/seven/chunks/listening/writingTrain/summary/unitCert，`stampCheckin` 累加；只打卡不动数据用 `stampOnlyCheckin`）。
 - 发音三层：`speakText(text, rate)` 唯一入口 → ①系统语音合成（**优先 localService 本地语音**——Chrome 的 Google 网络语音在国内静默无声；忽略 canceled/interrupted 伪错误；规避 cancel/speak 竞态）→ ②失败自动切有道在线发音 `playFallbackAudio`（dict.youdao.com/dictvoice，`_headers` CSP 的 media-src 已白名单、sw.js 对该域直通不缓存，失败过一次本会话直走此通道）→ ③都不行才弹 audioTip。`playAudio` 是 0.85 速薄封装。**不要**回退成"cancel 后立即 speak"或"不分本地/网络随便挑语音"的写法。
 - 35 单元 = 7 册×5：key 形如 `B1-1`…`S4-5`。`sw.js` 离线缓存页面+CDN，改 CDN 版本时**同步更新 sw.js 预缓存清单**和 `_headers` CSP。
 
@@ -99,6 +100,7 @@ catch(err){console.error('❌',err.message,err.loc||'');}
 ## 更新日志（最新在上；每次改动后必须在此追加一条）
 > 格式：`提交简述 —— 做了什么 / 为什么`。这是给下一个 AI 的记忆，别省。
 
+- **今日题型周轮换 + 本周板块覆盖**（本次）—— 今日路线新增"今日题型"步骤，一周七天轮完形/七选五/阅读/精听/续写/词块/卡片；成长面板加 7 格覆盖打勾 / **诊断出的真问题：网站有 14 个模块，但今日路线只覆盖 5 个，词块工坊、句子精听、写作/续写训练等 7 个模块躺在抽屉里，糖糖跟着路线走就永远碰不到——不是缺功能，是已建成的功能到不了她面前。**
 - **读后续写四步训练**（883e7bf）—— 新增 `XuxieTrainer`+`XUXIE_TRAIN_DB`（2 篇），把 25 分大题从"看素材"变成六步可练（读懂→伏笔→走向→升格→成段→范文）/ 补上浙江卷占分最大却唯一没训练的题型。
 - **错题考点识别精准化 + 真题式举一反三**（be0e679）—— `mistakePointOf` 改为"读解析定考点"的四级级联、新增固定搭配类；`buildGrammarAppQ` 用语法填空真句改造成单句应用题 / 用户嫌错题"太弱智"，要求分类精准、举一反三是真新题。
 - **错题本 2.0**（ac1aea7）—— 遮答案自测、变式题防背答案、`lapses` 顽固置顶、回炉预告条、删除加确认 / 原错题库是"错误陈列馆"不是复习工具。

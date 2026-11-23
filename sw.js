@@ -1,32 +1,21 @@
-// 糖糖提分通 Service Worker：离线可用 + CDN 资源本地缓存（兜住 unpkg/tailwind 不稳的风险）
-const CACHE = 'tt-cache-v1';
+// 糖糖提分通 Service Worker：离线可用 + 本地资源缓存
+const CACHE = 'tt-cache-v2-precompiled';
 
-// 预缓存清单：页面 + 图标 + 全部 CDN 依赖（版本号锁定，内容不会变）
+// 预缓存清单：页面 + 图标 + 预编译脚本和样式
 const PRECACHE = [
     '/',
     '/index.html',
+    '/app.js',
+    '/tailwind.css',
     '/manifest.json',
     '/apple-touch-icon.png',
     '/icon-192.png',
     '/icon-512.png',
 ];
-// unpkg 支持 CORS（页面 script 标签带 crossorigin+SRI，必须以 cors 模式缓存才能通过完整性校验）
-const PRECACHE_CORS = [
-    'https://unpkg.com/react@18.3.1/umd/react.production.min.js',
-    'https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js',
-    'https://unpkg.com/@babel/standalone@7.29.7/babel.min.js',
-];
-// tailwind CDN 的 script 标签无 crossorigin，属 no-cors 请求，用 opaque 响应缓存
-const PRECACHE_NOCORS = [
-    'https://cdn.tailwindcss.com/3.4.16',
-];
-
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE).then((cache) => Promise.allSettled([
             ...PRECACHE.map((u) => cache.add(u)),
-            ...PRECACHE_CORS.map((u) => cache.add(new Request(u, { mode: 'cors', credentials: 'omit' }))),
-            ...PRECACHE_NOCORS.map((u) => cache.add(new Request(u, { mode: 'no-cors' }))),
         ])).then(() => self.skipWaiting())
     );
 });

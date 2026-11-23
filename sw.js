@@ -12,10 +12,16 @@ const PRECACHE = [
     '/icon-192.png',
     '/icon-512.png',
 ];
+// 预缓存绕过并刷新 HTTP 缓存，页面按导航的 Accept 取：Cloudflare 只给 Accept 含 text/html 的请求注入统计信标，
+// 两种响应 ETag 相同，默认 Accept 的预缓存请求会把 HTTP 缓存里的首页换成无信标版本，之后刷新 304 也拿不到信标
+const precacheRequest = (u) => new Request(u, {
+    cache: 'reload',
+    headers: (u === '/' || u.endsWith('.html')) ? { Accept: 'text/html' } : {},
+});
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE).then((cache) => Promise.allSettled([
-            ...PRECACHE.map((u) => cache.add(u)),
+            ...PRECACHE.map((u) => cache.add(precacheRequest(u))),
         ])).then(() => self.skipWaiting())
     );
 });

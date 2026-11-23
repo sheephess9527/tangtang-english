@@ -140,6 +140,8 @@ npm run build
 ## 更新日志（最新在上；每次改动后必须在此追加一条）
 > 格式：`提交简述 —— 做了什么 / 为什么`。这是给下一个 AI 的记忆，别省。
 
+- **11-23 关闭 Workers Observability** —— `wrangler.jsonc` 的 `observability.enabled` 由 `true` 改为 `false` / 按用户确认的调整执行：本站是纯静态资源（`assets.directory: "."`）、没有 Worker 脚本逻辑，不需要 Workers Logs 采样，关掉以减少不必要的观测数据量与开销。不影响部署、页面访问与 Cloudflare Web Analytics 统计（Web Analytics 是另一套，独立于 Workers Observability）。
+
 - **11-23 SW 预缓存修复刷新丢信标** —— Cloudflare 只对 `Accept` 含 `text/html` 的请求注入 Web Analytics 信标，有无信标两版 ETag 相同；SW 安装时 `cache.add('/')`（`Accept: */*`）把无信标首页写进 HTTP 缓存，之后刷新 304 复用它，只有首访计入统计。`sw.js` 新增 `precacheRequest`：`cache: 'reload'`，`/` 和 `*.html` 带 `Accept: text/html`。用反向代理到线上的方式验证（Playwright route 会禁用 HTTP 缓存，复现不了）：修复后首访/刷新/再访均有信标，旧 SW 用户更新后下一次刷新恢复。详见 README §15。
 
 - **11-23 CSP 放行 Cloudflare Web Analytics** —— 线上 Cloudflare 自动注入的 `static.cloudflareinsights.com/beacon.min.js` 被 `script-src` 拦截，每次加载都有 CSP 控制台报错、统计失效。`_headers` 只给 `script-src` 加 `https://static.cloudflareinsights.com`、`connect-src` 加 `https://cloudflareinsights.com`，其余指令不变；`sw.js` 对信标脚本 `return` 直通（SW 的 fetch 受其自身 connect-src 约束，缓存优先分支会让二次访问失败）。本站实测上报走同源 `/cdn-cgi/rum`。验证：线上页面替换为新 CSP 后信标 200、rum 204、0 条 CSP 违规、0825 登录正常；本地 wrangler dev 首访与 SW 接管二次访问均无违规。详见 README §15。

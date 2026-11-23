@@ -46,7 +46,8 @@ Cloudflare Workers 静态资源直接服务仓库根目录（`assets.directory: 
 
 | 文件 | 作用 |
 |---|---|
-| `index.html` | 页面壳、共享内联样式、静态资源引用和 SW 注册。 |
+| `index.html` | 页面壳、中文搜索摘要、规范网址、社交分享元数据、共享内联样式、静态资源引用和 SW 注册。 |
+| `og-image.jpg` | 社交分享卡片用图（1200 × 630），不参与首屏加载或 SW 预缓存。 |
 | `src/app.jsx` | 应用数据、组件与学习逻辑的编辑入口。 |
 | `src/main.js` / `src/globals.js` | 打包入口与 React 全局初始化。 |
 | `src/tailwind.css` / `tailwind.config.js` | 样式生成入口、扫描范围和 safelist。 |
@@ -242,6 +243,8 @@ git add src/app.jsx app.js tailwind.css README.md CLAUDE.md
 > 开发者寄语："找准单词记忆、短语掌握、句型掌握、阅读找答案的诀窍，反复利用好网站，就能快速提分。" 请带着"帮一个真实的高一学生提分"的目标来做每一处改动。
 
 ## 15. 更新日志
+
+- **2026-11-23 · 搜索摘要与分享卡片**：首页增加中文描述、规范网址 `https://www.tangguo.us/`、Open Graph 与 Twitter 大图卡片。两种卡片共用本站的 `og-image.jpg`，无需调整 CSP、SW 预缓存或静态资源排除规则。预览环境验证时直接检查预览站的 `/og-image.jpg`；元数据仍指向正式域名。
 
 - **2026-11-23 · SW 预缓存不再让刷新丢失统计信标**：CSP 放行后线上复核发现，只有首访会加载 Web Analytics 信标，SW 接管后的刷新和再访都没有。原因：Cloudflare 只给 `Accept` 含 `text/html` 的请求注入信标，两种响应 ETag 相同且无 `Vary: Accept`；SW 安装时 `cache.add('/')` 用默认 `Accept: */*` 取到无信标首页并写进浏览器 HTTP 缓存，之后导航网络优先请求得到 304，复用的正是这份无信标正文，回访用户统计因此丢失。`sw.js` 预缓存改为 `new Request(u, { cache: 'reload', headers: { Accept: 'text/html' } })`（非 HTML 资源不加 Accept）。验证：本地 Node 反向代理到线上（Cloudflare 照常注入）并替换 `sw.js`，旧版刷新/再访 3 次均无信标；新版首访、两次刷新、再访均有信标，0 条 CSP 违规，`0825` 登录正常；旧 SW 用户在新 SW 安装后的下一次刷新即恢复。Playwright `route` 会禁用 HTTP 缓存，不能用它复现此问题。
 

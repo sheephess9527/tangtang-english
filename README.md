@@ -6,7 +6,7 @@
 
 ## 1. 这是什么 / 项目背景
 
-**糖糖提分通**是一个**单文件 React PWA**，是开发者（一位父亲）专门为女儿"糖糖"打造的高中英语学习/提分工具。
+**糖糖提分通**是一个**静态 React PWA**，是开发者（一位父亲）专门为女儿"糖糖"打造的高中英语学习/提分工具。应用源码集中在 `src/app.jsx`，生产脚本和样式在本地预编译后提交。
 
 - **使用者画像**：糖糖，高一，**人教版**教材，**浙江高考卷**，英语基础较薄弱，词汇量是短板。
 - **产品理念**（开发者原话，需贯彻）：英语应试本质是"找规律、记碎片、反复利用"。把单词记忆、短语搭配、句型、阅读找答案的**诀窍**讲透，中文母语者也能高效应试，无限接近高考满分。
@@ -19,7 +19,7 @@
 
 > ⚠️ **登录密码绝对不能改，其他都可以改。** 这是开发者反复强调的硬约束。
 
-- 登录逻辑在 `index.html` 的 `LoginScreen` 组件（约 **line 2957**，密码判断在 **line 2963–2966**）。
+- 登录逻辑在 `src/app.jsx` 的 `LoginScreen` 组件（约 **line 10707**）。
 - 两个账号（密码即身份）：
   - `0825` → 用户 `tangtang`（糖糖）
   - `0315` → 用户 `mama`（妈妈）
@@ -27,19 +27,18 @@
 
 ---
 
-## 3. 技术架构（一句话：零构建、单文件）
+## 3. 技术架构（一句话：本地预编译、静态部署）
 
-- **`index.html` 就是整个应用**（约 4000 行）。没有后端、没有打包、没有 `node_modules`、没有构建步骤。
-- 浏览器内通过 **Babel Standalone** 实时编译 JSX：所有应用代码写在 `<script type="text/babel">`（约 **line 211** 开始）里。
-- **外部依赖全部走 CDN**（`index.html` `<head>`，line 15–18，带 SRI 完整性校验）：
-  - Tailwind CSS Play CDN `3.4.16`
-  - React `18.3.1` + ReactDOM `18.3.1`（UMD production）
-  - `@babel/standalone` `7.29.7`
-- 渲染入口：`ReactDOM.createRoot(...).render(<App />)`（约 **line 3994**）。
-- 状态持久化：`localStorage`，**没有任何服务器存储**。
+- `src/app.jsx` 集中保存应用数据与组件；`index.html` 保留页面壳、共享内联样式和 Service Worker 注册。
+- `src/main.js` 先导入 `src/globals.js`，设置 `window.React` / `window.ReactDOM.createRoot`，再导入应用。
+- 依赖由 npm 锁文件固定：React / ReactDOM `18.3.1`、Tailwind CSS `3.4.16`、esbuild `0.28.2`。
+- `npm run build` 将生产 React 与 JSX 打包、压缩为根目录 `app.js`（Safari 14.1 目标），并生成 `tailwind.css`。浏览器不再实时编译 JSX，也不下载远程框架脚本。
+- Tailwind 扫描 `index.html` 与 `src/**/*.jsx`；数据映射类名在 `tailwind.config.js` 额外 safelist。新增动态类名时须保证完整类名可被扫描或加入 safelist。
+- 样式表位于 HTML 内联样式之后，保持原有覆盖顺序。渲染入口仍为 `ReactDOM.createRoot(...).render(<App />)`。
+- 状态持久化：`localStorage`，**没有任何服务器存储**；账号和学习逻辑未随构建迁移改变。
 
-### 为什么是单文件？
-开发者要的是"下载即用 / 双击即开 / 边缘部署零成本"。**不要把它拆成多文件、不要引入构建工具（Vite/webpack/npm）、不要 npm 化**，除非用户明确要求改变架构。
+### 为什么提交构建产物？
+Cloudflare Workers 静态资源直接服务仓库根目录（`assets.directory: "."`），**不运行构建步骤**。开发者在本地构建并提交 `app.js` / `tailwind.css`，部署不需要付费服务或构建分钟数；本次迁移不引入服务器运行时。
 
 ---
 
@@ -47,20 +46,28 @@
 
 | 文件 | 作用 |
 |---|---|
-| `index.html` | **唯一的应用文件**。所有数据、组件、样式逻辑都在里面。 |
+| `index.html` | 页面壳、共享内联样式、静态资源引用和 SW 注册。 |
+| `src/app.jsx` | 应用数据、组件与学习逻辑的编辑入口。 |
+| `src/main.js` / `src/globals.js` | 打包入口与 React 全局初始化。 |
+| `src/tailwind.css` / `tailwind.config.js` | 样式生成入口、扫描范围和 safelist。 |
+| `package.json` / `package-lock.json` | 固定依赖版本和生产构建命令。 |
+| `app.js` / `tailwind.css` | **须提交的生产构建产物**，Cloudflare 直接服务。 |
+| `.assetsignore` | 不对外服务源码、依赖和构建配置。 |
 | `manifest.json` | PWA 清单（名称、图标、`display: standalone`、主题色 `#6366f1`）。 |
 | `apple-touch-icon.png` (180²) | iOS 主屏幕图标。 |
 | `icon-192.png` / `icon-512.png` | PWA / Android 图标（`purpose: any maskable`）。 |
-| `sw.js` | **Service Worker**：预缓存页面+图标+全部 CDN 依赖（React/Babel/Tailwind），离线可用；CDN 缓存优先、本站网络优先。**升级 CDN 版本时要同步更新这里的预缓存清单**。 |
-| `_headers` | Cloudflare Pages 响应头：CSP、X-Frame-Options 等安全头。**改 CDN 依赖时要同步改 CSP 白名单**（`script-src` 和 `connect-src` 都要）。 |
+| `sw.js` | **Service Worker**：预缓存页面、图标及本地 JS/CSS，本站网络优先、失败回退缓存；保留有道音频直通。更新资源时检查缓存版本与预缓存清单。 |
+| `_headers` | Cloudflare 静态资源安全响应头：脚本和连接仅允许本站；保留必要内联脚本/样式及有道音频，不允许动态代码求值。 |
 | `wrangler.jsonc` | Cloudflare 部署配置（`name: tangtang-english`，静态资源目录 `.`）。 |
 | `README.md` | 本交接文档。 |
 | `糖糖解题诀窍手册.html` / `.txt` | 从应用数据导出的可打印诀窍手册（见 §9）。 |
-| `.gitignore` | 忽略 wrangler / env 文件。 |
+| `.gitignore` | 忽略 node_modules / wrangler / env 文件。 |
 
 ---
 
-## 5. 核心数据结构（都在 `index.html` 顶部，纯 JS 常量）
+## 5. 核心数据结构（都在 `src/app.jsx`，纯 JS 常量）
+
+以下历史行号仅作线索，请用 `rg -n '符号名' src/app.jsx` 复核。
 
 > 35 个单元 = 7 册 × 5 单元。单元 key 形如 `B1-1`（必修一第1单元）… `S4-5`（选必四第5单元）。
 
@@ -89,7 +96,7 @@
 
 ---
 
-## 6. 主要组件（都是函数组件，定义在 `<script type="text/babel">` 内）
+## 6. 主要组件（都是函数组件，定义在 `src/app.jsx` 内）
 
 | 组件 | 行号(约) | 职责 |
 |---|---|---|
@@ -132,33 +139,27 @@
 
 ## 8. 🛠️ 如何验证改动（每次改完都要做）
 
-没有构建步骤，但**改完 JSX 必须做一次 Babel 编译校验**，否则线上白屏。
+**修改 `src/app.jsx` 后，必须重新构建并提交 `app.js` / `tailwind.css`。** 修改 HTML 类名、Tailwind 配置或依赖后也需重新构建。
 
 ```bash
-# 一次性安装本地校验用的 babel（网络可能受限，装一次即可）
-npm install @babel/standalone@7.29.7 --prefix /tmp/babelcheck
+# 编辑 src/app.jsx，然后安装锁定依赖并构建
+npm ci && npm run build
 
-# 校验 index.html 里的 JSX 能否编译
-node -e "
-const babel = require('/tmp/babelcheck/node_modules/@babel/standalone/babel.js');
-const fs = require('fs');
-const c = fs.readFileSync('index.html','utf8');
-const s = c.indexOf('<script type=\"text/babel\">') + '<script type=\"text/babel\">'.length;
-const e = c.indexOf('</script>', s); // babel 块后面还有 SW 注册的普通 script，不能用 lastIndexOf
-const jsx = c.substring(s, e);
-try { babel.transform(jsx,{presets:['react'],filename:'app.jsx'}); console.log('✅ Babel OK'); }
-catch(err){ console.error('❌', err.message, err.loc||''); }
-"
+# 本地打开 http://localhost:8080，检查登录与受影响功能
+python3 -m http.server 8080
+
+# 将改动源码、文档与生成产物一起提交（不要提交 node_modules）
+git add src/app.jsx app.js tailwind.css README.md CLAUDE.md
 ```
-- 同样可以在 Node 里 `eval` 提取出 `EXAM_TIPS_DB` / `UNIT_DB` 等常量块来校验 JSON 结构是否完整（参考 git 历史里用过的脚本思路）。
-- 大批量数据改动（如给所有单元加字段）建议写一次性 Node 脚本做正则替换，再跑上面的编译校验。
+- 构建成功只说明语法与打包通过；仍需用浏览器检查控制台、移动端排版与交互。Python 服务器不会读取 `_headers`，CSP 检查须使用支持该文件的服务器或注入等效响应头。
+- 大批量数据改动（如给所有单元加字段）建议写一次性 Node 脚本做精确替换，再构建与检查数据结构。
 
 ---
 
 ## 9. 解题诀窍手册（可打印）
 
 `糖糖解题诀窍手册.html` / `.txt` 是从 `EXAM_TIPS_DB` + `UNIVERSAL_TIPS` 导出的可打印学习材料（HTML 版按七册分页、橙/红配色；TXT 版便于复制）。
-**改了诀窍数据后，若用户要更新手册，需重新生成。** 生成脚本逻辑：读 `index.html`，`eval` 出 `EXAM_TIPS_DB`/`UNIVERSAL_TIPS`/`UNIT_DB` 的标题，按"册→单元→题型诀窍/阅读诀窍→附录(通用诀窍)"结构拼 HTML/TXT。（生成器是临时脚本，未入库；按此结构即可复刻。）
+**改了诀窍数据后，若用户要更新手册，需重新生成。** 生成脚本逻辑：读 `src/app.jsx`，提取 `EXAM_TIPS_DB`/`UNIVERSAL_TIPS`/`UNIT_DB` 的标题，按"册→单元→题型诀窍/阅读诀窍→附录(通用诀窍)"结构拼 HTML/TXT。（生成器是临时脚本，未入库；按此结构即可复刻。）
 
 ## 9b. 图标
 
@@ -171,9 +172,9 @@ catch(err){ console.error('❌', err.message, err.loc||''); }
 
 ## 10. 部署
 
-- 目标平台：**Cloudflare Pages**（也兼容 GitHub Pages，纯静态）。
-- 配置见 `wrangler.jsonc`（静态资源目录 = 仓库根 `.`）。推送到默认分支即可触发部署。
-- `_headers` 提供安全响应头。**新增/更换任何 CDN 脚本，务必同步更新 `_headers` 里 CSP 的 `script-src` 白名单**（当前允许 `https://unpkg.com` 和 `https://cdn.tailwindcss.com`），否则线上会被 CSP 拦截。
+- 目标平台：**Cloudflare Workers 静态资源**，配置见 `wrangler.jsonc`（静态资源目录 = 仓库根 `.`）。
+- **先本地 `npm ci && npm run build`，提交 `app.js` 和 `tailwind.css`，再按用户确认的 Git 流程部署到 main。** Cloudflare 直接服务已提交文件，不运行构建，不需要付费服务或构建分钟数。
+- `.assetsignore` 排除源码、node_modules、包清单和 Tailwind 配置；`_headers` 提供安全响应头。运行时无需远程框架脚本；新增资源须与 CSP 和 SW 缓存策略一致。
 
 ---
 
@@ -199,7 +200,7 @@ catch(err){ console.error('❌', err.message, err.loc||''); }
 - ✅ **每单元专属诀窍** + **通用诀窍折叠面板**（见 §5 的 `EXAM_TIPS_DB`/`UNIVERSAL_TIPS`）。
 - ✅ **进度/掌握度** 可视化（`mastery` tab）+ **连续学习打卡**（🔥 streak，任何学习动作自动记录）。
 - ✅ **PWA**：manifest + apple-touch-icon + 精致主屏图标，可"添加到主屏幕"像 App 一样用。
-- ✅ **离线可用**：`sw.js` Service Worker 缓存页面和全部 CDN 依赖，断网/CDN 不稳时照常打开。
+- ✅ **离线可用**：`sw.js` Service Worker 缓存页面、图标和本地 JS/CSS，首次成功加载后可断网打开。
 - ✅ **写作宝典**（`writing` tab）：8 大类应用文模板 + 读后续写技巧与素材库（对应浙江卷 40 分写作）。
 - ✅ **跨单元今日复习**（`review` tab）：汇总全书到期单词一键复习，SRS 真正闭环。
 - ✅ **数据导出/导入**：侧边栏按钮，下载/恢复 JSON 备份，防 localStorage 丢失。
@@ -219,10 +220,10 @@ catch(err){ console.error('❌', err.message, err.loc||''); }
 ## 13. 约定与坑（Conventions & Gotchas）
 
 1. **登录密码不能改**（§2）——最重要。
-2. **保持单文件零构建架构**（§3）——不要 npm 化 / 拆文件。
-3. **改 JSX 必跑 Babel 校验**（§8）——否则线上白屏。
+2. **保持本地预编译、静态部署架构**（§3）——不要恢复浏览器实时编译或引入不必要的服务器。
+3. **改 `src/app.jsx` 后必须重新构建并提交 `app.js` / `tailwind.css`**（§8）。
 4. **`useLocalStorage` 用函数式更新**（§7）——别引入闭包覆盖 bug。
-5. **改 CDN 依赖要同步改 `_headers` 的 CSP**（§10）。
+5. **改静态资源要检查 `_headers` 的 CSP 与 SW 缓存版本**（§10）。
 6. **大对象（`UNIT_DB`/`QUESTION_BANK`）是压缩成一行的内联数据**：手改易错，优先用 Node 脚本做精确正则替换 + 校验。
 7. **诀窍/内容面向中文母语者**：语气亲切、举例具体、给"怎么下手"的步骤，而不是抽象语法术语堆砌。糖糖是真实用户。
 8. **图标改完文件名不变**，并提醒用户 iOS 缓存需重添（§9b）。
@@ -234,8 +235,22 @@ catch(err){ console.error('❌', err.message, err.loc||''); }
 
 1. 读完本文件（尤其 §2 红线）。
 2. `git log --oneline -20` 看最近做了什么。
-3. 跑一次 §8 的 Babel 校验，确认当前 `index.html` 是健康的。
+3. 跑一次 §8 的生产构建，确认源码能够生成部署产物。
 4. 想了解某功能：按 §5/§6 的行号直接跳到对应常量/组件。
-5. 动手改 → Babel 校验 → commit（中文信息）→ push（main + 同步开发分支）。
+5. 编辑 `src/app.jsx` → `npm ci && npm run build` → 浏览器检查 → commit 源码、产物与文档（中文信息）→ 按用户授权 push 当前分支，不自动推 main。
 
 > 开发者寄语："找准单词记忆、短语掌握、句型掌握、阅读找答案的诀窍，反复利用好网站，就能快速提分。" 请带着"帮一个真实的高一学生提分"的目标来做每一处改动。
+
+## 15. 更新日志
+
+- **2026-11-23 · 手机端预编译与首屏绘制修正**：应用和 React 预打包为本地脚本、Tailwind 预生成样式，不再在手机上实时编译或下载框架脚本。登录渐入动画起始透明度由 0 改为 0.01，保留淡入效果，同时避免 Chromium 未记录 FCP 的绘制计时问题；原版登录界面并非一直不可见。修改 `src/app.jsx` 后须重新构建并提交 `app.js` / `tailwind.css`，Cloudflare 只服务提交产物，不需要付费服务或构建分钟数。
+
+  Lighthouse 13.6.0 / 本地 Playwright Chromium 153.0.8010.12，默认移动设备与模拟限速（CPU 4×），每个目标独立测 3 次，**下表各列取中位数**（未登录冷启动）：
+
+  | 目标 | Performance | FCP | LCP | TBT | Speed Index | CLS | 总传输字节 |
+  |---|---:|---:|---:|---:|---:|---:|---:|
+  | 线上旧版 | 27 | 8.43 s | 8.43 s | 9,949.5 ms | 8.51 s | 0.02347 | 1,239,922 |
+  | 本地旧 main | 28 | 7.99 s | 7.99 s | 9,979.5 ms | 8.11 s | 0.02030 | 1,156,905 |
+  | 本地预编译新版 | 90 | 0.75 s | 0.75 s | 429.5 ms | 1.73 s | 0 | 358,005 |
+
+  本地对照使用支持 Brotli/gzip、读取各版本 `_headers` 的 Node 静态服务器。新版三次分数为 90/96/80，存在运行波动；本地与线上传输环境不同，**不承诺部署后固定得到 90 分**。9 份 HTML/JSON 报告和分数摘要截图位于 `~/tt-lh/mobile-{live,old,new}-{1,2,3}.report.{html,json}` / `*.summary.png`；调查用 PerformanceObserver 数据与 Playwright trace 同存该目录。登录页复核仅 25 像素差异、通道差值不超过 1/255，无可见版式变化。

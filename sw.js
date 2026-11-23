@@ -36,6 +36,9 @@ self.addEventListener('fetch', (event) => {
     // 在线发音（有道）不走 SW：音频常带 Range 请求，缓存整包响应会让 Safari 播不出来
     if (url.hostname === 'dict.youdao.com') return;
 
+    // Cloudflare Web Analytics 信标脚本不走 SW：SW 的 fetch 受 connect-src 约束，直通由页面 script-src 放行
+    if (url.hostname === 'static.cloudflareinsights.com') return;
+
     if (url.origin !== self.location.origin) {
         // CDN 资源：缓存优先（URL 带版本号，内容不变），未命中再走网络并回填
         event.respondWith(

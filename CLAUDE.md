@@ -37,7 +37,7 @@
 ## 架构约束（不要破坏）
 - **用户明确批准预编译（2026-11-23）**：无后端；`src/app.jsx` 保留原应用，`src/main.js` 先导入 `src/globals.js` 设置 React/ReactDOM 全局，再导入应用。
 - `npm ci && npm run build`：esbuild 打包生产 React 18.3.1，目标 Safari 14.1；Tailwind 3.4.16 CLI 扫描 `index.html` 和 `src/**/*.jsx`，数据映射类名在 `tailwind.config.js` 中额外 safelist。共享内联样式保持在 HTML，Tailwind 样式表在其后，维持旧 CDN 的覆盖顺序。
-- **Cloudflare 不执行构建**（`assets.directory: "."`）：必须提交 `app.js`、`tailwind.css` 和锁文件；`.assetsignore` 排除源码、依赖、构建配置。CSP 不再允许 CDN 或 unsafe-eval，SW 预缓存本地构建产物。
+- **Cloudflare 不执行构建**（`assets.directory: "."`）：必须提交 `app.js`、`tailwind.css` 和锁文件；`.assetsignore` 排除源码、依赖、构建配置。CSP 不再允许 CDN 或 unsafe-eval，唯一例外是 Cloudflare 边缘注入的 Web Analytics 信标（`script-src https://static.cloudflareinsights.com`、`connect-src https://cloudflareinsights.com`，`sw.js` 对其直通）；SW 预缓存本地构建产物。
 - **修改 `src/app.jsx` 后，必须重新构建并提交 `app.js` / `tailwind.css`**：编辑源码 → `npm ci && npm run build` → 浏览器检查 → 同一提交包含源码、生成产物和文档。Cloudflare 不替你构建，无需付费服务或构建分钟数。
 
 ## 改完必做：生产构建校验（否则线上白屏）
@@ -139,6 +139,8 @@ npm run build
 
 ## 更新日志（最新在上；每次改动后必须在此追加一条）
 > 格式：`提交简述 —— 做了什么 / 为什么`。这是给下一个 AI 的记忆，别省。
+
+- **11-23 CSP 放行 Cloudflare Web Analytics** —— 线上 Cloudflare 自动注入的 `static.cloudflareinsights.com/beacon.min.js` 被 `script-src` 拦截，每次加载都有 CSP 控制台报错、统计失效。`_headers` 只给 `script-src` 加 `https://static.cloudflareinsights.com`、`connect-src` 加 `https://cloudflareinsights.com`，其余指令不变；`sw.js` 对信标脚本 `return` 直通（SW 的 fetch 受其自身 connect-src 约束，缓存优先分支会让二次访问失败）。本站实测上报走同源 `/cdn-cgi/rum`。验证：线上页面替换为新 CSP 后信标 200、rum 204、0 条 CSP 违规、0825 登录正常；本地 wrangler dev 首访与 SW 接管二次访问均无违规。详见 README §15。
 
 - **11-23 预编译替代浏览器编译 + 首屏绘制计时复核** —— 按用户明确授权引入固定版本 npm 构建，将原 Babel 块原样移到 `src/app.jsx`，提交本地 React/JS 与 Tailwind CSS 产物，收紧 CSP 并更新 SW；避免手机每次解析 Babel 和依赖 CDN。**修改 `src/app.jsx` 后必须重新构建并提交 `app.js` / `tailwind.css`**。默认移动 Lighthouse 13.6.0、Chromium 153，每目标三次独立运行，逐指标中位数：线上旧版 27 分 / FCP=LCP 8.43s / TBT 9949.5ms / SI 8.51s / CLS 0.02347 / 1,239,922B；本地旧 main 28 分 / 7.99s / 9979.5ms / 8.11s / 0.02030 / 1,156,905B；本地新版 90 分 / 0.75s / 429.5ms / 1.73s / 0 / 358,005B。三次新版分数 90/96/80，不保证线上固定分数。用禁用动画的临时副本及 1×/4× CPU 观测隔离 NO_FCP：起始透明度 0 时界面最终可见但 FCP 缺失，改登录渐入起始为 0.01 后恢复；不是持续白屏。旧版和新版首次背景绘制时 root 均可为空，不能只归因于 defer。十屏对照中九屏逐像素一致，修正后登录复核仍仅 25 像素差异、通道差值不超过 1/255；账号与学习逻辑未改。报告/截图/trace 在 `~/tt-lh/`，口径见 README §15。
 

@@ -56,8 +56,8 @@ Cloudflare Workers 静态资源直接服务仓库根目录（`assets.directory: 
 | `manifest.json` | PWA 清单（名称、图标、`display: standalone`、主题色 `#6366f1`）。 |
 | `apple-touch-icon.png` (180²) | iOS 主屏幕图标。 |
 | `icon-192.png` / `icon-512.png` | PWA / Android 图标（`purpose: any maskable`）。 |
-| `sw.js` | **Service Worker**：预缓存页面、图标及本地 JS/CSS，本站网络优先、失败回退缓存；保留有道音频直通。更新资源时检查缓存版本与预缓存清单。 |
-| `_headers` | Cloudflare 静态资源安全响应头：脚本和连接仅允许本站；保留必要内联脚本/样式及有道音频，不允许动态代码求值。 |
+| `sw.js` | **Service Worker**：预缓存页面、图标及本地 JS/CSS，本站网络优先、失败回退缓存；保留有道音频与 Cloudflare Web Analytics 信标脚本直通。更新资源时检查缓存版本与预缓存清单。 |
+| `_headers` | Cloudflare 静态资源安全响应头：脚本和连接默认仅允许本站，另外只放行 Cloudflare Web Analytics（`script-src https://static.cloudflareinsights.com`、`connect-src https://cloudflareinsights.com`）；保留必要内联脚本/样式及有道音频，不允许动态代码求值。 |
 | `wrangler.jsonc` | Cloudflare 部署配置（`name: tangtang-english`，静态资源目录 `.`）。 |
 | `README.md` | 本交接文档。 |
 | `糖糖解题诀窍手册.html` / `.txt` | 从应用数据导出的可打印诀窍手册（见 §9）。 |
@@ -174,7 +174,7 @@ git add src/app.jsx app.js tailwind.css README.md CLAUDE.md
 
 - 目标平台：**Cloudflare Workers 静态资源**，配置见 `wrangler.jsonc`（静态资源目录 = 仓库根 `.`）。
 - **先本地 `npm ci && npm run build`，提交 `app.js` 和 `tailwind.css`，再按用户确认的 Git 流程部署到 main。** Cloudflare 直接服务已提交文件，不运行构建，不需要付费服务或构建分钟数。
-- `.assetsignore` 排除源码、node_modules、包清单和 Tailwind 配置；`_headers` 提供安全响应头。运行时无需远程框架脚本；新增资源须与 CSP 和 SW 缓存策略一致。
+- `.assetsignore` 排除源码、node_modules、包清单和 Tailwind 配置；`_headers` 提供安全响应头。运行时无需远程框架脚本；新增资源须与 CSP 和 SW 缓存策略一致。Cloudflare 在边缘为线上页面注入 Web Analytics 信标（`static.cloudflareinsights.com/beacon.min.js`，免费功能），仓库 HTML 里没有这段脚本；CSP 只为它放行上述两个域名，`sw.js` 对信标脚本直通不缓存。本站实测信标数据 POST 到同源 `/cdn-cgi/rum`（`'self'` 已允许），`cloudflareinsights.com` 是 Cloudflare 文档要求的默认上报地址。
 
 ---
 
@@ -242,6 +242,8 @@ git add src/app.jsx app.js tailwind.css README.md CLAUDE.md
 > 开发者寄语："找准单词记忆、短语掌握、句型掌握、阅读找答案的诀窍，反复利用好网站，就能快速提分。" 请带着"帮一个真实的高一学生提分"的目标来做每一处改动。
 
 ## 15. 更新日志
+
+- **2026-11-23 · CSP 放行 Cloudflare Web Analytics**：线上 Cloudflare 自动注入的 `beacon.min.js` 被 CSP `script-src` 拦截，每次打开页面控制台报 CSP 违规，统计数据也收不到。`_headers` 只在 `script-src` 加 `https://static.cloudflareinsights.com`、在 `connect-src` 加 `https://cloudflareinsights.com`，其余指令不变（仍无 unsafe-eval、无其他 CDN）。`sw.js` 对信标脚本直通：否则 SW 接管页面后用 `fetch` 取脚本会受 SW 自身 `connect-src` 约束而失败。验证：Playwright + Chrome 打开线上页面并把响应 CSP 替换为新值，信标脚本 200、`/cdn-cgi/rum` POST 204、0 条 CSP 违规，`0825` 登录后今日任务正常；本地 `wrangler dev`（读取 `_headers`）注入同一信标标签，首访与 SW 接管后的二次访问均无 CSP 违规。
 
 - **2026-11-23 · 手机端预编译与首屏绘制修正**：应用和 React 预打包为本地脚本、Tailwind 预生成样式，不再在手机上实时编译或下载框架脚本。登录渐入动画起始透明度由 0 改为 0.01，保留淡入效果，同时避免 Chromium 未记录 FCP 的绘制计时问题；原版登录界面并非一直不可见。修改 `src/app.jsx` 后须重新构建并提交 `app.js` / `tailwind.css`，Cloudflare 只服务提交产物，不需要付费服务或构建分钟数。
 

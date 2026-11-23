@@ -62,7 +62,7 @@ npm run build
 - **今日题型轮换 `WEEK_ROTATION`**（模块级常量，紧跟 `MISTAKE_CAUSES`）：7 条按 `day`(0=周日) 排的板块，字段 `tab/kind/need/label/emoji/why/todo/gain`，可选 `sec` 用于深链写作宝典子页。`rotationOfToday()` 取当天那条；完成态 = `todayAct[kind] >= need`。**设计意图：糖糖只跟今日路线走，抽屉里的模块她不会主动点开——轮换是让已建成模块真正到达她的唯一通道，别把这一步从路线里去掉。** 深链用 `writingInitSec` state → `WritingView` 的 `initialSec` prop，离开 writing tab 时自动清空（否则会一直被顶到续写训练）。
 - 今日任务页 = 自适应路线（温故卡→到期词→新词→薄弱语法点→针对性练习→今日题型轮换→总结）+ 成长面板（含本周板块覆盖 7 格）；完成态由 `checkins[今天]` 分类计数驱动（kind：quiz/cards/vocab/grammarFill/mistakes/reading/cloze/seven/chunks/listening/writingTrain/summary/unitCert，`stampCheckin` 累加；只打卡不动数据用 `stampOnlyCheckin`）。
 - 发音三层：`speakText(text, rate)` 唯一入口 → ①系统语音合成（**优先 localService 本地语音**——Chrome 的 Google 网络语音在国内静默无声；忽略 canceled/interrupted 伪错误；规避 cancel/speak 竞态）→ ②失败自动切有道在线发音 `playFallbackAudio`（dict.youdao.com/dictvoice，`_headers` CSP 的 media-src 已白名单、sw.js 对该域直通不缓存，失败过一次本会话直走此通道）→ ③都不行才弹 audioTip。`playAudio` 是 0.85 速薄封装。**不要**回退成"cancel 后立即 speak"或"不分本地/网络随便挑语音"的写法。
-- 35 单元 = 7 册×5：key 形如 `B1-1`…`S4-5`。`sw.js` 离线缓存页面、本地 JS/CSS 和图标；资源变更时检查预缓存清单与缓存版本。
+- 35 单元 = 7 册×5：key 形如 `B1-1`…`S4-5`。`sw.js` 离线缓存页面、本地 JS/CSS 和图标；资源变更时检查预缓存清单与缓存版本。预缓存必须走 `precacheRequest`（`cache: 'reload'`，HTML 带 `Accept: text/html`），否则会把无统计信标的首页写进 HTTP 缓存。
 
 ## 状态/存储坑
 - 单一 localStorage key `tt_all_users_v2`；按用户分桶 `{progress,cardLoop,mistakes,vocab,mastery,checkins,grammarFill,reading,cloze,seven,listening,mySentences,unitCert}`。
@@ -139,6 +139,8 @@ npm run build
 
 ## 更新日志（最新在上；每次改动后必须在此追加一条）
 > 格式：`提交简述 —— 做了什么 / 为什么`。这是给下一个 AI 的记忆，别省。
+
+- **11-23 SW 预缓存修复刷新丢信标** —— Cloudflare 只对 `Accept` 含 `text/html` 的请求注入 Web Analytics 信标，有无信标两版 ETag 相同；SW 安装时 `cache.add('/')`（`Accept: */*`）把无信标首页写进 HTTP 缓存，之后刷新 304 复用它，只有首访计入统计。`sw.js` 新增 `precacheRequest`：`cache: 'reload'`，`/` 和 `*.html` 带 `Accept: text/html`。用反向代理到线上的方式验证（Playwright route 会禁用 HTTP 缓存，复现不了）：修复后首访/刷新/再访均有信标，旧 SW 用户更新后下一次刷新恢复。详见 README §15。
 
 - **11-23 CSP 放行 Cloudflare Web Analytics** —— 线上 Cloudflare 自动注入的 `static.cloudflareinsights.com/beacon.min.js` 被 `script-src` 拦截，每次加载都有 CSP 控制台报错、统计失效。`_headers` 只给 `script-src` 加 `https://static.cloudflareinsights.com`、`connect-src` 加 `https://cloudflareinsights.com`，其余指令不变；`sw.js` 对信标脚本 `return` 直通（SW 的 fetch 受其自身 connect-src 约束，缓存优先分支会让二次访问失败）。本站实测上报走同源 `/cdn-cgi/rum`。验证：线上页面替换为新 CSP 后信标 200、rum 204、0 条 CSP 违规、0825 登录正常；本地 wrangler dev 首访与 SW 接管二次访问均无违规。详见 README §15。
 

@@ -56,7 +56,7 @@ Cloudflare Workers 静态资源直接服务仓库根目录（`assets.directory: 
 | `manifest.json` | PWA 清单（名称、图标、`display: standalone`、主题色 `#6366f1`）。 |
 | `apple-touch-icon.png` (180²) | iOS 主屏幕图标。 |
 | `icon-192.png` / `icon-512.png` | PWA / Android 图标（`purpose: any maskable`）。 |
-| `sw.js` | **Service Worker**：预缓存页面、图标及本地 JS/CSS，本站网络优先、失败回退缓存；保留有道音频与 Cloudflare Web Analytics 信标脚本直通。更新资源时检查缓存版本与预缓存清单。 |
+| `sw.js` | **Service Worker**：预缓存页面、图标及本地 JS/CSS，本站网络优先、失败回退缓存；保留有道音频与 Cloudflare Web Analytics 信标脚本直通；预缓存请求用 `cache: 'reload'`，首页带 `Accept: text/html`，避免把无信标版本写进 HTTP 缓存。更新资源时检查缓存版本与预缓存清单。 |
 | `_headers` | Cloudflare 静态资源安全响应头：脚本和连接默认仅允许本站，另外只放行 Cloudflare Web Analytics（`script-src https://static.cloudflareinsights.com`、`connect-src https://cloudflareinsights.com`）；保留必要内联脚本/样式及有道音频，不允许动态代码求值。 |
 | `wrangler.jsonc` | Cloudflare 部署配置（`name: tangtang-english`，静态资源目录 `.`）。 |
 | `README.md` | 本交接文档。 |
@@ -242,6 +242,8 @@ git add src/app.jsx app.js tailwind.css README.md CLAUDE.md
 > 开发者寄语："找准单词记忆、短语掌握、句型掌握、阅读找答案的诀窍，反复利用好网站，就能快速提分。" 请带着"帮一个真实的高一学生提分"的目标来做每一处改动。
 
 ## 15. 更新日志
+
+- **2026-11-23 · SW 预缓存不再让刷新丢失统计信标**：CSP 放行后线上复核发现，只有首访会加载 Web Analytics 信标，SW 接管后的刷新和再访都没有。原因：Cloudflare 只给 `Accept` 含 `text/html` 的请求注入信标，两种响应 ETag 相同且无 `Vary: Accept`；SW 安装时 `cache.add('/')` 用默认 `Accept: */*` 取到无信标首页并写进浏览器 HTTP 缓存，之后导航网络优先请求得到 304，复用的正是这份无信标正文，回访用户统计因此丢失。`sw.js` 预缓存改为 `new Request(u, { cache: 'reload', headers: { Accept: 'text/html' } })`（非 HTML 资源不加 Accept）。验证：本地 Node 反向代理到线上（Cloudflare 照常注入）并替换 `sw.js`，旧版刷新/再访 3 次均无信标；新版首访、两次刷新、再访均有信标，0 条 CSP 违规，`0825` 登录正常；旧 SW 用户在新 SW 安装后的下一次刷新即恢复。Playwright `route` 会禁用 HTTP 缓存，不能用它复现此问题。
 
 - **2026-11-23 · CSP 放行 Cloudflare Web Analytics**：线上 Cloudflare 自动注入的 `beacon.min.js` 被 CSP `script-src` 拦截，每次打开页面控制台报 CSP 违规，统计数据也收不到。`_headers` 只在 `script-src` 加 `https://static.cloudflareinsights.com`、在 `connect-src` 加 `https://cloudflareinsights.com`，其余指令不变（仍无 unsafe-eval、无其他 CDN）。`sw.js` 对信标脚本直通：否则 SW 接管页面后用 `fetch` 取脚本会受 SW 自身 `connect-src` 约束而失败。验证：Playwright + Chrome 打开线上页面并把响应 CSP 替换为新值，信标脚本 200、`/cdn-cgi/rum` POST 204、0 条 CSP 违规，`0825` 登录后今日任务正常；本地 `wrangler dev`（读取 `_headers`）注入同一信标标签，首访与 SW 接管后的二次访问均无 CSP 违规。
 

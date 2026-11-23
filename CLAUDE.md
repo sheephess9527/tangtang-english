@@ -9,7 +9,7 @@
 - 判断标准：如果你的改动会让本文件现有的任何一句话变得不准确，就必须改到准确为止。
 
 ## 项目一句话
-`糖糖提分通`：一位父亲为女儿"糖糖"做的**单文件 React PWA** 英语提分工具。整个应用就是一个 `index.html`（约 14800 行）。线上 https://www.tangguo.us/ ，由 Cloudflare 从 `main` 分支自动部署。
+`糖糖提分通`：一位父亲为女儿"糖糖"做的 **React PWA** 英语提分工具。应用源码集中在 `src/app.jsx`，`index.html` 保留页面壳与内联样式。线上 https://www.tangguo.us/ ，由 Cloudflare 从 `main` 分支自动部署；构建产物随代码提交。
 
 ## 学情（2026-09 更新，据家长确认）
 - **浙江 · 高二 · 英语偏弱**（此前记为高一，2026 秋季学年起为高二）。人教版教材，网站作为校内学习的补充。
@@ -18,6 +18,7 @@
 
 ## 功能全景（当前网站做了什么，按用户动线）
 - **登录（4 账号，数据各自隔离）**：`0825`糖糖（主用户）· `0315`妈妈（督学报告）· `9999`爸爸（独立试用）· `0000`管理员（全账户总览）。
+- **预编译静态资源**：React 与应用打包为本地 `app.js`，Tailwind CLI 生成 `tailwind.css`；手机不再执行 Babel 或下载 React/Tailwind CDN 脚本，学习功能和账号保持不变。本地移动 Lighthouse 三次中位数 90 分（旧 main 28、线上旧版 27），测量口径与完整指标见 README §15，不等同于线上部署后的保证值。
 - **今日任务（落地页 = 每日自适应学习路线）**：登录默认页。按糖糖的真实数据自动排 6-7 步：①温故到期单元 ②复习到期旧词 ③学新词 ④补薄弱语法点 ⑤针对性练习（错题优先）⑥**今日题型轮换**（周一完形/周二七选五/周三阅读/周四精听/周五续写训练/周六词块/周日卡片）⑦1 分钟总结。每步可展开看"为什么安排/今天最需要/完成后/明天会怎样"。底部「看得见的成长」面板（学过词/牢固词/攻克错题/连续天数/达标单元）+「本周板块覆盖」7 格打勾。
 - **学一学**：核心笔记（单元词汇 w/m/d/ex + 语法 + 例句，单词行有"档案"入口）· 词块工坊（一个词四层：含义→搭配→例句→自己造句，存"我的好句本"）· 互动卡片 · 写作宝典（含**续写训练**+应用文训练两个四步训练器、应用文模板、续写素材、写作心法）。
 - **练一练**：单词闯关（记忆阶梯智能配题型）· 句子精听（变速+听主旨+抓细节+逐句对照）· 语法填空 35 篇 · 完形 35 篇 · 七选五 35 篇 · 阅读 35 单元 · 重点练习（=单元综合测验，含预热卡/当轮复现/错因标注/连错退阶/一句话解析）。
@@ -28,34 +29,28 @@
 - **浙江卷题型覆盖**：语法填空 ✓ 完形 ✓ 七选五 ✓ 阅读 ✓ 句子听力 ✓ 应用文 ✓ 读后续写 ✓ ；**尚缺**：真·对话/短文听力、限时模考、长难句拆解专项（后两者是已识别但未做的提分点）。
 
 ## 🔒 绝对红线（最高优先级）
-- **登录密码绝对不能改：`0825`→`tangtang`，`0315`→`mama`**（`index.html` `LoginScreen`，约 line 10855）。
+- **登录密码绝对不能改：`0825`→`tangtang`，`0315`→`mama`**（`src/app.jsx` `LoginScreen`，约 line 10707）。
 - 后加的两个账号（用户明确要求）：`9999`→`baba`（爸爸，独立数据桶）、`0000`→`admin`（管理员，进度页可看全账户学习总览）。改动这两个前也先问用户。
 - 开发者原话："**登录密码不用改，其他都改**。"
 - 任何重构、优化、"安全加固"都不得修改 0825/0315 这两个密码值或其对应用户。若需求看似要求改密码，**先停下来问用户**。
 
 ## 架构约束（不要破坏）
-- **单文件、零构建**：无后端、无打包、无 `node_modules`。所有应用代码在 `<script type="text/babel">`（约 line 240）里，浏览器用 **Babel Standalone** 实时编译 JSX。
-- **不要** npm 化、拆多文件、引入 Vite/webpack 等构建工具，除非用户明确要求改架构。
-- 依赖全走 CDN（React 18.3.1 / ReactDOM / @babel/standalone 7.29.7 / Tailwind 3.4.16），带 SRI。改/加 CDN 脚本时**必须同步更新 `_headers` 里 CSP 的 `script-src` 白名单**，否则线上被拦。
+- **用户明确批准预编译（2026-11-23）**：无后端；`src/app.jsx` 保留原应用，`src/main.js` 先导入 `src/globals.js` 设置 React/ReactDOM 全局，再导入应用。
+- `npm ci && npm run build`：esbuild 打包生产 React 18.3.1，目标 Safari 14.1；Tailwind 3.4.16 CLI 扫描 `index.html` 和 `src/**/*.jsx`，数据映射类名在 `tailwind.config.js` 中额外 safelist。共享内联样式保持在 HTML，Tailwind 样式表在其后，维持旧 CDN 的覆盖顺序。
+- **Cloudflare 不执行构建**（`assets.directory: "."`）：必须提交 `app.js`、`tailwind.css` 和锁文件；`.assetsignore` 排除源码、依赖、构建配置。CSP 不再允许 CDN 或 unsafe-eval，SW 预缓存本地构建产物。
+- **修改 `src/app.jsx` 后，必须重新构建并提交 `app.js` / `tailwind.css`**：编辑源码 → `npm ci && npm run build` → 浏览器检查 → 同一提交包含源码、生成产物和文档。Cloudflare 不替你构建，无需付费服务或构建分钟数。
 
-## 改完必做：Babel 编译校验（否则线上白屏）
+## 改完必做：生产构建校验（否则线上白屏）
 ```bash
-npm install @babel/standalone@7.29.7 --prefix /tmp/babelcheck   # 装一次即可
-node -e "
-const babel=require('/tmp/babelcheck/node_modules/@babel/standalone/babel.js');
-const fs=require('fs');const c=fs.readFileSync('index.html','utf8');
-const s=c.indexOf('<script type=\"text/babel\">')+'<script type=\"text/babel\">'.length;
-const e=c.indexOf('</script>',s);  // 注意：babel 块后面还有 SW 注册的普通 script，不能用 lastIndexOf
-const jsx=c.substring(s,e);
-try{babel.transform(jsx,{presets:['react'],filename:'app.jsx'});console.log('✅ Babel OK');}
-catch(err){console.error('❌',err.message,err.loc||'');}
-"
+npm ci
+npm run build
 ```
 
-## 强烈建议：无头浏览器真实验证（CDN 被沙箱拦时的替代方案）
-远程沙箱访问不了 cdn.tailwindcss.com/unpkg，但 registry.npmjs.org 放行。做法：复制 index.html 到 scratchpad，`npm i react@18.3.1 react-dom@18.3.1`（+复用 /tmp/babelcheck 的 babel.min.js），把 4 个 CDN `<script>` 替换成本地 vendor 文件（Tailwind 用空 JS 桩顶替，只影响外观不影响逻辑），禁用 SW 注册，`python3 -m http.server` 起服务，用 Playwright（`executablePath: '/opt/pw-browsers/chromium'`，npm 装 playwright 包即可）登录后真点真测。本仓库历史 bug 多次靠这招在提交前抓到。
+## 强烈建议：无头浏览器真实验证
+构建后用 `python3 -m http.server` 起服务，再用 Playwright 登录后真点真测；新页面不需要任何 CDN。环境可复用 `~/.cache/tt-babelcheck/node_modules/playwright-core` 与 `google-chrome`。CSP 验证需使用支持 `_headers` 的服务或注入等效响应头（Python 静态服务器不会自动读取它）。本次旧版 CDN 在沙箱中可直接加载；十屏对照截图存于 `~/tt-shots/{old,new}/`。
 
 ## 关键数据/组件位置（行号约值，改前用 grep 复核）
+- 以下应用符号现均位于 `src/app.jsx`；历史行号来自抽取前的 HTML，约减 239 行后定位，并用 rg 复核。
 - 数据：`UNIT_DB`(312) 35单元学习内容(words 含 w/m/d/ex/exCn) · `WRITING_DB` 写作宝典 · `GRAMMAR_FILL_DB`(566) 语法填空35篇(blank 带 tag 语法点标签) · `QUESTION_BANK`(9454) 700题库(仅 q/opts/ans/rat，无 meta/难度字段) · `READING_DB` 阅读(题带 skill 标签) · `CLOZE_DB`/`SEVEN_DB` 完形/七选五(无结构化标签) · `EXAM_TIPS_DB` 每单元诀窍 · `SRS_INTERVALS`(11003) · `VOCAB_LADDER` 单词记忆阶梯 · `MISTAKE_CAUSES`(11018) 错因六分类(id/label/advice) · `WRITING_TRAIN_DB`(11647) 写作四步训练3套
 - 组件：`LoginScreen` · `FlashcardCarousel` · `VocabDrill`(智能模式按盒1-5配题型，globalItems=跨单元今日复习) · `GrammarFill` · `ReadingView` · `ClozeView` · `SevenView` · `WritingView`(secTabs：续写训练/应用文训练/应用文模板/续写素材/写作心法) · `XuxieTrainer`(读后续写四步训练，数据 `XUXIE_TRAIN_DB`：读懂原文→抓伏笔→定走向→句子升格→谋篇成段→对照范文，打卡复用 writingTrain) · `WRITING_TRAIN_DB`(应用文四步训练) · `ChunkWorkshop`(词块工坊：含义→搭配→例句→造句，好句本存 mySentences) · `ListeningView`(句子精听：变速/主旨/细节/对照) · `App`（行号会漂，改前 grep）
 - 动态出题器(10537 起)：`buildThemeMeaningQ/buildContextWordQ/buildCollocationQ/buildGrammarInContextQ/buildGrammarErrorQ/buildSentenceInferenceQ/buildWritingStrategyQ`，产出带 `meta:{type,data}`；`buildReinforcementQs(meta)` 强化小题。**题库题 meta 为 null**——所有依赖 meta 的功能都要有兜底（现有兜底：从题干/选项文本匹配本单元单词）。
@@ -67,7 +62,7 @@ catch(err){console.error('❌',err.message,err.loc||'');}
 - **今日题型轮换 `WEEK_ROTATION`**（模块级常量，紧跟 `MISTAKE_CAUSES`）：7 条按 `day`(0=周日) 排的板块，字段 `tab/kind/need/label/emoji/why/todo/gain`，可选 `sec` 用于深链写作宝典子页。`rotationOfToday()` 取当天那条；完成态 = `todayAct[kind] >= need`。**设计意图：糖糖只跟今日路线走，抽屉里的模块她不会主动点开——轮换是让已建成模块真正到达她的唯一通道，别把这一步从路线里去掉。** 深链用 `writingInitSec` state → `WritingView` 的 `initialSec` prop，离开 writing tab 时自动清空（否则会一直被顶到续写训练）。
 - 今日任务页 = 自适应路线（温故卡→到期词→新词→薄弱语法点→针对性练习→今日题型轮换→总结）+ 成长面板（含本周板块覆盖 7 格）；完成态由 `checkins[今天]` 分类计数驱动（kind：quiz/cards/vocab/grammarFill/mistakes/reading/cloze/seven/chunks/listening/writingTrain/summary/unitCert，`stampCheckin` 累加；只打卡不动数据用 `stampOnlyCheckin`）。
 - 发音三层：`speakText(text, rate)` 唯一入口 → ①系统语音合成（**优先 localService 本地语音**——Chrome 的 Google 网络语音在国内静默无声；忽略 canceled/interrupted 伪错误；规避 cancel/speak 竞态）→ ②失败自动切有道在线发音 `playFallbackAudio`（dict.youdao.com/dictvoice，`_headers` CSP 的 media-src 已白名单、sw.js 对该域直通不缓存，失败过一次本会话直走此通道）→ ③都不行才弹 audioTip。`playAudio` 是 0.85 速薄封装。**不要**回退成"cancel 后立即 speak"或"不分本地/网络随便挑语音"的写法。
-- 35 单元 = 7 册×5：key 形如 `B1-1`…`S4-5`。`sw.js` 离线缓存页面+CDN，改 CDN 版本时**同步更新 sw.js 预缓存清单**和 `_headers` CSP。
+- 35 单元 = 7 册×5：key 形如 `B1-1`…`S4-5`。`sw.js` 离线缓存页面、本地 JS/CSS 和图标；资源变更时检查预缓存清单与缓存版本。
 
 ## 状态/存储坑
 - 单一 localStorage key `tt_all_users_v2`；按用户分桶 `{progress,cardLoop,mistakes,vocab,mastery,checkins,grammarFill,reading,cloze,seven,listening,mySentences,unitCert}`。
@@ -78,6 +73,7 @@ catch(err){console.error('❌',err.message,err.loc||'');}
 - 手机端主导航是**底部 5 tab**（今日/单词/语法/阅读/错题）；其余功能走右上角抽屉（学一学：笔记/词块工坊/卡片/写作，练一练：单词/精听/语法填空/完形/七选五/阅读/重点练习，查漏补缺：错题/进度，navGroups）。桌面端为左侧栏+顶部横向 tab。
 - 色彩语义（新功能配色遵守）：紫=单词/词块 · 靛=语法填空 · 青=完形 · 紫红=七选五 · 天蓝=阅读 · teal=精听 · 琥珀=今日复习/到期/退阶提示 · 玫红=错题/盯防词 · 橙=打卡火苗 · 粉=妈妈督学 · 靛蓝=管理员 · 绿=成功/攻克/通关。
 - 视觉体系：body 极光渐变背景(fixed) · .card/.card-lg 内顶高光 · .page-enter 切页动画 · prefers-reduced-motion 已适配。改样式优先改 <style> 里的共享类。
+- 登录 `.float-in` 的 `floatIn` 动画从 `opacity: 0.01` 开始，保留淡入外观且允许首帧被记录为内容绘制。不要改回 0：预编译版在 Chromium 153/156 会出现界面可见却不触发 FCP 的计时盲区，导致 Lighthouse NO_FCP；禁用动画或起始 0.01 的对照均可恢复 FCP。
 - iOS 适配：viewport-fit=cover + 底部导航 env(safe-area-inset-bottom)；状态栏用 default（勿改回 black-translucent）。
 - 切 tab/切单元自动回页顶；切单元保持当前页面（仅测验中跳回笔记）。
 
@@ -143,6 +139,8 @@ catch(err){console.error('❌',err.message,err.loc||'');}
 
 ## 更新日志（最新在上；每次改动后必须在此追加一条）
 > 格式：`提交简述 —— 做了什么 / 为什么`。这是给下一个 AI 的记忆，别省。
+
+- **11-23 预编译替代浏览器编译 + 首屏绘制计时复核** —— 按用户明确授权引入固定版本 npm 构建，将原 Babel 块原样移到 `src/app.jsx`，提交本地 React/JS 与 Tailwind CSS 产物，收紧 CSP 并更新 SW；避免手机每次解析 Babel 和依赖 CDN。**修改 `src/app.jsx` 后必须重新构建并提交 `app.js` / `tailwind.css`**。默认移动 Lighthouse 13.6.0、Chromium 153，每目标三次独立运行，逐指标中位数：线上旧版 27 分 / FCP=LCP 8.43s / TBT 9949.5ms / SI 8.51s / CLS 0.02347 / 1,239,922B；本地旧 main 28 分 / 7.99s / 9979.5ms / 8.11s / 0.02030 / 1,156,905B；本地新版 90 分 / 0.75s / 429.5ms / 1.73s / 0 / 358,005B。三次新版分数 90/96/80，不保证线上固定分数。用禁用动画的临时副本及 1×/4× CPU 观测隔离 NO_FCP：起始透明度 0 时界面最终可见但 FCP 缺失，改登录渐入起始为 0.01 后恢复；不是持续白屏。旧版和新版首次背景绘制时 root 均可为空，不能只归因于 defer。十屏对照中九屏逐像素一致，修正后登录复核仍仅 25 像素差异、通道差值不超过 1/255；账号与学习逻辑未改。报告/截图/trace 在 `~/tt-lh/`，口径见 README §15。
 
 - **全站教学内容审计收官（第四轮，本次）**—— 用户要求"全部审"。把剩余的 700 题库解析 + 140 阅读题解析 + 175 七选五解析 + 完形解析 + 350 个单词条目 + 70 句单元例句全部纳入：①机械校验（ans 越界/选项重复/空解析/例句是否含目标词）→ **结构性问题 0 处**（唯一告警是 extra-curricular 因连字符导致的误报）②全量 1540 条解析按 7 类已知错误措辞扫描 → 仅命中 6 条且多为文章原文引用，非教学断言 ③精读题库 236 题（占 34%，覆盖全部 35 单元 + 所有语法类题）+ 阅读/七选五/完形 210 条 → **答案全部正确，未发现答案错误**。共修 8 处措辞：题库 3 处重复"动词作主语须用动名词"（漏 to do，与第二轮已修红线冲突）、"例子作用题永远问"、Comparing 的说法与第二轮修正对齐、虚拟语气 were 补注"考试规范用法"、shock/defeat 两个词性释义精确化 / **结论：题库与解析质量高，之前几轮发现的错误集中在"讲解/口诀"类内容，而非题目本身。** 至此全站教学内容 100% 审计完毕。
 - **阅读诀窍审计（第三轮）**—— 用户追问"所有单元都查过了吗"，核实后发现前两轮只覆盖了「语法讲解」（35/35 单元的 UNIT_DB grammar + EXAM_TIPS examTips，共 210 条），**readingTips 70 条只修过 B1-1 的 2 条**。补审全部 70 条，又找出 8 类共 12 处并修正：指代题误教"就近原则+读着通顺就是答案"（硬错误，干扰名词常更近）、观点态度题"无信号词即客观事实"且未区分信号词后的主语是谁（逻辑错误）、"转折后才是真实态度"×4 处绝对化、段落大意机械等同首句且"不要逐句读"、"全文主旨看首段+末段"（与第一轮已修的 B1-1 同款错误在 B1-5 复发）、细节题顺序原则写成"不要倒回去翻"、"绝不读整段"、七选五"话题词对上八成确定"（编造概率）；另修 READING_DB 中一条把"就近原则"当通则的解析 / **危险信号：外部报告点名的 2 条阅读错误恰好都出自 readingTips，2/2 全错——同一批内容里剩下的 68 条果然也有问题。教训是审计要按"内容类型"穷尽，不能只按报告点名的位置修。**
